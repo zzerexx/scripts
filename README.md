@@ -10,3 +10,4 @@ does not work with custom character models (strucid, phantom forces, etc)
 if u want the colors to be based on teamcolor, use the team check version  
 chams do not apply to newly spawned players~~  
 dont even use this shit is so bad  
+it was experimental anyway  
