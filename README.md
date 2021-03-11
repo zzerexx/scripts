@@ -4,10 +4,30 @@ my scripts n shit
 yea  
 
 # Universal Chams
-~~works on most games  
-does not work with custom character models (strucid, phantom forces, etc)  
-**ONLY** works if players are not in a folder (in Workspace)  
-if u want the colors to be based on teamcolor, use the team check version  
-chams do not apply to newly spawned players~~  
-dont even use this shit is so bad  
-it was experimental anyway  
+currently work in progress  
+working features: chams, nameesp, headtracers  
+
+**Supported Games**
+Any game with normal character models  
+Arsenal  
+Counter Blox  
+Typical Colors 2  
+Unit: Classified  
+Unit 1968  
+RECOIL  
+No-Scope Sniping  
+Pistol 1v1  
+Polybattle (detected apparently??)  
+Big Paintball  
+AceOfSpadez  
+Murder Mystery 2  
+  
+**Not Supported**  
+Most games with custom character models  
+Phantom Forces  
+Strucid  
+Bad Business  
+Polyguns  
+Q-Clash  
+
+# Murder Mystery 2 Utilities
