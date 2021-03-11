@@ -348,23 +348,23 @@ function bruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbru
 			if game.Players.LocalPlayer.Backpack:FindFirstChild("Knife") or player.Character:FindFirstChild("Knife") then
 				team = "Murderer"
 				target = players[Sheriff.Text].Character.HumanoidRootPart
-				repeat wait()
-					if getgenv().Settings.AimbotAsMurderer then
+				if getgenv().Settings.AimbotAsMurderer then
+					repeat wait()
 						if getgenv().keypressed then
 							camera.CFrame = CFrame.new(camera.CFrame.Position, target.Position)
 						end
-					end
-				until players[Sheriff.Text].Character.Humanoid.Health < 1 or team == nil
+					until players[Sheriff.Text].Character.Humanoid.Health < 1 or team == nil
+				end
 			elseif player.Backpack:FindFirstChild("Gun") or game.Players.LocalPlayer.Character:FindFirstChild("Gun") then
 				team = "Sheriff"
 				target = players[Murderer.Text].Character.HumanoidRootPart
-				repeat wait()
-					if getgenv().Settings.AimbotAsSheriff then
+				if getgenv().Settings.AimbotAsSheriff then
+					repeat wait()
 						if getgenv().keypressed then
 							camera.CFrame = CFrame.new(camera.CFrame.Position, target.Position)
 						end
-					end
-				until players[Murderer.Text].Character.Humanoid.Health < 1 or team == nil
+					until players[Murderer.Text].Character.Humanoid.Health < 1 or team == nil
+				end
 			else
 				team = nil
 				target = nil
