@@ -17,7 +17,7 @@ Check the settings for features
 should support *all* exploits. NOTE: ProtectGui only supports **Synapse X**, **ProtoSmasher**, **Script-Ware v2**, **Krnl**  
   
 # Synapse XI  
-Updated March 8, 2021
+Updated March 8, 2021  
 v1.0.1  
 Synapse X, replicated in Roblox with *almost*-full functionality.  
 Execute **:settings** for the secret settings menu. (buggy)  
