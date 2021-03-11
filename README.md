@@ -20,6 +20,7 @@ should support *all* exploits. NOTE: ProtectGui only supports **Synapse X**, **P
 Updated March 8, 2021
 v1.0.1  
 Synapse X, replicated in Roblox with *almost*-full functionality.  
+Execute **:settings** for the secret settings menu. (buggy)  
 **WORK IN PROGRESS**  
 ```
 To-Do List:
