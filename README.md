@@ -2,16 +2,16 @@
 zzerexx#3970  
 my scripts n shit  
 yea  
-
-# Universal Chams
-Updated March 10, 2021
-v1.0.0
-**WORK IN PROGRESS**
+  
+# Universal Chams  
+Updated March 10, 2021  
+v1.0.0  
+**WORK IN PROGRESS**  
 working features: chams, nameesp, headtracers  
 supported games list at bottom of script  
   
 # Murder Mystery 2 Utilities  
-Updated March 10, 2021
+Updated March 10, 2021  
 v1.0.0  
 Check the settings for features  
 should support *all* exploits. NOTE: ProtectGui only supports **Synapse X**, **ProtoSmasher**, **Script-Ware v2**, **Krnl**  
