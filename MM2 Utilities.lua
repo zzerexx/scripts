@@ -4,7 +4,7 @@ getgenv().Settings = {
 	ProtectGui = true,          -- Only available for Synapse, ProtoSmasher, Script-Ware, Krnl (RECOMMENDED)
 	RemoveRagdolls = true,      -- Removes all player ragdolls
 	-- Player
-	WalkSpeed = 20,             -- Default: 16
+	WalkSpeed = 18,             -- Default: 16
 	JumpPower = 50,             -- Default: 50
 	FieldOfView = 80,           -- Default: 70
 	CameraMode = "Invisicam",   -- "Invisicam" or "Zoom"
@@ -490,7 +490,19 @@ GunDrop.MouseButton1Click:Connect(function()
 		end
 	end)
 end)
-if getgenv().Settings.Enabled then bruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruh() end
+function StartMM2()
+	if getgenv().Settings.Enabled then
+		pcall(function()
+			bruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruh()
+			player.Character.Humanoid.WalkSpeed = getgenv().Settings.WalkSpeed
+			player.Character.Humanoid.JumpPower = getgenv().Settings.JumpPower
+			camera.FieldOfView = getgenv().Settings.FieldOfView
+			player.DevCameraOcclusionMode = getgenv().Settings.CameraMode
+			player.CameraMaxZoomDistance = getgenv().Settings.MaxZoom
+		end)
+	end
+end
+StartMM2()
 Title.Text = "MM2 Utilities"
 
 print("+----- MM2  Utilities -----+")
@@ -502,12 +514,5 @@ print("|       zzerexx#3970       |")
 print("+--------------------------+")
 
 while wait(2) do
-	if getgenv().Settings.Enabled then
-		bruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruh()
-		player.Character.Humanoid.WalkSpeed = getgenv().Settings.WalkSpeed
-		player.Character.Humanoid.JumpPower = getgenv().Settings.JumpPower
-		camera.FieldOfView = getgenv().Settings.FieldOfView
-		player.DevCameraOcclusionMode = getgenv().Settings.CameraMode
-		player.CameraMaxZoomDistance = getgenv().Settings.MaxZoom
-	end
+	StartMM2()
 end
