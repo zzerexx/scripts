@@ -10,7 +10,7 @@ working features: chams, nameesp, headtracers
 supported games list at bottom of script  
   
 # Murder Mystery 2 Utilities  
-Updated March 10, 2021  
+Updated March 11, 2021  
 v1.0.0  
 Check the settings for features  
 should support *all* exploits.  
