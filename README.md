@@ -15,6 +15,10 @@ v1.0.0
 Check the settings for features  
 should support *all* exploits.  
 NOTE: ProtectGui only supports **Synapse X**, **ProtoSmasher**, **Script-Ware v2**, **Krnl**  
+```lua
+loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/MM2%20Utilities.lua", true))()
+```  
+(uses default settings)  
   
 # Synapse XI  
 Updated March 8, 2021  
