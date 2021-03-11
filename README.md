@@ -4,30 +4,33 @@ my scripts n shit
 yea  
 
 # Universal Chams
-currently work in progress  
+Updated March 10, 2021
+v1.0.0
+**WORK IN PROGRESS**
 working features: chams, nameesp, headtracers  
-
-**Supported Games**
-Any game with normal character models  
-Arsenal  
-Counter Blox  
-Typical Colors 2  
-Unit: Classified  
-Unit 1968  
-RECOIL  
-No-Scope Sniping  
-Pistol 1v1  
-Polybattle (detected apparently??)  
-Big Paintball  
-AceOfSpadez  
-Murder Mystery 2  
+supported games list at bottom of script  
   
-**Not Supported**  
-Most games with custom character models  
-Phantom Forces  
-Strucid  
-Bad Business  
-Polyguns  
-Q-Clash  
-
-# Murder Mystery 2 Utilities
+# Murder Mystery 2 Utilities  
+Updated March 10, 2021
+v1.0.0  
+Check the settings for features  
+should support *all* exploits. NOTE: ProtectGui only supports **Synapse X**, **ProtoSmasher**, **Script-Ware v2**, **Krnl**  
+  
+# Synapse XI  
+Updated March 8, 2021
+v1.0.1  
+The Synapse X UI, replicated in Roblox with *almost*-full functionality.  
+**WORK IN PROGRESS**  
+```
+To-Do List:
+Script Hub           DONE
+Options Menu         DONE
+Loader               DONE
+Maximize             
+Open                 DONE
+Syntax Highlighting  
+Numbered Lines       DONE
+Scrollable Editor    DONE
+Multiple Tabs        
+Customizable Theme   
+```
