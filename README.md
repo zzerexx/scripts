@@ -13,7 +13,8 @@ supported games list at bottom of script
 Updated March 10, 2021  
 v1.0.0  
 Check the settings for features  
-should support *all* exploits. NOTE: ProtectGui only supports **Synapse X**, **ProtoSmasher**, **Script-Ware v2**, **Krnl**  
+should support *all* exploits.  
+NOTE: ProtectGui only supports **Synapse X**, **ProtoSmasher**, **Script-Ware v2**, **Krnl**  
   
 # Synapse XI  
 Updated March 8, 2021  
