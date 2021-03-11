@@ -3,7 +3,7 @@ zzerexx#3970
 my scripts n shit  
 yea  
   
-# Universal Chams  
+# Universal Esp  
 Updated March 10, 2021  
 v1.0.0  
 **WORK IN PROGRESS**  
