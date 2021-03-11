@@ -1,7 +1,7 @@
 --[[ Synapse XI (Synapse X Internal)
 	 v1.1.0 Test Release
 	 features coming soon in v1.1.0
-	 to view the internals, delete line 132
+	 to view the internals, delete line 133
 	 Made by zzerexx#3970
 ]]
 local SynapseXI = Instance.new("ScreenGui")
