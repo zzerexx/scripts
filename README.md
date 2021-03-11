@@ -1,5 +1,4 @@
-# Scripts
-zzerexx#3970  
+# Scripts  
 my scripts n shit  
 yea  
   
