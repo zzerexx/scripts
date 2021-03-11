@@ -19,7 +19,7 @@ should support *all* exploits. NOTE: ProtectGui only supports **Synapse X**, **P
 # Synapse XI  
 Updated March 8, 2021
 v1.0.1  
-The Synapse X UI, replicated in Roblox with *almost*-full functionality.  
+Synapse X, replicated in Roblox with *almost*-full functionality.  
 **WORK IN PROGRESS**  
 ```
 To-Do List:
