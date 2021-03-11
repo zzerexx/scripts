@@ -1,7 +1,7 @@
 -- Murder Mystery 2 Utilities by zzerexx#3970
 getgenv().Settings = {
 	Enabled = true,
-	ProtectGui = true,          -- Only available for Synapse, ProtoSmasher, Script-Ware, Krnl (RECOMMENDED)
+	ProtectGui = true,          -- Only available for Synapse, ProtoSmasher, Script-Ware V2, Krnl (RECOMMENDED)
 	RemoveRagdolls = true,      -- Removes all player ragdolls
 	-- Player
 	WalkSpeed = 18,             -- Default: 16
