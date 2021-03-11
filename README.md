@@ -34,4 +34,5 @@ Numbered Lines       DONE
 Scrollable Editor    DONE
 Multiple Tabs        
 Customizable Theme   
-```
+```  
+View upcoming features in v1.1.0 in **SynapseXI_PreRelease.lua**  
