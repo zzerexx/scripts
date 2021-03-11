@@ -1,5 +1,5 @@
 --[[ Synapse XI (Synapse X Internal)
-	 v1.1.0 Pre-Release
+	 v1.1.0 Test Release
 	 features coming soon in v1.1.0
 	 to view the internals, delete line 132
 	 Made by zzerexx#3970
