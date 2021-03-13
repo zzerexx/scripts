@@ -20,7 +20,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/
 ```   
   
 # Synapse XI  
-Updated March 8, 2021  
+Updated March 12, 2021  
 v1.0.0   
 **WORK IN PROGRESS**  
 Synapse X, replicated in Roblox with *almost*-full functionality.  
