@@ -1,7 +1,6 @@
 --[[ Synapse XI (Synapse X Internal)
 	 v1.1.0 Test Release
 	 features coming soon in v1.1.0
-	 to view the internals, delete line 132
 	 Made by zzerexx#3970
 ]]
 local SynapseXI = Instance.new("ScreenGui")
@@ -1621,7 +1620,7 @@ TextLabel.TextXAlignment = Enum.TextXAlignment.Left
 
 -- Scripts:
 
-local function YHACOBV_fake_script() -- Scripts.ScriptBoxScripts 
+local function AQSLQV_fake_script() -- Scripts.ScriptBoxScripts 
 	local script = Instance.new('LocalScript', Scripts)
 
 	script.Parent.Dex.BackgroundTransparency = 0
@@ -1701,7 +1700,7 @@ local function YHACOBV_fake_script() -- Scripts.ScriptBoxScripts
 		script.Parent[v].BorderColor3 = Color3.fromRGB(60, 60, 60)
 		script.Parent[v].BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 		script.Parent[v].BorderMode = Enum.BorderMode.Inset
-		
+
 		mouse.Button1Down:Connect(function()
 			script.Parent[v].BorderColor3 = Color3.fromRGB(60, 60, 60)
 			script.Parent[v].BackgroundColor3 = Color3.fromRGB(60, 60, 60)
@@ -1712,7 +1711,7 @@ local function YHACOBV_fake_script() -- Scripts.ScriptBoxScripts
 			script.Parent[v].BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 			script.Parent.Parent.Parent.Parent.Parent.Menu.Visible = false
 		end)
-		
+
 		script.Parent[v].MouseButton1Down:Connect(function()
 			name = v
 			selection(name)
@@ -1728,20 +1727,20 @@ local function YHACOBV_fake_script() -- Scripts.ScriptBoxScripts
 		end)
 	end
 end
-coroutine.wrap(YHACOBV_fake_script)()
-local function SOEMCM_fake_script() -- Editor.EditorScript 
+coroutine.wrap(AQSLQV_fake_script)()
+local function BOIV_fake_script() -- Editor.EditorScript 
 	local script = Instance.new('LocalScript', Editor)
 
 	if isfile("settings.xi") then
 		local data = game:GetService("HttpService"):JSONDecode(readfile("settings.xi"))
 		script.Parent.Text = data["Editor"]
 	end
-	
+
 	local UIS = game:GetService("UserInputService")
 	local lines = 1
 	local editor = script.Parent
 	local numbers = script.Parent.Parent.Parent.NumberScroll.Numbers
-	
+
 	local function linethingy(input, gameProcessed)
 		if input.KeyCode == Enum.KeyCode.Return or Enum.KeyCode.Backspace then
 			numbers.Text = ""
@@ -1758,41 +1757,58 @@ local function SOEMCM_fake_script() -- Editor.EditorScript
 	end
 	UIS.InputBegan:Connect(linethingy)
 end
-coroutine.wrap(SOEMCM_fake_script)()
-local function BVGT_fake_script() -- Editor.SyntaxHighlighter 
+coroutine.wrap(BOIV_fake_script)()
+local function FEEQWF_fake_script() -- Editor.SyntaxHighlighter 
 	local script = Instance.new('LocalScript', Editor)
 
 	local SyntaxColors1 = {
 		Text = Color3.fromRGB(204,204,204),         -- Text, No Highlighting
 		Operator = Color3.fromRGB(204,204,204),     -- Operators, No Highlighting
-		Number = Color3.fromRGB(255,198,0),         -- Number, Yellow
+		Number = Color3.fromRGB(255,198,0),         -- Number, Gold
 		String = Color3.fromRGB(173,241,149),       -- String, Green
 		Comment = Color3.fromRGB(102,102,102),      -- Comment, Gray
 		Keyword = Color3.fromRGB(248,109,124),      -- Keyword, Pink
 		LocalMethod = Color3.fromRGB(253,251,172),  -- Local Method, Light Yellow  
 		LocalProperty = Color3.fromRGB(97,161,241), -- LocalProperty, Light Blue
-		Nil = Color3.fromRGB(255,198,0),            -- Nil, Yellow
-		Bool = Color3.fromRGB(255,198,0),           -- Bool, Yellow
+		Nil = Color3.fromRGB(255,198,0),            -- Nil, Gold
+		Bool = Color3.fromRGB(255,198,0),           -- Bool, Gold
 		Function = Color3.fromRGB(248,109,124),     -- Function, Pink
 		Local = Color3.fromRGB(248,109,124),        -- Local, Pink
 		Self = Color3.fromRGB(248,109,124),         -- Self, Pink
 		FunctionName = Color3.fromRGB(253,251,172)  -- FunctionName, Light Yellow
 	}
 	local SyntaxColors = {
-		None = Color3.fromRGB(204,204,204),         -- Text, Operators
-		Yellow = Color3.fromRGB(255,198,0),         -- Number, Bool, Nil
-		Green = Color3.fromRGB(173,241,149),        -- String
-		Pink = Color3.fromRGB(248,109,124),         -- Keyword, Function, Local, Self
-		LightYellow = Color3.fromRGB(253,251,172),  -- Local Method, Function Name
-		LightBlue = Color3.fromRGB(97,161,241),     -- Local Property
+		None = "204,204,204",
+		Gold = "255,198,0",
+		Green = "173,241,149",
+		Pink = "248,109,124",
+		Yellow = "253,251,172",
+		LightBlue = "97,161,241"
+		--None = Color3.fromRGB(204,204,204),         -- Text, Operators
+		--Gold = Color3.fromRGB(255,198,0),           -- Number, Bool, Nil
+		--Green = Color3.fromRGB(173,241,149),        -- String
+		--Pink = Color3.fromRGB(248,109,124),         -- Keyword, Function, Local, Self
+		--Yellow = Color3.fromRGB(253,251,172),       -- Local Method, Function Name
+		--LightBlue = Color3.fromRGB(97,161,241),     -- Local Property
 	}
-	
-	local Syntax = {
-		Yellow = {
-			
+	local Syntax123 = {
+		Gold = {
+			"nil",
+			"true",
+			"false",
+			"1",
+			"2",
+			"3",
+			"4",
+			"5",
+			"6",
+			"7",
+			"8",
+			"9",
+			"0",
 		},
 		Green = {
-			
+
 		},
 		Pink = {
 			"and",
@@ -1813,24 +1829,123 @@ local function BVGT_fake_script() -- Editor.SyntaxHighlighter
 			"while",
 			"else"
 		},
-		LightYellow = {
-			
+		Yellow = {
+
 		},
 		LightBlue = {
-			
+			"game",
+			"script",
+			"Parent",
+			--property,
 		}
 	}
+	local Source = {
+		-- PINK
+		"and",
+		"break",
+		"do",
+		"else",
+		"elseif",
+		"end",
+		"for",
+		"function",
+		"local",
+		"if",
+		"in",
+		"repeat",
+		"return",
+		"then",
+		"until",
+		"while",
+		"else",
+		-- GOLD
+		"nil",
+		"true",
+		"false",
+		"1",
+		"2",
+		"3",
+		"4",
+		"5",
+		"6",
+		"7",
+		"8",
+		"9",
+		"0",
+		-- YELLOW
+		"()",
+		-- LIGHTBLUE
+		"game",
+		"script",
+		"Parent",
+	}
+	local Highlight = {
+		"Pink",
+		"Pink",
+		"Pink",
+		"Pink",
+		"Pink",
+		"Pink",
+		"Pink",
+		"Pink",
+		"Pink",
+		"Pink",
+		"Pink",
+		"Pink",
+		"Pink",
+		"Pink",
+		"Pink",
+		"Pink",
+		"Pink",
+		"Gold",
+		"Gold",
+		"Gold",
+		"Gold",
+		"Gold",
+		"Gold",
+		"Gold",
+		"Gold",
+		"Gold",
+		"Gold",
+		"Gold",
+		"Gold",
+		"Gold",
+		"Yellow",
+		"LightBlue",
+		"LightBlue",
+		"LightBlue",
+	}
 	script.Parent.RichText = true
-	script.Parent:GetPropertyChangedSignal("Text"):Connect(function()
-		-- no clue how to do this yet :D
-	end)
-	
-	function Highlight(str)
-		
+	local a = "<font color='rgb("
+	local b = ")'>"
+	local c = "</font>"
+	function highlight(str)
+		str = tostring(str)
+		for position = 1,#Source do
+			for i,v in pairs(Source) do
+				str = str:gsub(Source[i],Highlight[i]..Source[i]..c)
+			end
+			if str:find("Pink") then
+				str = str:gsub("Pink",a..SyntaxColors.Pink..b)
+			elseif str:find("Gold") then
+				str = str:gsub("Gold",a..SyntaxColors.Gold..b)
+			elseif str:find("Yellow") then
+				str = str:gsub("Yellow",a..SyntaxColors.Yellow..b)
+			elseif str:find("Green") then
+				str = str:gsub("Green",a..SyntaxColors.Green..b)
+			elseif str:find("LightBlue") then
+				str = str:gsub("LightBlue",a..SyntaxColors.LightBlue..b)
+			end
+			return(str)
+		end
 	end
+	script.Parent:GetPropertyChangedSignal("Text"):Connect(function()
+		--script.Parent.Text = highlight(script.Parent.Text)
+	end)
+	-- credit to Agent#9336 for inspiration
 end
-coroutine.wrap(BVGT_fake_script)()
-local function ILFKUV_fake_script() -- Main.ScrollingScript 
+coroutine.wrap(FEEQWF_fake_script)()
+local function YLXUZDW_fake_script() -- Main.ScrollingScript 
 	local script = Instance.new('LocalScript', Main)
 
 	local numberscroll = script.Parent.NumberScroll
@@ -1853,8 +1968,8 @@ local function ILFKUV_fake_script() -- Main.ScrollingScript
 		numberscroll.CanvasSize = UDim2.new(0, 39, 0, editor.TextBounds.Y)
 	end)
 end
-coroutine.wrap(ILFKUV_fake_script)()
-local function OVILNX_fake_script() -- Tabs.TabScript 
+coroutine.wrap(YLXUZDW_fake_script)()
+local function LXUVMW_fake_script() -- Tabs.TabScript 
 	local script = Instance.new('LocalScript', Tabs)
 
 	local tab = 1
@@ -1870,8 +1985,8 @@ local function OVILNX_fake_script() -- Tabs.TabScript
 		tab.Text = "  Script "..number.."  x"
 	end
 end
-coroutine.wrap(OVILNX_fake_script)()
-local function NMIPFLB_fake_script() -- Attach.AttachScript 
+coroutine.wrap(LXUVMW_fake_script)()
+local function CWFK_fake_script() -- Attach.AttachScript 
 	local script = Instance.new('LocalScript', Attach)
 
 	script.Parent.MouseButton1Click:Connect(function()
@@ -1879,18 +1994,18 @@ local function NMIPFLB_fake_script() -- Attach.AttachScript
 		wait(2)
 		script.Parent.Parent.Title.Text = "Synapse X - " .. getgenv().Version
 	end)
-	
+
 end
-coroutine.wrap(NMIPFLB_fake_script)()
-local function VYZJWSL_fake_script() -- Clear.ClearScript 
+coroutine.wrap(CWFK_fake_script)()
+local function GXVFQZ_fake_script() -- Clear.ClearScript 
 	local script = Instance.new('LocalScript', Clear)
 
 	script.Parent.MouseButton1Click:Connect(function()
 		script.Parent.Parent.Main.EditorScroll.Editor.Text = ""
 	end)
 end
-coroutine.wrap(VYZJWSL_fake_script)()
-local function XICK_fake_script() -- Execute.ExecuteScript 
+coroutine.wrap(GXVFQZ_fake_script)()
+local function WJPWT_fake_script() -- Execute.ExecuteScript 
 	local script = Instance.new('LocalScript', Execute)
 
 	script.Parent.MouseButton1Click:Connect(function()
@@ -1901,8 +2016,8 @@ local function XICK_fake_script() -- Execute.ExecuteScript
 		end
 	end)
 end
-coroutine.wrap(XICK_fake_script)()
-local function OCFOGQC_fake_script() -- ScriptHub.ScriptHubScript 
+coroutine.wrap(WJPWT_fake_script)()
+local function SFKLA_fake_script() -- ScriptHub.ScriptHubScript 
 	local script = Instance.new('LocalScript', ScriptHub)
 
 	script.Parent.MouseButton1Click:Connect(function()
@@ -1912,8 +2027,8 @@ local function OCFOGQC_fake_script() -- ScriptHub.ScriptHubScript
 		script.Parent.Parent.Parent.ScriptHubTopbar.Visible = true
 	end)
 end
-coroutine.wrap(OCFOGQC_fake_script)()
-local function GFETFLK_fake_script() -- SynapseLogo.LogoScript 
+coroutine.wrap(SFKLA_fake_script)()
+local function KGKKURN_fake_script() -- SynapseLogo.LogoScript 
 	local script = Instance.new('LocalScript', SynapseLogo)
 
 	local sound = Instance.new("Sound")
@@ -1923,7 +2038,7 @@ local function GFETFLK_fake_script() -- SynapseLogo.LogoScript
 	sound.Volume = 3
 	sound.Pitch = 1
 	sound.Looped = false
-	
+
 	script.Parent.MouseButton1Down:Connect(function()
 		if script.Parent.Parent.Parent.TopbarCredits.Visible == false then
 			script.Parent.Asterisk.Playing = true
@@ -1931,8 +2046,8 @@ local function GFETFLK_fake_script() -- SynapseLogo.LogoScript
 		end
 	end)
 end
-coroutine.wrap(GFETFLK_fake_script)()
-local function DLCO_fake_script() -- Minimize.MinScript 
+coroutine.wrap(KGKKURN_fake_script)()
+local function TUROK_fake_script() -- Minimize.MinScript 
 	local script = Instance.new('LocalScript', Minimize)
 
 	script.Parent.MouseButton1Click:Connect(function()
@@ -1941,13 +2056,13 @@ local function DLCO_fake_script() -- Minimize.MinScript
 	script.Parent.MouseEnter:Connect(function()
 		script.Parent.BackgroundTransparency = 0
 	end)
-	
+
 	script.Parent.MouseLeave:Connect(function()
 		script.Parent.BackgroundTransparency = 1
 	end)
 end
-coroutine.wrap(DLCO_fake_script)()
-local function SKZPVV_fake_script() -- Maximize.MaxScript 
+coroutine.wrap(TUROK_fake_script)()
+local function RDVJYSY_fake_script() -- Maximize.MaxScript 
 	local script = Instance.new('LocalScript', Maximize)
 
 	script.Parent.MouseButton1Click:Connect(function()
@@ -1960,13 +2075,13 @@ local function SKZPVV_fake_script() -- Maximize.MaxScript
 	script.Parent.MouseEnter:Connect(function()
 		script.Parent.BackgroundTransparency = 0
 	end)
-	
+
 	script.Parent.MouseLeave:Connect(function()
 		script.Parent.BackgroundTransparency = 1
 	end)
 end
-coroutine.wrap(SKZPVV_fake_script)()
-local function TLCB_fake_script() -- Close.CloseScript 
+coroutine.wrap(RDVJYSY_fake_script)()
+local function SPTB_fake_script() -- Close.CloseScript 
 	local script = Instance.new('LocalScript', Close)
 
 	script.Parent.MouseButton1Click:Connect(function()
@@ -1975,22 +2090,22 @@ local function TLCB_fake_script() -- Close.CloseScript
 	script.Parent.MouseEnter:Connect(function()
 		script.Parent.BackgroundTransparency = 0
 	end)
-	
+
 	script.Parent.MouseLeave:Connect(function()
 		script.Parent.BackgroundTransparency = 1
 	end)
 end
-coroutine.wrap(TLCB_fake_script)()
-local function FBSDR_fake_script() -- Topbar.MainScript 
+coroutine.wrap(SPTB_fake_script)()
+local function KVWH_fake_script() -- Topbar.MainScript 
 	local script = Instance.new('LocalScript', Topbar)
 
 	script.Parent.Active = true
 	script.Parent.Draggable = true
-	
+
 	script.Parent.Minimize.BorderMode = Enum.BorderMode.Inset
 	script.Parent.Maximize.BorderMode = Enum.BorderMode.Inset
 	script.Parent.Close.BorderMode = Enum.BorderMode.Inset
-	
+
 	getgenv().Action = nil
 	script.Parent.OpenFile.MouseButton1Click:Connect(function()
 		script.Parent.Parent.BoxTopbar.Visible = true
@@ -2024,7 +2139,7 @@ local function FBSDR_fake_script() -- Topbar.MainScript
 			script.Parent[v].BorderSizePixel = 0
 		end)
 	end
-	
+
 	wait(2)
 	if isfile("settings.xi") then
 		local data = game:GetService("HttpService"):JSONDecode(readfile("settings.xi"))
@@ -2032,16 +2147,16 @@ local function FBSDR_fake_script() -- Topbar.MainScript
 		script.Parent.Parent.OpenSynapse.SynapseOpen.Position = UDim2.new(data["OpenPosition"]["XScale"], data["OpenPosition"]["XOffset"], data["OpenPosition"]["YScale"], data["OpenPosition"]["YOffset"])
 	end
 end
-coroutine.wrap(FBSDR_fake_script)()
-local function HXMI_fake_script() -- Close_2.LocalScript 
+coroutine.wrap(KVWH_fake_script)()
+local function EVOVKY_fake_script() -- Close_2.LocalScript 
 	local script = Instance.new('LocalScript', Close_2)
 
 	script.Parent.MouseButton1Down:Connect(function()
 		script.Parent.Parent.Visible = false
 	end)
 end
-coroutine.wrap(HXMI_fake_script)()
-local function PRIZI_fake_script() -- CloseBG.LocalScript 
+coroutine.wrap(EVOVKY_fake_script)()
+local function IJXX_fake_script() -- CloseBG.LocalScript 
 	local script = Instance.new('LocalScript', CloseBG)
 
 	script.Parent.MouseEnter:Connect(function()
@@ -2051,16 +2166,16 @@ local function PRIZI_fake_script() -- CloseBG.LocalScript
 		script.Parent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 	end)
 end
-coroutine.wrap(PRIZI_fake_script)()
-local function ZYFBYGD_fake_script() -- TopbarCredits.LocalScript 
+coroutine.wrap(IJXX_fake_script)()
+local function YHZPUL_fake_script() -- TopbarCredits.LocalScript 
 	local script = Instance.new('LocalScript', TopbarCredits)
 
 	script.Parent.Visible = false
 	script.Parent.Active = true
 	script.Parent.Draggable = true
 end
-coroutine.wrap(ZYFBYGD_fake_script)()
-local function UZRJ_fake_script() -- Ok.LocalScript 
+coroutine.wrap(YHZPUL_fake_script)()
+local function TNRI_fake_script() -- Ok.LocalScript 
 	local script = Instance.new('LocalScript', Ok)
 
 	script.Parent.MouseButton1Click:Connect(function()
@@ -2073,8 +2188,8 @@ local function UZRJ_fake_script() -- Ok.LocalScript
 		script.Parent.Image = "http://www.roblox.com/asset/?id=6444452008"
 	end)
 end
-coroutine.wrap(UZRJ_fake_script)()
-local function FIQQGDD_fake_script() -- Menu.MenuScript 
+coroutine.wrap(TNRI_fake_script)()
+local function LUPS_fake_script() -- Menu.MenuScript 
 	local script = Instance.new('LocalScript', Menu)
 
 	getgenv().Script = ""
@@ -2082,7 +2197,7 @@ local function FIQQGDD_fake_script() -- Menu.MenuScript
 	script.Parent.Execute.BorderMode = Enum.BorderMode.Inset
 	script.Parent.Load.BorderMode = Enum.BorderMode.Inset
 	local mouse = game.Players.LocalPlayer:GetMouse()
-	
+
 	script.Parent.Execute.MouseButton1Click:Connect(function()
 		loadstring(getgenv().Script)()
 		script.Parent.Visible = false
@@ -2094,30 +2209,30 @@ local function FIQQGDD_fake_script() -- Menu.MenuScript
 	mouse.Button1Down:Connect(function()
 		script.Parent.Visible = false
 	end)
-	
+
 	script.Parent.Execute.MouseEnter:Connect(function()
 		script.Parent.Execute.BackgroundColor3 = Color3.fromRGB(89, 118, 132)
 		script.Parent.Execute.BorderColor3 = Color3.fromRGB(58, 146, 183)
 	end)
-	
+
 	script.Parent.Execute.MouseLeave:Connect(function()
 		script.Parent.Execute.BackgroundColor3 = Color3.fromRGB(105, 105, 105)
 		script.Parent.Execute.BorderColor3 = Color3.fromRGB(105, 105, 105)
 	end)
-	
+
 	script.Parent.Load.MouseEnter:Connect(function()
 		script.Parent.Load.BackgroundColor3 = Color3.fromRGB(89, 118, 132)
 		script.Parent.Load.BorderColor3 = Color3.fromRGB(58, 146, 183)
 	end)
-	
+
 	script.Parent.Load.MouseLeave:Connect(function()
 		script.Parent.Load.BackgroundColor3 = Color3.fromRGB(105, 105, 105)
 		script.Parent.Load.BorderColor3 = Color3.fromRGB(105, 105, 105)
 	end)
-	
+
 end
-coroutine.wrap(FIQQGDD_fake_script)()
-local function GJKZIM_fake_script() -- SynapseXI.MainController 
+coroutine.wrap(LUPS_fake_script)()
+local function EGJGHT_fake_script() -- SynapseXI.MainController 
 	local script = Instance.new('LocalScript', SynapseXI)
 
 	print([[If you got an error, delete "settings.xi" in your workspace folder and rejoin.]])
@@ -2125,32 +2240,32 @@ local function GJKZIM_fake_script() -- SynapseXI.MainController
 	mouse.Button1Down:Connect(function()
 		script.Parent.Menu.Visible = false
 	end)
-	
+
 	getgenv().Version = game:HttpGet("https://pastebin.com/raw/f5aimzFS")
-	
+
 	script.Parent.Topbar.Title.Text = "Synapse X - "..getgenv().Version
-	
+
 end
-coroutine.wrap(GJKZIM_fake_script)()
-local function OPTWKF_fake_script() -- Close_3.BoxCloseScript 
+coroutine.wrap(EGJGHT_fake_script)()
+local function AVOG_fake_script() -- Close_3.BoxCloseScript 
 	local script = Instance.new('LocalScript', Close_3)
 
 	script.Parent.MouseButton1Click:Connect(function()
 		script.Parent.Parent.Visible = false
 	end)
-	
+
 	script.Parent.MouseEnter:Connect(function()
 		script.Parent.BackgroundColor3 = Color3.fromRGB(44, 61, 77)
 		script.Parent.BorderSizePixel = 1
 	end)
-	
+
 	script.Parent.MouseLeave:Connect(function()
 		script.Parent.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 		script.Parent.BorderSizePixel = 0
 	end)
 end
-coroutine.wrap(OPTWKF_fake_script)()
-local function FLWXGP_fake_script() -- Extension.ExtensionScript 
+coroutine.wrap(AVOG_fake_script)()
+local function JVBRFBF_fake_script() -- Extension.ExtensionScript 
 	local script = Instance.new('LocalScript', Extension)
 
 	script.Parent.Parent.CustomExtension.Visible = false
@@ -2162,7 +2277,7 @@ local function FLWXGP_fake_script() -- Extension.ExtensionScript
 		2 = .txt
 		3 = .json
 	]]
-	
+
 	script.Parent.MouseButton1Click:Connect(function()
 		if ex == 1 then
 			ex = 2
@@ -2217,19 +2332,19 @@ local function FLWXGP_fake_script() -- Extension.ExtensionScript
 			end
 		end
 	end)
-	
+
 	script.Parent.MouseEnter:Connect(function()
 		script.Parent.BackgroundColor3 = Color3.fromRGB(44, 61, 77)
 		script.Parent.BorderSizePixel = 1
 	end)
-	
+
 	script.Parent.MouseLeave:Connect(function()
 		script.Parent.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 		script.Parent.BorderSizePixel = 0
 	end)
 end
-coroutine.wrap(FLWXGP_fake_script)()
-local function MMNM_fake_script() -- Save.SaveScript 
+coroutine.wrap(JVBRFBF_fake_script)()
+local function UXBT_fake_script() -- Save.SaveScript 
 	local script = Instance.new('LocalScript', Save)
 
 	script.Parent.Parent.Visible = false
@@ -2292,32 +2407,32 @@ local function MMNM_fake_script() -- Save.SaveScript
 			end
 		end
 	end)
-	
+
 	script.Parent.MouseEnter:Connect(function()
 		script.Parent.BackgroundColor3 = Color3.fromRGB(44, 61, 77)
 		script.Parent.BorderSizePixel = 1
 	end)
-	
+
 	script.Parent.MouseLeave:Connect(function()
 		script.Parent.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 		script.Parent.BorderSizePixel = 0
 	end)
 end
-coroutine.wrap(MMNM_fake_script)()
-local function LEOUUKW_fake_script() -- BoxTopbar.BoxScript 
+coroutine.wrap(UXBT_fake_script)()
+local function GVVF_fake_script() -- BoxTopbar.BoxScript 
 	local script = Instance.new('LocalScript', BoxTopbar)
 
 	script.Parent.Close.BorderMode = Enum.BorderMode.Inset
 	script.Parent.Extension.BorderMode = Enum.BorderMode.Inset
 	script.Parent.Save.BorderMode = Enum.BorderMode.Inset
 end
-coroutine.wrap(LEOUUKW_fake_script)()
-local function VKZCXQ_fake_script() -- Main_3.OptionsScript2 
+coroutine.wrap(GVVF_fake_script)()
+local function KYCL_fake_script() -- Main_3.OptionsScript2 
 	local script = Instance.new('LocalScript', Main_3)
 
 	local ON = "rbxassetid://6444393422"
 	local OFF = "rbxassetid://6444393266"
-	
+
 	if isfile("settings.xi") then
 		local data = game:GetService("HttpService"):JSONDecode(readfile("settings.xi"))
 		getgenv().UnlockFps = data["Options"]["UnlockFps"]
@@ -2384,19 +2499,19 @@ local function VKZCXQ_fake_script() -- Main_3.OptionsScript2
 		end)
 	end
 end
-coroutine.wrap(VKZCXQ_fake_script)()
-local function EUUBWUD_fake_script() -- OptionsTopbar.OptionsScript1 
+coroutine.wrap(KYCL_fake_script)()
+local function CWOPJK_fake_script() -- OptionsTopbar.OptionsScript1 
 	local script = Instance.new('LocalScript', OptionsTopbar)
 
 	script.Parent.Visible = false
 	script.Parent.Active = true
 	script.Parent.Draggable = true
 	script.Parent.DropdownBtn.BorderMode = Enum.BorderMode.Inset
-	
+
 	script.Parent.Parent.Topbar.Options.MouseButton1Click:Connect(function()
 		script.Parent.Visible = true
 	end)
-	
+
 	script.Parent.DropdownBtn.MouseEnter:Connect(function()
 		script.Parent.DropdownBtn.BorderColor3 = Color3.fromRGB(134, 134, 134)
 		script.Parent.DropdownBtn.ImageColor3 = Color3.fromRGB(138, 194, 243)
@@ -2405,7 +2520,7 @@ local function EUUBWUD_fake_script() -- OptionsTopbar.OptionsScript1
 		script.Parent.DropdownBtn.BorderColor3 = Color3.fromRGB(255, 255, 255)
 		script.Parent.DropdownBtn.ImageColor3 = Color3.fromRGB(255, 255, 255)
 	end)
-	
+
 	script.Parent.Main.ThemeName.MouseEnter:Connect(function()
 		script.Parent.DropdownBtn.BorderColor3 = Color3.fromRGB(134, 134, 134)
 		script.Parent.DropdownBtn.ImageColor3 = Color3.fromRGB(138, 194, 243)
@@ -2415,88 +2530,88 @@ local function EUUBWUD_fake_script() -- OptionsTopbar.OptionsScript1
 		script.Parent.DropdownBtn.ImageColor3 = Color3.fromRGB(255, 255, 255)
 	end)
 end
-coroutine.wrap(EUUBWUD_fake_script)()
-local function QSFHXI_fake_script() -- Close_4.CloseScript 
+coroutine.wrap(CWOPJK_fake_script)()
+local function NRUMNC_fake_script() -- Close_4.CloseScript 
 	local script = Instance.new('LocalScript', Close_4)
 
 	script.Parent.MouseButton1Click:Connect(function()
 		script.Parent.Parent.Visible = false
 	end)
-	
+
 	script.Parent.MouseEnter:Connect(function()
 		script.Parent.BackgroundColor3 = Color3.fromRGB(44, 61, 77)
 		script.Parent.BorderSizePixel = 1
 	end)
-	
+
 	script.Parent.MouseLeave:Connect(function()
 		script.Parent.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 		script.Parent.BorderSizePixel = 0
 	end)
 end
-coroutine.wrap(QSFHXI_fake_script)()
-local function ODDKF_fake_script() -- SynapseOpen.Dragify 
+coroutine.wrap(NRUMNC_fake_script)()
+local function KLRAJM_fake_script() -- SynapseOpen.Dragify 
 	local script = Instance.new('LocalScript', SynapseOpen)
 
 	local UIS = game:GetService("UserInputService")
 	function dragify(Frame)
-	    dragToggle = nil
-	    local dragSpeed = 0.25
-	    dragInput = nil
-	    dragStart = nil
-	    local dragPos = nil
-	    function updateInput(input)
-	        local Delta = input.Position - dragStart
-	        local Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + Delta.X, startPos.Y.Scale, startPos.Y.Offset + Delta.Y)
-	        game:GetService("TweenService"):Create(Frame, TweenInfo.new(0.25), {Position = Position}):Play()
-	    end
-	    Frame.InputBegan:Connect(function(input)
-	        if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and UIS:GetFocusedTextBox() == nil then
-	            dragToggle = true
-	            dragStart = input.Position
-	            startPos = Frame.Position
-	            input.Changed:Connect(function()
-	                if input.UserInputState == Enum.UserInputState.End then
-	                    dragToggle = false
-	                end
-	            end)
-	        end
-	    end)
-	    Frame.InputChanged:Connect(function(input)
-	        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-	            dragInput = input
-	        end
-	    end)
-	    game:GetService("UserInputService").InputChanged:Connect(function(input)
-	        if input == dragInput and dragToggle then
-	            updateInput(input)
-	        end
-	    end)
+		dragToggle = nil
+		local dragSpeed = 0.25
+		dragInput = nil
+		dragStart = nil
+		local dragPos = nil
+		function updateInput(input)
+			local Delta = input.Position - dragStart
+			local Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + Delta.X, startPos.Y.Scale, startPos.Y.Offset + Delta.Y)
+			game:GetService("TweenService"):Create(Frame, TweenInfo.new(0.25), {Position = Position}):Play()
+		end
+		Frame.InputBegan:Connect(function(input)
+			if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and UIS:GetFocusedTextBox() == nil then
+				dragToggle = true
+				dragStart = input.Position
+				startPos = Frame.Position
+				input.Changed:Connect(function()
+					if input.UserInputState == Enum.UserInputState.End then
+						dragToggle = false
+					end
+				end)
+			end
+		end)
+		Frame.InputChanged:Connect(function(input)
+			if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+				dragInput = input
+			end
+		end)
+		game:GetService("UserInputService").InputChanged:Connect(function(input)
+			if input == dragInput and dragToggle then
+				updateInput(input)
+			end
+		end)
 	end
-	
+
 	dragify(script.Parent)
 end
-coroutine.wrap(ODDKF_fake_script)()
-local function CHRZ_fake_script() -- OpenSynapse.OpenSynapse 
+coroutine.wrap(KLRAJM_fake_script)()
+local function MNVNNOE_fake_script() -- OpenSynapse.OpenSynapse 
 	local script = Instance.new('LocalScript', OpenSynapse)
 
 	if isfile("settings.xi") then
 		local data = game:GetService("HttpService"):JSONDecode(readfile("settings.xi"))
-	
+
 		script.Parent.Position = UDim2.new(data["OpenPosition"])
 	end
-	
+
 	script.Parent.Visible = false
 	script.Parent.SynapseOpen.MouseButton1Click:Connect(function()
 		script.Parent.Visible = false
 		game.CoreGui[getgenv().sxiname].Topbar.Visible = true
 	end)
-	
+
 	game.CoreGui[getgenv().sxiname].Topbar.Minimize.MouseButton1Click:Connect(function()
 		script.Parent.Visible = true
 	end)
 end
-coroutine.wrap(CHRZ_fake_script)()
-local function WAGVSH_fake_script() -- SynapseXI.Configuration 
+coroutine.wrap(MNVNNOE_fake_script)()
+local function KKRXBCZ_fake_script() -- SynapseXI.Configuration 
 	local script = Instance.new('LocalScript', SynapseXI)
 
 	script.Parent:SetAttribute("MadeBy","zzerexx#3970")
@@ -2568,8 +2683,8 @@ local function WAGVSH_fake_script() -- SynapseXI.Configuration
 	z.TextSize = 20
 	z.TextXAlignment = "Left"
 end
-coroutine.wrap(WAGVSH_fake_script)()
-local function LITU_fake_script() -- Bar.LoaderAnimation 
+coroutine.wrap(KKRXBCZ_fake_script)()
+local function ZOXDMQH_fake_script() -- Bar.LoaderAnimation 
 	local script = Instance.new('LocalScript', Bar)
 
 	script.Parent.Parent.Visible = true
@@ -2613,13 +2728,13 @@ local function LITU_fake_script() -- Bar.LoaderAnimation
 		end
 	end
 end
-coroutine.wrap(LITU_fake_script)()
-local function JBWHTWY_fake_script() -- Main_4.SettingsScript2 
+coroutine.wrap(ZOXDMQH_fake_script)()
+local function VCCLIC_fake_script() -- Main_4.SettingsScript2 
 	local script = Instance.new('LocalScript', Main_4)
 
 	local ON = "rbxassetid://6444393422"
 	local OFF = "rbxassetid://6444393266"
-	
+
 	if isfile("settings.xi") then
 		local data = game:GetService("HttpService"):JSONDecode(readfile("settings.xi"))
 		getgenv().LoadAnimation = data["Settings2"]["LoadAnimation"]
@@ -2685,39 +2800,39 @@ local function JBWHTWY_fake_script() -- Main_4.SettingsScript2
 		end)
 	end
 end
-coroutine.wrap(JBWHTWY_fake_script)()
-local function HDGD_fake_script() -- SettingsTopbar.SettingsScript1 
+coroutine.wrap(VCCLIC_fake_script)()
+local function GWBAEG_fake_script() -- SettingsTopbar.SettingsScript1 
 	local script = Instance.new('LocalScript', SettingsTopbar)
 
 	script.Parent.Visible = false
 	script.Parent.Active = true
 	script.Parent.Draggable = true
-	
+
 	if isfile("settings.xi") then
 		local data = game:GetService("HttpService"):JSONDecode(readfile("settings.xi"))
 		script.Parent.TimeSaved.Text = "Saved at: "..data["TimeSaved"].." EST"
 	end
 end
-coroutine.wrap(HDGD_fake_script)()
-local function XMIYR_fake_script() -- Close_5.LocalScript 
+coroutine.wrap(GWBAEG_fake_script)()
+local function YHMDPJS_fake_script() -- Close_5.LocalScript 
 	local script = Instance.new('LocalScript', Close_5)
 
 	script.Parent.MouseButton1Click:Connect(function()
 		script.Parent.Parent.Visible = false
 	end)
-	
+
 	script.Parent.MouseEnter:Connect(function()
 		script.Parent.BackgroundColor3 = Color3.fromRGB(44, 61, 77)
 		script.Parent.BorderSizePixel = 1
 	end)
-	
+
 	script.Parent.MouseLeave:Connect(function()
 		script.Parent.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 		script.Parent.BorderSizePixel = 0
 	end)
 end
-coroutine.wrap(XMIYR_fake_script)()
-local function JVMDSH_fake_script() -- Save_2.SaveConfigScript 
+coroutine.wrap(YHMDPJS_fake_script)()
+local function FOBEP_fake_script() -- Save_2.SaveConfigScript 
 	local script = Instance.new('LocalScript', Save_2)
 
 	script.Parent.MouseButton1Click:Connect(function()
@@ -2768,19 +2883,19 @@ local function JVMDSH_fake_script() -- Save_2.SaveConfigScript
 		local data = game:GetService("HttpService"):JSONDecode(readfile("settings.xi"))
 		script.Parent.Parent.TimeSaved.Text = "Saved at: "..data["TimeSaved"].." EST"
 	end)
-	
+
 	script.Parent.MouseEnter:Connect(function()
 		script.Parent.BackgroundColor3 = Color3.fromRGB(44, 61, 77)
 		script.Parent.BorderSizePixel = 1
 	end)
-	
+
 	script.Parent.MouseLeave:Connect(function()
 		script.Parent.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 		script.Parent.BorderSizePixel = 0
 	end)
 end
-coroutine.wrap(JVMDSH_fake_script)()
-local function VAEDD_fake_script() -- ScriptsBox.ScriptsBoxScripts 
+coroutine.wrap(FOBEP_fake_script)()
+local function GKQHN_fake_script() -- ScriptsBox.ScriptsBoxScripts 
 	local script = Instance.new('LocalScript', ScriptsBox)
 
 	local stuff = {
@@ -2806,34 +2921,34 @@ local function VAEDD_fake_script() -- ScriptsBox.ScriptsBoxScripts
 	script.Parent.UnnamedEsp.BackgroundTransparency = 0
 	script.Parent.RemoteSpy.BackgroundTransparency = 0
 	script.Parent.ScriptDumper.BackgroundTransparency = 0
-	
+
 	script.Parent.DarkDex.BorderSizePixel = 1
 	script.Parent.UnnamedEsp.BorderSizePixel = 1
 	script.Parent.RemoteSpy.BorderSizePixel = 1
 	script.Parent.ScriptDumper.BorderSizePixel = 1
-	
+
 	script.Parent.DarkDex.BorderColor3 = Color3.fromRGB(30, 30, 30)
 	script.Parent.UnnamedEsp.BorderColor3 = Color3.fromRGB(30, 30, 30)
 	script.Parent.RemoteSpy.BorderColor3 = Color3.fromRGB(30, 30, 30)
 	script.Parent.ScriptDumper.BorderColor3 = Color3.fromRGB(30, 30, 30)
-	
+
 	script.Parent.DarkDex.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 	script.Parent.UnnamedEsp.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 	script.Parent.RemoteSpy.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 	script.Parent.ScriptDumper.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-	
+
 	script.Parent.DarkDex.BorderMode = Enum.BorderMode.Inset
 	script.Parent.UnnamedEsp.BorderMode = Enum.BorderMode.Inset
 	script.Parent.RemoteSpy.BorderMode = Enum.BorderMode.Inset
 	script.Parent.ScriptDumper.BorderMode = Enum.BorderMode.Inset
-	
+
 	local mouse = game.Players.LocalPlayer:GetMouse()
 	mouse.Button1Down:Connect(function()
 		script.Parent.DarkDex.BorderColor3 = Color3.fromRGB(30, 30, 30)
 		script.Parent.UnnamedEsp.BorderColor3 = Color3.fromRGB(30, 30, 30)
 		script.Parent.RemoteSpy.BorderColor3 = Color3.fromRGB(30, 30, 30)
 		script.Parent.ScriptDumper.BorderColor3 = Color3.fromRGB(30, 30, 30)
-		
+
 		script.Parent.DarkDex.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 		script.Parent.UnnamedEsp.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 		script.Parent.RemoteSpy.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
@@ -2849,13 +2964,13 @@ local function VAEDD_fake_script() -- ScriptsBox.ScriptsBoxScripts
 		script.Parent.UnnamedEsp.BorderColor3 = Color3.fromRGB(30, 30, 30)
 		script.Parent.RemoteSpy.BorderColor3 = Color3.fromRGB(30, 30, 30)
 		script.Parent.ScriptDumper.BorderColor3 = Color3.fromRGB(30, 30, 30)
-	
+
 		script.Parent.DarkDex.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 		script.Parent.UnnamedEsp.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 		script.Parent.RemoteSpy.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 		script.Parent.ScriptDumper.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 	end)
-	
+
 	for i,v in pairs(stuff.scriptnames) do
 		script.Parent[v].MouseButton1Down:Connect(function()
 			for i2,v2 in pairs(stuff.scriptnames) do
@@ -2917,25 +3032,25 @@ local function VAEDD_fake_script() -- ScriptsBox.ScriptsBoxScripts
 		script.Parent.UnnamedEsp.BackgroundTransparency = 0
 		script.Parent.RemoteSpy.BackgroundTransparency = 0
 		script.Parent.ScriptDumper.BackgroundTransparency = 0
-	
+
 		script.Parent.DarkDex.BorderSizePixel = 1
 		script.Parent.UnnamedEsp.BorderSizePixel = 1
 		script.Parent.RemoteSpy.BorderSizePixel = 1
 		script.Parent.ScriptDumper.BorderSizePixel = 1
-	
+
 		script.Parent.DarkDex.BorderColor3 = Color3.fromRGB(30, 30, 30)
 		script.Parent.UnnamedEsp.BorderColor3 = Color3.fromRGB(30, 30, 30)
 		script.Parent.RemoteSpy.BorderColor3 = Color3.fromRGB(30, 30, 30)
 		script.Parent.ScriptDumper.BorderColor3 = Color3.fromRGB(30, 30, 30)
-	
+
 		script.Parent.DarkDex.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 		script.Parent.UnnamedEsp.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 		script.Parent.RemoteSpy.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 		script.Parent.ScriptDumper.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 	end)
 end
-coroutine.wrap(VAEDD_fake_script)()
-local function JXRZW_fake_script() -- Minimize_2.MinScript 
+coroutine.wrap(GKQHN_fake_script)()
+local function BGIY_fake_script() -- Minimize_2.MinScript 
 	local script = Instance.new('LocalScript', Minimize_2)
 
 	script.Parent.MouseButton1Click:Connect(function()
@@ -2944,30 +3059,30 @@ local function JXRZW_fake_script() -- Minimize_2.MinScript
 	script.Parent.MouseEnter:Connect(function()
 		script.Parent.BackgroundTransparency = 0
 	end)
-	
+
 	script.Parent.MouseLeave:Connect(function()
 		script.Parent.BackgroundTransparency = 1
 	end)
 end
-coroutine.wrap(JXRZW_fake_script)()
-local function PAKYSR_fake_script() -- ScriptHubTopbar.ScriptHubScript 
+coroutine.wrap(BGIY_fake_script)()
+local function XRCOF_fake_script() -- ScriptHubTopbar.ScriptHubScript 
 	local script = Instance.new('LocalScript', ScriptHubTopbar)
 
 	script.Parent.Visible = false
 	script.Parent.Active = true
 	script.Parent.Draggable = true
-	
+
 	local buttons = { "Close","Execute","Minimize" }
 	for i,v in pairs(buttons) do
 		script.Parent[v].MouseEnter:Connect(function()
 			script.Parent[v].BackgroundColor3 = Color3.fromRGB(44, 61, 77)
 			script.Parent[v].BorderSizePixel = 1
 		end)
-	
+
 		script.Parent[v].MouseLeave:Connect(function()
 			script.Parent[v].BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 			script.Parent[v].BorderSizePixel = 0
 		end)
 	end
 end
-coroutine.wrap(PAKYSR_fake_script)()
+coroutine.wrap(XRCOF_fake_script)()
