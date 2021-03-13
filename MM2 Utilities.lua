@@ -1,41 +1,5 @@
 -- Murder Mystery 2 Utilities by zzerexx#3970
-getgenv().Settings = {
-	Enabled = true,
-	ProtectGui = true,          -- Only available for Synapse, ProtoSmasher, Script-Ware v2, Krnl (RECOMMENDED)
-	RemoveRagdolls = true,      -- Removes all player ragdolls
-	-- Player
-	WalkSpeed = 18,             -- Default: 16
-	JumpPower = 50,             -- Default: 50
-	FieldOfView = 80,           -- Default: 70
-	CameraMode = "Invisicam",   -- "Invisicam" or "Zoom"
-	MaxZoom = 100,              -- Default: 15
-	CtrlClickTP = true,         -- Hold "Ctrl" and click to teleport
-	Noclip = true,              -- Press "R" to toggle
-	Xray = true,                -- Press "T" to toggle
-	-- Aimbot
-	Aimbot = true,              -- Use in First Person or while using Shift Lock
-	AimbotKey = "MouseButton2", -- Locked, does not affect aimbot key (temporary)
-	AimbotAsSheriff = true,
-	AimbotAsMurderer = false,
-	-- ESP
-	NameEsp = true,
-	AvoidInnocents = false,     -- Name Esp will avoid Innocents
-	NameFont = "SourceSans",    -- Fonts: https://developer.roblox.com/en-us/api-reference/enum/Font
-	NameTextTransparency = 0.3,
-	MurdererColor = Color3.fromRGB(255, 0, 0),
-	SheriffColor = Color3.fromRGB(0, 0, 255),
-	InnocentColor = Color3.fromRGB(255, 255, 255),
-	GunEsp = true,
-	GunEspColor = Color3.fromRGB(0, 255, 0),
-	GunNameEsp = true,
-	GunNameTextTransparency = 0.4,
-	GunNameColor = Color3.fromRGB(0, 255, 0),
-	-- Auto Pickup
-	AutoPickupGun = false,      -- Automatically picks up the gun when its dropped
-	RandomPickupDelay = false,  -- Waits a random amount of time before picking up the gun
-	RandomPickupDelayMin = 3,
-	RandomPickupDelayMax = 7,
-} -- v1.0.0
+
 if game.PlaceId ~= 142823291 then game:GetService("TeleportService"):Teleport(142823291) end
 if getgenv().protected then getgenv().protected:Destroy() end
 local players = game:GetService("Players")
