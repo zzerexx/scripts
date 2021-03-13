@@ -14,9 +14,9 @@ getgenv().Settings = {
 	Xray = true,                -- Press "T" to toggle
 	-- Aimbot
 	Aimbot = true,              -- Use in First Person or while using Shift Lock
-	AimbotKey = "MouseButton2", -- Locked, does not affect aimbot key
-	AimbotAsSheriff = true,     -- Uses Aimbot as Sheriff
-	AimbotAsMurderer = false,   -- Uses Aimbot as Murderer
+	AimbotKey = "MouseButton2", -- Locked, does not affect aimbot key (temporary)
+	AimbotAsSheriff = true,
+	AimbotAsMurderer = false,
 	-- ESP
 	NameEsp = true,
 	AvoidInnocents = false,     -- Name Esp will avoid Innocents
