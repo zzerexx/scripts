@@ -1,13 +1,12 @@
 --[[ Synapse XI (Synapse X Internal)
 	 v1.1.0 Test Release
 	 features coming soon in v1.1.0
-	 to view the internals, delete line 133
+	 to view the internals, delete line 132
 	 Made by zzerexx#3970
 ]]
 local SynapseXI = Instance.new("ScreenGui")
 local Topbar = Instance.new("Frame")
 local Main = Instance.new("Frame")
-local Tab1 = Instance.new("TextLabel")
 local ScriptBox = Instance.new("Frame")
 local Scripts = Instance.new("ScrollingFrame")
 local Dex = Instance.new("TextButton")
@@ -18,6 +17,9 @@ local Editor = Instance.new("TextBox")
 local NumberScroll = Instance.new("ScrollingFrame")
 local Numbers = Instance.new("TextBox")
 local NumberBG = Instance.new("Frame")
+local Tabs = Instance.new("Folder")
+local Tab1 = Instance.new("TextLabel")
+local NewTab = Instance.new("TextButton")
 local Attach = Instance.new("TextButton")
 local Options = Instance.new("TextButton")
 local ExecFile = Instance.new("TextButton")
@@ -128,6 +130,7 @@ local ScriptDumper = Instance.new("TextButton")
 local DescriptionBox = Instance.new("Frame")
 local Description = Instance.new("TextLabel")
 local Minimize_2 = Instance.new("TextButton")
+local TextLabel = Instance.new("TextLabel")
 local characters = { "A","B","C","D","E","F","G","H","I","J","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","1","2","3","4","5","6","7","8","9","0","!","@","#","$","%","^","&","*","(",")","-","=","[","]","|",";","'",",",".","/","_","+","{","}",":","<",">","?","`","~" }
 function randname() local randomname = characters[math.random(1,#characters)]..characters[math.random(1,#characters)]..characters[math.random(1,#characters)]..characters[math.random(1,#characters)]..characters[math.random(1,#characters)]..characters[math.random(1,#characters)]..characters[math.random(1,#characters)]..characters[math.random(1,#characters)]..characters[math.random(1,#characters)]..characters[math.random(1,#characters)]..characters[math.random(1,#characters)]..characters[math.random(1,#characters)] return randomname end
 if syn then syn.protect_gui(SynapseXI) end
@@ -152,17 +155,6 @@ Main.ClipsDescendants = true
 Main.Position = UDim2.new(0.5, 0, 5.9067359, 0)
 Main.Size = UDim2.new(0, 801, 0, 355)
 Main.ZIndex = 0
-
-Tab1.Name = "Tab1"
-Tab1.Parent = Main
-Tab1.BackgroundColor3 = Color3.fromRGB(105, 105, 105)
-Tab1.BorderSizePixel = 0
-Tab1.Position = UDim2.new(0.00374531839, 0, 0.0985915512, 0)
-Tab1.Size = UDim2.new(0, 65, 0, 18)
-Tab1.Font = Enum.Font.SourceSans
-Tab1.Text = "Script 1  x"
-Tab1.TextColor3 = Color3.fromRGB(255, 255, 255)
-Tab1.TextSize = 15.000
 
 ScriptBox.Name = "ScriptBox"
 ScriptBox.Parent = Main
@@ -294,6 +286,32 @@ NumberBG.BackgroundColor3 = Color3.fromRGB(39, 39, 39)
 NumberBG.BorderSizePixel = 0
 NumberBG.Position = UDim2.new(0.00400000019, 0, 0.149000004, 0)
 NumberBG.Size = UDim2.new(0, 41, 0, 259)
+
+Tabs.Name = "Tabs"
+Tabs.Parent = Main
+
+Tab1.Name = "Tab1"
+Tab1.Parent = Tabs
+Tab1.BackgroundColor3 = Color3.fromRGB(105, 105, 105)
+Tab1.BorderSizePixel = 0
+Tab1.Position = UDim2.new(0.00374531839, 0, 0.0985915512, 0)
+Tab1.Size = UDim2.new(0, 65, 0, 18)
+Tab1.Font = Enum.Font.SourceSans
+Tab1.Text = "  Script 1  x"
+Tab1.TextColor3 = Color3.fromRGB(255, 255, 255)
+Tab1.TextSize = 15.000
+Tab1.TextXAlignment = Enum.TextXAlignment.Left
+
+NewTab.Name = "NewTab"
+NewTab.Parent = Tab1
+NewTab.BackgroundColor3 = Color3.fromRGB(105, 105, 105)
+NewTab.BorderColor3 = Color3.fromRGB(139, 139, 139)
+NewTab.Position = UDim2.new(0, 69, 0, 2)
+NewTab.Size = UDim2.new(0, 15, 0, 15)
+NewTab.Font = Enum.Font.SourceSans
+NewTab.Text = "+"
+NewTab.TextColor3 = Color3.fromRGB(255, 255, 255)
+NewTab.TextSize = 20.000
 
 Attach.Name = "Attach"
 Attach.Parent = Topbar
@@ -588,8 +606,7 @@ Menu.ZIndex = 3
 Execute_2.Name = "Execute"
 Execute_2.Parent = Menu
 Execute_2.BackgroundColor3 = Color3.fromRGB(105, 105, 105)
-Execute_2.BorderColor3 = Color3.fromRGB(58, 146, 183)
-Execute_2.BorderSizePixel = 0
+Execute_2.BorderColor3 = Color3.fromRGB(105, 105, 105)
 Execute_2.Size = UDim2.new(0, 160, 0, 22)
 Execute_2.ZIndex = 4
 Execute_2.AutoButtonColor = false
@@ -602,8 +619,7 @@ Execute_2.TextXAlignment = Enum.TextXAlignment.Left
 Load.Name = "Load"
 Load.Parent = Menu
 Load.BackgroundColor3 = Color3.fromRGB(105, 105, 105)
-Load.BorderColor3 = Color3.fromRGB(58, 146, 183)
-Load.BorderSizePixel = 0
+Load.BorderColor3 = Color3.fromRGB(105, 105, 105)
 Load.Position = UDim2.new(0, 0, 0.522727251, 0)
 Load.Size = UDim2.new(0, 160, 0, 22)
 Load.ZIndex = 4
@@ -1591,9 +1607,21 @@ Minimize_2.Text = "_"
 Minimize_2.TextColor3 = Color3.fromRGB(255, 255, 255)
 Minimize_2.TextSize = 16.000
 
+TextLabel.Parent = SynapseXI
+TextLabel.AnchorPoint = Vector2.new(0, 1)
+TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.BackgroundTransparency = 1.000
+TextLabel.Position = UDim2.new(0.00499999989, 0, 0.995000005, 0)
+TextLabel.Size = UDim2.new(0, 60, 0, 15)
+TextLabel.Font = Enum.Font.GothamBold
+TextLabel.Text = "zzerexx#3970"
+TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.TextSize = 20.000
+TextLabel.TextXAlignment = Enum.TextXAlignment.Left
+
 -- Scripts:
 
-local function RVTT_fake_script() -- Scripts.ScriptBoxScripts 
+local function YHACOBV_fake_script() -- Scripts.ScriptBoxScripts 
 	local script = Instance.new('LocalScript', Scripts)
 
 	script.Parent.Dex.BackgroundTransparency = 0
@@ -1700,8 +1728,8 @@ local function RVTT_fake_script() -- Scripts.ScriptBoxScripts
 		end)
 	end
 end
-coroutine.wrap(RVTT_fake_script)()
-local function AJZRD_fake_script() -- Editor.EditorScript 
+coroutine.wrap(YHACOBV_fake_script)()
+local function SOEMCM_fake_script() -- Editor.EditorScript 
 	local script = Instance.new('LocalScript', Editor)
 
 	if isfile("settings.xi") then
@@ -1730,8 +1758,8 @@ local function AJZRD_fake_script() -- Editor.EditorScript
 	end
 	UIS.InputBegan:Connect(linethingy)
 end
-coroutine.wrap(AJZRD_fake_script)()
-local function WTRQKSI_fake_script() -- Editor.SyntaxHighlighter 
+coroutine.wrap(SOEMCM_fake_script)()
+local function BVGT_fake_script() -- Editor.SyntaxHighlighter 
 	local script = Instance.new('LocalScript', Editor)
 
 	local SyntaxColors1 = {
@@ -1758,13 +1786,51 @@ local function WTRQKSI_fake_script() -- Editor.SyntaxHighlighter
 		LightYellow = Color3.fromRGB(253,251,172),  -- Local Method, Function Name
 		LightBlue = Color3.fromRGB(97,161,241),     -- Local Property
 	}
+	
+	local Syntax = {
+		Yellow = {
+			
+		},
+		Green = {
+			
+		},
+		Pink = {
+			"and",
+			"break",
+			"do",
+			"else",
+			"elseif",
+			"end",
+			"for",
+			"function",
+			"local",
+			"if",
+			"in",
+			"repeat",
+			"return",
+			"then",
+			"until",
+			"while",
+			"else"
+		},
+		LightYellow = {
+			
+		},
+		LightBlue = {
+			
+		}
+	}
 	script.Parent.RichText = true
 	script.Parent:GetPropertyChangedSignal("Text"):Connect(function()
-		
+		-- no clue how to do this yet :D
 	end)
+	
+	function Highlight(str)
+		
+	end
 end
-coroutine.wrap(WTRQKSI_fake_script)()
-local function HDRM_fake_script() -- Main.ScrollingScript 
+coroutine.wrap(BVGT_fake_script)()
+local function ILFKUV_fake_script() -- Main.ScrollingScript 
 	local script = Instance.new('LocalScript', Main)
 
 	local numberscroll = script.Parent.NumberScroll
@@ -1787,27 +1853,44 @@ local function HDRM_fake_script() -- Main.ScrollingScript
 		numberscroll.CanvasSize = UDim2.new(0, 39, 0, editor.TextBounds.Y)
 	end)
 end
-coroutine.wrap(HDRM_fake_script)()
-local function QPSAAQ_fake_script() -- Attach.AttachScript 
+coroutine.wrap(ILFKUV_fake_script)()
+local function OVILNX_fake_script() -- Tabs.TabScript 
+	local script = Instance.new('LocalScript', Tabs)
+
+	local tab = 1
+	function newTab(number)
+		local tab = Instance.new("TextLabel")
+		tab.Parent = script.Parent
+		tab.Name = "Tab"..number
+		tab.BackgroundColor3 = Color3.fromRGB(105,105,105)
+		tab.BorderSizePixel = 0
+		tab.Position = nil
+		tab.Size = UDim2.new(0,65,0,18)
+		tab.ZIndex = 1
+		tab.Text = "  Script "..number.."  x"
+	end
+end
+coroutine.wrap(OVILNX_fake_script)()
+local function NMIPFLB_fake_script() -- Attach.AttachScript 
 	local script = Instance.new('LocalScript', Attach)
 
 	script.Parent.MouseButton1Click:Connect(function()
 		script.Parent.Parent.Title.Text = "Synapse X - " .. getgenv().Version .. " (already injected!)"
-		wait(2.8)
+		wait(2)
 		script.Parent.Parent.Title.Text = "Synapse X - " .. getgenv().Version
 	end)
 	
 end
-coroutine.wrap(QPSAAQ_fake_script)()
-local function DERIX_fake_script() -- Clear.ClearScript 
+coroutine.wrap(NMIPFLB_fake_script)()
+local function VYZJWSL_fake_script() -- Clear.ClearScript 
 	local script = Instance.new('LocalScript', Clear)
 
 	script.Parent.MouseButton1Click:Connect(function()
-		script.Parent.Parent.Main.Editor.Text = ""
+		script.Parent.Parent.Main.EditorScroll.Editor.Text = ""
 	end)
 end
-coroutine.wrap(DERIX_fake_script)()
-local function DZFPO_fake_script() -- Execute.ExecuteScript 
+coroutine.wrap(VYZJWSL_fake_script)()
+local function XICK_fake_script() -- Execute.ExecuteScript 
 	local script = Instance.new('LocalScript', Execute)
 
 	script.Parent.MouseButton1Click:Connect(function()
@@ -1818,19 +1901,19 @@ local function DZFPO_fake_script() -- Execute.ExecuteScript
 		end
 	end)
 end
-coroutine.wrap(DZFPO_fake_script)()
-local function VQUTJSE_fake_script() -- ScriptHub.ScriptHubScript 
+coroutine.wrap(XICK_fake_script)()
+local function OCFOGQC_fake_script() -- ScriptHub.ScriptHubScript 
 	local script = Instance.new('LocalScript', ScriptHub)
 
 	script.Parent.MouseButton1Click:Connect(function()
 		script.Parent.Text = "Starting..."
-		wait(1)
+		wait(0.75)
 		script.Parent.Text = "Script Hub"
 		script.Parent.Parent.Parent.ScriptHubTopbar.Visible = true
 	end)
 end
-coroutine.wrap(VQUTJSE_fake_script)()
-local function REUZWK_fake_script() -- SynapseLogo.LogoScript 
+coroutine.wrap(OCFOGQC_fake_script)()
+local function GFETFLK_fake_script() -- SynapseLogo.LogoScript 
 	local script = Instance.new('LocalScript', SynapseLogo)
 
 	local sound = Instance.new("Sound")
@@ -1845,13 +1928,11 @@ local function REUZWK_fake_script() -- SynapseLogo.LogoScript
 		if script.Parent.Parent.Parent.TopbarCredits.Visible == false then
 			script.Parent.Asterisk.Playing = true
 			script.Parent.Parent.Parent.TopbarCredits.Visible = true
-		else
-			do end
 		end
 	end)
 end
-coroutine.wrap(REUZWK_fake_script)()
-local function YPWIWY_fake_script() -- Minimize.MinScript 
+coroutine.wrap(GFETFLK_fake_script)()
+local function DLCO_fake_script() -- Minimize.MinScript 
 	local script = Instance.new('LocalScript', Minimize)
 
 	script.Parent.MouseButton1Click:Connect(function()
@@ -1865,13 +1946,13 @@ local function YPWIWY_fake_script() -- Minimize.MinScript
 		script.Parent.BackgroundTransparency = 1
 	end)
 end
-coroutine.wrap(YPWIWY_fake_script)()
-local function OYVWJHR_fake_script() -- Maximize.MaxScript 
+coroutine.wrap(DLCO_fake_script)()
+local function SKZPVV_fake_script() -- Maximize.MaxScript 
 	local script = Instance.new('LocalScript', Maximize)
 
 	script.Parent.MouseButton1Click:Connect(function()
 		local hint = Instance.new("Hint")
-		hint.Parent = game.CoreGui
+		hint.Parent = game.CoreGui[getgenv().sxiname]
 		hint.Text = "no one uses maximize"
 		wait(3)
 		hint:Destroy()
@@ -1884,8 +1965,8 @@ local function OYVWJHR_fake_script() -- Maximize.MaxScript
 		script.Parent.BackgroundTransparency = 1
 	end)
 end
-coroutine.wrap(OYVWJHR_fake_script)()
-local function KCJQRV_fake_script() -- Close.CloseScript 
+coroutine.wrap(SKZPVV_fake_script)()
+local function TLCB_fake_script() -- Close.CloseScript 
 	local script = Instance.new('LocalScript', Close)
 
 	script.Parent.MouseButton1Click:Connect(function()
@@ -1899,8 +1980,8 @@ local function KCJQRV_fake_script() -- Close.CloseScript
 		script.Parent.BackgroundTransparency = 1
 	end)
 end
-coroutine.wrap(KCJQRV_fake_script)()
-local function AAHEVGU_fake_script() -- Topbar.MainScript 
+coroutine.wrap(TLCB_fake_script)()
+local function FBSDR_fake_script() -- Topbar.MainScript 
 	local script = Instance.new('LocalScript', Topbar)
 
 	script.Parent.Active = true
@@ -1951,16 +2032,16 @@ local function AAHEVGU_fake_script() -- Topbar.MainScript
 		script.Parent.Parent.OpenSynapse.SynapseOpen.Position = UDim2.new(data["OpenPosition"]["XScale"], data["OpenPosition"]["XOffset"], data["OpenPosition"]["YScale"], data["OpenPosition"]["YOffset"])
 	end
 end
-coroutine.wrap(AAHEVGU_fake_script)()
-local function CUKZ_fake_script() -- Close_2.LocalScript 
+coroutine.wrap(FBSDR_fake_script)()
+local function HXMI_fake_script() -- Close_2.LocalScript 
 	local script = Instance.new('LocalScript', Close_2)
 
 	script.Parent.MouseButton1Down:Connect(function()
 		script.Parent.Parent.Visible = false
 	end)
 end
-coroutine.wrap(CUKZ_fake_script)()
-local function ODEXBH_fake_script() -- CloseBG.LocalScript 
+coroutine.wrap(HXMI_fake_script)()
+local function PRIZI_fake_script() -- CloseBG.LocalScript 
 	local script = Instance.new('LocalScript', CloseBG)
 
 	script.Parent.MouseEnter:Connect(function()
@@ -1970,16 +2051,16 @@ local function ODEXBH_fake_script() -- CloseBG.LocalScript
 		script.Parent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 	end)
 end
-coroutine.wrap(ODEXBH_fake_script)()
-local function NNNR_fake_script() -- TopbarCredits.LocalScript 
+coroutine.wrap(PRIZI_fake_script)()
+local function ZYFBYGD_fake_script() -- TopbarCredits.LocalScript 
 	local script = Instance.new('LocalScript', TopbarCredits)
 
 	script.Parent.Visible = false
 	script.Parent.Active = true
 	script.Parent.Draggable = true
 end
-coroutine.wrap(NNNR_fake_script)()
-local function BIZBNX_fake_script() -- Ok.LocalScript 
+coroutine.wrap(ZYFBYGD_fake_script)()
+local function UZRJ_fake_script() -- Ok.LocalScript 
 	local script = Instance.new('LocalScript', Ok)
 
 	script.Parent.MouseButton1Click:Connect(function()
@@ -1992,8 +2073,8 @@ local function BIZBNX_fake_script() -- Ok.LocalScript
 		script.Parent.Image = "http://www.roblox.com/asset/?id=6444452008"
 	end)
 end
-coroutine.wrap(BIZBNX_fake_script)()
-local function GPTVTOD_fake_script() -- Menu.MenuScript 
+coroutine.wrap(UZRJ_fake_script)()
+local function FIQQGDD_fake_script() -- Menu.MenuScript 
 	local script = Instance.new('LocalScript', Menu)
 
 	getgenv().Script = ""
@@ -2007,37 +2088,36 @@ local function GPTVTOD_fake_script() -- Menu.MenuScript
 		script.Parent.Visible = false
 	end)
 	script.Parent.Load.MouseButton1Click:Connect(function()
-		script.Parent.Parent.Topbar.Main.Editor.Text = getgenv().Script
+		script.Parent.Parent.Topbar.Main.EditorScroll.Editor.Text = getgenv().Script
 		script.Parent.Visible = false
 	end)
 	mouse.Button1Down:Connect(function()
 		script.Parent.Visible = false
 	end)
 	
-	
 	script.Parent.Execute.MouseEnter:Connect(function()
 		script.Parent.Execute.BackgroundColor3 = Color3.fromRGB(89, 118, 132)
-		script.Parent.Execute.BorderSizePixel = 1
+		script.Parent.Execute.BorderColor3 = Color3.fromRGB(58, 146, 183)
 	end)
 	
 	script.Parent.Execute.MouseLeave:Connect(function()
 		script.Parent.Execute.BackgroundColor3 = Color3.fromRGB(105, 105, 105)
-		script.Parent.Execute.BorderSizePixel = 0
+		script.Parent.Execute.BorderColor3 = Color3.fromRGB(105, 105, 105)
 	end)
 	
 	script.Parent.Load.MouseEnter:Connect(function()
 		script.Parent.Load.BackgroundColor3 = Color3.fromRGB(89, 118, 132)
-		script.Parent.Load.BorderSizePixel = 1
+		script.Parent.Load.BorderColor3 = Color3.fromRGB(58, 146, 183)
 	end)
 	
 	script.Parent.Load.MouseLeave:Connect(function()
 		script.Parent.Load.BackgroundColor3 = Color3.fromRGB(105, 105, 105)
-		script.Parent.Load.BorderSizePixel = 0
+		script.Parent.Load.BorderColor3 = Color3.fromRGB(105, 105, 105)
 	end)
 	
 end
-coroutine.wrap(GPTVTOD_fake_script)()
-local function FEAAOFW_fake_script() -- SynapseXI.MainController 
+coroutine.wrap(FIQQGDD_fake_script)()
+local function GJKZIM_fake_script() -- SynapseXI.MainController 
 	local script = Instance.new('LocalScript', SynapseXI)
 
 	print([[If you got an error, delete "settings.xi" in your workspace folder and rejoin.]])
@@ -2051,8 +2131,8 @@ local function FEAAOFW_fake_script() -- SynapseXI.MainController
 	script.Parent.Topbar.Title.Text = "Synapse X - "..getgenv().Version
 	
 end
-coroutine.wrap(FEAAOFW_fake_script)()
-local function FXIYNEM_fake_script() -- Close_3.BoxCloseScript 
+coroutine.wrap(GJKZIM_fake_script)()
+local function OPTWKF_fake_script() -- Close_3.BoxCloseScript 
 	local script = Instance.new('LocalScript', Close_3)
 
 	script.Parent.MouseButton1Click:Connect(function()
@@ -2069,8 +2149,8 @@ local function FXIYNEM_fake_script() -- Close_3.BoxCloseScript
 		script.Parent.BorderSizePixel = 0
 	end)
 end
-coroutine.wrap(FXIYNEM_fake_script)()
-local function KPCI_fake_script() -- Extension.ExtensionScript 
+coroutine.wrap(OPTWKF_fake_script)()
+local function FLWXGP_fake_script() -- Extension.ExtensionScript 
 	local script = Instance.new('LocalScript', Extension)
 
 	script.Parent.Parent.CustomExtension.Visible = false
@@ -2148,8 +2228,8 @@ local function KPCI_fake_script() -- Extension.ExtensionScript
 		script.Parent.BorderSizePixel = 0
 	end)
 end
-coroutine.wrap(KPCI_fake_script)()
-local function VEZN_fake_script() -- Save.SaveScript 
+coroutine.wrap(FLWXGP_fake_script)()
+local function MMNM_fake_script() -- Save.SaveScript 
 	local script = Instance.new('LocalScript', Save)
 
 	script.Parent.Parent.Visible = false
@@ -2160,7 +2240,7 @@ local function VEZN_fake_script() -- Save.SaveScript
 		if getgenv().Action == "Open" then
 			if isfile(script.Parent.Parent.ScriptName.Text .. getgenv().extension) then
 				local ss = readfile(script.Parent.Parent.ScriptName.Text .. getgenv().extension)
-				game.CoreGui[getgenv().sxiname].Topbar.Main.Editor.Text = tostring(ss)
+				game.CoreGui[getgenv().sxiname].Topbar.Main.EditorScroll.Editor.Text = tostring(ss)
 				script.Parent.Parent.Success.Text = "Opened " .. script.Parent.Parent.ScriptName.Text .. getgenv().extension .. "!"
 				wait(1.5)
 				script.Parent.Parent.Success.Text = ""
@@ -2213,14 +2293,6 @@ local function VEZN_fake_script() -- Save.SaveScript
 		end
 	end)
 	
-	game:GetService("ScriptContext").Error:Connect(function(message)
-		if message == "forbidden extension" then
-			script.Parent.Parent.Error.Text = "That extension is not allowed!"
-			wait(1.5)
-			script.Parent.Parent.Error.Text = ""
-		end
-	end)
-	
 	script.Parent.MouseEnter:Connect(function()
 		script.Parent.BackgroundColor3 = Color3.fromRGB(44, 61, 77)
 		script.Parent.BorderSizePixel = 1
@@ -2231,16 +2303,16 @@ local function VEZN_fake_script() -- Save.SaveScript
 		script.Parent.BorderSizePixel = 0
 	end)
 end
-coroutine.wrap(VEZN_fake_script)()
-local function HQEQ_fake_script() -- BoxTopbar.BoxScript 
+coroutine.wrap(MMNM_fake_script)()
+local function LEOUUKW_fake_script() -- BoxTopbar.BoxScript 
 	local script = Instance.new('LocalScript', BoxTopbar)
 
 	script.Parent.Close.BorderMode = Enum.BorderMode.Inset
 	script.Parent.Extension.BorderMode = Enum.BorderMode.Inset
 	script.Parent.Save.BorderMode = Enum.BorderMode.Inset
 end
-coroutine.wrap(HQEQ_fake_script)()
-local function BUYNVQK_fake_script() -- Main_3.OptionsScript2 
+coroutine.wrap(LEOUUKW_fake_script)()
+local function VKZCXQ_fake_script() -- Main_3.OptionsScript2 
 	local script = Instance.new('LocalScript', Main_3)
 
 	local ON = "rbxassetid://6444393422"
@@ -2312,8 +2384,8 @@ local function BUYNVQK_fake_script() -- Main_3.OptionsScript2
 		end)
 	end
 end
-coroutine.wrap(BUYNVQK_fake_script)()
-local function HDORLV_fake_script() -- OptionsTopbar.OptionsScript1 
+coroutine.wrap(VKZCXQ_fake_script)()
+local function EUUBWUD_fake_script() -- OptionsTopbar.OptionsScript1 
 	local script = Instance.new('LocalScript', OptionsTopbar)
 
 	script.Parent.Visible = false
@@ -2343,8 +2415,8 @@ local function HDORLV_fake_script() -- OptionsTopbar.OptionsScript1
 		script.Parent.DropdownBtn.ImageColor3 = Color3.fromRGB(255, 255, 255)
 	end)
 end
-coroutine.wrap(HDORLV_fake_script)()
-local function DMRWPNA_fake_script() -- Close_4.CloseScript 
+coroutine.wrap(EUUBWUD_fake_script)()
+local function QSFHXI_fake_script() -- Close_4.CloseScript 
 	local script = Instance.new('LocalScript', Close_4)
 
 	script.Parent.MouseButton1Click:Connect(function()
@@ -2361,8 +2433,8 @@ local function DMRWPNA_fake_script() -- Close_4.CloseScript
 		script.Parent.BorderSizePixel = 0
 	end)
 end
-coroutine.wrap(DMRWPNA_fake_script)()
-local function LNYN_fake_script() -- SynapseOpen.Dragify 
+coroutine.wrap(QSFHXI_fake_script)()
+local function ODDKF_fake_script() -- SynapseOpen.Dragify 
 	local script = Instance.new('LocalScript', SynapseOpen)
 
 	local UIS = game:GetService("UserInputService")
@@ -2403,8 +2475,8 @@ local function LNYN_fake_script() -- SynapseOpen.Dragify
 	
 	dragify(script.Parent)
 end
-coroutine.wrap(LNYN_fake_script)()
-local function IKGO_fake_script() -- OpenSynapse.OpenSynapse 
+coroutine.wrap(ODDKF_fake_script)()
+local function CHRZ_fake_script() -- OpenSynapse.OpenSynapse 
 	local script = Instance.new('LocalScript', OpenSynapse)
 
 	if isfile("settings.xi") then
@@ -2423,8 +2495,8 @@ local function IKGO_fake_script() -- OpenSynapse.OpenSynapse
 		script.Parent.Visible = true
 	end)
 end
-coroutine.wrap(IKGO_fake_script)()
-local function YZGTFZT_fake_script() -- SynapseXI.Configuration 
+coroutine.wrap(CHRZ_fake_script)()
+local function WAGVSH_fake_script() -- SynapseXI.Configuration 
 	local script = Instance.new('LocalScript', SynapseXI)
 
 	script.Parent:SetAttribute("MadeBy","zzerexx#3970")
@@ -2435,7 +2507,7 @@ local function YZGTFZT_fake_script() -- SynapseXI.Configuration
 		if getgenv().AutoSave == true then
 			local XI = game.CoreGui[getgenv().sxiname]
 			local TimeApi = game:GetService("HttpService"):JSONDecode(game:HttpGet("http://worldtimeapi.org/api/timezone/America/New_York"))
-			local Time = TimeApi["datetime"] -- Note: this api gets your ip, but it is not stored.
+			local Time = TimeApi["datetime"]
 			Time = Time:split(".") Time = Time[1]
 			Time = Time:split("T")
 			local Date = Time[1]
@@ -2481,9 +2553,23 @@ local function YZGTFZT_fake_script() -- SynapseXI.Configuration
 			script.Parent.SettingsTopbar.TimeSaved.Text = "Saved at: "..data["TimeSaved"].." EST"
 		end
 	end
+	-- :)
+	local z = Instance.new("TextLabel", script.Parent)
+	z.Name = "zzerexx#3970 was here"
+	z.BackgroundTransparency = 1
+	z.TextTransparency = 0.9
+	z.AnchorPoint = Vector2.new(0,1)
+	z.Position = UDim2.new(0.005,0,0.995,0)
+	z.Size = UDim2.new(0,60,0,15)
+	z.ZIndex = 100
+	z.Font = Enum.Font.GothamBold
+	z.Text = "zzerexx#3970"
+	z.TextColor3 = Color3.fromRGB(255,255,255)
+	z.TextSize = 20
+	z.TextXAlignment = "Left"
 end
-coroutine.wrap(YZGTFZT_fake_script)()
-local function AUBD_fake_script() -- Bar.LoaderAnimation 
+coroutine.wrap(WAGVSH_fake_script)()
+local function LITU_fake_script() -- Bar.LoaderAnimation 
 	local script = Instance.new('LocalScript', Bar)
 
 	script.Parent.Parent.Visible = true
@@ -2527,8 +2613,8 @@ local function AUBD_fake_script() -- Bar.LoaderAnimation
 		end
 	end
 end
-coroutine.wrap(AUBD_fake_script)()
-local function VYVHUG_fake_script() -- Main_4.SettingsScript2 
+coroutine.wrap(LITU_fake_script)()
+local function JBWHTWY_fake_script() -- Main_4.SettingsScript2 
 	local script = Instance.new('LocalScript', Main_4)
 
 	local ON = "rbxassetid://6444393422"
@@ -2599,8 +2685,8 @@ local function VYVHUG_fake_script() -- Main_4.SettingsScript2
 		end)
 	end
 end
-coroutine.wrap(VYVHUG_fake_script)()
-local function VIDOPMP_fake_script() -- SettingsTopbar.SettingsScript1 
+coroutine.wrap(JBWHTWY_fake_script)()
+local function HDGD_fake_script() -- SettingsTopbar.SettingsScript1 
 	local script = Instance.new('LocalScript', SettingsTopbar)
 
 	script.Parent.Visible = false
@@ -2612,8 +2698,8 @@ local function VIDOPMP_fake_script() -- SettingsTopbar.SettingsScript1
 		script.Parent.TimeSaved.Text = "Saved at: "..data["TimeSaved"].." EST"
 	end
 end
-coroutine.wrap(VIDOPMP_fake_script)()
-local function KUMJQCE_fake_script() -- Close_5.LocalScript 
+coroutine.wrap(HDGD_fake_script)()
+local function XMIYR_fake_script() -- Close_5.LocalScript 
 	local script = Instance.new('LocalScript', Close_5)
 
 	script.Parent.MouseButton1Click:Connect(function()
@@ -2630,14 +2716,14 @@ local function KUMJQCE_fake_script() -- Close_5.LocalScript
 		script.Parent.BorderSizePixel = 0
 	end)
 end
-coroutine.wrap(KUMJQCE_fake_script)()
-local function QHFGAD_fake_script() -- Save_2.SaveConfigScript 
+coroutine.wrap(XMIYR_fake_script)()
+local function JVMDSH_fake_script() -- Save_2.SaveConfigScript 
 	local script = Instance.new('LocalScript', Save_2)
 
 	script.Parent.MouseButton1Click:Connect(function()
 		local XI = game.CoreGui[getgenv().sxiname]
 		local TimeApi = game:GetService("HttpService"):JSONDecode(game:HttpGet("http://worldtimeapi.org/api/timezone/America/New_York"))
-		local Time = TimeApi["datetime"] -- Note: this api gets your ip, but it is not stored.
+		local Time = TimeApi["datetime"]
 		Time = Time:split(".") Time = Time[1]
 		Time = Time:split("T")
 		local Date = Time[1]
@@ -2693,8 +2779,8 @@ local function QHFGAD_fake_script() -- Save_2.SaveConfigScript
 		script.Parent.BorderSizePixel = 0
 	end)
 end
-coroutine.wrap(QHFGAD_fake_script)()
-local function QHIZ_fake_script() -- ScriptsBox.ScriptsBoxScripts 
+coroutine.wrap(JVMDSH_fake_script)()
+local function VAEDD_fake_script() -- ScriptsBox.ScriptsBoxScripts 
 	local script = Instance.new('LocalScript', ScriptsBox)
 
 	local stuff = {
@@ -2848,8 +2934,8 @@ local function QHIZ_fake_script() -- ScriptsBox.ScriptsBoxScripts
 		script.Parent.ScriptDumper.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 	end)
 end
-coroutine.wrap(QHIZ_fake_script)()
-local function IOFWQCY_fake_script() -- Minimize_2.MinScript 
+coroutine.wrap(VAEDD_fake_script)()
+local function JXRZW_fake_script() -- Minimize_2.MinScript 
 	local script = Instance.new('LocalScript', Minimize_2)
 
 	script.Parent.MouseButton1Click:Connect(function()
@@ -2863,8 +2949,8 @@ local function IOFWQCY_fake_script() -- Minimize_2.MinScript
 		script.Parent.BackgroundTransparency = 1
 	end)
 end
-coroutine.wrap(IOFWQCY_fake_script)()
-local function PQFAF_fake_script() -- ScriptHubTopbar.ScriptHubScript 
+coroutine.wrap(JXRZW_fake_script)()
+local function PAKYSR_fake_script() -- ScriptHubTopbar.ScriptHubScript 
 	local script = Instance.new('LocalScript', ScriptHubTopbar)
 
 	script.Parent.Visible = false
@@ -2884,4 +2970,4 @@ local function PQFAF_fake_script() -- ScriptHubTopbar.ScriptHubScript
 		end)
 	end
 end
-coroutine.wrap(PQFAF_fake_script)()
+coroutine.wrap(PAKYSR_fake_script)()
