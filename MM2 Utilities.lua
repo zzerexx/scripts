@@ -16,7 +16,7 @@ getgenv().Settings = {
 	Aimbot = true,              -- Use in First Person or while using Shift Lock
 	AimbotKey = "MouseButton2", -- Locked, does not affect aimbot key
 	AimbotAsSheriff = true,     -- Uses Aimbot as Sheriff
-	AimbotAsMurderer = false,   -- Uses Aimbot as Murderer (bad)
+	AimbotAsMurderer = false,   -- Uses Aimbot as Murderer
 	-- ESP
 	NameEsp = true,
 	AvoidInnocents = false,     -- Name Esp will avoid Innocents
@@ -31,8 +31,8 @@ getgenv().Settings = {
 	GunNameTextTransparency = 0.4,
 	GunNameColor = Color3.fromRGB(0, 255, 0),
 	-- Auto Pickup
-	AutoPickupGun = false,      -- Automatically picks up the gun when its dropped (useless + unreliable)
-	RandomPickupDelay = false,  -- Waits a random amount of time before picking up the gun (may be more delayed since it checks every 2 seconds)
+	AutoPickupGun = false,      -- Automatically picks up the gun when its dropped
+	RandomPickupDelay = false,  -- Waits a random amount of time before picking up the gun
 	RandomPickupDelayMin = 3,
 	RandomPickupDelayMax = 7,
 } -- v1.0.0
