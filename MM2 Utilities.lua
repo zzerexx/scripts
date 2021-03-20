@@ -203,7 +203,7 @@ UIS.InputBegan:Connect(function(input, gameProcessed)
 		notif("Aimbot toggled: "..tostring(aimbottoggled))
 	end
 end)
-function mm2()
+function aaaaaaaaaaaaaaaaaa()
 	for i,v in pairs(folder:GetChildren()) do
 		v:Destroy()
 	end
@@ -656,7 +656,7 @@ local l = game:GetService("Lighting")
 getgenv().oldl = { Ambient = l.Ambient, Brightness = l.Brightness, GlobalShadows = l.GlobalShadows }
 function StartMM2()
 	if ss.Enabled then
-		pcall(mm2)
+		pcall(aaaaaaaaaaaaaaaaaa)
 		ApplyTheme(ss.Color1, ss.Color2, ss.Color3, ss.MColor1, ss.MColor2, ss.SColor1, ss.SColor2, ss.GColor1, ss.TextFont, ss.MainTextColor)
 		PresetTheme(ss.PresetTheme)
 		player.Character.Humanoid.WalkSpeed = ss.WalkSpeed
