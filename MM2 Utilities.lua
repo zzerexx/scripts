@@ -348,16 +348,17 @@ function aaaaaaaaaaaaaaaaaa()
 		end
 	end
 end
-function XrayOn()
-	for i,v in pairs(workspace:GetChildren()) do
+local obj = workspace
+function XrayOn(obj)
+	for i,v in pairs(obj:GetChildren()) do
 		if v:IsA("BasePart") and not v.Parent:FindFirstChild("Humanoid") then
 			v.LocalTransparencyModifier = 0.9
 		end
 		XrayOn(v)
 	end
 end
-function XrayOff()
-	for i,v in pairs(workspace:GetChildren()) do
+function XrayOff(obj)
+	for i,v in pairs(obj:GetChildren()) do
 		if v:IsA("BasePart") and not v.Parent:FindFirstChild("Humanoid") then
 			v.LocalTransparencyModifier = 0
 		end
@@ -382,9 +383,9 @@ function stuff(input, gameProcessed)
 		xray = not xray
 		notif("Xray toggled: "..tostring(xray))
 		if xray then
-			XrayOn()
+			XrayOn(obj)
 		else
-			XrayOff()
+			XrayOff(obj)
 		end
 	end
 	if input.KeyCode == Enum.KeyCode.RightControl then
