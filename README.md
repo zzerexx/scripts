@@ -5,9 +5,9 @@ yea
 # Universal Esp  
 Updated March 10, 2021  
 v1.0.0  
-**WORK IN PROGRESS**  
 working features: chams, nameesp, headtracers  
 supported games list at bottom of script  
+kinda sucks whatever  
   
 # Murder Mystery 2 Utilities  
 Updated March 19, 2021  
