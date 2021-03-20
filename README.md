@@ -10,13 +10,12 @@ working features: chams, nameesp, headtracers
 supported games list at bottom of script  
   
 # Murder Mystery 2 Utilities  
-Updated March 11, 2021  
+Updated March 19, 2021  
 v1.0.0  
 Check the settings for features  
 should support *all* exploits.  
-NOTE: ProtectGui only supports **Synapse X**, **ProtoSmasher**, **Script-Ware v2**, **Krnl**  
 ```lua
-loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/MM2%20Utilities.lua", true))() -- Uses default settings
+Get The Script: https://pastebin.com/raw/FwYmgtCX
 ```   
   
 # Synapse XI  
