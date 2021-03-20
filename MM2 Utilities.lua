@@ -1,4 +1,3 @@
--- Murder Mystery 2 Utilities by zzerexx#3970
 print("Loaded all settings    [1/6]")
 if game.PlaceId ~= 142823291 then game:GetService("TeleportService"):Teleport(142823291) end
 if typeof(getgenv().mm2) == "Instance" then getgenv().mm2:Destroy() end
