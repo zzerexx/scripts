@@ -1,16 +1,16 @@
 -- Murder Mystery 2 Utilities by zzerexx#3970
-
+print("Loaded all settings    [1/6]")
 if game.PlaceId ~= 142823291 then game:GetService("TeleportService"):Teleport(142823291) end
-if getgenv().protected then getgenv().protected:Destroy() end
+if typeof(getgenv().mm2) == "Instance" then getgenv().mm2:Destroy() end
+local ss = getgenv().Settings
 local players = game:GetService("Players")
 local player = players.LocalPlayer
-local camera = game:GetService("Workspace").CurrentCamera
+local camera = workspace.CurrentCamera
 local mouse = player:GetMouse()
 local UIS = game:GetService("UserInputService")
-local characters = { "A","B","C","D","E","F","G","H","I","J","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","1","2","3","4","5","6","7","8","9","0","!","@","#","$","%","^","&","*","(",")","-","=","[","]","|",";","'",",",".","/","_","+","{","}",":","<",">","?","`","~" }
-local classnames = { "ClickDetector","SunRaysEffect","Decal","RemoteEvent","SelectionBox","SurfaceAppearance","AlignOrientation","AnimationController","LineForce","PrismaticConstraint","Tool","Trail","Atmosphere","ForceField","Motor6D","Humanoid","ShirtGraphic","Explosion","RocketPropulsion","Weld","WorldModel","CompressorSoundEffect","BindableFunction","Team","Vector3Value","HumanoidDescription","ColorCorrectionEffect","Torque","BodyAngularVelocity","PointLight","LocalizationTable","SpecialMesh","FlangeSoundEffect","CFrameValue","BallSocketConstraint","DialogChoice","DepthOfFieldEffect","RemoteFunction" }
-function randname() local randomname = characters[math.random(1,#characters)]..characters[math.random(1,#characters)]..characters[math.random(1,#characters)]..characters[math.random(1,#characters)]..characters[math.random(1,#characters)]..characters[math.random(1,#characters)]..characters[math.random(1,#characters)]..characters[math.random(1,#characters)]..characters[math.random(1,#characters)]..characters[math.random(1,#characters)]..characters[math.random(1,#characters)]..characters[math.random(1,#characters)] return randomname end
-local protectedfolder = Instance.new(classnames[math.random(1,#classnames)])
+local TweenService = game:GetService("TweenService")
+local RunService = game:GetService("RunService")
+print("Loaded all variables   [2/6]")
 local MM2 = Instance.new("ScreenGui")
 local Topbar = Instance.new("Frame")
 local Main = Instance.new("Frame")
@@ -28,49 +28,35 @@ local UICorner_5 = Instance.new("UICorner")
 local Title = Instance.new("TextLabel")
 local Credit = Instance.new("TextLabel")
 local Spectating = Instance.new("TextLabel")
-if game.PlaceId ~= 142823291 then protectedfolder:Destroy() end
-if getgenv().Settings.ProtectGui then
-	if syn then
-		syn.protect_gui(protectedfolder)
-		protectedfolder.Parent = game:GetService("CoreGui")
-	elseif PROTOSMASHER_LOADED then
-		protectedfolder.Parent = get_hidden_gui()
-	elseif KRNL_LOADED then
-		protectedfolder.Parent = gethui()
-	else
-		print("Your exploit does not support ProtectGui!")
-		protectedfolder.Parent = game:GetService("CoreGui")
-	end
-else
-	protectedfolder.Parent = game:GetService("CoreGui")
-end
-Topbar.Active = true
-Topbar.Draggable = true
-protectedfolder.Name = randname()..randname()..randname()
+print("Loaded all instances   [3/6]")
+if game.PlaceId ~= 142823291 then MM2:Destroy() end
 
-MM2.Name = randname()
-MM2.Parent = protectedfolder
-getgenv().protected = protectedfolder
+MM2.Name = "MM2"
+MM2.Parent = game:GetService("CoreGui")
+getgenv().mm2 = MM2
 
-Topbar.Name = randname()
+Topbar.Name = "Topbar"
 Topbar.Parent = MM2
+Topbar.AnchorPoint = Vector2.new(0.5,0.5)
 Topbar.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
-Topbar.Position = UDim2.new(0.611344576, 0, 0.146884277, 0)
+Topbar.Position = UDim2.new(0.5, 0, 0.375, 0)
 Topbar.Size = UDim2.new(0, 170, 0, 30)
 Topbar.ZIndex = 11
 
-Main.Name = randname()
+Main.Name = "Main"
 Main.Parent = Topbar
+Main.AnchorPoint = Vector2.new(0.5,0)
+Main.ClipsDescendants = true
 Main.BackgroundColor3 = Color3.fromRGB(24, 24, 24)
-Main.Position = UDim2.new(-0.00147058826, 0, -0.0161224362, 0)
+Main.Position = UDim2.new(0.5, 0, 0, 0)
 Main.Size = UDim2.new(0, 170, 0, 209)
 Main.ZIndex = 10
 
-UICorner.Name = randname()
+UICorner.Name = "UICorner"
 UICorner.CornerRadius = UDim.new(0, 6)
 UICorner.Parent = Main
 
-Murderer.Name = randname()
+Murderer.Name = "Murderer"
 Murderer.Parent = Main
 Murderer.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
 Murderer.Position = UDim2.new(0.0602940023, 0, 0.142000005, 25)
@@ -82,11 +68,11 @@ Murderer.TextColor3 = Color3.fromRGB(255, 100, 100)
 Murderer.TextSize = 16.000
 Murderer.AutoButtonColor = false
 
-UICorner_2.Name = randname()
+UICorner_2.Name = "UICorner"
 UICorner_2.CornerRadius = UDim.new(0, 6)
 UICorner_2.Parent = Murderer
 
-Sheriff.Name = randname()
+Sheriff.Name = "Sheriff"
 Sheriff.Parent = Main
 Sheriff.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
 Sheriff.Position = UDim2.new(0.0602940321, 0, 0.400999993, 25)
@@ -98,11 +84,11 @@ Sheriff.TextColor3 = Color3.fromRGB(100, 100, 255)
 Sheriff.TextSize = 16.000
 Sheriff.AutoButtonColor = false
 
-UICorner_3.Name = randname()
+UICorner_3.Name = "UICorner"
 UICorner_3.CornerRadius = UDim.new(0, 6)
 UICorner_3.Parent = Sheriff
 
-MurdererText.Name = randname()
+MurdererText.Name = "MurdererText"
 MurdererText.Parent = Main
 MurdererText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 MurdererText.BackgroundTransparency = 1.000
@@ -114,7 +100,7 @@ MurdererText.Text = "Murderer"
 MurdererText.TextColor3 = Color3.fromRGB(255, 0, 0)
 MurdererText.TextSize = 16.000
 
-SheriffText.Name = randname()
+SheriffText.Name = "SheriffText"
 SheriffText.Parent = Main
 SheriffText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 SheriffText.BackgroundTransparency = 1.000
@@ -126,7 +112,7 @@ SheriffText.Text = "Sheriff"
 SheriffText.TextColor3 = Color3.fromRGB(0, 0, 255)
 SheriffText.TextSize = 16.000
 
-GunDropText.Name = randname()
+GunDropText.Name = "GunDropText"
 GunDropText.Parent = Main
 GunDropText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 GunDropText.BackgroundTransparency = 1.000
@@ -138,7 +124,7 @@ GunDropText.Text = "Gun Dropped"
 GunDropText.TextColor3 = Color3.fromRGB(0, 255, 0)
 GunDropText.TextSize = 16.000
 
-GunDrop.Name = randname()
+GunDrop.Name = "GunDrop"
 GunDrop.Parent = Main
 GunDrop.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
 GunDrop.Position = UDim2.new(0.0602940321, 0, 0.660000026, 25)
@@ -150,15 +136,15 @@ GunDrop.TextColor3 = Color3.fromRGB(255, 255, 255)
 GunDrop.TextSize = 16.000
 GunDrop.AutoButtonColor = false
 
-UICorner_4.Name = randname()
+UICorner_4.Name = "UICorner"
 UICorner_4.CornerRadius = UDim.new(0, 6)
 UICorner_4.Parent = GunDrop
 
-UICorner_5.Name = randname()
+UICorner_5.Name = "UICorner"
 UICorner_5.CornerRadius = UDim.new(0, 6)
 UICorner_5.Parent = Topbar
 
-Title.Name = randname()
+Title.Name = "Title"
 Title.Parent = Topbar
 Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Title.BackgroundTransparency = 1.000
@@ -171,7 +157,7 @@ Title.Text = "Error Occurred" -- dont change
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 Title.TextSize = 16.000
 
-Credit.Name = randname()
+Credit.Name = "Credit"
 Credit.Parent = Main
 Credit.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Credit.BackgroundTransparency = 1.000
@@ -183,7 +169,7 @@ Credit.Text = "Made by zzerexx#3970"
 Credit.TextColor3 = Color3.fromRGB(255, 255, 255)
 Credit.TextSize = 12.000
 
-Spectating.Name = randname()
+Spectating.Name = "Spectating"
 Spectating.Parent = MM2
 Spectating.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Spectating.BackgroundTransparency = 1.000
@@ -196,160 +182,174 @@ Spectating.TextColor3 = Color3.fromRGB(255, 255, 255)
 Spectating.TextSize = 32.000
 Spectating.AnchorPoint = Vector2.new(0.5,0.5)
 Spectating.Visible = false
-
-local folder = Instance.new(classnames[math.random(1,#classnames)])
+print("Loaded all properties  [4/6]")
+local folder = Instance.new("Folder")
 folder.Parent = MM2
-folder.Name = randname()
-function bruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruh()
-	pcall(function()
-		for i,v in pairs(folder:GetChildren()) do
-			v:Destroy()
-		end
-		if getgenv().Settings.RemoveRagdolls then
-			for i,v in pairs(game.Workspace:GetChildren()) do
-				if v.Name == "Raggy" then
-					v:Destroy()
-				end
-			end
-		end
-		for i,v in pairs(players:GetChildren()) do
-			if v.Name ~= player.Name then
-				if getgenv().Settings.NameEsp then
-					local Billboard = Instance.new("BillboardGui")
-					local Name = Instance.new("TextLabel")
-					Billboard.Name = v.Name.."---"..randname()
-					Billboard.Parent = folder
-					Billboard.Adornee = v.Character.Head
-					Billboard.Size = UDim2.new(10, 0, 4, 0)
-					Billboard.ExtentsOffset = Vector3.new(0, 3, 0)
-					Billboard.AlwaysOnTop = true
-					Billboard.MaxDistance = math.huge
-					Name.Name = randname()
-					Name.Parent = Billboard
-					Name.BackgroundTransparency = 1
-					Name.TextTransparency = getgenv().Settings.NameTextTransparency
-					Name.BorderSizePixel = 0
-					Name.Font = getgenv().Settings.NameFont
-					Name.Size = UDim2.new(1, 0, 1, 0)
-					Name.Text = v.Name
-					Name.TextColor3 = getgenv().Settings.InnocentColor
-					Name.TextScaled = false
-					Name.TextSize = 18
-					if v.Backpack:FindFirstChild("Knife") or v.Character:FindFirstChild("Knife") then
-						Murderer.Text = v.Name
-						Name.TextColor3 = getgenv().Settings.MurdererColor
-					elseif v.Backpack:FindFirstChild("Gun") or v.Character:FindFirstChild("Gun") then
-						Sheriff.Text = v.Name
-						Name.TextColor3 = getgenv().Settings.SheriffColor
-					elseif getgenv().Settings.AvoidInnocents and not v.Backpack:FindFirstChild("Knife") or v.Character:FindFirstChild("Knife") or v.Backpack:FindFirstChild("Gun") or v.Character:FindFirstChild("Gun") then
-						Billboard:Destroy()
-					end
-				end -- getgenv().Settings.NameEsp
-			end -- Name Check
-		end -- for i,v
-		if game.Workspace:FindFirstChild("GunDrop",true) then
-			if getgenv().Settings.GunEsp then
-				local GunEsp = Instance.new("BoxHandleAdornment")
-				GunEsp.Name = "Gun".."---"..randname()
-				GunEsp.Parent = folder
-				GunEsp.Adornee = game.Workspace.GunDrop
-				GunEsp.AlwaysOnTop = true
-				GunEsp.Color3 = getgenv().Settings.GunEspColor
-				GunEsp.Size = game.Workspace.GunDrop.Size
-				GunEsp.Transparency = 0.6
-				GunEsp.ZIndex = 0
-				if getgenv().Settings.GunNameEsp then
-					local Billboard = Instance.new("BillboardGui")
-					local Name = Instance.new("TextLabel")
-					Billboard.Name = randname()
-					Billboard.Parent = folder
-					Billboard.Adornee = game.Workspace.GunDrop
-					Billboard.Size = UDim2.new(10, 0, 4, 0)
-					Billboard.ExtentsOffset = Vector3.new(0, 3, 0)
-					Billboard.AlwaysOnTop = true
-					Billboard.MaxDistance = math.huge
-					Name.Name = randname()
-					Name.Parent = Billboard
-					Name.BackgroundTransparency = 1
-					Name.TextTransparency = getgenv().Settings.GunNameTextTransparency
-					Name.BorderSizePixel = 0
-					Name.Font = getgenv().Settings.NameFont
-					Name.Size = UDim2.new(1, 0, 1, 0)
-					Name.Text = "Gun"
-					Name.TextColor3 = getgenv().Settings.GunNameColor
-					Name.TextScaled = false
-					Name.TextSize = 18
-				end
-			end
-			if getgenv().Settings.AutoPickupGun then
-				local hrp = game.Players.LocalPlayer.Character.HumanoidRootPart
-				local OldCF = hrp.CFrame
-				wait(0.2)
-				if getgenv().Settings.RandomPickupDelay then
-					local randomdelay = math.random(getgenv().Settings.RandomPickupDelayMin,getgenv().Settings.RandomPickupDelayMax)
-					wait(randomdelay)
-				end
-				hrp.CFrame = game.Workspace.GunDrop.CFrame
-				wait(0.2)
-				hrp.CFrame = OldCF
-			end
-			GunDrop.Text = "True"
-			GunDrop.TextColor3 = Color3.fromRGB(100, 255, 100)
-		else
-			GunDrop.Text = "False"
-			GunDrop.TextColor3 = Color3.fromRGB(255, 100, 100)
-		end
-		if getgenv().Settings.Aimbot then
-			getgenv().keypressed = false
-			local team
-			local target
-			mouse.Button2Down:Connect(function()
-				getgenv().keypressed = true
-			end)
-			mouse.Button2Up:Connect(function()
-				getgenv().keypressed = false
-			end)
-			if game.Players.LocalPlayer.Backpack:FindFirstChild("Knife") or player.Character:FindFirstChild("Knife") then
-				team = "Murderer"
-				target = players[Sheriff.Text].Character.HumanoidRootPart
-				if getgenv().Settings.AimbotAsMurderer then
-					repeat wait()
-						if getgenv().keypressed then
-							camera.CFrame = CFrame.new(camera.CFrame.Position, target.Position)
-						end
-					until players[Sheriff.Text].Character.Humanoid.Health < 1 or team == nil
-				end
-			elseif player.Backpack:FindFirstChild("Gun") or game.Players.LocalPlayer.Character:FindFirstChild("Gun") then
-				team = "Sheriff"
-				target = players[Murderer.Text].Character.HumanoidRootPart
-				if getgenv().Settings.AimbotAsSheriff then
-					repeat wait()
-						if getgenv().keypressed then
-							camera.CFrame = CFrame.new(camera.CFrame.Position, target.Position)
-						end
-					until players[Murderer.Text].Character.Humanoid.Health < 1 or team == nil
-				end
-			else
-				team = nil
-				target = nil
-			end
-		end
-	end)
+folder.Name = "Folder"
+function notif(text)
+	if typeof(text) == "string" and ss.Notifications then
+		game.StarterGui:SetCore("SendNotification", {
+			Title = "MM2 Utilities",
+			Text = text,
+			Duration = 1.5,
+			Button1 = "Ok" 
+		})
+	end
 end
-local noclip = false
-game:GetService("RunService").Stepped:Connect(function()
-	if noclip then
-		player.Character.Humanoid:ChangeState(11)
+local aimbottoggled = false
+UIS.InputBegan:Connect(function(input, gameProcessed)
+	if input.KeyCode == Enum.KeyCode.Y then
+		aimbottoggled = not aimbottoggled
+		notif("Aimbot toggled: "..tostring(aimbottoggled))
 	end
 end)
-function NoClip(input, gameProcessed)
-	if input.KeyCode == Enum.KeyCode.R and getgenv().Settings.Noclip then
-		noclip = not noclip
-		player.Character.Humanoid:ChangeState(11)
+function bruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruh()
+	for i,v in pairs(folder:GetChildren()) do
+		v:Destroy()
+	end
+	for i,v in pairs(workspace:GetDescendants()) do
+		if v.Name == "Raggy" and ss.RemoveRagdolls then
+			v:Destroy()
+		elseif v.Name == "GlitchProof" and v.ClassName == "Model" and ss.RemoveBarriers then
+			v:Destroy()
+		end
+	end
+	for i,v in pairs(players:GetChildren()) do
+		if v.Name ~= player.Name and not folder:FindFirstChild(v.Name) then
+			if ss.NameEsp then
+				local Billboard = Instance.new("BillboardGui")
+				local Name = Instance.new("TextLabel")
+				Billboard.Name = v.Name
+				Billboard.Parent = folder
+				Billboard.Adornee = v.Character.Head
+				Billboard.Size = UDim2.new(10, 0, 4, 0)
+				Billboard.ExtentsOffset = Vector3.new(0, 3, 0)
+				Billboard.AlwaysOnTop = true
+				Billboard.MaxDistance = math.huge
+				Name.Name = "Name"
+				Name.Parent = Billboard
+				Name.BackgroundTransparency = 1
+				Name.TextTransparency = ss.NameTextTransparency
+				Name.BorderSizePixel = 0
+				Name.Font = ss.NameFont
+				Name.Size = UDim2.new(1, 0, 1, 0)
+				Name.Text = v.Name
+				Name.TextColor3 = ss.InnocentColor
+				Name.TextScaled = false
+				Name.TextSize = 18
+				if v.Backpack:FindFirstChild("Knife") or v.Character:FindFirstChild("Knife") then
+					Murderer.Text = v.Name
+					Name.TextColor3 = ss.MurdererColor
+					if not Murderer.TextFits then
+						Murderer.TextScaled = true
+					else
+						Murderer.TextScaled = false
+					end
+				elseif v.Backpack:FindFirstChild("Gun") or v.Character:FindFirstChild("Gun") then
+					Sheriff.Text = v.Name
+					Name.TextColor3 = ss.SheriffColor
+					if not Sheriff.TextFits then
+						Sheriff.TextScaled = true
+					else
+						Sheriff.TextScaled = false
+					end
+				elseif ss.AvoidInnocents and not v.Backpack:FindFirstChild("Knife") or v.Character:FindFirstChild("Knife") or v.Backpack:FindFirstChild("Gun") or v.Character:FindFirstChild("Gun") then
+					Billboard:Destroy()
+				end
+			end -- ss.NameEsp
+		end -- Name Check
+	end -- for i,v
+	if workspace:FindFirstChild("GunDrop",true) then
+		if ss.GunEsp then
+			local GunEsp = Instance.new("BoxHandleAdornment")
+			GunEsp.Name = "Gun"
+			GunEsp.Parent = folder
+			GunEsp.Adornee = game.Workspace.GunDrop
+			GunEsp.AlwaysOnTop = true
+			GunEsp.Color3 = ss.GunEspColor
+			GunEsp.Size = game.Workspace.GunDrop.Size
+			GunEsp.Transparency = 0.6
+			GunEsp.ZIndex = 0
+			if ss.GunNameEsp then
+				local Billboard = Instance.new("BillboardGui")
+				local Name = Instance.new("TextLabel")
+				Billboard.Name = "Gun"
+				Billboard.Parent = folder
+				Billboard.Adornee = game.Workspace.GunDrop
+				Billboard.Size = UDim2.new(10, 0, 4, 0)
+				Billboard.ExtentsOffset = Vector3.new(0, 3, 0)
+				Billboard.AlwaysOnTop = true
+				Billboard.MaxDistance = math.huge
+				Name.Name = "Name"
+				Name.Parent = Billboard
+				Name.BackgroundTransparency = 1
+				Name.TextTransparency = ss.GunNameTransparency
+				Name.BorderSizePixel = 0
+				Name.Font = ss.NameFont
+				Name.Size = UDim2.new(1, 0, 1, 0)
+				Name.Text = "Gun"
+				Name.TextColor3 = ss.GunNameColor
+				Name.TextScaled = false
+				Name.TextSize = 18
+			end
+		end
+		if ss.AutoPickupGun then
+			local hrp = player.Character.HumanoidRootPart
+			local OldCF = hrp.CFrame
+			hrp.CFrame = game.Workspace.GunDrop.CFrame
+			wait(0.2)
+			hrp.CFrame = OldCF
+		end
+		GunDrop.Text = "True"
+		GunDrop.TextColor3 = ss.GColorT
+	else
+		GunDrop.Text = "False"
+		GunDrop.TextColor3 = ss.GColorF
+	end
+	if ss.Aimbot then
+		local keypressed = false
+		local team
+		local target
+		mouse.Button2Down:Connect(function()
+			keypressed = true
+		end)
+		mouse.Button2Up:Connect(function()
+			keypressed = false
+		end)
+		if player.Backpack:FindFirstChild("Knife") or player.Character:FindFirstChild("Knife") then
+			team = "Murderer"
+			target = players[Sheriff.Text].Character.HumanoidRootPart
+			if ss.AimbotAsMurderer then
+				aimbottoggled = true
+				notif("Aimbot toggled: true (Murderer)")
+				repeat
+					if keypressed and aimbottoggled then
+						camera.CFrame = CFrame.new(camera.CFrame.Position, target.Position)
+					end
+					RunService.RenderStepped:Wait()
+				until players[Sheriff.Text].Character.Humanoid.Health < 1 or team == nil or ss.Aimbot == false or ss.AimbotAsMurderer == false
+			end
+		elseif player.Backpack:FindFirstChild("Gun") or player.Character:FindFirstChild("Gun") then
+			team = "Sheriff"
+			target = players[Murderer.Text].Character.HumanoidRootPart
+			if ss.AimbotAsSheriff then
+				aimbottoggled = true
+				notif("Aimbot toggled: true (Sheriff)")
+				repeat
+					if keypressed and aimbottoggled then
+						camera.CFrame = CFrame.new(camera.CFrame.Position, target.Position)
+					end
+					RunService.RenderStepped:Wait()
+				until players[Murderer.Text].Character.Humanoid.Health < 1 or team == nil or ss.Aimbot == false or ss.AimbotAsSheriff == false
+			end
+		else
+			team = nil
+			target = nil
+			aimbottoggled = false
+		end
 	end
 end
-UIS.InputBegan:Connect(NoClip)
-local object = game.workspace
+local object = workspace
 function XrayOn(object)
 	for i,v in pairs(object:GetChildren()) do
 		if v:IsA("BasePart") and not v.Parent:FindFirstChild("Humanoid") then
@@ -366,33 +366,44 @@ function XrayOff(object)
 		XrayOff(v)
 	end
 end
-local x = false
-function Xray(input, gameProcessed)
-	if input.KeyCode == Enum.KeyCode.T and getgenv().Settings.Xray then
-		x = not x
-		if x then
+local noclip = false
+local xray = false
+local toggle1 = false
+local emotes = false
+function stuff(input, gameProcessed)
+	if input.KeyCode == Enum.KeyCode.R and ss.Noclip then
+		noclip = not noclip
+		notif("Noclip toggled: "..tostring(noclip))
+		player.Character.Humanoid:ChangeState(11)
+		repeat
+			player.Character.Humanoid:ChangeState(11)
+			RunService.Stepped:Wait()
+		until noclip == false
+	end
+	if input.KeyCode == Enum.KeyCode.T and ss.Xray then
+		xray = not xray
+		notif("Xray toggled: "..tostring(xray))
+		if xray then
 			XrayOn(object)
 		else
 			XrayOff(object)
 		end
 	end
-end
-UIS.InputBegan:Connect(Xray)
-local toggle1 = false -- topbar toggle
-function stuff(input, gameProcessed)
 	if input.KeyCode == Enum.KeyCode.RightControl then
 		toggle1 = not toggle1
 		if toggle1 then
 			Topbar.Visible = false
+			notif("Gui is now invisible")
 		else
 			Topbar.Visible = true
+			notif("Gui is now visible")
 		end
 	end
 end
 UIS.InputBegan:Connect(stuff)
-local ctrlpressed = false -- ctrl click tp
+local ctrlpressed = false
 mouse.Button1Down:Connect(function()
-	if ctrlpressed and getgenv().Settings.CtrlClickTP then
+	if ctrlpressed and ss.CtrlClickTP then
 		player.Character:MoveTo(mouse.Hit.p)
 	end
 end)
@@ -411,13 +422,14 @@ local sbtn = false -- sheriff button
 Murderer.MouseButton1Click:Connect(function()
 	if Murderer.Text ~= "None" then
 		if mbtn == false then
-			game.Workspace.CurrentCamera.CameraSubject = game.Players[Murderer.Text].Character.Humanoid
+			camera.CameraSubject = players[Murderer.Text].Character.Humanoid
 			Spectating.Visible = true
 			Spectating.Text = "Spectating: "..Murderer.Text
 			Spectating.TextColor3 = Color3.fromRGB(255, 0, 0)
 			mbtn = true
+			sbtn = false
 		elseif mbtn == true then
-			game.Workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character.Humanoid
+			camera.CameraSubject = player.Character.Humanoid
 			Spectating.Visible = false
 			Spectating.Text = "Spectating: None"
 			Spectating.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -428,13 +440,14 @@ end)
 Sheriff.MouseButton1Click:Connect(function()
 	if Sheriff.Text ~= "None" then
 		if sbtn == false then
-			game.Workspace.CurrentCamera.CameraSubject = game.Players[Sheriff.Text].Character.Humanoid
+			camera.CameraSubject = players[Sheriff.Text].Character.Humanoid
 			Spectating.Visible = true
 			Spectating.Text = "Spectating: "..Sheriff.Text
 			Spectating.TextColor3 = Color3.fromRGB(0, 0, 255)
 			sbtn = true
+			mbtn = false
 		elseif sbtn == true then
-			game.Workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character.Humanoid
+			camera.CameraSubject = player.Character.Humanoid
 			Spectating.Visible = false
 			Spectating.Text = "Spectating: None"
 			Spectating.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -444,39 +457,246 @@ Sheriff.MouseButton1Click:Connect(function()
 end)
 GunDrop.MouseButton1Click:Connect(function()
 	pcall(function()
-		if game.Workspace:FindFirstChild("GunDrop",true) and GunDrop.Text == "True" then
-			local hrp = game.Players.LocalPlayer.Character.HumanoidRootPart
+		if workspace:FindFirstChild("GunDrop",true) and GunDrop.Text == "True" then
+			local hrp = player.Character.HumanoidRootPart
 			local OldCF = hrp.CFrame
-			wait(0.2)
-			hrp.CFrame = game.Workspace.GunDrop.CFrame
+			hrp.CFrame = workspace.GunDrop.CFrame
 			wait(0.2)
 			hrp.CFrame = OldCF
 		end
 	end)
 end)
-function StartMM2()
-	if getgenv().Settings.Enabled then
-		pcall(function()
-			bruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruh()
-			player.Character.Humanoid.WalkSpeed = getgenv().Settings.WalkSpeed
-			player.Character.Humanoid.JumpPower = getgenv().Settings.JumpPower
-			camera.FieldOfView = getgenv().Settings.FieldOfView
-			player.DevCameraOcclusionMode = getgenv().Settings.CameraMode
-			player.CameraMaxZoomDistance = getgenv().Settings.MaxZoom
-		end)
+if ss.UnlockEmotes and player.PlayerGui.MainGUI then -- did not make this btw
+	for i,v in pairs(player.PlayerGui.MainGUI.Game.Emotes.EmotePages:GetChildren()) do
+		if v.Name == "MM2 Utilities" then v:Destroy() end
+	end
+	local emote = require(game:GetService("ReplicatedStorage").Modules.EmoteModule).GeneratePage
+	local target = player.PlayerGui.MainGUI.Game.Emotes
+	local emotelist = { "headless","zombie","zen","ninja","floss","dab" }
+	emote(emotelist,target,"MM2 Utilities")
+end
+function dragify(Frame)
+	dragToggle = nil
+	local dragSpeed = 0.5
+	dragInput = nil
+	dragStart = nil
+	local dragPos = nil
+	function updateInput(input)
+		local Delta = input.Position - dragStart
+		local Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + Delta.X, startPos.Y.Scale, startPos.Y.Offset + Delta.Y)
+		TweenService:Create(Frame, TweenInfo.new(0.25), {Position = Position}):Play()
+	end
+	Frame.InputBegan:Connect(function(input)
+		if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and UIS:GetFocusedTextBox() == nil then
+			dragToggle = true
+			dragStart = input.Position
+			startPos = Frame.Position
+			input.Changed:Connect(function()
+				if input.UserInputState == Enum.UserInputState.End then
+					dragToggle = false
+				end
+			end)
+		end
+	end)
+	Frame.InputChanged:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+			dragInput = input
+		end
+	end)
+	game:GetService("UserInputService").InputChanged:Connect(function(input)
+		if input == dragInput and dragToggle then
+			updateInput(input)
+		end
+	end)
+end
+dragify(Topbar) -- credit to this guy: https://www.roblox.com/library/5021849770/Smooth-Drag
+print("Loaded all scripts     [5/6]")
+function ApplyTheme(Color1, Color2, Color3, MColor1, MColor2, SColor1, SColor2, GColor1, TextFont, TextColor)
+	Topbar.BackgroundColor3 = Color1
+	Murderer.BackgroundColor3 = Color2
+	Sheriff.BackgroundColor3 = Color2
+	GunDrop.BackgroundColor3 = Color2
+	Main.BackgroundColor3 = Color3
+	MurdererText.TextColor3 = MColor1
+	Murderer.TextColor3 = MColor2
+	SheriffText.TextColor3 = SColor1
+	Sheriff.TextColor3 = SColor2
+	GunDropText.TextColor3 = GColor1
+	Title.Font = TextFont
+	Murderer.Font = TextFont
+	MurdererText.Font = TextFont
+	Sheriff.Font = TextFont
+	SheriffText.Font = TextFont
+	GunDrop.Font = TextFont
+	GunDropText.Font = TextFont
+	Credit.Font = TextFont
+	Title.TextColor3 = TextColor
+	Credit.TextColor3 = TextColor
+end
+ApplyTheme(ss.Color1, ss.Color2, ss.Color3, ss.MColor1, ss.MColor2, ss.SColor1, ss.SColor2, ss.GColor1, ss.TextFont, ss.MainTextColor)
+function PresetTheme(Theme)
+	local theme
+	if Theme == "Carbon" then
+		theme = {
+			Color1 = Color3.fromRGB(19,19,19),
+			Color2 = Color3.fromRGB(19,19,19),
+			Color3 = Color3.fromRGB(24,24,24),
+			MColor1 = Color3.fromRGB(255,0,0),
+			MColor2 = Color3.fromRGB(255,255,255),
+			SColor1 = Color3.fromRGB(0,0,255),
+			SColor2 = Color3.fromRGB(255,255,255),
+			GColor1 = Color3.fromRGB(0,255,0),
+			GColorT = Color3.fromRGB(100,255,100),
+			GColorF = Color3.fromRGB(255,100,100),
+			TextFont = ss.TextFont,
+			MainTextColor = Color3.fromRGB(255,255,255)
+		}
+		ApplyTheme(theme.Color1, theme.Color2, theme.Color3, theme.MColor1, theme.MColor2, theme.SColor1, theme.SColor2, theme.GColor1, theme.TextFont, theme.MainTextColor)
+	elseif Theme == "Strawberry" then
+		theme = {
+			Color1 = Color3.fromRGB(244,143,177),
+			Color2 = Color3.fromRGB(244,143,177),
+			Color3 = Color3.fromRGB(248,187,208),
+			MColor1 = Color3.fromRGB(255,0,170),
+			MColor2 = Color3.fromRGB(255,255,255),
+			SColor1 = Color3.fromRGB(255,0,170),
+			SColor2 = Color3.fromRGB(255,255,255),
+			GColor1 = Color3.fromRGB(255,0,170),
+			GColorT = Color3.fromRGB(255,255,255),
+			GColorF = Color3.fromRGB(255,255,255),
+			TextFont = ss.TextFont,
+			MainTextColor = Color3.fromRGB(255,255,255)
+		}
+		ss.GColorT = theme.GColorT
+		ss.GColorF = theme.GColorF
+		ApplyTheme(theme.Color1, theme.Color2, theme.Color3, theme.MColor1, theme.MColor2, theme.SColor1, theme.SColor2, theme.GColor1, theme.TextFont, theme.MainTextColor)
+	elseif Theme == "SkyBlue" then
+		theme = {
+			Color1 = Color3.fromRGB(59,132,235),
+			Color2 = Color3.fromRGB(59,132,235),
+			Color3 = Color3.fromRGB(120,172,245),
+			MColor1 = Color3.fromRGB(0,0,255),
+			MColor2 = Color3.fromRGB(255,255,255),
+			SColor1 = Color3.fromRGB(0,0,255),
+			SColor2 = Color3.fromRGB(255,255,255),
+			GColor1 = Color3.fromRGB(0,0,255),
+			GColorT = Color3.fromRGB(255,255,255),
+			GColorF = Color3.fromRGB(255,255,255),
+			TextFont = ss.TextFont,
+			MainTextColor = Color3.fromRGB(255,255,255)
+		}
+		ss.GColorT = theme.GColorT
+		ss.GColorF = theme.GColorF
+		ApplyTheme(theme.Color1, theme.Color2, theme.Color3, theme.MColor1, theme.MColor2, theme.SColor1, theme.SColor2, theme.GColor1, theme.TextFont, theme.MainTextColor)
+	elseif Theme == "Emerald" then
+		theme = {
+			Color1 = Color3.fromRGB(29,185,84),
+			Color2 = Color3.fromRGB(29,185,84),
+			Color3 = Color3.fromRGB(92,255,105),
+			MColor1 = Color3.fromRGB(0,225,0),
+			MColor2 = Color3.fromRGB(255,255,255),
+			SColor1 = Color3.fromRGB(0,225,0),
+			SColor2 = Color3.fromRGB(255,255,255),
+			GColor1 = Color3.fromRGB(0,225,0),
+			GColorT = Color3.fromRGB(255,255,255),
+			GColorF = Color3.fromRGB(255,255,255),
+			TextFont = ss.TextFont,
+			MainTextColor = Color3.fromRGB(255,255,255)
+		}
+		ss.GColorT = theme.GColorT
+		ss.GColorF = theme.GColorF
+		ApplyTheme(theme.Color1, theme.Color2, theme.Color3, theme.MColor1, theme.MColor2, theme.SColor1, theme.SColor2, theme.GColor1, theme.TextFont, theme.MainTextColor)
 	end
 end
-StartMM2()
+PresetTheme(ss.PresetTheme)
+print("Applied custom theme   [6/6]")
 Title.Text = "MM2 Utilities"
-
-print("+----- MM2  Utilities -----+")
-print("|    Left Ctrl to hide     |")
-print("|   Aimbot may be buggy    |")
-print("|                          |")
-print("|       Version 1.0.0      |")
-print("|       zzerexx#3970       |")
-print("+--------------------------+")
-
+local goal1 = {} goal1.TextTransparency = 0
+function fadetext(obj, delay) TweenService:Create(obj, TweenInfo.new(delay,Enum.EasingStyle.Linear,Enum.EasingDirection.Out),goal1):Play() end
+function LoadAnimation()
+	local loadtime = tick()
+	Topbar.Size = UDim2.new(0,0,0,0)
+	Topbar.Visible = false
+	Title.TextTransparency = 1
+	Main.Size = UDim2.new(0,0,0,0)
+	Main.Visible = false
+	MurdererText.TextTransparency = 1
+	Murderer.TextTransparency = 1
+	SheriffText.TextTransparency = 1
+	Sheriff.TextTransparency = 1
+	GunDropText.TextTransparency = 1
+	GunDrop.TextTransparency = 1
+	Credit.TextTransparency = 1
+	Topbar.Visible = true
+	Topbar:TweenSize(UDim2.new(0,30,0,30),"Out","Sine","0.3")
+	wait(0.3)
+	Topbar:TweenSize(UDim2.new(0,170,0,30),"Out","Sine","0.5")
+	wait(0.5)
+	fadetext(Title, 0.5)
+	Main.Visible = true
+	Main.Size = UDim2.new(0,170,0,30)
+	Main:TweenSize(UDim2.new(0,170,0,209),"Out","Sine","0.7")
+	wait(0.2)
+	fadetext(MurdererText, 0.2)
+	wait(0.07)
+	fadetext(Murderer, 0.2)
+	wait(0.07)
+	fadetext(SheriffText, 0.2)
+	wait(0.06)
+	fadetext(Sheriff, 0.2)
+	wait(0.06)
+	fadetext(GunDropText, 0.2)
+	wait(0.05)
+	fadetext(GunDrop, 0.2)
+	wait(0.05)
+	fadetext(Credit, 0.2)
+	print("Loaded animation, took "..tick()-loadtime.." seconds")
+end
+LoadAnimation()
+local l = game:GetService("Lighting")
+getgenv().oldl = { Ambient = l.Ambient, Brightness = l.Brightness, GlobalShadows = l.GlobalShadows }
+function StartMM2()
+	if ss.Enabled then
+		pcall(bruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruh)
+		ApplyTheme(ss.Color1, ss.Color2, ss.Color3, ss.MColor1, ss.MColor2, ss.SColor1, ss.SColor2, ss.GColor1, ss.TextFont, ss.MainTextColor)
+		PresetTheme(ss.PresetTheme)
+		player.Character.Humanoid.WalkSpeed = ss.WalkSpeed
+		player.Character.Humanoid.JumpPower = ss.JumpPower
+		camera.FieldOfView = ss.FieldOfView
+		player.DevCameraOcclusionMode = ss.CameraMode
+		player.CameraMaxZoomDistance = ss.MaxZoom
+		if ss.RemoveBlackScreen then
+			player.PlayerGui.SpawnFade.Fade.Visible = false
+			player.PlayerGui.CameraFade.Fade.Visible = false
+		end
+		if ss.Fullbright then
+			l.Ambient = Color3.fromRGB(255,255,255)
+			l.Brightness = 50
+			l.GlobalShadows = false
+		else
+			l.Ambient = getgenv().oldl.Ambient
+			l.Brightness = getgenv().oldl.Brightness
+			l.GlobalShadows = getgenv().oldl.GlobalShadows
+		end
+		if ss.UnlockEmotes and player.PlayerGui.MainGUI then -- did not make this btw
+			local emote = require(game:GetService("ReplicatedStorage").Modules.EmoteModule).GeneratePage
+			local target = player.PlayerGui.MainGUI.Game.Emotes
+			local emotelist = { "headless","zombie","zen","ninja","floss","dab" }
+			if not player.PlayerGui.MainGUI.Game.Emotes.EmotePages:FindFirstChild("MM2 Utilities") then
+				emote(emotelist,target,"MM2 Utilities")
+				notif("Unlocked emotes")
+			end
+		end
+	end
+end
+pcall(StartMM2)
+if not getgenv().MM2_UTILITIES_LOADED then
+	print("\n███╗░░░███╗███╗░░░███╗██████╗░  ██╗░░░██╗████████╗██╗██╗░░░░░██╗████████╗██╗███████╗░██████╗\n████╗░████║████╗░████║╚════██╗  ██║░░░██║╚══██╔══╝██║██║░░░░░██║╚══██╔══╝██║██╔════╝██╔════╝\n██╔████╔██║██╔████╔██║░░███╔═╝  ██║░░░██║░░░██║░░░██║██║░░░░░██║░░░██║░░░██║█████╗░░╚█████╗░\n██║╚██╔╝██║██║╚██╔╝██║██╔══╝░░  ██║░░░██║░░░██║░░░██║██║░░░░░██║░░░██║░░░██║██╔══╝░░░╚═══██╗\n██║░╚═╝░██║██║░╚═╝░██║███████╗  ╚██████╔╝░░░██║░░░██║███████╗██║░░░██║░░░██║███████╗██████╔╝\n╚═╝░░░░░╚═╝╚═╝░░░░░╚═╝╚══════╝  ░╚═════╝░░░░╚═╝░░░╚═╝╚══════╝╚═╝░░░╚═╝░░░╚═╝╚══════╝╚═════╝░")
+	print('Press "Left Ctrl" to toggle gui visibility')
+	print('Executing multiple times will cause notification spam, disable "Notifications" to prevent this')
+	print("Made By zzerexx#3970")
+end
+getgenv().MM2_UTILITIES_LOADED = true
 while wait(2) do
-	StartMM2()
+	pcall(StartMM2)
 end
