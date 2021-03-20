@@ -348,7 +348,6 @@ function aaaaaaaaaaaaaaaaaa()
 		end
 	end
 end
-local obj = workspace
 function XrayOn(obj)
 	for i,v in pairs(obj:GetChildren()) do
 		if v:IsA("BasePart") and not v.Parent:FindFirstChild("Humanoid") then
@@ -383,9 +382,9 @@ function stuff(input, gameProcessed)
 		xray = not xray
 		notif("Xray toggled: "..tostring(xray))
 		if xray then
-			XrayOn(obj)
+			XrayOn(workspace)
 		else
-			XrayOff(obj)
+			XrayOff(workspace)
 		end
 	end
 	if input.KeyCode == Enum.KeyCode.RightControl then
