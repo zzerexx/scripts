@@ -349,16 +349,16 @@ function mm2()
 		end
 	end
 end
-function XrayOn(workspace)
-	for i,v in pairs(object:GetChildren()) do
+function XrayOn()
+	for i,v in pairs(workspace:GetChildren()) do
 		if v:IsA("BasePart") and not v.Parent:FindFirstChild("Humanoid") then
 			v.LocalTransparencyModifier = 0.9
 		end
 		XrayOn(v)
 	end
 end
-function XrayOff(workspace)
-	for i,v in pairs(object:GetChildren()) do
+function XrayOff()
+	for i,v in pairs(workspace:GetChildren()) do
 		if v:IsA("BasePart") and not v.Parent:FindFirstChild("Humanoid") then
 			v.LocalTransparencyModifier = 0
 		end
@@ -383,9 +383,9 @@ function stuff(input, gameProcessed)
 		xray = not xray
 		notif("Xray toggled: "..tostring(xray))
 		if xray then
-			XrayOn(workspace)
+			XrayOn()
 		else
-			XrayOff(workspace)
+			XrayOff()
 		end
 	end
 	if input.KeyCode == Enum.KeyCode.RightControl then
@@ -465,16 +465,14 @@ GunDrop.MouseButton1Click:Connect(function()
 		end
 	end)
 end)
-if ss.UnlockEmotes and player.PlayerGui.MainGUI then
+if ss.UnlockEmotes and player.PlayerGui.MainGUI then -- did not make this btw
 	for i,v in pairs(player.PlayerGui.MainGUI.Game.Emotes.EmotePages:GetChildren()) do
 		if v.Name == "MM2 Utilities" then v:Destroy() end
 	end
 	local emote = require(game:GetService("ReplicatedStorage").Modules.EmoteModule).GeneratePage
 	local target = player.PlayerGui.MainGUI.Game.Emotes
 	local emotelist = { "headless","zombie","zen","ninja","floss","dab" }
-	if not player.PlayerGui.MainGUI.Game.Emotes.EmotePages:FindFirstChild("MM2 Utilities") then
-		emote(emotelist,target,"MM2 Utilities")
-	end
+	emote(emotelist,target,"MM2 Utilities")
 end
 function dragify(Frame)
 	dragToggle = nil
