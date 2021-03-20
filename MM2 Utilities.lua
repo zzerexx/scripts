@@ -465,14 +465,16 @@ GunDrop.MouseButton1Click:Connect(function()
 		end
 	end)
 end)
-if ss.UnlockEmotes and player.PlayerGui.MainGUI then -- did not make this btw
+if ss.UnlockEmotes and player.PlayerGui.MainGUI then
 	for i,v in pairs(player.PlayerGui.MainGUI.Game.Emotes.EmotePages:GetChildren()) do
 		if v.Name == "MM2 Utilities" then v:Destroy() end
 	end
 	local emote = require(game:GetService("ReplicatedStorage").Modules.EmoteModule).GeneratePage
 	local target = player.PlayerGui.MainGUI.Game.Emotes
 	local emotelist = { "headless","zombie","zen","ninja","floss","dab" }
-	emote(emotelist,target,"MM2 Utilities")
+	if not player.PlayerGui.MainGUI.Game.Emotes.EmotePages:FindFirstChild("MM2 Utilities") then
+		emote(emotelist,target,"MM2 Utilities")
+	end
 end
 function dragify(Frame)
 	dragToggle = nil
