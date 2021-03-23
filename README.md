@@ -10,13 +10,16 @@ supported games list at bottom of script
 kinda sucks whatever  
   
 # Murder Mystery 2 Utilities  
-Updated March 19, 2021  
-v1.0.0  
+Updated March 22, 2021  
+v1.0.1  
 Check the settings for features  
 should support *all* exploits.  
 ```lua
 Get The Script: https://pastebin.com/raw/FwYmgtCX
 ```   
+-- v1.0.1 --  
+toggling xray/noclip shouldnt interfere with typing anymore  
+removed ok button for notifications  
   
 # Synapse XI  
 Updated March 12, 2021  
