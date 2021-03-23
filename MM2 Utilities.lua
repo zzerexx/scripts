@@ -191,7 +191,6 @@ function notif(text)
 			Title = "MM2 Utilities",
 			Text = text,
 			Duration = 1.5,
-			Button1 = "Ok" 
 		})
 	end
 end
@@ -202,7 +201,7 @@ UIS.InputBegan:Connect(function(input, gameProcessed)
 		notif("Aimbot toggled: "..tostring(aimbottoggled))
 	end
 end)
-function aaaaaaaaaaaaaaaaaa()
+function bruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruh()
 	for i,v in pairs(folder:GetChildren()) do
 		v:Destroy()
 	end
@@ -216,17 +215,15 @@ function aaaaaaaaaaaaaaaaaa()
 	for i,v in pairs(players:GetChildren()) do
 		if v.Name ~= player.Name and not folder:FindFirstChild(v.Name) then
 			if ss.NameEsp then
-				local Billboard = Instance.new("BillboardGui")
-				local Name = Instance.new("TextLabel")
+				local Billboard = Instance.new("BillboardGui", folder)
+				local Name = Instance.new("TextLabel", Billboard)
 				Billboard.Name = v.Name
-				Billboard.Parent = folder
 				Billboard.Adornee = v.Character.Head
 				Billboard.Size = UDim2.new(10, 0, 4, 0)
 				Billboard.ExtentsOffset = Vector3.new(0, 3, 0)
 				Billboard.AlwaysOnTop = true
 				Billboard.MaxDistance = math.huge
 				Name.Name = "Name"
-				Name.Parent = Billboard
 				Name.BackgroundTransparency = 1
 				Name.TextTransparency = ss.NameTextTransparency
 				Name.BorderSizePixel = 0
@@ -260,9 +257,8 @@ function aaaaaaaaaaaaaaaaaa()
 	end -- for i,v
 	if workspace:FindFirstChild("GunDrop",true) then
 		if ss.GunEsp then
-			local GunEsp = Instance.new("BoxHandleAdornment")
+			local GunEsp = Instance.new("BoxHandleAdornment", folder)
 			GunEsp.Name = "Gun"
-			GunEsp.Parent = folder
 			GunEsp.Adornee = game.Workspace.GunDrop
 			GunEsp.AlwaysOnTop = true
 			GunEsp.Color3 = ss.GunEspColor
@@ -270,17 +266,15 @@ function aaaaaaaaaaaaaaaaaa()
 			GunEsp.Transparency = 0.6
 			GunEsp.ZIndex = 0
 			if ss.GunNameEsp then
-				local Billboard = Instance.new("BillboardGui")
-				local Name = Instance.new("TextLabel")
+				local Billboard = Instance.new("BillboardGui", folder)
+				local Name = Instance.new("TextLabel", Billboard)
 				Billboard.Name = "Gun"
-				Billboard.Parent = folder
 				Billboard.Adornee = game.Workspace.GunDrop
 				Billboard.Size = UDim2.new(10, 0, 4, 0)
 				Billboard.ExtentsOffset = Vector3.new(0, 3, 0)
 				Billboard.AlwaysOnTop = true
 				Billboard.MaxDistance = math.huge
 				Name.Name = "Name"
-				Name.Parent = Billboard
 				Name.BackgroundTransparency = 1
 				Name.TextTransparency = ss.GunNameTransparency
 				Name.BorderSizePixel = 0
@@ -348,16 +342,17 @@ function aaaaaaaaaaaaaaaaaa()
 		end
 	end
 end
-function XrayOn(obj)
-	for i,v in pairs(obj:GetChildren()) do
+local object = workspace
+function XrayOn(object)
+	for i,v in pairs(object:GetChildren()) do
 		if v:IsA("BasePart") and not v.Parent:FindFirstChild("Humanoid") then
 			v.LocalTransparencyModifier = 0.9
 		end
 		XrayOn(v)
 	end
 end
-function XrayOff(obj)
-	for i,v in pairs(obj:GetChildren()) do
+function XrayOff(object)
+	for i,v in pairs(object:GetChildren()) do
 		if v:IsA("BasePart") and not v.Parent:FindFirstChild("Humanoid") then
 			v.LocalTransparencyModifier = 0
 		end
@@ -369,32 +364,34 @@ local xray = false
 local toggle1 = false
 local emotes = false
 function stuff(input, gameProcessed)
-	if input.KeyCode == Enum.KeyCode.R and ss.Noclip then
-		noclip = not noclip
-		notif("Noclip toggled: "..tostring(noclip))
-		player.Character.Humanoid:ChangeState(11)
-		repeat
+	if not gameProcessed then
+		if input.KeyCode == Enum.KeyCode.R and ss.Noclip then
+			noclip = not noclip
+			notif("Noclip toggled: "..tostring(noclip))
 			player.Character.Humanoid:ChangeState(11)
-			RunService.Stepped:Wait()
-		until noclip == false
-	end
-	if input.KeyCode == Enum.KeyCode.T and ss.Xray then
-		xray = not xray
-		notif("Xray toggled: "..tostring(xray))
-		if xray then
-			XrayOn(workspace)
-		else
-			XrayOff(workspace)
+			repeat
+				player.Character.Humanoid:ChangeState(11)
+				RunService.Stepped:Wait()
+			until noclip == false
 		end
-	end
-	if input.KeyCode == Enum.KeyCode.RightControl then
-		toggle1 = not toggle1
-		if toggle1 then
-			Topbar.Visible = false
-			notif("Gui is now invisible")
-		else
-			Topbar.Visible = true
-			notif("Gui is now visible")
+		if input.KeyCode == Enum.KeyCode.T and ss.Xray then
+			xray = not xray
+			notif("Xray toggled: "..tostring(xray))
+			if xray then
+				XrayOn(object)
+			else
+				XrayOff(object)
+			end
+		end
+		if input.KeyCode == Enum.KeyCode.RightControl then
+			toggle1 = not toggle1
+			if toggle1 then
+				Topbar.Visible = false
+				notif("Gui is now invisible")
+			else
+				Topbar.Visible = true
+				notif("Gui is now visible")
+			end
 		end
 	end
 end
@@ -406,12 +403,12 @@ mouse.Button1Down:Connect(function()
 	end
 end)
 UIS.InputBegan:Connect(function(input, gameProcessed)
-	if input.KeyCode == Enum.KeyCode.LeftControl then
+	if input.KeyCode == Enum.KeyCode.LeftControl and not gameProcessed then
 		ctrlpressed = true
 	end
 end)
 UIS.InputEnded:Connect(function(input, gameProcessed)
-	if input.KeyCode == Enum.KeyCode.LeftControl then
+	if input.KeyCode == Enum.KeyCode.LeftControl and not gameProcessed then
 		ctrlpressed = false
 	end
 end)
@@ -540,9 +537,9 @@ function PresetTheme(Theme)
 			Color2 = Color3.fromRGB(19,19,19),
 			Color3 = Color3.fromRGB(24,24,24),
 			MColor1 = Color3.fromRGB(255,0,0),
-			MColor2 = Color3.fromRGB(255,100,100),
+			MColor2 = Color3.fromRGB(255,255,255),
 			SColor1 = Color3.fromRGB(0,0,255),
-			SColor2 = Color3.fromRGB(100,100,255),
+			SColor2 = Color3.fromRGB(255,255,255),
 			GColor1 = Color3.fromRGB(0,255,0),
 			GColorT = Color3.fromRGB(100,255,100),
 			GColorF = Color3.fromRGB(255,100,100),
@@ -655,7 +652,7 @@ local l = game:GetService("Lighting")
 getgenv().oldl = { Ambient = l.Ambient, Brightness = l.Brightness, GlobalShadows = l.GlobalShadows }
 function StartMM2()
 	if ss.Enabled then
-		pcall(aaaaaaaaaaaaaaaaaa)
+		pcall(bruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruhbruh)
 		ApplyTheme(ss.Color1, ss.Color2, ss.Color3, ss.MColor1, ss.MColor2, ss.SColor1, ss.SColor2, ss.GColor1, ss.TextFont, ss.MainTextColor)
 		PresetTheme(ss.PresetTheme)
 		player.Character.Humanoid.WalkSpeed = ss.WalkSpeed
@@ -692,6 +689,7 @@ if not getgenv().MM2_UTILITIES_LOADED then
 	print("\n███╗░░░███╗███╗░░░███╗██████╗░  ██╗░░░██╗████████╗██╗██╗░░░░░██╗████████╗██╗███████╗░██████╗\n████╗░████║████╗░████║╚════██╗  ██║░░░██║╚══██╔══╝██║██║░░░░░██║╚══██╔══╝██║██╔════╝██╔════╝\n██╔████╔██║██╔████╔██║░░███╔═╝  ██║░░░██║░░░██║░░░██║██║░░░░░██║░░░██║░░░██║█████╗░░╚█████╗░\n██║╚██╔╝██║██║╚██╔╝██║██╔══╝░░  ██║░░░██║░░░██║░░░██║██║░░░░░██║░░░██║░░░██║██╔══╝░░░╚═══██╗\n██║░╚═╝░██║██║░╚═╝░██║███████╗  ╚██████╔╝░░░██║░░░██║███████╗██║░░░██║░░░██║███████╗██████╔╝\n╚═╝░░░░░╚═╝╚═╝░░░░░╚═╝╚══════╝  ░╚═════╝░░░░╚═╝░░░╚═╝╚══════╝╚═╝░░░╚═╝░░░╚═╝╚══════╝╚═════╝░")
 	print('Press "Left Ctrl" to toggle gui visibility')
 	print('Executing multiple times will cause notification spam, disable "Notifications" to prevent this')
+	print("Made By zzerexx#3970")
 end
 getgenv().MM2_UTILITIES_LOADED = true
 while wait(2) do
