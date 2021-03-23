@@ -19,7 +19,7 @@ Get The Script: https://pastebin.com/raw/FwYmgtCX
 ```   
 -- v1.0.1 --  
 toggling xray/noclip shouldnt interfere with typing anymore  
-removed ok button for notifications  
+removed ok button from notifications  
   
 # Synapse XI  
 Updated March 12, 2021  
