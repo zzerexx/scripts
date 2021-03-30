@@ -365,7 +365,7 @@ local noclip = false
 local xray = false
 local toggle1 = false
 local emotes = false
-function stuff(input, gameProcessed)
+UIS.InputBegan:Connect(function(input, gameProcessed)
 	if not gameProcessed then
 		if input.KeyCode == Enum.KeyCode.R and ss.Noclip then
 			noclip = not noclip
@@ -396,8 +396,7 @@ function stuff(input, gameProcessed)
 			end
 		end
 	end
-end
-UIS.InputBegan:Connect(stuff)
+end)
 local ctrlpressed = false
 mouse.Button1Down:Connect(function()
 	if ctrlpressed and ss.CtrlClickTP then
@@ -507,6 +506,10 @@ function dragify(Frame)
 	end)
 end
 dragify(Topbar) -- credit to this guy: https://www.roblox.com/library/5021849770/Smooth-Drag
+function round(num, numDecimalPlaces)
+	return tonumber(string.format("%." .. (numDecimalPlaces or 0) .. "f", num))
+end
+
 print("Loaded all scripts     [5/6]")
 function ApplyTheme(Color1, Color2, Color3, MColor1, MColor2, SColor1, SColor2, GColor1, TextFont, TextColor)
 	Topbar.BackgroundColor3 = Color1
@@ -647,7 +650,7 @@ function LoadAnimation()
 	fadetext(GunDrop, 0.2)
 	wait(0.05)
 	fadetext(Credit, 0.2)
-	print("Loaded animation, took "..tick()-loadtime.." seconds")
+	print("Loaded animation, took "..round(tick()-loadtime,2).." seconds")
 end
 LoadAnimation()
 local l = game:GetService("Lighting")
