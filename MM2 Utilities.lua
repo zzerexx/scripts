@@ -346,7 +346,9 @@ local object = workspace
 function XrayOn(object)
 	for i,v in pairs(object:GetChildren()) do
 		if v:IsA("BasePart") and not v.Parent:FindFirstChild("Humanoid") then
-			v.LocalTransparencyModifier = 0.9
+			if typeof(ss.XrayTransparency) == "number" then
+				v.LocalTransparencyModifier = ss.XrayTransparency
+			end
 		end
 		XrayOn(v)
 	end
