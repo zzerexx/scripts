@@ -22,6 +22,7 @@ toggling xray/noclip shouldnt interfere with typing anymore
 removed ok button from notifications  
 -- v1.0.2 --  
 New Setting: XrayTransparency  
+Minor improvements  
   
 # Synapse XI  
 Updated March 12, 2021  
