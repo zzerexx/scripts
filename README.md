@@ -17,12 +17,17 @@ should support *all* exploits.
 ```lua
 Get The Script: https://pastebin.com/raw/FwYmgtCX
 ```   
--- v1.0.1 --  
-toggling xray/noclip shouldnt interfere with typing anymore  
-removed ok button from notifications  
--- v1.0.2 --  
-New Setting: XrayTransparency  
-Minor improvements  
+**Updates**  
+v1.0.1  
+```
+Toggling xray/noclip shouldn't interfere with typing anymore
+Removed the "Ok" button from notifications
+```  
+v1.0.2  
+```
+New Setting: XrayTransparency
+Minor improvements
+```   
   
 # Synapse XI  
 Updated March 12, 2021  
