@@ -1,6 +1,8 @@
+-- Murder Mystery 2 Utilities by zzerexx#3970
 print("Loaded all settings    [1/6]")
 if game.PlaceId ~= 142823291 then game:GetService("TeleportService"):Teleport(142823291) end
 if typeof(getgenv().mm2) == "Instance" then getgenv().mm2:Destroy() end
+local scriptversion = "v1.0.2a"
 local ss = getgenv().Settings
 local players = game:GetService("Players")
 local player = players.LocalPlayer
@@ -462,7 +464,8 @@ GunDrop.MouseButton1Click:Connect(function()
 		end
 	end)
 end)
-if ss.UnlockEmotes and player.PlayerGui.MainGUI then -- did not make this btw
+if ss.UnlockEmotes then
+	player.PlayerGui:WaitForChild("MainGUI")
 	for i,v in pairs(player.PlayerGui.MainGUI.Game.Emotes.EmotePages:GetChildren()) do
 		if v.Name == "MM2 Utilities" then v:Destroy() end
 	end
@@ -678,7 +681,8 @@ function StartMM2()
 			l.Brightness = getgenv().oldl.Brightness
 			l.GlobalShadows = getgenv().oldl.GlobalShadows
 		end
-		if ss.UnlockEmotes and player.PlayerGui.MainGUI then -- did not make this btw
+		if ss.UnlockEmotes then
+			player.PlayerGui:WaitForChild("MainGUI")
 			local emote = require(game:GetService("ReplicatedStorage").Modules.EmoteModule).GeneratePage
 			local target = player.PlayerGui.MainGUI.Game.Emotes
 			local emotelist = { "headless","zombie","zen","ninja","floss","dab" }
@@ -694,9 +698,25 @@ if not getgenv().MM2_UTILITIES_LOADED then
 	print("\n███╗░░░███╗███╗░░░███╗██████╗░  ██╗░░░██╗████████╗██╗██╗░░░░░██╗████████╗██╗███████╗░██████╗\n████╗░████║████╗░████║╚════██╗  ██║░░░██║╚══██╔══╝██║██║░░░░░██║╚══██╔══╝██║██╔════╝██╔════╝\n██╔████╔██║██╔████╔██║░░███╔═╝  ██║░░░██║░░░██║░░░██║██║░░░░░██║░░░██║░░░██║█████╗░░╚█████╗░\n██║╚██╔╝██║██║╚██╔╝██║██╔══╝░░  ██║░░░██║░░░██║░░░██║██║░░░░░██║░░░██║░░░██║██╔══╝░░░╚═══██╗\n██║░╚═╝░██║██║░╚═╝░██║███████╗  ╚██████╔╝░░░██║░░░██║███████╗██║░░░██║░░░██║███████╗██████╔╝\n╚═╝░░░░░╚═╝╚═╝░░░░░╚═╝╚══════╝  ░╚═════╝░░░░╚═╝░░░╚═╝╚══════╝╚═╝░░░╚═╝░░░╚═╝╚══════╝╚═════╝░")
 	print('Press "Left Ctrl" to toggle gui visibility')
 	print('Executing multiple times will cause notification spam, disable "Notifications" to prevent this')
-	print("Made By zzerexx#3970")
 end
 getgenv().MM2_UTILITIES_LOADED = true
+local currentversion = game:HttpGet("https://pastebin.com/raw/5KYjyD9b")
+if scriptversion ~= currentversion then
+	local bind = Instance.new("BindableFunction")
+	function bind.OnInvoke(response)
+		if response == "Yes" and typeof(setclipboard) == "function" then
+			setclipboard("https://pastebin.com/raw/FwYmgtCX")
+		end
+	end
+	game.StarterGui:SetCore("SendNotification", {
+		Title = "MM2 Utilities",
+		Text = "You are using an older version of MM2 Utilities. Would you like the lastest version?",
+		Duration = 20,
+		Callback = bind,
+		Button1 = "Yes",
+		Button2 = "No"
+	})
+end
 while wait(2) do
 	pcall(StartMM2)
 end
