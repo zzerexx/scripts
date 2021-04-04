@@ -28,6 +28,10 @@ v1.0.2
 New Setting: XrayTransparency
 Minor improvements
 ```   
+v1.0.2a  
+```
+Minor script changes
+```  
   
 # Synapse XI  
 Updated March 12, 2021  
