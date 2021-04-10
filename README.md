@@ -32,6 +32,10 @@ v1.0.2a
 ```
 Minor script changes
 ```  
+v1.0.3  
+```
+New Setting: InfiniteJump
+```  
   
 # Synapse XI  
 Updated March 12, 2021  
