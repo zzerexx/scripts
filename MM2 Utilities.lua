@@ -1,4 +1,4 @@
--- Murder Mystery 2 Utilities by zzerexx#3970
+-- https://cdn.discordapp.com/emojis/773022571775262751.png?v=1
 print("Loaded all settings    [1/6]")
 if game.PlaceId ~= 142823291 then game:GetService("TeleportService"):Teleport(142823291) end
 if typeof(getgenv().mm2) == "Instance" then getgenv().mm2:Destroy() end
@@ -661,7 +661,7 @@ end
 LoadAnimation()
 local l = game:GetService("Lighting")
 getgenv().oldl = { Ambient = l.Ambient, Brightness = l.Brightness, GlobalShadows = l.GlobalShadows }
-function StartMM2()
+function Refresh()
 	if ss.Enabled then
 		pcall(sup)
 		ApplyTheme(ss.Color1, ss.Color2, ss.Color3, ss.MColor1, ss.MColor2, ss.SColor1, ss.SColor2, ss.GColor1, ss.TextFont, ss.MainTextColor)
@@ -696,7 +696,7 @@ function StartMM2()
 		end
 	end
 end
-pcall(StartMM2)
+pcall(Refresh)
 if not getgenv().MM2_UTILITIES_LOADED then
 	print("\n███╗░░░███╗███╗░░░███╗██████╗░  ██╗░░░██╗████████╗██╗██╗░░░░░██╗████████╗██╗███████╗░██████╗\n████╗░████║████╗░████║╚════██╗  ██║░░░██║╚══██╔══╝██║██║░░░░░██║╚══██╔══╝██║██╔════╝██╔════╝\n██╔████╔██║██╔████╔██║░░███╔═╝  ██║░░░██║░░░██║░░░██║██║░░░░░██║░░░██║░░░██║█████╗░░╚█████╗░\n██║╚██╔╝██║██║╚██╔╝██║██╔══╝░░  ██║░░░██║░░░██║░░░██║██║░░░░░██║░░░██║░░░██║██╔══╝░░░╚═══██╗\n██║░╚═╝░██║██║░╚═╝░██║███████╗  ╚██████╔╝░░░██║░░░██║███████╗██║░░░██║░░░██║███████╗██████╔╝\n╚═╝░░░░░╚═╝╚═╝░░░░░╚═╝╚══════╝  ░╚═════╝░░░░╚═╝░░░╚═╝╚══════╝╚═╝░░░╚═╝░░░╚═╝╚══════╝╚═════╝░")
 	print('Press "Left Ctrl" to toggle gui visibility')
@@ -726,5 +726,5 @@ if scriptversion ~= currentversion then
 	})
 end
 while wait(2) do
-	pcall(StartMM2)
+	pcall(Refresh)
 end
