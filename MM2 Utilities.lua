@@ -2,7 +2,7 @@
 print("Loaded all settings    [1/6]")
 if game.PlaceId ~= 142823291 then game:GetService("TeleportService"):Teleport(142823291) end
 if typeof(getgenv().mm2) == "Instance" then getgenv().mm2:Destroy() end
-local scriptversion = "v1.0.2a"
+local scriptversion = "v1.0.3"
 local ss = getgenv().Settings
 local players = game:GetService("Players")
 local player = players.LocalPlayer
@@ -386,6 +386,9 @@ UIS.InputBegan:Connect(function(input, gameProcessed)
 			else
 				XrayOff(object)
 			end
+		end
+		if input.KeyCode == Enum.KeyCode.Space and ss.InfiniteJump then
+			player.Character.Humanoid:ChangeState(3)
 		end
 		if input.KeyCode == Enum.KeyCode.RightControl then
 			toggle1 = not toggle1
