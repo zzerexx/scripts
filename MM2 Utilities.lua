@@ -709,6 +709,11 @@ if scriptversion ~= currentversion then
 	function bind.OnInvoke(response)
 		if response == "Yes" and typeof(setclipboard) == "function" then
 			setclipboard("https://pastebin.com/raw/FwYmgtCX")
+			game.StarterGui:SetCore("SendNotification", {
+				Title = "MM2 Utilities",
+				Text = "Copied the script to your clipboard!",
+				Duration = 5,
+			})
 		end
 	end
 	game.StarterGui:SetCore("SendNotification", {
