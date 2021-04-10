@@ -10,7 +10,7 @@ supported games list at bottom of script
 kinda sucks whatever  
   
 # Murder Mystery 2 Utilities  
-Updated March 29, 2021  
+Updated April 10, 2021  
 v1.0.2  
 Check the settings for features  
 should support *all* exploits.  
