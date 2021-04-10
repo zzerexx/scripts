@@ -11,7 +11,7 @@ kinda sucks whatever
   
 # Murder Mystery 2 Utilities  
 Updated April 10, 2021  
-v1.0.2  
+v1.0.3  
 Check the settings for features  
 should support *all* exploits.  
 ```lua
