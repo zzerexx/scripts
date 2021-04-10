@@ -35,6 +35,7 @@ Minor script changes
 v1.0.3  
 ```
 New Setting: InfiniteJump
+Script will now check if you are using an outdated version
 ```  
   
 # Synapse XI  
