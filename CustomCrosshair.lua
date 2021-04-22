@@ -95,11 +95,11 @@ getgenv().rs = RunService.RenderStepped:Connect(function()
                 game:GetService("Players").LocalPlayer.PlayerGui.GUI.Crosshairs.Crosshair.BottomFrame.Visible = false
                 game:GetService("Players").LocalPlayer.PlayerGui.GUI.Crosshairs.Crosshair.Dot.Visible = false
             elseif game.PlaceId == 301549746 then -- Counter Blox
-                game:GetService("Players").LocalPlayer.PlayerGui.GUI.Crosshairs.Crosshair.LeftFrame.Visible = false
-                game:GetService("Players").LocalPlayer.PlayerGui.GUI.Crosshairs.Crosshair.RightFrame.Visible = false
-                game:GetService("Players").LocalPlayer.PlayerGui.GUI.Crosshairs.Crosshair.TopFrame.Visible = false
-                game:GetService("Players").LocalPlayer.PlayerGui.GUI.Crosshairs.Crosshair.BottomFrame.Visible = false
-                game:GetService("Players").LocalPlayer.PlayerGui.GUI.Crosshairs.Crosshair.Dot.Visible = false
+                --game:GetService("Players").LocalPlayer.PlayerGui.GUI.Crosshairs.Crosshair.LeftFrame.Visible = false
+                --game:GetService("Players").LocalPlayer.PlayerGui.GUI.Crosshairs.Crosshair.RightFrame.Visible = false
+                --game:GetService("Players").LocalPlayer.PlayerGui.GUI.Crosshairs.Crosshair.TopFrame.Visible = false
+                --game:GetService("Players").LocalPlayer.PlayerGui.GUI.Crosshairs.Crosshair.BottomFrame.Visible = false
+                --game:GetService("Players").LocalPlayer.PlayerGui.GUI.Crosshairs.Crosshair.Dot.Visible = false
             elseif game.PlaceId == 4292776423 then -- Unit: Classified
                 game:GetService("Players").LocalPlayer.PlayerGui.GUI.Crosshair.L.Visible = false
                 game:GetService("Players").LocalPlayer.PlayerGui.GUI.Crosshair.R.Visible = false
