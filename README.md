@@ -13,7 +13,6 @@ kinda sucks whatever
 Updated April 22, 2021  
 v1.0.0  
 Create your own custom crosshair using the Drawing Library  
-Not recommended to use Dot.  
 ```lua
 Get The Script: https://pastebin.com/raw/eGiC2jPg
 ```  
