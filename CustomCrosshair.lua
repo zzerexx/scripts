@@ -88,7 +88,7 @@ getgenv().rs = RunService.RenderStepped:Connect(function()
     end
     pcall(function()
         if ss.HideGameCrosshair then
-            if game.PlaceId == 286090429 then -- Arsenal & Counter Blox
+            if game.PlaceId == 286090429 then -- Arsenal
                 game:GetService("Players").LocalPlayer.PlayerGui.GUI.Crosshairs.Crosshair.LeftFrame.Visible = false
                 game:GetService("Players").LocalPlayer.PlayerGui.GUI.Crosshairs.Crosshair.RightFrame.Visible = false
                 game:GetService("Players").LocalPlayer.PlayerGui.GUI.Crosshairs.Crosshair.TopFrame.Visible = false
