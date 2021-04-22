@@ -8,6 +8,15 @@ v1.0.0
 working features: chams, nameesp, headtracers  
 supported games list at bottom of script  
 kinda sucks whatever  
+
+# Custom Crosshair  
+Updated April 22, 2021  
+v1.0.0  
+Create your own custom crosshair using the Drawing Library  
+Not recommended to use Dot.  
+```lua
+Get The Script: 
+```  
   
 # Murder Mystery 2 Utilities  
 Updated April 10, 2021  
