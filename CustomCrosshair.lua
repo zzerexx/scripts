@@ -86,4 +86,30 @@ getgenv().rs = RunService.RenderStepped:Connect(function()
         dot.Size = Vector2.new(ss.Thickness,ss.Thickness)
         dot.Position = Vector2.new(middle.X-(ss.Thickness/2),middle.Y-(ss.Thickness/2))
     end
+    pcall(function()
+        if ss.HideGameCrosshair then
+            if game.PlaceId == 286090429 or game.PlaceId == 301549746 then -- Arsenal & Counter Blox
+                game:GetService("Players").LocalPlayer.PlayerGui.GUI.Crosshairs.Crosshair.Visible = false
+            elseif game.PlaceId == 4292776423 then -- Unit: Classified
+                game:GetService("Players").LocalPlayer.PlayerGui.GUI.Crosshair.L.Visible = false
+                game:GetService("Players").LocalPlayer.PlayerGui.GUI.Crosshair.R.Visible = false
+                game:GetService("Players").LocalPlayer.PlayerGui.GUI.Crosshair.U.Visible = false
+                game:GetService("Players").LocalPlayer.PlayerGui.GUI.Crosshair.D.Visible = false
+            elseif game.PlaceId == 292439477 then -- Phantom Forces
+                game:GetService("Players").LocalPlayer.PlayerGui.MainGui.GameGui.CrossHud.Visible = false
+            elseif game.PlaceId == 4716045691 then -- Polybattle
+                game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.Center.ScaleYY.Middle.MouseIcon.Crosshair.Visible = false
+            elseif game.PlaceId == 3233893879 then -- Bad Business
+                game:GetService("Players").LocalPlayer.PlayerGui.MainGui.Reticle.Visible = false
+            elseif game.PlaceId == 2377868063 then -- Strucid
+                game:GetService("Players").LocalPlayer.PlayerGui.MainGui.CrossHairs.Visible = false
+                game:GetService("Players").LocalPlayer.PlayerGui.MainGui.AlternateCrosshair.Visible = false
+                game:GetService("Players").LocalPlayer.PlayerGui.MainGui.ShotgunCrossHairs.Visible = false
+            elseif game.PlaceId == 2555870920 then -- AceOfSpadez
+                game:GetService("Players").LocalPlayer.PlayerGui.Core.Gameplay.Cursor.Aim.Visible = false
+            elseif game.PlaceId == 4651779470 then -- RECOIL
+                game:GetService("Players").LocalPlayer.PlayerGui.WHUD.Crosshair.Visible = false
+            end
+        end
+    end)
 end)
