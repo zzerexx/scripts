@@ -105,10 +105,10 @@ getgenv().rs = RunService.RenderStepped:Connect(function()
                 game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.Center.ScaleYY.Middle.MouseIcon.Crosshair.Visible = false
             elseif game.PlaceId == 3233893879 then -- Bad Business
                 game:GetService("Players").LocalPlayer.PlayerGui.MainGui.Reticle.Visible = false
-            elseif game.PlaceId == 2377868063 then -- Strucid
-                game:GetService("Players").LocalPlayer.PlayerGui.MainGui.CrossHairs.Visible = false
-                game:GetService("Players").LocalPlayer.PlayerGui.MainGui.AlternateCrosshair.Visible = false
-                game:GetService("Players").LocalPlayer.PlayerGui.MainGui.ShotgunCrossHairs.Visible = false
+            --elseif game.PlaceId == 2377868063 then -- Strucid
+                --game:GetService("Players").LocalPlayer.PlayerGui.MainGui.CrossHairs.Visible = false
+                --game:GetService("Players").LocalPlayer.PlayerGui.MainGui.AlternateCrosshair.Visible = false
+                --game:GetService("Players").LocalPlayer.PlayerGui.MainGui.ShotgunCrossHairs.Visible = false
             elseif game.PlaceId == 2555870920 then -- AceOfSpadez
                 game:GetService("Players").LocalPlayer.PlayerGui.Core.Gameplay.Cursor.Aim.Visible = false
             elseif game.PlaceId == 4651779470 then -- RECOIL
