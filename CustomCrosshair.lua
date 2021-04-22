@@ -1,4 +1,11 @@
 -- Custom Crosshair by zzerexx#3970
+if typeof(Drawing.new) ~= "function" then
+    local hint = Instance.new("Hint",game.CoreGui)
+    hint.Text = "Your exploit does not have a Drawing Library"
+    wait(5)
+    hint:Destroy()
+    return
+end
 local camera = workspace.CurrentCamera
 local UIS = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
