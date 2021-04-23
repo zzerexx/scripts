@@ -42,10 +42,12 @@ end
 
 getgenv().rs = RunService.RenderStepped:Connect(function()
     ss = getgenv().CrosshairSettings
-    if ss.HideMouseIcon then
-        UIS.MouseIconEnabled = false
-    else
-        UIS.MouseIconEnabled = true
+    if ss.HideMouseIcon ~= 0 then
+        if ss.HideMouseIcon then
+            UIS.MouseIconEnabled = false
+        else
+            UIS.MouseIconEnabled = true
+        end
     end
     if ss.FollowCursor then
         middle = UIS:GetMouseLocation()
