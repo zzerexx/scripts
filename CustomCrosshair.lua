@@ -14,11 +14,10 @@ local middle = Vector2.new(camera.ViewportSize.X/2,camera.ViewportSize.Y/2)
 
 if typeof(getgenv().crosshairobj) == "table" then
     for i,v in pairs(getgenv().crosshairobj) do
-        if typeof(v) == "table" then
+        if typeof(v) == "table" or typeof(v) == "userdata" then
             v:Remove()
         end
     end
-    getgenv().crosshairobj = {}
 end
 if typeof(getgenv().rs) == "RBXScriptConnection" then
     getgenv().rs:Disconnect()
