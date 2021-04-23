@@ -10,11 +10,11 @@ supported games list at bottom of script
 kinda sucks whatever  
 
 # Custom Crosshair  
-Updated April 22, 2021  
+Updated April 23, 2021  
 v1.0.0  
 Create your own custom crosshair using the Drawing Library  
 ```lua
-Get The Script: https://pastebin.com/raw/eGiC2jPg
+Script: https://pastebin.com/raw/eGiC2jPg
 ```  
   
 # Murder Mystery 2 Utilities  
@@ -23,7 +23,7 @@ v1.0.3
 Check the settings for features  
 should support *all* exploits.  
 ```lua
-Get The Script: https://pastebin.com/raw/FwYmgtCX
+Script: https://pastebin.com/raw/FwYmgtCX
 ```   
 **Updates**  
 v1.0.1  
