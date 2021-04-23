@@ -15,7 +15,6 @@ local middle = Vector2.new(camera.ViewportSize.X/2,camera.ViewportSize.Y/2)
 if typeof(getgenv().crosshairobj) == "table" then
     for i,v in pairs(getgenv().crosshairobj) do
         if typeof(v) == "table" then
-            v:Remove()
             v:Destroy()
         end
     end
