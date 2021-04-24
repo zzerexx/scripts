@@ -23,6 +23,20 @@ end
 if typeof(getgenv().rs) == "RBXScriptConnection" then
     getgenv().rs:Disconnect()
 end
+local supported = false
+for i,v in next, {286090429,301549746,4292776423,292439477,299659045,4716045691,3233893879,2377868063,2555870920,4651779470} do
+    if game.PlaceId == v then
+        supported = true
+    end
+end
+if ss.HideGameCrosshair and not supported then
+    spawn(function()
+        local hint = Instance.new("Hint",game.CoreGui)
+        hint.Text = "HideGameCrosshair is not available for this game"
+        wait(5)
+        hint:Destroy()    
+    end)
+end
 
 local line1 = Drawing.new("Line") -- Top Line
 local line2 = Drawing.new("Line") -- Right Line 
@@ -54,9 +68,6 @@ getgenv().rs = RunService.RenderStepped:Connect(function()
         middle = UIS:GetMouseLocation()
     else
         middle = Vector2.new(camera.ViewportSize.X/2,camera.ViewportSize.Y/2)
-    end
-    if tostring(ss.Color):lower() == "rainbow" then
-        ss.Color = Color3.fromHSV(tick()%5/5,1,1)
     end
     line1.Transparency = ss.Opacity
     line2.Transparency = ss.Opacity
