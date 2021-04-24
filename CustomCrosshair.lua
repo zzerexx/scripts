@@ -3,6 +3,10 @@ if typeof(Drawing.new) ~= "function" then
     msg("Your exploit does not have a Drawing Library",5)
     return
 end
+if typeof(ss.Color) ~= "Color3" then
+    msg("Invalid Color3 Value",2)
+    return
+end
 local player = game:GetService("Players").LocalPlayer
 local camera = workspace.CurrentCamera
 local UIS = game:GetService("UserInputService")
@@ -10,10 +14,6 @@ local RunService = game:GetService("RunService")
 local ss = getgenv().CrosshairSettings
 local middle = Vector2.new(camera.ViewportSize.X/2,camera.ViewportSize.Y/2)
 
-if typeof(ss.Color) ~= "Color3" then
-    msg("Invalid Color3 Value",2)
-    return
-end
 if typeof(getgenv().crosshairobj) == "table" then
     for i,v in pairs(getgenv().crosshairobj) do
         if typeof(v) == "table" or typeof(v) == "userdata" then
