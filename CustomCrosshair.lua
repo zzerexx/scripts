@@ -1,16 +1,6 @@
 -- Custom Crosshair by zzerexx#3970
-function msg(text,duration)
-    local hint = Instance.new("Hint",game.CoreGui)
-    hint.Text = text
-    wait(duration)
-    hint:Destroy()
-end
 if typeof(Drawing.new) ~= "function" then
     msg("Your exploit does not have a Drawing Library",5)
-    return
-end
-if typeof(ss.Color) ~= "Color3" then
-    msg("Invalid Color3 Value",2)
     return
 end
 local player = game:GetService("Players").LocalPlayer
@@ -20,6 +10,10 @@ local RunService = game:GetService("RunService")
 local ss = getgenv().CrosshairSettings
 local middle = Vector2.new(camera.ViewportSize.X/2,camera.ViewportSize.Y/2)
 
+if typeof(ss.Color) ~= "Color3" then
+    msg("Invalid Color3 Value",2)
+    return
+end
 if typeof(getgenv().crosshairobj) == "table" then
     for i,v in pairs(getgenv().crosshairobj) do
         if typeof(v) == "table" or typeof(v) == "userdata" then
@@ -138,3 +132,10 @@ getgenv().rs = RunService.RenderStepped:Connect(function()
         end)
     end
 end)
+
+function msg(text,duration)
+    local hint = Instance.new("Hint",game.CoreGui)
+    hint.Text = text
+    wait(duration)
+    hint:Destroy()
+end
