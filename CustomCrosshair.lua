@@ -1,4 +1,11 @@
 -- Custom Crosshair by zzerexx#3970
+-- no skidding
+function msg(text,duration)
+    local hint = Instance.new("Hint",game.CoreGui)
+    hint.Text = text
+    wait(duration)
+    hint:Destroy()
+end
 if typeof(Drawing.new) ~= "function" then
     msg("Your exploit does not have a Drawing Library",5)
     return
@@ -11,7 +18,7 @@ local ss = getgenv().CrosshairSettings
 local middle = Vector2.new(camera.ViewportSize.X/2,camera.ViewportSize.Y/2)
 
 if typeof(ss.Color) ~= "Color3" then
-    msg("Invalid Color3 Value",2)
+    msg("Invalid Color",2)
     return
 end
 if typeof(getgenv().crosshairobj) == "table" then
@@ -40,7 +47,7 @@ local line1 = Drawing.new("Line") -- Top Line
 local line2 = Drawing.new("Line") -- Right Line 
 local line3 = Drawing.new("Line") -- Bottom Line 
 local line4 = Drawing.new("Line") -- Left Line
-local dot = Drawing.new("Square")
+local dot = Drawing.new("Square") -- garbage dot
 getgenv().crosshairobj = {line1 = line1,line2 = line2,line3 = line3,line4 = line4,dot = dot}
 line1.Visible = true
 line2.Visible = true
@@ -132,10 +139,3 @@ getgenv().rs = RunService.RenderStepped:Connect(function()
         end)
     end
 end)
-
-function msg(text,duration)
-    local hint = Instance.new("Hint",game.CoreGui)
-    hint.Text = text
-    wait(duration)
-    hint:Destroy()
-end
