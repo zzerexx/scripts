@@ -1,4 +1,10 @@
 -- Custom Crosshair by zzerexx#3970
+function msg(text,duration)
+    local hint = Instance.new("Hint",game.CoreGui)
+    hint.Text = text
+    wait(duration)
+    hint:Destroy()
+end
 if typeof(Drawing.new) ~= "function" then
     msg("Your exploit does not have a Drawing Library",5)
     return
@@ -132,10 +138,3 @@ getgenv().rs = RunService.RenderStepped:Connect(function()
         end)
     end
 end)
-
-function msg(text,duration)
-    local hint = Instance.new("Hint",game.CoreGui)
-    hint.Text = text
-    wait(duration)
-    hint:Destroy()
-end
