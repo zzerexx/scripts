@@ -1,9 +1,6 @@
 -- Custom Crosshair by zzerexx#3970
 if typeof(Drawing.new) ~= "function" then
-    local hint = Instance.new("Hint",game.CoreGui)
-    hint.Text = "Your exploit does not have a Drawing Library"
-    wait(5)
-    hint:Destroy()
+    msg("Your exploit does not have a Drawing Library",5)
     return
 end
 local player = game:GetService("Players").LocalPlayer
@@ -23,6 +20,10 @@ end
 if typeof(getgenv().rs) == "RBXScriptConnection" then
     getgenv().rs:Disconnect()
 end
+if typeof(ss.Color) ~= "Color3" then
+    msg("Invalid Color3 Value",2)
+    return
+end
 local supported = false
 for i,v in next, {286090429,301549746,4292776423,292439477,299659045,4716045691,3233893879,2377868063,2555870920,4651779470} do
     if game.PlaceId == v then
@@ -31,10 +32,7 @@ for i,v in next, {286090429,301549746,4292776423,292439477,299659045,4716045691,
 end
 if ss.HideGameCrosshair and not supported then
     spawn(function()
-        local hint = Instance.new("Hint",game.CoreGui)
-        hint.Text = "HideGameCrosshair is not available for this game"
-        wait(5)
-        hint:Destroy()    
+        msg("HideGameCrosshair is not available for this game",5) 
     end)
 end
 
@@ -134,3 +132,10 @@ getgenv().rs = RunService.RenderStepped:Connect(function()
         end)
     end
 end)
+
+function msg(text,duration)
+    local hint = Instance.new("Hint",game.CoreGui)
+    hint.Text = text
+    wait(duration)
+    hint:Destroy()
+end
