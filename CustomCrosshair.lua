@@ -6,6 +6,27 @@ function msg(text,duration)
     wait(duration)
     hint:Destroy()
 end
+function UpdateScript()
+    local bind = Instance.new("BindableFunction")
+    function bind.OnInvoke(response)
+        if response == "Yes" then
+            setclipboard("https://pastebin.com/raw/eGiC2jPg")
+            game.StarterGui:SetCore("SendNotification",{
+                Title = "Custom Crosshair",
+                Text = "Copied the script to your clipboard!",
+                Duration = 5
+            })
+        end
+    end
+    game.StarterGui:SetCore("SendNotification",{
+        Title = "Custom Crosshair",
+        Text = "You are using an older version of Custom Crosshair. Would you like the latest version?",
+        Duration = 20,
+        Callback = bind,
+        Button1 = "Yes",
+        Button2 = "No"
+    })
+end
 if typeof(Drawing.new) ~= "function" then
     msg("Your exploit does not have a Drawing Library",5)
     return
@@ -21,6 +42,7 @@ if typeof(ss.Color) ~= "Color3" then
     msg("Invalid Color",2)
     return
 end
+
 if typeof(getgenv().crosshairobj) == "table" then
     for i,v in pairs(getgenv().crosshairobj) do
         if typeof(v) == "table" or typeof(v) == "userdata" then
@@ -39,7 +61,7 @@ for i,v in next, {286090429,301549746,4292776423,292439477,299659045,4716045691,
 end
 if ss.HideGameCrosshair and not supported then
     spawn(function()
-        msg("HideGameCrosshair is not available for this game",5) 
+        msg("HideGameCrosshair is not available for this game. Check the source for supported",5) 
     end)
 end
 
