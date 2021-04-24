@@ -55,7 +55,9 @@ getgenv().rs = RunService.RenderStepped:Connect(function()
     else
         middle = Vector2.new(camera.ViewportSize.X/2,camera.ViewportSize.Y/2)
     end
-    ss.Color = ss.Color
+    if tostring(ss.Color):lower() == "rainbow" then
+        ss.Color = Color3.fromHSV(tick()%5/5,1,1)
+    end
     line1.Transparency = ss.Opacity
     line2.Transparency = ss.Opacity
     line3.Transparency = ss.Opacity
