@@ -10,6 +10,10 @@ local RunService = game:GetService("RunService")
 local ss = getgenv().CrosshairSettings
 local middle = Vector2.new(camera.ViewportSize.X/2,camera.ViewportSize.Y/2)
 
+if typeof(ss.Color) ~= "Color3" then
+    msg("Invalid Color3 Value",2)
+    return
+end
 if typeof(getgenv().crosshairobj) == "table" then
     for i,v in pairs(getgenv().crosshairobj) do
         if typeof(v) == "table" or typeof(v) == "userdata" then
@@ -19,10 +23,6 @@ if typeof(getgenv().crosshairobj) == "table" then
 end
 if typeof(getgenv().rs) == "RBXScriptConnection" then
     getgenv().rs:Disconnect()
-end
-if typeof(ss.Color) ~= "Color3" then
-    msg("Invalid Color3 Value",2)
-    return
 end
 local supported = false
 for i,v in next, {286090429,301549746,4292776423,292439477,299659045,4716045691,3233893879,2377868063,2555870920,4651779470} do
