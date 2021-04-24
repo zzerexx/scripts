@@ -55,6 +55,7 @@ getgenv().rs = RunService.RenderStepped:Connect(function()
     else
         middle = Vector2.new(camera.ViewportSize.X/2,camera.ViewportSize.Y/2)
     end
+    ss.Color = ss.Color
     line1.Transparency = ss.Opacity
     line2.Transparency = ss.Opacity
     line3.Transparency = ss.Opacity
