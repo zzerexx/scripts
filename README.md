@@ -36,10 +36,6 @@ v1.0.2
 New Setting: XrayTransparency
 Minor improvements
 ```   
-v1.0.2a  
-```
-Minor script changes
-```  
 v1.0.3  
 ```
 New Setting: InfiniteJump
