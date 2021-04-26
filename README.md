@@ -46,7 +46,7 @@ Script will now check if you are using an outdated version
 Updated March 12, 2021  
 v1.0.0   
 **WORK IN PROGRESS**  
-Synapse X, replicated in Roblox with *almost*-full functionality.  
+Synapse X, recreated in Roblox.  
 Execute **:settings** for the secret settings menu. (buggy)  
 ```
 To-Do List:
