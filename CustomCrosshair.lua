@@ -1,5 +1,18 @@
--- Custom Crosshair by zzerexx#3970
 -- no skidding
+--[[
+    HideGameCrosshair Supported Games
+    Arsenal
+    Counter Blox
+    Unit: Classified
+    Phantom Forces
+    Polybattle
+    Bad Business
+    Strucid
+    AceOfSpadez
+    RECOIL
+    Jailbreak
+    Blackhawk Rescue Mission 5
+]]
 function msg(text,duration)
     local hint = Instance.new("Hint",game.CoreGui)
     hint.Text = text
@@ -54,14 +67,14 @@ if typeof(getgenv().rs) == "RBXScriptConnection" then
     getgenv().rs:Disconnect()
 end
 local supported = false
-for i,v in next, {286090429,301549746,4292776423,292439477,299659045,4716045691,3233893879,2377868063,2555870920,4651779470} do
+for i,v in next, {286090429,301549746,4292776423,292439477,299659045,4716045691,3233893879,2377868063,2555870920,4651779470,606849621,2916899287} do
     if game.PlaceId == v then
         supported = true
     end
 end
 if ss.HideGameCrosshair and not supported then
     spawn(function()
-        msg("HideGameCrosshair is not available for this game. Check the source for supported",5) 
+        msg("HideGameCrosshair is not available for this game. Check the source for supported games",5) 
     end)
 end
 
@@ -157,6 +170,13 @@ getgenv().rs = RunService.RenderStepped:Connect(function()
                 player.PlayerGui.Core.Gameplay.Cursor.Aim.Visible = false
             elseif game.PlaceId == 4651779470 then -- RECOIL
                 player.PlayerGui.WHUD.Crosshair.Visible = false
+            elseif game.PlaceId == 606849621 then -- Jailbreak
+                player.PlayerGui.CrossHairGui.CrossHair.Visible = false
+            elseif game.PlaceId == 2916899287 then -- Blackhawk Rescue Mission 5
+                player.PlayerGui.Screen["#main"]["#hud"]["#cursor"]["#left"].Visible = false
+                player.PlayerGui.Screen["#main"]["#hud"]["#cursor"]["#right"].Visible = false
+                player.PlayerGui.Screen["#main"]["#hud"]["#cursor"]["#top"].Visible = false
+                player.PlayerGui.Screen["#main"]["#hud"]["#cursor"]["#bottom"].Visible = false
             end
         end)
     end
