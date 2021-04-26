@@ -10,7 +10,7 @@ supported games list at bottom of script
 kinda sucks whatever  
 
 # Custom Crosshair  
-Updated April 23, 2021  
+Updated April 26, 2021  
 v1.0.0  
 Create your own custom crosshair using the Drawing Library  
 ```lua
