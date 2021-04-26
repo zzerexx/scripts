@@ -1,4 +1,4 @@
--- no skidding
+-- Custom Crosshair by zzerexx#3970
 --[[
     HideGameCrosshair Supported Games
     Arsenal
