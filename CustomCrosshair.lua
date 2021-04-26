@@ -12,6 +12,7 @@
     RECOIL
     Jailbreak
     Blackhawk Rescue Mission 5
+    Project Lazarus
 ]]
 function msg(text,duration)
     local hint = Instance.new("Hint",game.CoreGui)
@@ -67,7 +68,7 @@ if typeof(getgenv().rs) == "RBXScriptConnection" then
     getgenv().rs:Disconnect()
 end
 local supported = false
-for i,v in next, {286090429,301549746,4292776423,292439477,299659045,4716045691,3233893879,2377868063,2555870920,4651779470,606849621,2916899287} do
+for i,v in next, {286090429,301549746,4292776423,292439477,299659045,4716045691,3233893879,2377868063,2555870920,4651779470,606849621,2916899287,443406476} do
     if game.PlaceId == v then
         supported = true
     end
@@ -162,7 +163,7 @@ getgenv().rs = RunService.RenderStepped:Connect(function()
                 player.PlayerGui.ScreenGui.Center.ScaleYY.Middle.MouseIcon.Crosshair.Visible = false
             elseif game.PlaceId == 3233893879 then -- Bad Business
                 player.PlayerGui.MainGui.Reticle.Visible = false
-            elseif game.PlaceId == 2377868063 then -- Strucid
+            elseif game.PlaceId == 2377868063 then -- Strucid, doesnt even work xd
                 player.PlayerGui.MainGui.CrossHairs.Visible = false
                 player.PlayerGui.MainGui.AlternateCrosshair.Visible = false
                 player.PlayerGui.MainGui.ShotgunCrossHairs.Visible = false
@@ -177,6 +178,8 @@ getgenv().rs = RunService.RenderStepped:Connect(function()
                 player.PlayerGui.Screen["#main"]["#hud"]["#cursor"]["#right"].Visible = false
                 player.PlayerGui.Screen["#main"]["#hud"]["#cursor"]["#top"].Visible = false
                 player.PlayerGui.Screen["#main"]["#hud"]["#cursor"]["#bottom"].Visible = false
+            elseif game.PlaceId == 443406476 then -- Project Lazarus
+                player.PlayerGui.HUD.Reticle.Visible = false
             end
         end)
     end
