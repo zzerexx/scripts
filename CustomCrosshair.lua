@@ -14,10 +14,11 @@
     Blackhawk Rescue Mission 5
     Project Lazarus
 ]]
+
 function msg(text,duration)
     local hint = Instance.new("Hint",game.CoreGui)
     hint.Text = text
-    wait(duration)
+    wait(duration or 5)
     hint:Destroy()
 end
 function UpdateScript()
@@ -41,6 +42,7 @@ function UpdateScript()
         Button2 = "No"
     })
 end
+
 local player = game:GetService("Players").LocalPlayer
 local camera = workspace.CurrentCamera
 local UIS = game:GetService("UserInputService")
@@ -51,7 +53,8 @@ local middle = Vector2.new(camera.ViewportSize.X/2,camera.ViewportSize.Y/2)
 if typeof(Drawing.new) ~= "function" then
     msg("Your exploit does not have a Drawing Library",5)
     return
-elseif typeof(ss.Color) ~= "Color3" then
+end
+if typeof(ss.Color) ~= "Color3" then
     msg("Invalid Color",2)
     return
 end
