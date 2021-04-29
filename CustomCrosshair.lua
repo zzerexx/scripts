@@ -14,6 +14,7 @@
     Blackhawk Rescue Mission 5
     Project Lazarus
     Mad City
+    Big Paintball
 ]]
 
 function msg(text,duration)
@@ -71,7 +72,7 @@ if typeof(getgenv().rs) == "RBXScriptConnection" then
     getgenv().rs:Disconnect()
 end
 local supported = false
-for i,v in next, {286090429,301549746,4292776423,292439477,299659045,4716045691,3233893879,2377868063,2555870920,4651779470,606849621,2916899287,443406476,1224212277} do
+for i,v in next, {286090429,301549746,4292776423,292439477,299659045,4716045691,3233893879,2377868063,2555870920,4651779470,606849621,2916899287,443406476,1224212277,3527629287} do
     if game.PlaceId == v then
         supported = true
     end
@@ -185,6 +186,8 @@ getgenv().rs = RunService.RenderStepped:Connect(function()
                 player.PlayerGui.HUD.Reticle.Visible = false
             elseif game.PlaceId == 1224212277 then -- Mad City
                 player.PlayerGui.CrosshairGUI.Crosshair.Visible = false
+            elseif game.PlaceId == 3527629287 then -- Big Paintball
+                player.PlayerGui.Crosshair.Frame.Visible = false
             end
         end)
     end
