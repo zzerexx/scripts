@@ -10,7 +10,7 @@ supported games list at bottom of script
 noob esp  
 
 # Custom Crosshair  
-Updated April 26, 2021  
+Updated April 29, 2021  
 v1.0.0  
 Create your own custom crosshair using the Drawing Library  
 Open a new issue to request a game for HideGameCrosshair  
