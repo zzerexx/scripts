@@ -7,12 +7,13 @@ Updated March 10, 2021
 v1.0.0  
 working features: chams, nameesp, headtracers  
 supported games list at bottom of script  
-kinda sucks whatever  
+noob esp  
 
 # Custom Crosshair  
 Updated April 26, 2021  
 v1.0.0  
 Create your own custom crosshair using the Drawing Library  
+Open a new issue to request a game for HideGameCrosshair  
 ```lua
 Script: https://pastebin.com/raw/eGiC2jPg
 ```  
@@ -21,7 +22,6 @@ Script: https://pastebin.com/raw/eGiC2jPg
 Updated April 10, 2021  
 v1.0.3  
 Check the settings for features  
-should support *all* exploits.  
 ```lua
 Script: https://pastebin.com/raw/FwYmgtCX
 ```   
