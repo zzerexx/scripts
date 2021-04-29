@@ -14,23 +14,15 @@ Updated April 29, 2021
 v1.0.0  
 Create your own custom crosshair using the Drawing Library  
 Open a new issue to request a game for HideGameCrosshair  
-```lua
+```
 Script: https://pastebin.com/raw/eGiC2jPg
 ```  
-Recently Added HideGameCrosshair Games
-```
-Jailbreak
-Blackhawk Rescue Mission 5
-Project Lazarus
-Mad City
-Big Paintball
-```
   
 # Murder Mystery 2 Utilities  
 Updated April 10, 2021  
 v1.0.3  
 Check the settings for features  
-```lua
+```
 Script: https://pastebin.com/raw/FwYmgtCX
 ```   
 **Updates**  
