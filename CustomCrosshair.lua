@@ -31,7 +31,7 @@ function UpdateScript()
         if response == "Yes" then
             if not setclipboard then
                 msg("https://pastebin.com/raw/eGiC2jPg")
-                finished = true
+                finished = "updated"
                 return
             end
             setclipboard("https://pastebin.com/raw/eGiC2jPg")
@@ -40,6 +40,8 @@ function UpdateScript()
                 Text = "Copied the script to your clipboard!",
                 Duration = 5
             })
+            finished = "updated"
+        elseif response == "No" then
             finished = true
         end
     end
@@ -56,7 +58,7 @@ if getgenv().CrosshairSettings.RainbowColor == nil then
     finished = false
     UpdateScript()
 end
-repeat wait() until finished
+repeat wait() if finished == "updated" then break return end until finished
 local player = game:GetService("Players").LocalPlayer
 local camera = workspace.CurrentCamera
 local UIS = game:GetService("UserInputService")
