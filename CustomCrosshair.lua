@@ -24,15 +24,12 @@ function msg(text,duration)
     wait(duration or 5)
     hint:Destroy()
 end
-local finished = true
 function UpdateScript()
     local bind = Instance.new("BindableFunction")
     function bind.OnInvoke(response)
         if response == "Yes" then
             if not setclipboard then
                 msg("https://pastebin.com/raw/eGiC2jPg")
-                finished = "updated"
-                return
             end
             setclipboard("https://pastebin.com/raw/eGiC2jPg")
             game.StarterGui:SetCore("SendNotification",{
@@ -40,9 +37,6 @@ function UpdateScript()
                 Text = "Copied the script to your clipboard!",
                 Duration = 5
             })
-            finished = "updated"
-        elseif response == "No" then
-            finished = true
         end
     end
     game.StarterGui:SetCore("SendNotification",{
@@ -55,10 +49,8 @@ function UpdateScript()
     })
 end
 if getgenv().CrosshairSettings.RainbowColor == nil then
-    finished = false
     UpdateScript()
 end
-repeat wait() if finished == "updated" then break return end until finished
 local player = game:GetService("Players").LocalPlayer
 local camera = workspace.CurrentCamera
 local UIS = game:GetService("UserInputService")
