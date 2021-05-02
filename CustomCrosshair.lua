@@ -27,7 +27,7 @@ end
 function UpdateScript()
     local bind = Instance.new("BindableFunction")
     function bind.OnInvoke(response)
-        if response == "Yes" then
+        if response == "Yes" and setclipboard then
             setclipboard("https://pastebin.com/raw/eGiC2jPg")
             game.StarterGui:SetCore("SendNotification",{
                 Title = "Custom Crosshair",
@@ -44,6 +44,9 @@ function UpdateScript()
         Button1 = "Yes",
         Button2 = "No"
     })
+end
+if getgenv().CrosshairSettings.RainbowColor == nil then
+    UpdateScript()
 end
 
 local player = game:GetService("Players").LocalPlayer
@@ -136,6 +139,12 @@ getgenv().rs = RunService.RenderStepped:Connect(function()
     else
         dot.Visible = false
     end
+    if ss.RainbowColor then
+        line1.Color = Color3.fromHSV(tick()%5/5,1,1)
+        line2.Color = Color3.fromHSV(tick()%5/5,1,1)
+        line3.Color = Color3.fromHSV(tick()%5/5,1,1)
+        line4.Color = Color3.fromHSV(tick()%5/5,1,1)
+    end
     
     line1.From = Vector2.new(middle.X,middle.Y-ss.Offset)
     line2.From = Vector2.new(middle.X+ss.Offset,middle.Y)
@@ -145,6 +154,7 @@ getgenv().rs = RunService.RenderStepped:Connect(function()
     line2.To = Vector2.new(middle.X+ss.Offset+ss.Length,middle.Y)
     line3.To = Vector2.new(middle.X,middle.Y+ss.Offset+ss.Length)
     line4.To = Vector2.new(middle.X-ss.Offset-ss.Length,middle.Y)
+    
     if ss.Dot then
         dot.Size = Vector2.new(ss.Thickness,ss.Thickness)
         dot.Position = Vector2.new(middle.X-(ss.Thickness/2),middle.Y-(ss.Thickness/2))
