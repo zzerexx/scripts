@@ -74,8 +74,8 @@ if typeof(getgenv().crosshairobj) == "table" then
         end
     end
 end
-if typeof(getgenv().rs) == "RBXScriptConnection" then
-    getgenv().rs:Disconnect()
+if typeof(getgenv().crosshairrs) == "RBXScriptConnection" then
+    getgenv().crosshairrs:Disconnect()
 end
 local supported = false
 for i,v in next, {286090429,301549746,4292776423,292439477,299659045,4716045691,3233893879,2377868063,2555870920,4651779470,606849621,2916899287,443406476,1224212277,3527629287,388599755} do
@@ -85,7 +85,7 @@ for i,v in next, {286090429,301549746,4292776423,292439477,299659045,4716045691,
 end
 if ss.HideGameCrosshair and not supported then
     spawn(function()
-        msg("HideGameCrosshair is not available for this game. Check the source for supported games",5) 
+        msg("HideGameCrosshair is not available for this game. Check the source for a list of supported games",5) 
     end)
 end
 
@@ -106,7 +106,7 @@ if not ss.Dot then
     dot.Visible = false
 end
 
-getgenv().rs = RunService.RenderStepped:Connect(function()
+getgenv().crosshairrs = RunService.RenderStepped:Connect(function()
     ss = getgenv().CrosshairSettings
     if ss.HideMouseIcon ~= 0 then
         if ss.HideMouseIcon then
