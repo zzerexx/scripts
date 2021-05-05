@@ -106,6 +106,18 @@ if not ss.Dot then
     dot.Visible = false
 end
 
+game:GetService("UserInputService").InputBegan:Connect(function(i,gp)
+    if i.KeyCode == ss.ToggleKey and not gp and line1 and line2 and line3 and line4 and dot then
+        line1.Visible = not line1.Visible
+        line2.Visible = not line2.Visible
+        line3.Visible = not line3.Visible
+        line4.Visible = not line4.Visible
+        if ss.Dot then
+            dot.Visible = not dot.Visible
+        end
+    end
+end
+
 getgenv().crosshairrs = RunService.RenderStepped:Connect(function()
     ss = getgenv().CrosshairSettings
     if ss.HideMouseIcon ~= 0 then
