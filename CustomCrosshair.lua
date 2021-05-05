@@ -116,7 +116,7 @@ game:GetService("UserInputService").InputBegan:Connect(function(i,gp)
             dot.Visible = not dot.Visible
         end
     end
-end
+end)
 
 getgenv().crosshairrs = RunService.RenderStepped:Connect(function()
     ss = getgenv().CrosshairSettings
