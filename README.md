@@ -10,8 +10,8 @@ supported games list at bottom of script
 noob esp  
 
 # Custom Crosshair  
-Updated May 1, 2021  
-v1.1.0  
+Updated May 5, 2021  
+v1.2.0  
 Create your own custom crosshair using the Drawing Library  
 Open a new issue to request a game for HideGameCrosshair  
 ```
@@ -21,6 +21,10 @@ Script: https://pastebin.com/raw/eGiC2jPg
 v1.1.0  
 ```
 New Setting: RainbowColor
+```  
+v1.2.0  
+```
+New Setting: ToggleKey
 ```  
   
 # Murder Mystery 2 Utilities  
