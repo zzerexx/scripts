@@ -52,7 +52,8 @@ Script will now check if you are using an outdated version
 ```  
   
 # Counter Blox Spectator Viewer  
-Allows you to see who is spectating you.  
+see who is spectating you  
+u can drag it anywhere too very cool  
 skidded from hexagon btw  
   
 # Synapse XI  
