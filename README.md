@@ -51,6 +51,10 @@ New Setting: InfiniteJump
 Script will now check if you are using an outdated version
 ```  
   
+# Counter Blox Spectator Viewer  
+Allows you to see who is spectating you.  
+skidded from hexagon btw  
+  
 # Synapse XI  
 Updated March 12, 2021  
 v1.0.0   
