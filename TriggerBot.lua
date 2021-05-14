@@ -14,5 +14,9 @@ end)
 game:GetService("UserInputService").InputBegan:Connect(function(i,gp)
     if i.KeyCode == toggle then
         enabled = not enabled
+        local hint = Instance.new("Hint",game.CoreGui)
+        hint.Text = "Toggled: "..tostring(enabled)
+        wait(1.5)
+        hint:Destroy()
     end
 end)
