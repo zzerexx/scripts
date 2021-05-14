@@ -61,7 +61,6 @@ press H to toggle
 # Synapse XI  
 Updated March 12, 2021  
 v1.0.0   
-**WORK IN PROGRESS**  
 Synapse X, recreated in Roblox.  
 Execute **:settings** for the secret settings menu. (buggy)  
 ```
@@ -78,3 +77,4 @@ Multiple Tabs
 Customizable Theme   
 ```  
 View upcoming features in v1.1.0 in **SynapseXI Test.lua**  
+not updating cuz boring
