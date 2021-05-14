@@ -5,8 +5,6 @@ yea
 # Universal Esp  
 Updated March 10, 2021  
 v1.0.0  
-working features: chams, nameesp, headtracers  
-supported games list at bottom of script  
 noob esp  
 
 # Custom Crosshair  
@@ -55,6 +53,10 @@ Script will now check if you are using an outdated version
 see who is spectating you  
 u can drag it anywhere too very cool  
 skidded from hexagon btw  
+  
+# Universal Trigger Bot
+Clicks whenever your mouse is hovering over a player  
+press H to toggle
   
 # Synapse XI  
 Updated March 12, 2021  
