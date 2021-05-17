@@ -7,18 +7,21 @@ if typeof(Drawing.new) ~= "function" then
     })
     return
 end
-if typeof(getgenv().UNIVERSALESP) == "table" then
-    for i,v in next, getgenv().UNIVERSALESP.OBJECTS do
+if typeof(getgenv().UNIVERSALESP_OBJECTS) == "table"then
+    for i,v in next, getgenv().UNIVERSALESP_OBJECTS do
         if typeof(v) == "table" or typeof(v) == "userdata" then
             v:Remove()
         end
     end
-    for i,v in next, getgenv().UNIVERSALESP.RUNSERVICE do
+    table.clear(getgenv().UNIVERSALESP_OBJECTS)
+end
+if typeof(getgenv().UNIVERSALESP_RUNSERVICE) == "table" then
+    for i,v in next, getgenv().UNIVERSALESP_RUNSERVICE do
         if typeof(v) == "RBXScriptConnection" then
             v:Disconnect()
         end
     end
-    table.clear(getgenv().UNIVERSALESP)
+    table.clear(getgenv().UNIVERSALESP_RUNSERVICE)
 end
 
 local players = game:GetService("Players")
@@ -27,9 +30,8 @@ local camera = workspace.CurrentCamera
 local mouse = game:GetService("UserInputService"):GetMouseLocation()
 local RunService = game:GetService("RunService")
 local ss = getgenv().EspSettings
-getgenv().UNIVERSALESP = {}
-getgenv().UNIVERSALESP.OBJECTS = {}
-getgenv().UNIVERSALESP.RUNSERVICE = {}
+getgenv().UNIVERSALESP_OBJECTS = {}
+getgenv().UNIVERSALESP_RUNSERVICE = {}
 
 function Box(plr)
     local box = Drawing.new("Square")
@@ -72,8 +74,8 @@ function Box(plr)
             box.Visible = false
         end
     end)
-    table.insert(getgenv().UNIVERSALESP.OBJECTS,#getgenv().UNIVERSALESP.OBJECTS+1,box)
-    table.insert(getgenv().UNIVERSALESP.RUNSERVICE,#getgenv().UNIVERSALESP.RUNSERVICE+1,rs)
+    table.insert(getgenv().UNIVERSALESP_OBJECTS,#getgenv().UNIVERSALESP_OBJECTS+1,box)
+    table.insert(getgenv().UNIVERSALESP_RUNSERVICE,#getgenv().UNIVERSALESP_RUNSERVICE+1,rs)
     players.PlayerRemoving:Connect(function(p)
         if p == plr then
             box:Remove()
@@ -132,8 +134,8 @@ function Tracer(plr)
             tracer.Visible = false
         end
     end)
-    table.insert(getgenv().UNIVERSALESP.OBJECTS,#getgenv().UNIVERSALESP.OBJECTS+1,tracer)
-    table.insert(getgenv().UNIVERSALESP.RUNSERVICE,#getgenv().UNIVERSALESP.RUNSERVICE+1,rs)
+    table.insert(getgenv().UNIVERSALESP_OBJECTS,#getgenv().UNIVERSALESP_OBJECTS+1,tracer)
+    table.insert(getgenv().UNIVERSALESP_RUNSERVICE,#getgenv().UNIVERSALESP_RUNSERVICE+1,rs)
     players.PlayerRemoving:Connect(function(p)
         if p == plr then
             tracer:Remove()
@@ -181,8 +183,8 @@ function Name(plr)
             name.Visible = false
         end
     end)
-    table.insert(getgenv().UNIVERSALESP.OBJECTS,#getgenv().UNIVERSALESP.OBJECTS+1,name)
-    table.insert(getgenv().UNIVERSALESP.RUNSERVICE,#getgenv().UNIVERSALESP.RUNSERVICE+1,rs)
+    table.insert(getgenv().UNIVERSALESP_OBJECTS,#getgenv().UNIVERSALESP_OBJECTS+1,name)
+    table.insert(getgenv().UNIVERSALESP_RUNSERVICE,#getgenv().UNIVERSALESP_RUNSERVICE+1,rs)
     players.PlayerRemoving:Connect(function(p)
         if p == plr then
             name:Remove()
