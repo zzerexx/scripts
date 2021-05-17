@@ -173,6 +173,11 @@ function Name(plr)
             else
                 name.Color = ss.Names.Color
             end
+            if ss.Names.Brackets then
+                name.Text = "[ "..plr.Name.." ]"
+            else
+                name.Text = plr.Name
+            end
         end
     end)
     table.insert(getgenv().UNIVERSALESP.OBJECTS,#getgenv().UNIVERSALESP.OBJECTS+1,name)
