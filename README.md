@@ -70,6 +70,9 @@ Finds a server with the lowest ping
 Takes longer on larger games due to the amount of servers  
 i think this only works if you live in the EST timezone  
   
+# Phantom Forces Rainbow Gun  
+basic rainbow gun script  
+  
 # owo-ify  
 owo-ifier  
   
