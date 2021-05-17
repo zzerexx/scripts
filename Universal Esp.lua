@@ -1,31 +1,4 @@
 -- Universal Esp by zzerexx#3970
-getgenv().EspSettings = {
-    TeamCheck = false,
-    Boxes = {
-        Enabled = true,
-        Transparency = 0.7,
-        Color = Color3.fromRGB(255,255,255),
-        UseTeamColor = true,
-    },
-    Tracers = {
-        Enabled = true,
-        Transparency = 0.7,
-        Color = Color3.fromRGB(255,255,255),
-        UseTeamColor = true,
-        Origin = "Bottom", -- "Top" or "Center" or "Bottom" or "Mouse"
-        Thickness = 1
-    },
-    Names = {
-        Enabled = true,
-        Transparency = 0.7,
-        Color = Color3.fromRGB(255,255,255),
-        UseTeamColor = true,
-        Font = Drawing.Fonts.System, -- UI or System or Plex or Monospace
-        Size = 18,
-        Outline = true,
-    }
-}
-
 if typeof(Drawing.new) ~= "function" then
     game:GetService("StarterGui"):SetCore("SendNotification",{
         Title = "Universal Esp",
