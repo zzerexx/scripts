@@ -11,17 +11,17 @@ if typeof(getgenv().UNIVERSALESP_OBJECTS) == "table"then
     for i,v in next, getgenv().UNIVERSALESP_OBJECTS do
         if typeof(v) == "table" or typeof(v) == "userdata" then
             v:Remove()
+            table.remove(getgenv().UNIVERSALESP_OBJECTS,i)
         end
     end
-    table.clear(getgenv().UNIVERSALESP_OBJECTS)
 end
 if typeof(getgenv().UNIVERSALESP_CONNECTIONS) == "table" then
     for i,v in next, getgenv().UNIVERSALESP_CONNECTIONS do
         if typeof(v) == "RBXScriptConnection" then
             v:Disconnect()
+            table.remove(getgenv().UNIVERSALESP_CONNECTIONS,i)
         end
     end
-    table.clear(getgenv().UNIVERSALESP_CONNECTIONS)
 end
 
 local players = game:GetService("Players")
@@ -74,14 +74,15 @@ function Box(plr)
             box.Visible = false
         end
     end)
-    table.insert(getgenv().UNIVERSALESP_OBJECTS,#getgenv().UNIVERSALESP_OBJECTS+1,box)
-    table.insert(getgenv().UNIVERSALESP_CONNECTIONS,#getgenv().UNIVERSALESP_CONNECTIONS+1,rs)
-    players.PlayerRemoving:Connect(function(p)
+    local pr = players.PlayerRemoving:Connect(function(p)
         if p == plr then
             box:Remove()
             rs:Disconnect()
         end
     end)
+    table.insert(getgenv().UNIVERSALESP_OBJECTS,#getgenv().UNIVERSALESP_OBJECTS+1,box)
+    table.insert(getgenv().UNIVERSALESP_CONNECTIONS,#getgenv().UNIVERSALESP_CONNECTIONS+1,rs)
+    table.insert(getgenv().UNIVERSALESP_CONNECTIONS,#getgenv().UNIVERSALESP_CONNECTIONS+1,pr)
 end
 
 function Tracer(plr)
@@ -134,14 +135,15 @@ function Tracer(plr)
             tracer.Visible = false
         end
     end)
-    table.insert(getgenv().UNIVERSALESP_OBJECTS,#getgenv().UNIVERSALESP_OBJECTS+1,tracer)
-    table.insert(getgenv().UNIVERSALESP_CONNECTIONS,#getgenv().UNIVERSALESP_CONNECTIONS+1,rs)
-    players.PlayerRemoving:Connect(function(p)
+    local pr = players.PlayerRemoving:Connect(function(p)
         if p == plr then
             tracer:Remove()
             rs:Disconnect()
         end
     end)
+    table.insert(getgenv().UNIVERSALESP_OBJECTS,#getgenv().UNIVERSALESP_OBJECTS+1,tracer)
+    table.insert(getgenv().UNIVERSALESP_CONNECTIONS,#getgenv().UNIVERSALESP_CONNECTIONS+1,rs)
+    table.insert(getgenv().UNIVERSALESP_CONNECTIONS,#getgenv().UNIVERSALESP_CONNECTIONS+1,pr)
 end
 
 function Name(plr)
@@ -183,14 +185,15 @@ function Name(plr)
             name.Visible = false
         end
     end)
-    table.insert(getgenv().UNIVERSALESP_OBJECTS,#getgenv().UNIVERSALESP_OBJECTS+1,name)
-    table.insert(getgenv().UNIVERSALESP_CONNECTIONS,#getgenv().UNIVERSALESP_CONNECTIONS+1,rs)
-    players.PlayerRemoving:Connect(function(p)
+    local pr = players.PlayerRemoving:Connect(function(p)
         if p == plr then
             name:Remove()
             rs:Disconnect()
         end
     end)
+    table.insert(getgenv().UNIVERSALESP_OBJECTS,#getgenv().UNIVERSALESP_OBJECTS+1,name)
+    table.insert(getgenv().UNIVERSALESP_CONNECTIONS,#getgenv().UNIVERSALESP_CONNECTIONS+1,rs)
+    table.insert(getgenv().UNIVERSALESP_CONNECTIONS,#getgenv().UNIVERSALESP_CONNECTIONS+1,pr)
 end
 
 for i,v in next, players:GetPlayers() do
@@ -204,8 +207,7 @@ for i,v in next, players:GetPlayers() do
         Name(v)
     end
 end
-local pa
-pa = players.PlayerAdded:Connect(function(v)
+local pa = players.PlayerAdded:Connect(function(v)
     if ss.Boxes.Enabled then
         Box(v)
     end
