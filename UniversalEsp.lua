@@ -40,8 +40,7 @@ function Box(plr)
     box.Color = ss.Boxes.Color
     box.Thickness = 1
     box.Filled = false
-    local rs
-    rs = RunService.RenderStepped:Connect(function()
+    local rs = RunService.RenderStepped:Connect(function()
         ss = getgenv().EspSettings
         if plr and plr ~= player and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChildOfClass("Humanoid") and plr.Character:FindFirstChildOfClass("Humanoid").Health > 0 then
             local vector, inViewport = camera:WorldToViewportPoint(plr.Character.HumanoidRootPart.Position)
@@ -91,8 +90,7 @@ function Tracer(plr)
     tracer.Transparency = ss.Tracers.Transparency
     tracer.Color = ss.Tracers.Color
     tracer.Thickness = ss.Tracers.Thickness
-    local rs
-    rs = RunService.RenderStepped:Connect(function()
+    local rs = RunService.RenderStepped:Connect(function()
         ss = getgenv().EspSettings
         if plr and plr ~= player and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChildOfClass("Humanoid") and plr.Character:FindFirstChildOfClass("Humanoid").Health > 0 then
             local vector, inViewport = camera:WorldToViewportPoint(plr.Character.HumanoidRootPart.Position)
@@ -157,8 +155,7 @@ function Name(plr)
     name.Outline = ss.Names.Outline
     name.OutlineColor = Color3.fromRGB(0,0,0)
     name.Font = ss.Names.Font
-    local rs
-    rs = RunService.RenderStepped:Connect(function()
+    local rs = RunService.RenderStepped:Connect(function()
         ss = getgenv().EspSettings
         if plr and plr ~= player and plr.Character and plr.Character:FindFirstChild("Head") and plr.Character:FindFirstChildOfClass("Humanoid") and plr.Character:FindFirstChildOfClass("Humanoid").Health > 0 then
             local vector, inViewport = camera:WorldToViewportPoint(plr.Character.Head.Position)
