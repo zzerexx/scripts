@@ -173,10 +173,8 @@ function Name(plr)
             else
                 name.Color = ss.Names.Color
             end
-            if ss.Names.Brackets then
-                name.Text = "[ "..plr.Name.." ]"
-            else
-                name.Text = plr.Name
+            if ss.Names.ShowHealth then
+                name.Text = name.Text.."\nHealth: "..plr.Character.Humanoid.Health
             end
         end
     end)
