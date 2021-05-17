@@ -31,7 +31,7 @@ function Box(plr)
     box.Filled = false
     local rs = RunService.RenderStepped:Connect(function()
         ss = getgenv().EspSettings
-        if plr and plr ~= player and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChildOfClass("Humanoid") and plr.Character:FindFirstChildOfClass("Humanoid").Health > 0 then
+        if ss.Boxes.Enabled and plr and plr ~= player and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChildOfClass("Humanoid") and plr.Character:FindFirstChildOfClass("Humanoid").Health > 0 then
             local vector, inViewport = camera:WorldToViewportPoint(plr.Character.HumanoidRootPart.Position)
             
             local root = plr.Character.HumanoidRootPart
@@ -79,7 +79,7 @@ function Tracer(plr)
     tracer.Thickness = ss.Tracers.Thickness
     local rs = RunService.RenderStepped:Connect(function()
         ss = getgenv().EspSettings
-        if plr and plr ~= player and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChildOfClass("Humanoid") and plr.Character:FindFirstChildOfClass("Humanoid").Health > 0 then
+        if ss.Tracers.Enabled and plr and plr ~= player and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChildOfClass("Humanoid") and plr.Character:FindFirstChildOfClass("Humanoid").Health > 0 then
             local vector, inViewport = camera:WorldToViewportPoint(plr.Character.HumanoidRootPart.Position)
             
             local top = Vector2.new(camera.ViewportSize.X / 2, 0)
@@ -142,7 +142,7 @@ function Name(plr)
     name.Font = ss.Names.Font
     local rs = RunService.RenderStepped:Connect(function()
         ss = getgenv().EspSettings
-        if plr and plr ~= player and plr.Character and plr.Character:FindFirstChild("Head") and plr.Character:FindFirstChildOfClass("Humanoid") and plr.Character:FindFirstChildOfClass("Humanoid").Health > 0 then
+        if ss.Names.Enabled and plr and plr ~= player and plr.Character and plr.Character:FindFirstChild("Head") and plr.Character:FindFirstChildOfClass("Humanoid") and plr.Character:FindFirstChildOfClass("Humanoid").Health > 0 then
             local vector, inViewport = camera:WorldToViewportPoint(plr.Character.Head.Position)
             if inViewport then
                 name.Transparency = ss.Names.Transparency
