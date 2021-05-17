@@ -65,6 +65,9 @@ skidded from hexagon btw
 Clicks whenever your mouse is hovering over a player  
 press H to toggle  
   
+# owo-ify  
+owo-ifier  
+  
 # Synapse XI  
 Updated March 12, 2021  
 v1.0.0   
