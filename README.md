@@ -68,7 +68,7 @@ press H to toggle
 # Synapse XI  
 Updated March 12, 2021  
 v1.0.0   
-Synapse X, recreated in Roblox.  
+Synapse X, recreated with Roblox Gui Objects.  
 Execute **:settings** for the secret settings menu. (buggy)  
 ```
 To-Do List:
