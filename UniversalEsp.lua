@@ -1,7 +1,4 @@
 -- Universal Esp by zzerexx#3970
-if getgenv().UNIVERSALESP then
-    return
-end
 if typeof(Drawing.new) ~= "function" then
     game:GetService("StarterGui"):SetCore("SendNotification",{
         Title = "Universal Esp",
@@ -24,7 +21,6 @@ local mouse = game:GetService("UserInputService"):GetMouseLocation()
 local RunService = game:GetService("RunService")
 local ss = getgenv().EspSettings
 getgenv().UNIVERSALESP_OBJECTS = {}
-getgenv().UNIVERSALESP = true
 
 function Box(plr)
     local box = Drawing.new("Square")
