@@ -1,12 +1,6 @@
 # Scripts  
-my scripts n shit  
-yea  
+my cool scripts  
   
-# Universal Esp  
-Updated March 10, 2021  
-v1.0.0  
-noob esp  
-
 # Custom Crosshair  
 Updated May 5, 2021  
 v1.2.0  
@@ -56,7 +50,12 @@ skidded from hexagon btw
   
 # Universal Trigger Bot
 Clicks whenever your mouse is hovering over a player  
-press H to toggle
+press H to toggle  
+  
+# Universal Esp  
+Updated March 10, 2021  
+v1.0.0  
+noob esp  
   
 # Synapse XI  
 Updated March 12, 2021  
