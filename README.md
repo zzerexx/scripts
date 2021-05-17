@@ -61,7 +61,7 @@ see who is spectating you
 u can drag it anywhere too very cool  
 skidded from hexagon btw  
   
-# Universal Trigger Bot
+# Trigger Bot
 Clicks whenever your mouse is hovering over a player  
 press H to toggle  
   
