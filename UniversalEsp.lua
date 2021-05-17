@@ -93,7 +93,7 @@ function Tracer(plr)
             local vector, inViewport = camera:WorldToViewportPoint(plr.Character.HumanoidRootPart.Position)
             
             local top = Vector2.new(camera.ViewportSize.X / 2, 0)
-            local center = Vector2.new(camera.ViewportSize.X,camera.ViewportSize.Y)
+            local center = Vector2.new(camera.ViewportSize.X / 2,camera.ViewportSize.Y / 2)
             local bottom = Vector2.new(camera.ViewportSize.X / 2,camera.ViewportSize.Y)
             mouse = game:GetService("UserInputService"):GetMouseLocation()
             local origin = top
