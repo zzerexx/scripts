@@ -1,267 +1,236 @@
 -- Universal Esp by zzerexx#3970
-getgenv().Settings = {
-	Enabled = true, 
-	ProtectGui = true, -- Only available for Synapse, ProtoSmasher, Script-Ware, Krnl
-	OnlyEnemies = true,
-	-- BOX ESP NOT READY
-	BoxEsp = false,
-	BoxTransparency = 0.75,
-	BoxColor = Color3.fromRGB(0, 170, 255),
-	BoxTeamColor = true,
-
-	Chams = true,
-	ChamsTransparency = 0.75,
-	ChamsColor = Color3.fromRGB(0, 170, 255),
-	ChamsTeamColor = true,
-	-- TRACERS NOT READY
-	Tracers = false, -- Drawing Library is required for this
-	TracerTransparency = 0.4, -- Tracer Transparency is opposite to Roblox
-	TracerColor = Color3.fromRGB(0, 0, 0),
-	TracerOrigin = "Top", -- "Top" or "Center" or "Bottom" or "Cursor"
-	TracerThickness = 1.5,
-	TracerTeamColor = true,
-	
-	NameEsp = true,
-	NameTextTransparency = 0,
-	NameColor = Color3.fromRGB(255, 0, 0),
-	NameFont = "SourceSans", -- Fonts: https://developer.roblox.com/en-us/api-reference/enum/Font
-	NameTextScaled = false, -- useless feature
-	NameTextSize = 18,
-	NameTeamColor = true,
-
-	HeadTracers = false, -- also useless feature
-	HeadTracerTransparency = 0.3,
-	HeadTracerColor = Color3.fromRGB(255, 0, 0),
-	HeadTracerLength = 5,
-	HeadTracerThickness = 0.05,
-	HeadTracerTeamColor = true,
+getgenv().EspSettings = {
+    TeamCheck = false,
+    Boxes = {
+        Enabled = true,
+        Transparency = 0.7,
+        Color = Color3.fromRGB(255,255,255),
+        UseTeamColor = true,
+    },
+    Tracers = {
+        Enabled = true,
+        Transparency = 0.7,
+        Color = Color3.fromRGB(255,255,255),
+        UseTeamColor = true,
+        Origin = "Bottom", -- "Top" or "Center" or "Bottom" or "Mouse"
+        Thickness = 1
+    },
+    Names = {
+        Enabled = true,
+        Transparency = 0.7,
+        Color = Color3.fromRGB(255,255,255),
+        UseTeamColor = true,
+        Font = Drawing.Fonts.System, -- UI or System or Plex or Monospace
+        Size = 18,
+        Outline = true,
+    }
 }
-getgenv().RemoveTracers = false
-local players = game:GetService("Players")
-local characters = { "A","B","C","D","E","F","G","H","I","J","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","1","2","3","4","5","6","7","8","9","0","!","@","#","$","%","^","&","*","(",")","-","=","[","]","|",";","'",",",".","/","_","+","{","}",":","<",">","?","`","~" }
-local classnames = { "ClickDetector","SunRaysEffect","Decal","RemoteEvent","SelectionBox","SurfaceAppearance","AlignOrientation","AnimationController","LineForce","PrismaticConstraint","Tool","Trail","Atmosphere","ForceField","Motor6D","Humanoid","ShirtGraphic","Explosion","RocketPropulsion","Weld","WorldModel","CompressorSoundEffect","BindableFunction","Team","Vector3Value","HumanoidDescription","ColorCorrectionEffect","Torque","BodyAngularVelocity","PointLight","LocalizationTable","SpecialMesh","FlangeSoundEffect","CFrameValue","BallSocketConstraint","DialogChoice","DepthOfFieldEffect","RemoteFunction" }
-function randname() local randomname = characters[math.random(1,#characters)]..characters[math.random(1,#characters)]..characters[math.random(1,#characters)]..characters[math.random(1,#characters)]..characters[math.random(1,#characters)]..characters[math.random(1,#characters)]..characters[math.random(1,#characters)]..characters[math.random(1,#characters)]..characters[math.random(1,#characters)]..characters[math.random(1,#characters)]..characters[math.random(1,#characters)]..characters[math.random(1,#characters)] return randomname end
-local protected = Instance.new(classnames[math.random(1,#classnames)])
-if getgenv().Settings.ProtectGui then
-	if syn then
-		syn.protect_gui(protected)
-		protected.Parent = game:GetService("CoreGui")
-	elseif PROTOSMASHER_LOADED then
-		protected.Parent = get_hidden_gui()
-	elseif KRNL_LOADED then -- temp removed script ware
-		protected.Parent = gethui()
-	else
-		print("Your exploit does not support ProtectGui!")
-		protected.Parent = game:GetService("CoreGui")
-	end
-else
-	protected.Parent = game:GetService("CoreGui")
+
+if typeof(Drawing.new) ~= "function" then
+    game:GetService("StarterGui"):SetCore("SendNotification",{
+        Title = "Universal Esp",
+        Text = "Your exploit does not have a Drawing Library",
+        Duration = 10
+    })
+    return
 end
-protected.Name = randname()
-local function esp()
-	getgenv().RemoveTracers = false
-	for i,v in pairs(protected:GetChildren()) do
-		v:Destroy()
-	end
-	local plrparts = {
-		"Head","Torso","Left Arm","Right Arm","Left Leg","Right Leg", -- R6
-		"UpperTorso","LowerTorso","LeftUpperArm","LeftLowerArm","LeftHand","RightUpperArm","RightLowerArm","RightHand","LeftUpperLeg","LeftLowerLeg","LeftFoot","RightUpperLeg","RightUpperLeg","RightFoot", -- R15
-		"UpperLeftArm","LowerLeftArm","UpperRightArm","LowerRightArm","UpperLeftLeg","LowerLeftLeg","UpperRightLeg","LowerRightLeg","MidTorso","LeftHandle","RightHandle","Shoulders", -- AceOfSpadez Body Parts
-		--"Neck","Chest","Abdomen","Hips","LeftForearm","RightForearm","LeftForeleg","RightForeleg" -- Bad Business Body Parts
-	}
-	for i,v in pairs(players:GetChildren()) do
-		if v.Name ~= players.LocalPlayer.Name then
-			local folder = Instance.new(classnames[math.random(1,#classnames)])
-			folder.Parent = protected
-			folder.Name = randname()
-			if getgenv().Settings.HeadTracers == true then
-				if v.Character:FindFirstChild("Head") then
-					local htracerlength = getgenv().Settings.HeadTracerLength
-					local Offset = htracerlength - (htracerlength * 2) - 1
-					local HTracer = Instance.new("CylinderHandleAdornment")
-					HTracer.Name = "HeadTracer".."_"..randname()
-					HTracer.Parent = folder
-					HTracer.Adornee = v.Character.Head 
-					HTracer.Height = getgenv().Settings.HeadTracerLength
-					HTracer.Radius = getgenv().Settings.HeadTracerThickness
-					HTracer.SizeRelativeOffset = Vector3.new(0, 0.4, Offset)
-					HTracer.AlwaysOnTop = true
-					HTracer.Color3 = getgenv().Settings.HeadTracerColor
-					HTracer.Transparency = getgenv().Settings.HeadTracerTransparency
-					HTracer.ZIndex = 0
-					if game.PlaceId == 3233893879 then -- Bad Business, does not work
-						HTracer.Adornee = v.Character.Parent.Body.Head
-					end
-					if game.PlaceId == 142823291 then -- Murder Mystery 2
-						if v.Backpack:FindFirstChild("Knife") or v.Character:FindFirstChild("Knife") then
-							HTracer.Color3 = Color3.fromRGB(255, 0, 0) -- Murderer
-						elseif v.Backpack:FindFirstChild("Gun") or v.Character:FindFirstChild("Gun") then
-							HTracer.Color3 = Color3.fromRGB(0, 0, 255) -- Sheriff
-						end
-					end
-					if getgenv().Settings.HeadTracerTeamColor == true then
-						HTracer.Color3 = v.TeamColor.Color
-					end
-					if getgenv().Settings.OnlyEnemies == true then
-						if v.Team == players.LocalPlayer.Team then
-							HTracer:Destroy()
-						end
-					end
-				end
-			end
-			if getgenv().Settings.NameEsp == true then
-				if v.Character:FindFirstChild("Head") then
-					local Billboard = Instance.new("BillboardGui")
-					local Name = Instance.new("TextLabel")
-					Billboard.Name = v.Name.."_"..randname()
-					Billboard.Parent = folder
-					Billboard.Adornee = v.Character.Head
-					Billboard.Size = UDim2.new(10, 0, 4, 0)
-					Billboard.ExtentsOffset = Vector3.new(0, 3, 0)
-					Billboard.AlwaysOnTop = true
-					Billboard.MaxDistance = math.huge
-					Name.Name = "Name".."_"..randname()
-					Name.Parent = Billboard
-					Name.BackgroundTransparency = 1
-					Name.TextTransparency = getgenv().Settings.NameTextTransparency
-					Name.BorderSizePixel = 0
-					Name.Font = getgenv().Settings.NameFont
-					Name.Size = UDim2.new(1, 0, 1, 0)
-					Name.Text = v.Name
-					Name.TextColor3 = getgenv().Settings.NameColor
-					Name.TextScaled = getgenv().Settings.NameTextScaled
-					Name.TextSize = getgenv().Settings.NameTextSize
-					if game.PlaceId == 3233893879 then -- Bad Business, does not work
-						Billboard.Adornee = v.Character.Parent.Body.Head
-					end 
-					if game.PlaceId == 142823291 then -- Murder Mystery 2
-						if v.Backpack:FindFirstChild("Knife") or v.Character:FindFirstChild("Knife") then
-							Name.TextColor3 = Color3.fromRGB(255, 0, 0) -- Murderer
-						elseif v.Backpack:FindFirstChild("Gun") or v.Character:FindFirstChild("Gun") then
-							Name.TextColor3 = Color3.fromRGB(0, 0, 255) -- Sheriff
-						end
-					end
-					if getgenv().Settings.NameTeamColor == true then
-						Name.TextColor3 = v.TeamColor.Color
-					end
-					if getgenv().Settings.OnlyEnemies == true then
-						if v.Team == players.LocalPlayer.Team then
-							Billboard:Destroy()
-						end
-					end
-				end
-			end
-			if getgenv().Settings.Chams == true then
-				for i2,v2 in pairs(plrparts) do
-					if v.Character:FindFirstChild(v2) then
-						local Chams = Instance.new("BoxHandleAdornment")
-						Chams.Name = v2.."_"..randname()
-						Chams.Parent = folder
-						Chams.Adornee = v.Character[v2]
-						Chams.AlwaysOnTop = true
-						Chams.Color3 = getgenv().Settings.ChamsColor
-						Chams.Size = v.Character[v2].Size
-						Chams.Transparency = getgenv().Settings.ChamsTransparency
-						Chams.ZIndex = 0
-						if game.PlaceId == 3233893879 then -- Bad Business, does not work
-							Chams.Adornee = v.Character.Body[v2]
-						end
-						if game.PlaceId == 142823291 then -- Murder Mystery 2
-							if v.Backpack:FindFirstChild("Knife") or v.Character:FindFirstChild("Knife") then
-								Chams.Color3 = Color3.fromRGB(255, 0, 0) -- Murderer
-							elseif v.Backpack:FindFirstChild("Gun") or v.Character:FindFirstChild("Gun") then
-								Chams.Color3 = Color3.fromRGB(0, 0, 255) -- Sheriff
-							end
-						end
-						if getgenv().Settings.ChamsTeamColor == true then
-							Chams.Color3 = v.TeamColor.Color
-						end
-						if getgenv().Settings.OnlyEnemies == true then
-							if v.Team == players.LocalPlayer.Team then
-								Chams:Destroy()
-							end
-						end
-					end -- FindFirstChild
-				end -- for i2,v2
-			end -- Settings.Chams
-			if getgenv().Settings.Tracers == true then
-				local camera = game:GetService("Workspace").CurrentCamera
-				local cursor = game:GetService("UserInputService"):GetMouseLocation()
-				local Tracer = Drawing.new("Line")
-				Tracer.Visible = true
-				Tracer.Thickness = getgenv().Settings.TracerThickness
-				Tracer.From = Vector2.new(camera.ViewportSize.X / 2, camera.ViewportSize.Y / 2)
-				Tracer.To = Vector2.new()
-				Tracer.Color = getgenv().Settings.TracerColor
-				Tracer.Transparency = getgenv().Settings.TracerTransparency 
-				if getgenv().Settings.TracerOrigin == "Top" then
-					Tracer.From = Vector2.new(camera.ViewportSize.X / 2, 3)
-				elseif getgenv().Settings.TracerOrigin == "Center" then
-					Tracer.From = Vector2.new(camera.ViewportSize.X / 2, camera.ViewportSize.Y / 2)
-				elseif getgenv().Settings.TracerOrigin == "Bottom" then
-					Tracer.From = Vector2.new(camera.ViewportSize.X / 2, camera.ViewportSize.Y)
-				elseif getgenv().Settings.TracerOrigin == "Cursor" then
-					cursor = game:GetService("UserInputService"):GetMouseLocation()
-					Tracer.From = Vector2.new(cursor.X, cursor.Y)
-				else
-					Tracer.From = Vector2.new(camera.ViewportSize.X / 2, 3) -- Top by default because its the best :)
-				end
-				local RenderStepped
-				RenderStepped = game:GetService("RunService").RenderStepped:Connect(function()
-					if getgenv().RemoveTracers == true then
-						Tracer:Remove()
-						RenderStepped:Disconnect()
-					end
-					local Part = v.Character:WaitForChild("HumanoidRootPart")
-					local vector, inViewport = camera:WorldToViewportPoint(Part.Position)
-					if inViewport and getgenv().RemoveTracers == false then
-						Tracer.Visible = true
-						Tracer.To = Vector2.new(vector.X, vector.Y)
-					elseif not inViewport and getgenv().RemoveTracers == false then
-						Tracer.Visible = false
-					end
-					if getgenv().Settings.TracerOrigin == "Cursor" then
-						cursor = game:GetService("UserInputService"):GetMouseLocation()
-						Tracer.From = Vector2.new(cursor.X, cursor.Y)
-					end
-				end)
-				if getgenv().Settings.TracerTeamColor == true then
-					Tracer.Color = v.TeamColor.Color
-				end
-				if getgenv().Settings.OnlyEnemies == true then
-					if v.Team == players.LocalPlayer.Team then
-						Tracer:Remove()
-					end
-				end
-			end
-		end -- Name Check
-	end -- For i,v
-end -- Function
-if getgenv().Settings.Enabled then esp() end
-while wait(4) do
-	esp()
+if typeof(getgenv().UNIVERSALESP) == "table" then
+    for i,v in next, getgenv().UNIVERSALESP.OBJECTS do
+        if typeof(v) == "table" or typeof(v) == "userdata" then
+            v:Remove()
+        end
+    end
+    for i,v in next, getgenv().UNIVERSALESP.RUNSERVICE do
+        if typeof(v) == "RBXScriptConnection" then
+            v:Disconnect()
+        end
+    end
+    table.clear(getgenv().UNIVERSALESP)
 end
 
---[[ Supported Games
-	 Any game with normal character models
-	 Arsenal
-	 Counter Blox
-	 Typical Colors 2
-	 Unit: Classified
-	 Unit 1968
-	 RECOIL
-	 No-Scope Sniping
-	 Pistol 1v1
-	 Polybattle
-	 Big Paintball
-	 AceOfSpadez
-	 Murder Mystery 2
-	 
-	 Not Supported
-	 Most games with custom character models
-	 Phantom Forces
-	 Strucid
-	 Bad Business
-	 Polyguns
-	 Q-Clash
-]]
+local players = game:GetService("Players")
+local player = players.LocalPlayer
+local camera = workspace.CurrentCamera
+local mouse = game:GetService("UserInputService"):GetMouseLocation()
+local RunService = game:GetService("RunService")
+local ss = getgenv().EspSettings
+getgenv().UNIVERSALESP = {}
+getgenv().UNIVERSALESP.OBJECTS = {}
+getgenv().UNIVERSALESP.RUNSERVICE = {}
+
+function Box(plr)
+    local box = Drawing.new("Square")
+    box.Visible = true
+    box.Transparency = ss.Boxes.Transparency
+    box.Color = ss.Boxes.Color
+    box.Thickness = 1
+    box.Filled = false
+    local rs
+    rs = RunService.RenderStepped:Connect(function()
+        ss = getgenv().EspSettings
+        if plr and plr ~= player and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChildOfClass("Humanoid") and plr.Character:FindFirstChildOfClass("Humanoid").Health > 0 then
+            local vector, inViewport = camera:WorldToViewportPoint(plr.Character.HumanoidRootPart.Position)
+            
+            local root = plr.Character.HumanoidRootPart
+            local head = plr.Character.Head
+            local rootpos = camera:WorldToViewportPoint(root.Position)
+            local headpos = camera:WorldToViewportPoint(head.Position + Vector3.new(0,0.5,0))
+            local legpos = camera:WorldToViewportPoint(root.Position - Vector3.new(0,3,0))
+
+            if inViewport then
+                box.Transparency = ss.Boxes.Transparency
+                box.Size = Vector2.new(1000 / rootpos.Z, headpos.Y - legpos.Y)
+                box.Position = Vector2.new(rootpos.X - box.Size.X / 2, rootpos.Y - (box.Size.Y / 2))
+
+                if ss.TeamCheck and plr.Team == player.Team then
+                    box.Visible = false
+                else
+                    box.Visible = true
+                end
+            else
+                box.Visible = false
+            end
+            if ss.Boxes.UseTeamColor then
+                box.Color = plr.TeamColor.Color
+            else
+                box.Color = ss.Boxes.Color
+            end
+        end
+    end)
+    table.insert(getgenv().UNIVERSALESP.OBJECTS,#getgenv().UNIVERSALESP.OBJECTS+1,box)
+    table.insert(getgenv().UNIVERSALESP.RUNSERVICE,#getgenv().UNIVERSALESP.RUNSERVICE+1,rs)
+    players.PlayerRemoving:Connect(function(p)
+        if p == plr then
+            box:Remove()
+            rs:Disconnect()
+        end
+    end)
+end
+
+function Tracer(plr)
+    local tracer = Drawing.new("Line")
+    tracer.Visible = true
+    tracer.Transparency = ss.Tracers.Transparency
+    tracer.Color = ss.Tracers.Color
+    tracer.Thickness = ss.Tracers.Thickness
+    local rs
+    rs = RunService.RenderStepped:Connect(function()
+        ss = getgenv().EspSettings
+        if plr and plr ~= player and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChildOfClass("Humanoid") and plr.Character:FindFirstChildOfClass("Humanoid").Health > 0 then
+            local vector, inViewport = camera:WorldToViewportPoint(plr.Character.HumanoidRootPart.Position)
+            
+            local top = Vector2.new(camera.ViewportSize.X / 2, 0)
+            local center = Vector2.new(camera.ViewportSize.X,camera.ViewportSize.Y)
+            local bottom = Vector2.new(camera.ViewportSize.X / 2,camera.ViewportSize.Y)
+            mouse = game:GetService("UserInputService"):GetMouseLocation()
+            local origin = top
+            if ss.Tracers.Origin:lower() == "top" then
+                origin = top
+            elseif ss.Tracers.Origin:lower() == "center" then
+                origin = center
+            elseif ss.Tracers.Origin:lower() == "bottom" then
+                origin = bottom
+            elseif ss.Tracers.Origin:lower() == "mouse" then
+                origin = mouse
+            end
+
+            if inViewport then
+                tracer.Transparency = ss.Tracers.Transparency
+                tracer.Thickness = ss.Tracers.Thickness
+                tracer.From = origin
+                tracer.To = Vector2.new(vector.X,vector.Y)
+
+                if ss.TeamCheck and plr.Team == player.Team then
+                    tracer.Visible = false
+                else
+                    tracer.Visible = true
+                end
+            else
+                tracer.Visible = false
+            end
+            if ss.Tracers.UseTeamColor then
+                tracer.Color = plr.TeamColor.Color
+            else
+                tracer.Color = ss.Tracers.Color
+            end
+        end
+    end)
+    table.insert(getgenv().UNIVERSALESP.OBJECTS,#getgenv().UNIVERSALESP.OBJECTS+1,tracer)
+    table.insert(getgenv().UNIVERSALESP.RUNSERVICE,#getgenv().UNIVERSALESP.RUNSERVICE+1,rs)
+    players.PlayerRemoving:Connect(function(p)
+        if p == plr then
+            tracer:Remove()
+            rs:Disconnect()
+        end
+    end)
+end
+
+function Name(plr)
+    local name = Drawing.new("Text")
+    name.Visible = true
+    name.Transparency = ss.Names.Transparency
+    name.Color = ss.Names.Color
+    name.Text = plr.Name
+    name.Size = ss.Names.Size
+    name.Center = true
+    name.Outline = ss.Names.Outline
+    name.OutlineColor = Color3.fromRGB(0,0,0)
+    name.Font = ss.Names.Font
+    local rs
+    rs = RunService.RenderStepped:Connect(function()
+        ss = getgenv().EspSettings
+        if plr and plr ~= player and plr.Character and plr.Character:FindFirstChild("Head") and plr.Character:FindFirstChildOfClass("Humanoid") and plr.Character:FindFirstChildOfClass("Humanoid").Health > 0 then
+            local vector, inViewport = camera:WorldToViewportPoint(plr.Character.Head.Position)
+            if inViewport then
+                name.Transparency = ss.Names.Transparency
+                name.Size = ss.Names.Size
+                name.Outline = ss.Names.Outline
+                name.Position = Vector2.new(vector.X,vector.Y-30)
+                name.Font = ss.Names.Font
+                if ss.TeamCheck and plr.Team == player.Team then
+                    name.Visible = false
+                else
+                    name.Visible = true
+                end
+            else
+                name.Visible = false
+            end
+            if ss.Names.UseTeamColor then
+                name.Color = plr.TeamColor.Color
+            else
+                name.Color = ss.Names.Color
+            end
+        end
+    end)
+    table.insert(getgenv().UNIVERSALESP.OBJECTS,#getgenv().UNIVERSALESP.OBJECTS+1,name)
+    table.insert(getgenv().UNIVERSALESP.RUNSERVICE,#getgenv().UNIVERSALESP.RUNSERVICE+1,rs)
+    players.PlayerRemoving:Connect(function(p)
+        if p == plr then
+            name:Remove()
+            rs:Disconnect()
+        end
+    end)
+end
+
+for i,v in next, players:GetPlayers() do
+    if ss.Boxes.Enabled then
+        Box(v)
+    end
+    if ss.Tracers.Enabled then
+        Tracer(v)
+    end
+    if ss.Names.Enabled then
+        Name(v)
+    end
+end
+players.PlayerAdded:Connect(function(v)
+    if ss.Boxes.Enabled then
+        Box(v)
+    end
+    if ss.Tracers.Enabled then
+        Tracer(v)
+    end
+    if ss.Names.Enabled then
+        Name(v)
+    end
+end)
