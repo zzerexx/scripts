@@ -51,7 +51,7 @@ v1.0.0
 - Name Esp  
   
 REQUIRES DRAWING LIBRARY  
-doesnt work on phantom forces  
+executing multiple times will cause fps drops  
 ```
 Script: https://pastebin.com/raw/5zw0rLH9
 ```  
