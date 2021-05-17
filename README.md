@@ -43,6 +43,17 @@ New Setting: InfiniteJump
 Script will now check if you are using an outdated version
 ```  
   
+# Universal Esp  
+Updated May 17, 2021  
+v1.0.0  
+- Box Esp  
+- Tracers  
+- Name Esp
+REQUIRES DRAWING LIBRARY  
+```
+Script: https://pastebin.com/raw/5zw0rLH9
+```  
+  
 # Counter Blox Spectator Viewer  
 see who is spectating you  
 u can drag it anywhere too very cool  
@@ -51,11 +62,6 @@ skidded from hexagon btw
 # Universal Trigger Bot
 Clicks whenever your mouse is hovering over a player  
 press H to toggle  
-  
-# Universal Esp  
-Updated March 10, 2021  
-v1.0.0  
-noob esp  
   
 # Synapse XI  
 Updated March 12, 2021  
