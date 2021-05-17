@@ -173,9 +173,6 @@ function Name(plr)
             else
                 name.Color = ss.Names.Color
             end
-            if ss.Names.ShowHealth then
-                name.Text = plr.Name.."\nHealth: "..plr.Character.Humanoid.Health
-            end
         end
     end)
     table.insert(getgenv().UNIVERSALESP.OBJECTS,#getgenv().UNIVERSALESP.OBJECTS+1,name)
