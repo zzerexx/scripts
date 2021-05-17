@@ -68,6 +68,8 @@ function Box(plr)
             else
                 box.Color = ss.Boxes.Color
             end
+        else
+            box.Visible = false
         end
     end)
     table.insert(getgenv().UNIVERSALESP.OBJECTS,#getgenv().UNIVERSALESP.OBJECTS+1,box)
@@ -126,6 +128,8 @@ function Tracer(plr)
             else
                 tracer.Color = ss.Tracers.Color
             end
+        else
+            tracer.Visible = false
         end
     end)
     table.insert(getgenv().UNIVERSALESP.OBJECTS,#getgenv().UNIVERSALESP.OBJECTS+1,tracer)
@@ -173,6 +177,8 @@ function Name(plr)
             else
                 name.Color = ss.Names.Color
             end
+        else
+            name.Visible = false
         end
     end)
     table.insert(getgenv().UNIVERSALESP.OBJECTS,#getgenv().UNIVERSALESP.OBJECTS+1,name)
