@@ -65,6 +65,11 @@ skidded from hexagon btw
 Clicks whenever your mouse is hovering over a player  
 press H to toggle  
   
+# Lowest Ping  
+Finds a server with the lowest ping  
+Takes longer on larger games due to the amount of servers  
+i think this only works if you live in the EST timezone  
+  
 # owo-ify  
 owo-ifier  
   
