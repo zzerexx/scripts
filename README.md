@@ -51,6 +51,7 @@ v1.0.0
 - Name Esp  
   
 REQUIRES DRAWING LIBRARY  
+doesnt work on phantom forces  
 ```
 Script: https://pastebin.com/raw/5zw0rLH9
 ```  
