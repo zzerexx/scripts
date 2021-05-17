@@ -14,7 +14,7 @@ if typeof(getgenv().UNIVERSALESP) == "table" then
         end
     end
     for i,v in next, getgenv().UNIVERSALESP.RUNSERVICE do
-        if typeof(v) == "RBXScriptConnection" then
+        if typeof(v) == "RBXScriptConnection" and v.Connected then
             v:Disconnect()
         end
     end
