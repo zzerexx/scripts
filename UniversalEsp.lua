@@ -9,18 +9,14 @@ if typeof(Drawing.new) ~= "function" then
 end
 if typeof(getgenv().UNIVERSALESP_OBJECTS) == "table"then
     for i,v in next, getgenv().UNIVERSALESP_OBJECTS do
-        if typeof(v) == "table" or typeof(v) == "userdata" then
-            v:Remove()
-            table.remove(getgenv().UNIVERSALESP_OBJECTS,i)
-        end
+        v:Remove()
+        table.remove(getgenv().UNIVERSALESP_OBJECTS,i)
     end
 end
 if typeof(getgenv().UNIVERSALESP_CONNECTIONS) == "table" then
     for i,v in next, getgenv().UNIVERSALESP_CONNECTIONS do
-        if typeof(v) == "RBXScriptConnection" then
-            v:Disconnect()
-            table.remove(getgenv().UNIVERSALESP_CONNECTIONS,i)
-        end
+        v:Disconnect()
+        table.remove(getgenv().UNIVERSALESP_CONNECTIONS,i)
     end
 end
 
