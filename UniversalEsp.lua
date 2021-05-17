@@ -174,7 +174,7 @@ function Name(plr)
                 name.Color = ss.Names.Color
             end
             if ss.Names.ShowHealth then
-                name.Text = name.Text.."\nHealth: "..plr.Character.Humanoid.Health
+                name.Text = plr.Name.."\nHealth: "..plr.Character.Humanoid.Health
             end
         end
     end)
