@@ -138,7 +138,7 @@ function Name(plr)
     name.Size = ss.Names.Size
     name.Center = true
     name.Outline = ss.Names.Outline
-    name.OutlineColor = Color3.fromRGB(0,0,0)
+    name.OutlineColor = ss.Names.OutlineColor
     name.Font = ss.Names.Font
     local rs = RunService.RenderStepped:Connect(function()
         ss = getgenv().EspSettings
@@ -148,6 +148,7 @@ function Name(plr)
                 name.Transparency = ss.Names.Transparency
                 name.Size = ss.Names.Size
                 name.Outline = ss.Names.Outline
+                name.OutlineColor = ss.Names.OutlineColor
                 name.Position = Vector2.new(vector.X,vector.Y-30)
                 name.Font = ss.Names.Font
                 if ss.TeamCheck and plr.Team == player.Team then
