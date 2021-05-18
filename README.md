@@ -44,11 +44,11 @@ Script will now check if you are using an outdated version
 ```  
   
 # Universal Esp  
-Updated May 17, 2021  
+Updated May 18, 2021  
 v1.0.0  
 - Box Esp  
 - Tracers  
-- Name Esp  
+- Name Esp (with Distance and Health)
   
 REQUIRES DRAWING LIBRARY  
 executing multiple times will cause fps drops  
