@@ -155,6 +155,15 @@ function Name(plr)
                 else
                     name.Visible = true
                 end
+                local mag = (player.Character.HumanoidRootPart.Position - plr.Character.HumanoidRootPart.Position).Magnitude
+                local health = plr.Character:FindFirstChildOfClass("Humanoid").Health
+                if ss.Names.ShowDistance and ss.Names.ShowHealth then
+                    name.Text = plr.Name.." [ "..math.floor(mag).." ] [ "..plr.Character.Humanoid.Health.." ]"
+                elseif ss.Names.ShowDistance then
+                    name.Text = plr.Name.." [ "..math.floor(mag).." ]"
+                elseif ss.Names.ShowHealth then
+                    name.Text = plr.Name.." [ "..health.." ]"
+                end
             else
                 name.Visible = false
             end
