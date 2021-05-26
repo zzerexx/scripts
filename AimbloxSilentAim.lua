@@ -39,3 +39,4 @@ mt.__namecall = newcclosure(function(self,...)
     end
     return oldnc(self,...)
 end)
+setreadonly(mt,true)
