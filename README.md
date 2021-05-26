@@ -56,6 +56,11 @@ executing multiple times will cause fps drops
 Script: https://pastebin.com/raw/5zw0rLH9
 ```  
   
+# Aimblox Silent Aim  
+Updated May 26, 2021  
+v1.0.0  
+basic silent aim  
+  
 # Counter Blox Spectator Viewer  
 see who is spectating you  
 u can drag it anywhere too very cool  
