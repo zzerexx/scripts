@@ -7,12 +7,24 @@ local player = players.LocalPlayer
 function ClosestPlayer()
     local plr
     local closest = math.huge
-    for i,v in pairs(players:GetPlayers()) do
-        if v ~= player and v.Team ~= player.Team and v.Character and v.Character.Humanoid.Health > 0 then
-            local mag = (player.Character.HumanoidRootPart.Position - v.Character.HumanoidRootPart.Position).Magnitude
-            if mag < closest then
-                closest = mag 
-                plr = v
+    if player.Team == nil then
+        for i,v in next, players:GetPlayers() do
+            if v ~= player and v.Character and v.Character.Humanoid.Health > 0 then
+                local mag = (player.Character.HumanoidRootPart.Position - v.Character.HumanoidRootPart.Position).Magnitude
+                if mag < closest then
+                    closest = mag 
+                    plr = v
+                end
+            end
+        end
+    else
+        for i,v in next, players:GetPlayers() do
+            if v ~= player and v.Team ~= player.Team and v.Character and v.Character.Humanoid.Health > 0 then
+                local mag = (player.Character.HumanoidRootPart.Position - v.Character.HumanoidRootPart.Position).Magnitude
+                if mag < closest then
+                    closest = mag 
+                    plr = v
+                end
             end
         end
     end
