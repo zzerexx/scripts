@@ -36,7 +36,7 @@ Topbar.AnchorPoint = Vector2.new(0.5, 0.5)
 Topbar.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 Topbar.BackgroundTransparency = 0.800
 Topbar.BorderSizePixel = 0
-Topbar.Position = UDim2.new(0.5, 0, 0.200000003, 0)
+Topbar.Position = UDim2.new(0.5, 0, 0.15, 0)
 Topbar.Size = UDim2.new(0, 700, 0, 30)
 Topbar.Visible = true
 
