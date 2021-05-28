@@ -46,15 +46,11 @@ local function LCIFE_fake_script() -- Main.LocalScript
 	
 	local function GetSpectators()
 		local CurrentSpectators = {}
-	
 		for i,v in pairs(game:GetService("Players"):GetChildren()) do 
-			if v ~= game:GetService("Players").LocalPlayer then
-				if not v.Character and v:FindFirstChild("CameraCF") and (v.CameraCF.Value.Position - workspace.CurrentCamera.CFrame.p).Magnitude < 10 then 
-					table.insert(CurrentSpectators, #CurrentSpectators+1, v)
-				end
+			if v ~= game:GetService("Players").LocalPlayer and not v.Character and v:FindFirstChild("CameraCF") and (v.CameraCF.Value.Position - workspace.CurrentCamera.CFrame.p).Magnitude < 10 then 
+				table.insert(CurrentSpectators, #CurrentSpectators+1, v)
 			end
 		end
-	
 		return CurrentSpectators
 	end
 	
