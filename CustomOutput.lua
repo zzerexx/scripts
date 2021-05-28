@@ -24,7 +24,7 @@ local Close = Instance.new("ImageButton")
 --Properties:
 
 CustomOutput.Name = "CustomOutput"
-CustomOutput.Parent = gethui() or get_hidden_ui() or game.CoreGui
+CustomOutput.Parent = gethui() or game.CoreGui
 CustomOutput.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 CustomOutput.DisplayOrder = 1000
 CustomOutput.ResetOnSpawn = false
@@ -38,6 +38,7 @@ Topbar.BackgroundTransparency = 0.800
 Topbar.BorderSizePixel = 0
 Topbar.Position = UDim2.new(0.5, 0, 0.200000003, 0)
 Topbar.Size = UDim2.new(0, 700, 0, 30)
+Topbar.Visible = true
 
 Background.Name = "Background"
 Background.Parent = Topbar
