@@ -24,7 +24,7 @@ local Close = Instance.new("ImageButton")
 --Properties:
 
 CustomOutput.Name = "CustomOutput"
-CustomOutput.Parent = gethui() or game.CoreGui
+CustomOutput.Parent = game.CoreGui
 CustomOutput.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 CustomOutput.DisplayOrder = 1000
 CustomOutput.ResetOnSpawn = false
