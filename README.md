@@ -60,6 +60,13 @@ Script: https://pastebin.com/raw/5zw0rLH9
 Updated May 26, 2021  
 v1.0.0  
 basic silent aim  
+
+# Custom Output  
+Updated May 28, 2021  
+v1.0.0  
+basically just the developer console since the roblox one is broken lol  
+works the same as the developer console  
+F9 to toggle  
   
 # Counter Blox Spectator Viewer  
 see who is spectating you  
