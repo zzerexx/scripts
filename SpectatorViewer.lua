@@ -70,6 +70,7 @@ local function LCIFE_fake_script() -- Main.LocalScript
 			new.Visible = true
 			new.Name = v.Name
 			new.Text = v.Name
+			new.TextColor3 = v.TeamColor.Color
 		end
 	end
 end
