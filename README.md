@@ -91,7 +91,7 @@ owo-ifier
 # Synapse XI  
 Updated March 12, 2021  
 v1.0.0   
-Synapse X, recreated with Roblox Gui Objects.  
+Synapse X, recreated in Roblox.  
 Execute **:settings** for the secret settings menu. (buggy)  
 ```
 To-Do List:
