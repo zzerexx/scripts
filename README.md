@@ -44,8 +44,8 @@ Script will now check if you are using an outdated version
 ```  
   
 # Universal Esp  
-Updated May 18, 2021  
-v1.0.0  
+Updated May 29, 2021  
+v1.0.1  
 - Box Esp  
 - Tracers  
 - Name Esp (with Distance and Health)  
