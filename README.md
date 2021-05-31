@@ -99,7 +99,7 @@ print(dec) -- hi gamers!
 If you need to use `getsynasset` then use this:  
 ```
 function getsynasset(path)
-  return getcustomasset(path)
+	return getcustomasset(path)
 end
 ```  
   
