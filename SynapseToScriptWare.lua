@@ -1,11 +1,15 @@
-local hooked = false
+local protected = {}
 local mt = getrawmetatable(game)
 local oldnc = mt.__namecall
 setreadonly(mt,false)
 mt.__namecall = newcclosure(function(self,...)
 	local args = {...}
-	if hooked and self == game and getnamecallmethod() == "FindFirstChild" and args[2] ~= nil and args[2] == true then
-		return false
+	if self == game and getnamecallmethod() == "FindFirstChild" and args[2] ~= nil and args[2] == true then
+		for i,v in next, protected do
+			if args[1] == v.Name then
+				return false
+			end
+		end
 	end
 	return oldnc(self,...)
 end)
@@ -18,10 +22,13 @@ return {
 	write_clipboard = setclipboard,
 	queue_on_teleport = queue_on_teleport,
 	protect_gui = function()
-		hooked = true
+		table.insert(protected,#protected+1,obj)
 	end,
 	unprotect_gui = function()
-		hooked = false
+		if not table.find(protected,obj) then
+			error(obj.Name.." is not protected")
+		end
+		table.remove(protected,table.find(protected,obj))
 	end,
 	is_beta = function()
 		return false
