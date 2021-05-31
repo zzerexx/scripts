@@ -1,15 +1,27 @@
-return {
+local hooked = false
+local mt = getrawmetatable(game)
+local oldnc = mt.__namecall
+setreadonly(mt,false)
+mt.__namecall = newcclosure(function(self,...)
+	local args = {...}
+	if hooked and self == game and getnamecallmethod() == "FindFirstChild" and args[2] ~= nil and args[2] == true then
+		return false
+	end
+	return oldnc(self,...)
+end)
+setreadonly(mt,true)
+local syn =  {
 	cache_replace = cache.replace,
 	cache_invalidate = cache.invalidate,
 	is_cached = cache.iscached,
 	set_thread_identity = setthreadidentity,
 	write_clipboard = setclipboard,
 	queue_on_teleport = queue_on_teleport,
-	protect_gui = function(obj)
-		obj.Parent = gethui()
+	protect_gui = function()
+		hooked = true
 	end,
-	unprotect_gui = function(obj)
-		obj.Parent = game.CoreGui
+	unprotect_gui = function()
+		hooked = false
 	end,
 	is_beta = function()
 		return false
