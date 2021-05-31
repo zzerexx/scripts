@@ -71,6 +71,37 @@ v1.0.0
 basically just the developer console since the roblox one is broken lol  
 works the same as the developer console  
 F9 to toggle  
+
+# Synapse to Script-Ware  
+Updated May 31, 2021  
+Allows you to use Synapse exclusive functions with Script-Ware v2  
+Example  
+```
+local syn = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/SynapseToScriptWare.lua", true))()
+
+local enc = syn.crypt.custom.encrypt(
+	"aes-gcm",
+	"hi gamers!",
+	"$nLliCMdi7gcynsFCK9u0aVNdtkNIiZG",
+	"Agd13KuKIL2$")
+
+print(enc) -- iQg5LoK5GmWmkO7HtuHH4Q==
+
+local dec = syn.crypt.custom.decrypt(
+	"aes-gcm",
+	enc,
+	"$nLliCMdi7gcynsFCK9u0aVNdtkNIiZG",
+	"Agd13KuKIL2$"
+)
+
+print(dec) -- hi gamers!
+```  
+If you need to use `getsynasset` then use this:  
+```
+function getsynasset(path)
+  return getcustomasset(path)
+end
+```  
   
 # Counter Blox Spectator Viewer  
 see who is spectating you  
