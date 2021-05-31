@@ -75,10 +75,20 @@ F9 to toggle
 # Synapse to Script-Ware  
 Updated May 31, 2021  
 Allows you to use Synapse exclusive functions with Script-Ware v2  
-NOTE: this only has the functions listed on the Synapse documentation  
-Example  
+**Usage**  
 ```lua
 local syn = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/SynapseToScriptWare.lua", true))()
+function getsynasset(path)
+	return getcustomasset(path)
+end
+```  
+  
+**Example**    
+```lua
+local syn = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/SynapseToScriptWare.lua", true))()
+function getsynasset(path) -- this is only needed if you want to use getsynasset
+	return getcustomasset(path)
+end
 
 local enc = syn.crypt.custom.encrypt(
 	"aes-gcm",
@@ -97,15 +107,10 @@ local dec = syn.crypt.custom.decrypt(
 
 print(dec) -- hi gamers!
 ```  
-Notes:  
-`syn.secure_call`, `syn.create_secure_function` and `syn.run_secure_function` are not available due to Script-Ware not having similar functions.  
+
+**Notes**  
+`syn.secure_call` and `syn.create_secure_function` and `syn.run_secure_function` are not available as there are no similar functions.  
 You do not need to use an argument with `syn.protect_gui` as it blocks ALL recursive FindFirstChild attacks.  
-If you need to use `getsynasset` then use this function    
-```lua
-function getsynasset(path)
-	return getcustomasset(path)
-end
-```  
   
 # Counter Blox Spectator Viewer  
 see who is spectating you  
