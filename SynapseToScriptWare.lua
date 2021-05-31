@@ -10,7 +10,7 @@ mt.__namecall = newcclosure(function(self,...)
 	return oldnc(self,...)
 end)
 setreadonly(mt,true)
-local syn =  {
+return {
 	cache_replace = cache.replace,
 	cache_invalidate = cache.invalidate,
 	is_cached = cache.iscached,
