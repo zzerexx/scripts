@@ -90,6 +90,7 @@ function getsynasset(path) -- this is only needed if you want to use getsynasset
 	return getcustomasset(path)
 end
 
+-- Using syn.crypt.custom
 local enc = syn.crypt.custom.encrypt(
 	"aes-gcm",
 	"hi gamers!",
@@ -107,6 +108,7 @@ local dec = syn.crypt.custom.decrypt(
 
 print(dec) -- hi gamers!
 
+-- Using syn.protect_gui and getsynasset
 writefile("dog.png", game:HttpGet("https://i.imgur.com/aVEAmYC.png"))
 local ScreenGui = Instance.new("ScreenGui")
 syn.protect_gui() -- You do not need to use an argument here
