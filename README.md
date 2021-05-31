@@ -106,6 +106,16 @@ local dec = syn.crypt.custom.decrypt(
 )
 
 print(dec) -- hi gamers!
+
+writefile("dog.png", game:HttpGet("https://i.imgur.com/aVEAmYC.png"))
+local ScreenGui = Instance.new("ScreenGui")
+syn.protect_gui() -- You do not need to use an argument here
+ScreenGui.Parent = game.CoreGui
+local ImageLabel = Instance.new("ImageLabel",ScreenGui)
+ImageLabel.AnchorPoint = Vector2.new(0.5, 0.5)
+ImageLabel.Position = UDim2.new(0.5, 0, 0.5, 0)
+ImageLabel.Size = UDim2.new(0, 250, 0, 250)
+ImageLabel.Image = getsynasset("dog.png")
 ```  
 
 **Notes**  
