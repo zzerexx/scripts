@@ -21,14 +21,22 @@ return {
 	set_thread_identity = setthreadidentity,
 	write_clipboard = setclipboard,
 	queue_on_teleport = queue_on_teleport,
-	protect_gui = function()
+	protect_gui = function(obj)
 		table.insert(protected,#protected+1,obj)
+		for i,v in next, obj:GetDescendants() do
+			table.insert(protected,#protected+1,v)
+		end
 	end,
-	unprotect_gui = function()
+	unprotect_gui = function(obj)
 		if not table.find(protected,obj) then
 			error(obj.Name.." is not protected")
 		end
 		table.remove(protected,table.find(protected,obj))
+		for i,v in next, obj:GetDescendants() do
+			if table.find(protected,v) then
+				table.remove(protected,table.find(protected,v))
+			end
+		end
 	end,
 	is_beta = function()
 		return false
