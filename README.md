@@ -55,10 +55,6 @@ executing multiple times will cause fps drops
 ```
 Script: https://pastebin.com/raw/5zw0rLH9
 ```  
-v1.0.2  
-```
-Fixed "HumanoidRootPart is not a valid member of ____" error
-```  
   
 # Aimblox Silent Aim  
 Updated May 26, 2021  
