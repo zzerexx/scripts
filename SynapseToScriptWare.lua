@@ -1,4 +1,4 @@
-local syn = {
+return {
 	cache_replace = cache.replace,
 	cache_invalidate = cache.invalidate,
 	is_cached = cache.iscached,
@@ -43,6 +43,3 @@ local syn = {
 		connect = WebSocket.connect
 	}
 }
-function getsynasset(path)
-	return getcustomasset(path)
-end
