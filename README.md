@@ -107,7 +107,7 @@ print(dec) -- hi gamers!
 -- Using syn.protect_gui and getsynasset
 writefile("dog.png", game:HttpGet("https://i.imgur.com/aVEAmYC.png"))
 local ScreenGui = Instance.new("ScreenGui")
-syn.protect_gui() -- You do not need to use an argument here
+syn.protect_gui(ScreenGui)
 ScreenGui.Parent = game.CoreGui
 local ImageLabel = Instance.new("ImageLabel",ScreenGui)
 ImageLabel.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -118,7 +118,6 @@ ImageLabel.Image = getsynasset("dog.png")
 
 **Notes**  
 `syn.secure_call` and `syn.create_secure_function` and `syn.run_secure_function` are not available as there are no similar functions.  
-You do not need to use an argument with `syn.protect_gui` as it blocks ALL recursive FindFirstChild attacks.  
   
 # Counter Blox Spectator Viewer  
 see who is spectating you  
