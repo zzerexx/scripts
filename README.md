@@ -115,9 +115,30 @@ ImageLabel.Position = UDim2.new(0.5, 0, 0.5, 0)
 ImageLabel.Size = UDim2.new(0, 250, 0, 250)
 ImageLabel.Image = getsynasset("dog.png")
 ```  
-
-**Notes**  
-`syn.secure_call` and `syn.create_secure_function` and `syn.run_secure_function` are not available as there are no similar functions.  
+  
+**Supported Functions**  
+```
+syn.cache_replace
+syn.cache_invalidate
+syn.set_thread_identity
+syn.write_clipboard
+syn.queue_on_teleport
+syn.protect_gui
+syn.unprotect_gui
+syn.is_beta
+syn.request
+syn.crypt.encrypt
+syn.crypt.decrypt
+syn.crypt.base64.encode
+syn.crypt.base64.decode
+syn.crypt.hash
+syn.crypt.derive
+syn.crypt.random
+syn.crypt.custom.encrypt
+syn.crypt.custom.decrypt
+syn.crypt.custom.hash
+syn.websocket.connect
+```  
   
 # Counter Blox Spectator Viewer  
 see who is spectating you  
