@@ -76,7 +76,7 @@ F9 to toggle
 Updated May 31, 2021  
 Allows you to use Synapse exclusive functions with Script-Ware v2  
 Example  
-```
+```lua
 local syn = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/SynapseToScriptWare.lua", true))()
 
 local enc = syn.crypt.custom.encrypt(
