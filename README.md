@@ -97,6 +97,9 @@ local dec = syn.crypt.custom.decrypt(
 
 print(dec) -- hi gamers!
 ```  
+Notes:  
+`syn.secure_call` is not available due to Script-Ware not having a Secure Call function.  
+You do not need to use an argument with `syn.protect_gui` as it blocks ALL recursive FindFirstChild attacks.  
 If you need to use `getsynasset` then use this function    
 ```lua
 function getsynasset(path)
