@@ -71,6 +71,8 @@ F9 to toggle
 # Synapse to Script-Ware  
 Updated May 31, 2021  
 Allows you to use Synapse exclusive functions with Script-Ware v2  
+This does not work if you loadstring your script. You must use the script's source to be able to use this.  
+  
 **Loader**  
 ```lua
 local syn = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/SynapseToScriptWare.lua", true))()
