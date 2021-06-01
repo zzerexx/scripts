@@ -69,9 +69,9 @@ works the same as the developer console
 F9 to toggle  
 
 # Synapse to Script-Ware  
-Updated May 31, 2021  
+Updated June 1, 2021  
 Allows you to use Synapse exclusive functions with Script-Ware v2  
-This does not work if you loadstring your script. You must use the script's source to be able to use this.  
+This does not work with obfuscated scripts or loadstrings.  
   
 **Loader**  
 ```lua
@@ -111,11 +111,14 @@ writefile("dog.png", game:HttpGet("https://i.imgur.com/aVEAmYC.png"))
 local ScreenGui = Instance.new("ScreenGui")
 syn.protect_gui(ScreenGui)
 ScreenGui.Parent = game.CoreGui
+ScreenGui.Name = "protected_dog"
 local ImageLabel = Instance.new("ImageLabel",ScreenGui)
 ImageLabel.AnchorPoint = Vector2.new(0.5, 0.5)
 ImageLabel.Position = UDim2.new(0.5, 0, 0.5, 0)
 ImageLabel.Size = UDim2.new(0, 250, 0, 250)
 ImageLabel.Image = getsynasset("dog.png")
+
+print(game:FindFirstChild("protected_dog",true)) -- should print false
 ```  
   
 **Supported Functions**  
