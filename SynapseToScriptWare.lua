@@ -5,7 +5,7 @@ setreadonly(mt,false)
 mt.__namecall = newcclosure(function(self,...)
 	local args = {...}
 	if self == game and getnamecallmethod() == "FindFirstChild" and args[2] ~= nil and args[2] == true then
-		for i,v in next, protected do
+		for i,v in next, getgenv().protected do
 			if args[1] == v.Name then
 				return false
 			end
@@ -14,6 +14,7 @@ mt.__namecall = newcclosure(function(self,...)
 	return oldnc(self,...)
 end)
 setreadonly(mt,true)
+
 return {
 	cache_replace = cache.replace,
 	cache_invalidate = cache.invalidate,
@@ -23,7 +24,7 @@ return {
 	queue_on_teleport = queue_on_teleport,
 	protect_gui = function(obj)
 		if typeof(obj) ~= "Instance" then
-        		error("Attempted to protect a "..typeof(obj))
+        	error("Attempted to protect a "..typeof(obj))
     	end
     	table.insert(getgenv().protected,#getgenv().protected+1,obj)
     	for i,v in next, obj:GetDescendants() do
@@ -32,7 +33,7 @@ return {
 	end,
 	unprotect_gui = function(obj)
 		if typeof(obj) ~= "Instance" then
-        		error("Attempted to unprotect a "..typeof(obj))
+        	error("Attempted to unprotect a "..typeof(obj))
     	end
     	table.remove(getgenv().protected,table.find(getgenv().protected,obj))
     	for i,v in next, obj:GetDescendants() do
