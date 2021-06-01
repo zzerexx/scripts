@@ -1,4 +1,4 @@
-local protected = {}
+getgenv().protected = {}
 local mt = getrawmetatable(game)
 local oldnc = mt.__namecall
 setreadonly(mt,false)
@@ -22,21 +22,24 @@ return {
 	write_clipboard = setclipboard,
 	queue_on_teleport = queue_on_teleport,
 	protect_gui = function(obj)
-		table.insert(protected,#protected+1,obj)
-		for i,v in next, obj:GetDescendants() do
-			table.insert(protected,#protected+1,v)
-		end
+		if typeof(obj) ~= "Instance" then
+        		error("Attempted to protect a "..typeof(obj))
+    	end
+    	table.insert(getgenv().protected,#getgenv().protected+1,obj)
+    	for i,v in next, obj:GetDescendants() do
+        	table.insert(getgenv().protected,#getgenv().protected+1,v)
+    	end
 	end,
 	unprotect_gui = function(obj)
-		if not table.find(protected,obj) then
-			error(obj.Name.." is not protected")
-		end
-		table.remove(protected,table.find(protected,obj))
-		for i,v in next, obj:GetDescendants() do
-			if table.find(protected,v) then
-				table.remove(protected,table.find(protected,v))
-			end
-		end
+		if typeof(obj) ~= "Instance" then
+        		error("Attempted to unprotect a "..typeof(obj))
+    	end
+    	table.remove(getgenv().protected,table.find(getgenv().protected,obj))
+    	for i,v in next, obj:GetDescendants() do
+        	if table.find(getgenv().protected,v) then
+            	table.remove(getgenv().protected,table.find(getgenv().protected,v))
+        	end
+    	end
 	end,
 	is_beta = function()
 		return false
