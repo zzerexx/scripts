@@ -685,8 +685,8 @@ end)
 game.CoreGui.RobloxPromptGui.promptOverlay.ChildAdded:Connect(function()
     if var.rejoinonkick then
         if queue_on_teleport or syn.queue_on_teleport then
-            local queue = queue_on_teleport or syn.queue_on_teleport
-            queue('loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/prisonlife.lua"))()')
+            local queue_on_teleport = queue_on_teleport or syn.queue_on_teleport
+            queue_on_teleport('loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/prisonlife.lua"))()')
         end
         game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId,game.JobId)
     end
