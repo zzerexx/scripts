@@ -1,3 +1,16 @@
+local mt = getrawmetatable(game)
+local oldnc = mt.__namecall
+setreadonly(mt, false)
+mt.__namecall = newcclosure(function(self,...)
+    local args = {...}
+    if getnamecallmethod() == "FindFirstChild" and args[2] and args[2] == true then
+        return false
+    end
+    return oldnc(self,...)
+end)
+setreadonly(mt, true)
+getconnections(game.DescendantAdded)[1]:Disable()
+
 local CustomOutput = Instance.new("ScreenGui")
 local Topbar = Instance.new("Frame")
 local Background = Instance.new("Frame")
