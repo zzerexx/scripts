@@ -650,17 +650,10 @@ players.PlayerAdded:Connect(function()
     UpdateList(spectate)
     UpdateList(killplayers)
 end)
-players.PlayerRemoving:Connect(function(plr)
+players.PlayerRemoving:Connect(function()
     UpdateList(playertp)
     UpdateList(spectate)
     UpdateList(killplayers)
-    if plr == player and var.rejoinonkick then
-        if queue_on_teleport or syn.queue_on_teleport then
-            local queue = queue_on_teleport or syn.queue_on_teleport
-            queue('loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/prisonlife.lua"))()')
-        end
-        game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId,game.JobId)
-    end
 end)
 player.CharacterAdded:Connect(function(char)
     char:WaitForChild("Humanoid")
@@ -687,6 +680,15 @@ player.Character.Humanoid.Changed:Connect(function(prop)
         player.Character.Humanoid.WalkSpeed = var.walkspeed
     elseif prop == "JumpPower" and player.Character.Humanoid.JumpPower ~= var.JumpPower then
         player.Character.Humanoid.JumpPower = var.jumppower
+    end
+end)
+game.CoreGui.RobloxPromptGui.promptOverlay.ChildAdded:Connect(function()
+    if var.rejoinonkick then
+        if queue_on_teleport or syn.queue_on_teleport then
+            local queue = queue_on_teleport or syn.queue_on_teleport
+            queue('loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/prisonlife.lua"))()')
+        end
+        game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId,game.JobId)
     end
 end)
 while wait() do
