@@ -6,34 +6,97 @@ local UIS = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Lighting = game:GetService("Lighting")
+local HttpService = game:GetService("HttpService")
 local Material = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kinlei/MaterialLua/master/Module.lua"))()
-
 local UI = Material.Load({
      Title = "prison life",
      Style = 3,
      SizeX = 400,
-     SizeY = 255,
+     SizeY = 280,
      Theme = "Dark"
 })
+print("Loaded UI Library [1/5]")
+
+if game.PlaceId ~= 155615604 then
+    UI.Banner({
+        Text = "Please use this gui on Prison Life.",
+        Options = {"Ok"}
+    })
+    local home = UI.New({
+        Title = "Teleport"
+    })
+    home.Button({
+        Text = "Teleport to Prison Life",
+        Callback = function()
+            game:GetService("TeleportService"):Teleport(155615604)
+        end
+    })
+    return
+end
 
 local var = {
-    reminders = true,
-    walkspeed = 16,
-    jumppower = 50,
-    noclip = false,
-    silentaim = false,
-    visiblecheck = false,
-    infjump = false,
-    godmode = false,
-    superpunchenabled = false,
-    infstamina = false,
-    antitaze = false,
-    antiarrest = false,
-    fullbright = false,
-    doorcollision = true,
-    rejoinonkick = false,
-    nametagcolor = Color3.fromRGB(255,255,255),
+    ['Player'] = {
+        ['Noclip'] = false,
+        ['InfiniteJump'] = false,
+        ['InfiniteStamina'] = false,
+        ['AntiTaze'] = false,
+        ['AntiArrest'] = false,
+        ['SuperPunch'] = false,
+        ['GodMode'] = false,
+        ['WalkSpeed'] = 16,
+        ['JumpPower'] = 50
+    },
+    ['Weapons'] = {
+        ['BulletCount'] = 1,
+        ['FireRate'] = 0.5
+    },
+    ['SilentAim'] = {
+        ['SilentAim'] = false,
+        ['VisibleCheck'] = false
+    },
+    ['ESP'] = {
+        ['TeamCheck'] = false,
+        ['Boxes'] = {
+            ['Enabled'] = false,
+            ['Transparency'] = 0.7,
+        },
+        ['Tracers'] = {
+            ['Enabled'] = false,
+            ['Transparency'] = 0.7,
+            ['Origin'] = "Top",
+        },
+        ['Names'] = {
+            ['Enabled'] = false,
+            ['Transparency'] = 0.7,
+            ['Font'] = Drawing.Fonts.UI,
+            ['ShowDistance'] = false,
+            ['ShowHealth'] = false
+        },
+    },
+    ['Misc'] = {
+        ['Fullbright'] = false,
+        ['Xray'] = false,
+        ['DoorCollision'] = false,
+        ['RejoinOnKick'] = false,
+        ['NameTagColor'] = "Bright orange"
+    }
 }
+local Settings = {Player={Noclip,InfiniteJump,InfiniteStamina,AntiTaze,AntiArrest,SuperPunch,GodMode,WalkSpeed,JumpPower},Weapons={BulletCount,FireRate},SilentAim={SilentAim,VisibleCheck},ESP={TeamCheck,Boxes={Enabled,Transparency},Tracers={Enabled,Transparency,Origin},Names={Enabled,Transparency,Font,ShowDistance,ShowHealth}},Misc={Fullbright,Xray,DoorCollision,RejoinOnKick,NameTagColor}}
+print("Loaded Variables  [2/5]")
+
+if writefile and readfile and makefolder and isfolder and isfile then
+    if not isfolder("PrisonLife") then
+        makefolder("PrisonLife")
+        makefolder("PrisonLife\\Configs")
+        writefile("PrisonLife\\Configs\\Default.json",HttpService:JSONEncode(var))
+        print("Created Folder")
+    end
+else
+    UI.Banner({
+        Text = "It appears that your exploit does not have the required functions to use configs.\nRequired functions: writefile, readfile, makefolder, isfolder, isfile",
+        Options = {"Ok"}
+    })
+end
 
 function Notification(title,text,duration)
     if not duration then
@@ -43,6 +106,12 @@ function Notification(title,text,duration)
         Title = title,
         Text = text,
         Duration = duration
+    })
+end
+function Banner(text)
+    UI.Banner({
+        Text = text,
+        Options = {"Ok"}
     })
 end
 function GunMod(mod,value)
@@ -78,18 +147,95 @@ function ClosestPlayer(target)
 end
 function UpdateList(dropdown)
     local plrs = {}
-    for i,v in ipairs(players:GetPlayers()) do
-        table.insert(plrs,#plrs+1,v.Name)
+    for i,v in next, players:GetPlayers() do
+        if v ~= player then
+            table.insert(plrs,#plrs+1,v.Name)
+        end
     end
+    table.sort(plrs,function(a,b)
+        return a < b
+    end)
+    table.insert(plrs,1,player.Name)
     dropdown:SetOptions(plrs)
+end
+function GetConfigs()
+    if not isfolder("PrisonLife\\Configs") then
+        Banner("Could not find the configs folder.")
+        return
+    end
+    local list = {}
+    for i,v in next, listfiles("PrisonLife\\Configs") do
+        table.insert(list,#list+1,v:split("\\")[3]:split(".json")[1])
+    end
+    table.sort(list,function(a,b)
+        return a < b
+    end)
+    return list
+end
+function LoadConfig(name)
+    if not isfile("PrisonLife\\Configs\\"..name..".json") then
+        Banner("Config '"..name.."' was not found.")
+        return
+    end
+    local info = HttpService:JSONDecode(readfile("PrisonLife\\Configs\\"..name..".json"))
+    var = info
+    for i,v in next, info do -- lol
+        for i2,v2 in next, v do
+            if i2 == "NameTagColor" then
+                var.Misc.NameTagColor = info[i][i2]
+                Settings.Misc.NameTagColor = BrickColor.new(info[i][i2]).Color:ToHSV()
+            else
+                var[i][i2] = info[i][i2]
+            end
+            if typeof(info[i][i2]) ~= "table" then
+                if i2.SetState then
+                    Settings[i][i2]:SetState(info[i][i2])
+                elseif i2.SetOptions then
+                    Settings[i][i2]:SetOptions(info[i][i2])
+                elseif i2.SetColor then
+                    Settings[i][i2]:SetColor(info[i][i2])
+                end
+            else
+                for i3,v3 in next, info[i][i2] do
+                    var[i][i2][i3] = info[i][i2][i3]
+                    if typeof(info[i][i2][i3]) ~= "table" then
+                        if Settings[i][i2][i3].SetState and typeof(info[i][i2][i3]) == "boolean" then
+                            Settings[i][i2][i3]:SetState(info[i][i2][i3])
+                        elseif Settings[i][i2][i3].SetColor and typeof(info[i][i2][i3]) == "BrickColor" then
+                            Settings[i][i2][i3]:SetColor(BrickColor.new(info[i][i2][i3]).Color:ToHSV())
+                        elseif Settings[i][i2][i3].SetColor and typeof(info[i][i2][i3]) == "string" then
+                            Settings[i][i2][i3] = (info[i][i2][i3])
+                        end
+                    else
+                        for i4,v4 in next, info[i][i2][i3] do
+                            var[i][i2][i3][i4] = info[i][i2][i3][i4]
+                            if Settings[i][i2][i3][i4].SetState and typeof(info[i][i2][i3][i4]) == "boolean" then
+                                Settings[i][i2][i3][i4]:SetState(info[i][i2][i3][i4])
+                            elseif Settings[i][i2][i3][i4].SetColor and typeof(info[i][i2][i3][i4]) == "string" then
+                                Settings[i][i2][i3][i4] = info[i][i2][i3][i4]
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+    if var.Player.InfiniteStamina then
+        InfiniteStamina()
+    end
+    if var.Player.AntiTaze then
+        AntiTaze()
+    end
+    player.Character.Humanoid.WalkSpeed = var.Player.WalkSpeed
+    player.Character.Humanoid.JumpPower = var.Player.JumpPower
 end
 function InfiniteStamina()
     if typeof(getgc) ~= "function" then
-        Notification("Infinite Stamina","Missing Function: getgc") return
-    elseif typeof(debug.getupvalue) ~= "function" then
-        Notification("Infinite Stamina","Missing Function: debug.getupvalue") return
+        Banner("Your exploit does not have the required function for this.\nRequired function: getgc") return
+    elseif typeof(debug.getupvalues) ~= "function" then
+        Banner("Your exploit does not have the required function for this.\nRequired function: debug.getupvalues") return
     elseif typeof(debug.setupvalue) ~= "function" then
-        Notification("Infinite Stamina","Missing Function: debug.setupvalue") return
+        Banner("Your exploit does not have the required function for this.\nRequired function: debug.setupvalue") return
     end
     for i,v in next, getgc() do 
         if typeof(v) == "function" and getfenv(v).script and tostring(getfenv(v).script) == "ClientInputHandler" then 
@@ -103,12 +249,16 @@ function InfiniteStamina()
 end
 function AntiTaze()
     if typeof(getconnections) ~= "function" then
-        Notification("Anti Taze","Missing Function: getconnections") return
+        Banner("Your exploit does not have the required function for this.\nRequired function: getconnections") return
     end
     getconnections(workspace.Remote.tazePlayer.OnClientEvent)[1]:Disable()
 end
 function AntiArrest()
-
+    workspace.Remote.arrestPlayer.OnClientEvent:Connect(function()
+        player.Character.ClientInputHandler.Disabled = true 
+        wait(0.5)
+        player.Character.ClientInputHandler.Disabled = false
+    end)
 end
 function SuperPunch()
     local part = Instance.new("Part",player.Character)
@@ -133,7 +283,7 @@ end
 function KillPlayer(plr)
     local oldcolor = player.TeamColor.Name
     workspace.Remote.TeamEvent:FireServer("Medium stone grey")
-    local gun = "Remington 870"
+    local gun = "AK-47"
     workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver[gun].ITEMPICKUP)
     ReplicatedStorage.ReloadEvent:FireServer(player.Backpack[gun] or player.Character[gun])
     local args = {
@@ -175,10 +325,11 @@ function KillPlayer(plr)
     ReplicatedStorage.ShootEvent:FireServer(unpack(args))
     workspace.Remote.TeamEvent:FireServer(oldcolor)
 end
+print("Loaded Functions  [3/5]")
 
 if not getgenv().EspSettings then
     getgenv().EspSettings = {
-        TeamCheck = false,
+        TeamCheck = true,
         Boxes = {
             Enabled = true,
             Transparency = 0.7,
@@ -208,6 +359,7 @@ if not getgenv().EspSettings then
     }
     loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEsp.lua", true))()
 end
+print("Loaded ESP        [4/5]")
 
 local CFrames = {
     ["AK-47"] = CFrame.new(-933.276184, 94.1287842, 2056.50757, 0.00427169399, 7.74807063e-08, 0.99999094, -1.15140981e-08, 1, -7.74322473e-08, -0.99999094, -1.11832286e-08, 0.00427169399),
@@ -237,34 +389,69 @@ local Home = UI.New({
 local Player = UI.New({
     Title = "Player"
 })
-Player.Toggle({
+Settings.Player.Noclip = Player.Toggle({
     Text = "Noclip",
     Callback = function(value)
-        var.noclip = value
+        var.Player.Noclip = value
     end,
     Enabled = false
 })
-Player.Toggle({
+Settings.Player.InfiniteJump = Player.Toggle({
     Text = "Infinite Jump",
     Callback = function(value)
-        var.infjump = value
+        var.Player.InfiniteJump = value
     end,
     Enabled = false
 })
-Player.Slider({
+Settings.Player.InfiniteStamina = Player.Toggle({
+    Text = "Infinite Stamina",
+    Callback = function(value)
+        var.Player.InfiniteStamina = value
+    end,
+    Enabled = false
+})
+Settings.Player.AntiTaze = Player.Toggle({
+    Text = "Anti Taze",
+    Callback = function(value)
+        var.Player.AntiTaze = value
+    end,
+    Enabled = false
+})
+Settings.Player.AntiArrest = Player.Toggle({
+    Text = "Anti Arrest",
+    Callback = function(value)
+        var.Player.AntiArrest = value
+    end,
+    Enabled = false
+})
+Settings.Player.SuperPunch = Player.Toggle({
+    Text = "Super Punch",
+    Callback = function(value)
+        var.Player.SuperPunch = value
+    end,
+    Enabled = false
+})
+Settings.Player.GodMode = Player.Toggle({
+    Text = "God Mode",
+    Callback = function(value)
+        var.Player.GodMode = value
+    end,
+    Enabled = false
+})
+Settings.Player.WalkSpeed = Player.Slider({
     Text = "Walk Speed",
     Callback = function(value)
-        var.walkspeed = value
+        var.Player.WalkSpeed = value
         player.Character.Humanoid.WalkSpeed = value
     end,
     Min = 0,
     Max = 100,
     Def = 16
 })
-Player.Slider({
+Settings.Player.JumpPower = Player.Slider({
     Text = "Jump Power",
     Callback = function(value)
-        var.jumppower = value
+        var.Player.JumpPower = value
         player.Character.Humanoid.JumpPower = value
     end,
     Min = 0,
@@ -279,7 +466,9 @@ Weapons.Button({
     Text = "Get All Weapons",
     Callback = function()
         for i,v in next, workspace.Prison_ITEMS.giver:GetChildren() do
-            if v.Name ~= "M4A1" and v.Name ~= "Riot Shield" then
+            if MarketplaceService:PlayerOwnsAsset(player,96651) and v.Name == "M4A1" or v.Name == "Riot Shield" then
+                workspace.Remote.ItemHandler:InvokeServer(v.ITEMPICKUP)
+            elseif v.Name ~= "M4A1" and v.Name ~= "Riot Shield" then
                 workspace.Remote.ItemHandler:InvokeServer(v.ITEMPICKUP)
             end
         end
@@ -305,19 +494,21 @@ Weapons.Button({
         GunMod("ReloadTime",0)
     end
 })
-Weapons.Slider({
+Settings.Weapons.BulletCount = Weapons.Slider({
     Text = "Bullet Count",
     Callback = function(value)
+        var.Weapons.BulletCount = value
         GunMod("Bullets",value)
     end,
     Min = 1,
     Max = 100,
     Def = 1,
 })
-Weapons.Slider({
+Settings.Weapons.FireRate = Weapons.Slider({
     Text = "Fire Rate",
     Callback = function(value)
-        GunMod("FireRate",value/10)
+        var.Weapons.FireRate = value / 10
+        GunMod("FireRate",value / 10)
     end,
     Min = 0,
     Max = 10,
@@ -327,20 +518,17 @@ Weapons.Slider({
 local SilentAim = UI.New({
     Title = "Silent Aim"
 })
-SilentAim.Toggle({
+Settings.SilentAim.SilentAim = SilentAim.Toggle({
     Text = "Enabled",
     Callback = function(value)
-        var.silentaim = value
-        if value == true then
-            silentaim = value
-        end
+        var.SilentAim.SilentAim = value
     end,
     Enabled = false
 })
-SilentAim.Toggle({
+Settings.SilentAim.VisibleCheck = SilentAim.Toggle({
     Text = "Visible Check",
     Callback = function(value)
-        var.visiblecheck = value
+        var.SilentAim.VisibleCheck = value
     end,
     Enabled = false
 })
@@ -348,48 +536,54 @@ SilentAim.Toggle({
 local ESP = UI.New({
     Title = "ESP"
 })
-ESP.Toggle({
+Settings.ESP.TeamCheck = ESP.Toggle({
     Text = "Team Check",
     Callback = function(value)
         getgenv().EspSettings.TeamCheck = value
+        var.ESP.TeamCheck = value
     end,
     Enabled = false
 })
-ESP.Toggle({
+Settings.ESP.Boxes.Enabled = ESP.Toggle({
     Text = "Boxes",
     Callback = function(value)
         getgenv().EspSettings.Boxes.Enabled = value
+        var.ESP.Boxes.Enabled = value
     end
 })
-ESP.Slider({
+Settings.ESP.Boxes.Transparency = ESP.Slider({
     Text = "Box Transparency",
     Callback = function(value)
         getgenv().EspSettings.Boxes.Transparency = value / 10
+        var.ESP.Boxes.Transparency = value / 10
     end,
     Min = 0,
     Max = 10,
     Def = 7
 })
 
-ESP.Toggle({
+Settings.ESP.Tracers.Enabled = ESP.Toggle({
     Text = "Tracers",
     Callback = function(value)
         getgenv().EspSettings.Tracers.Enabled = value
+        var.ESP.Tracers.Enabled = value
     end
 })
-ESP.Slider({
+Settings.ESP.Tracers.Transparency = ESP.Slider({
     Text = "Tracer Transparency",
     Callback = function(value)
         getgenv().EspSettings.Tracers.Transparency = value / 10
+        var.ESP.Tracers.Transparency = value / 10
     end,
     Min = 0,
     Max = 10,
     Def = 7
 })
-ESP.Dropdown({
+Settings.ESP.Tracers.Origin = ESP.Dropdown({
     Text = "Tracer Origin",
     Callback = function(value)
         getgenv().EspSettings.Tracers.Origin = value
+        var.ESP.Tracers.Origin = value
     end,
     Options = {
         "Top",
@@ -399,25 +593,28 @@ ESP.Dropdown({
     }
 })
 
-ESP.Toggle({
+Settings.ESP.Names.Enabled = ESP.Toggle({
     Text = "Names",
     Callback = function(value)
         getgenv().EspSettings.Names.Enabled = value
+        var.ESP.Names.Enabled = value
     end
 })
-ESP.Slider({
+Settings.ESP.Names.Transparency = ESP.Slider({
     Text = "Name Transparency",
     Callback = function(value)
         getgenv().EspSettings.Names.Transparency = value / 10
+        var.ESP.Names.Transparency = value
     end,
     Min = 0,
     Max = 10,
     Def = 7
 })
-ESP.Dropdown({
+Settings.ESP.Names.Font = ESP.Dropdown({
     Text = "Name Font",
     Callback = function(value)
         getgenv().EspSettings.Names.Font = Drawing.Fonts[value]
+        var.ESP.Names.Font = Drawing.Fonts[value]
     end,
     Options = {
         "UI",
@@ -426,22 +623,22 @@ ESP.Dropdown({
         "Monospace"
     }
 })
-ESP.Toggle({
-    Text = "Show Health",
-    Callback = function(value)
-        getgenv().EspSettings.Names.ShowHealth = value
-    end,
-    Enabled = false
-})
-ESP.Toggle({
+Settings.ESP.Names.ShowDistance = ESP.Toggle({
     Text = "Show Distance",
     Callback = function(value)
         getgenv().EspSettings.Names.ShowDistance = value
+        var.ESP.Names.ShowDistance = value
     end,
     Enabled = false
 })
-
-
+Settings.ESP.Names.ShowHealth = ESP.Toggle({
+    Text = "Show Health",
+    Callback = function(value)
+        getgenv().EspSettings.Names.ShowHealth = value
+        var.ESP.Names.ShowHealth = value
+    end,
+    Enabled = false
+})
 
 local Teleports = UI.New({
     Title = "Teleports"
@@ -493,58 +690,17 @@ local playertp = Teleports.Dropdown({
 local Misc = UI.New({
     Title = "Miscellaneous"
 })
-Misc.Toggle({
-    Text = "Infinite Stamina",
-    Callback = function(value)
-        var.infstamina = value
-        if value then
-            InfiniteStamina()
-        end
-    end,
-    Enabled = false
-})
-Misc.Toggle({
-    Text = "Anti Taze",
-    Callback = function(value)
-        var.antitaze = value
-        if value then
-            AntiTaze()
-        end
-    end,
-    Enabled = false
-})
-Misc.Toggle({
-    Text = "Anti Arrest",
-    Callback = function(value)
-
-        var.antiarrest = value
-    end,
-    Enabled = false
-})
-Misc.Toggle({
+Settings.Misc.Fullbright = Misc.Toggle({
     Text = "Fullbright",
     Callback = function(value)
-        var.fullbright = value
+        var.Misc.Fullbright = value
     end,
     Enabled = false
 })
-Misc.Toggle({
-    Text = "Super Punch",
-    Callback = function(value)
-        var.superpunchenabled = value
-    end,
-    Enabled = false
-})
-Misc.Toggle({
-    Text = "God Mode",
-    Callback = function(value)
-        var.godmode = value
-    end,
-    Enabled = false
-})
-Misc.Toggle({
+Settings.Misc.Xray = Misc.Toggle({
     Text = "Xray",
     Callback = function(value)
+        var.Misc.Xray = value
         if value then
             for i,v in next, workspace:GetDescendants() do
                 if v:IsA("BasePart") then
@@ -561,21 +717,21 @@ Misc.Toggle({
     end,
     Enabled = false
 })
-Misc.Toggle({
+Settings.Misc.DoorCollision = Misc.Toggle({
     Text = "Door Collision",
     Callback = function(value)
-        var.doorcollision = value
+        var.Misc.DoorCollision = value
     end,
     Enabled = true
 })
-Misc.Toggle({
+Settings.Misc.RejoinOnKick = Misc.Toggle({
     Text = "Rejoin on Kick",
     Callback = function(value)
-        var.rejoinonkick = value
+        var.Misc.RejoinOnKick = value
     end,
     Enabled = false
 })
-local keycardbtn = Misc.Button({
+local keycard = Misc.Button({
     Text = "Get Keycard",
     Callback = function()
         if workspace.Prison_ITEMS.single:FindFirstChild("Key card") then
@@ -583,15 +739,6 @@ local keycardbtn = Misc.Button({
         end
     end
 })
-spawn(function()
-    while wait(1) do
-        if workspace.Prison_ITEMS.single:FindFirstChild("Key card") then
-            keycardbtn:SetText("Get Keycard (Available)")
-        else
-            keycardbtn:SetText("Get Keycard (Unavailable)")
-        end
-    end
-end)
 Misc.Button({
     Text = "Copy Server Invite",
     Callback = function()
@@ -604,16 +751,12 @@ Misc.Button({
 local spectate = Misc.Dropdown({
     Text = "Spectate",
     Callback = function(value)
-        if value ~= "You" then
-            local plr = players[value]
-            if plr.Character and plr.Character:FindFirstChild("Humanoid") then
-                camera.CameraSubject = plr.Character.Humanoid
-            end
-        else
-            camera.CameraSubject = player.Character.Humanoid
+        local plr = players[value]
+        if plr.Character and plr.Character:FindFirstChild("Humanoid") then
+            camera.CameraSubject = plr.Character.Humanoid
         end
     end,
-    Options = {"You"}
+    Options = {}
 })
 local killplayers = Misc.Dropdown({
     Text = "Kill Player",
@@ -622,11 +765,11 @@ local killplayers = Misc.Dropdown({
     end,
     Options = {}
 })
-Misc.ColorPicker({
+Settings.Misc.NameTagColor = Misc.ColorPicker({
     Text = "Name Tag Color",
-    Default = Color3.fromRGB(255,255,255),
+    Default = Color3.fromHSV(0,1,1),
     Callback = function(value)
-        var.nametagcolor = BrickColor.new(value).Name
+        var.Misc.NameTagColor = BrickColor.new(value)
     end
 })
 Misc.Button({
@@ -634,13 +777,68 @@ Misc.Button({
     Callback = function()
         local oldcf = player.Character.HumanoidRootPart.CFrame 
         local oldcameracf = camera.CFrame
-        workspace.Remote.loadchar:InvokeServer(player,var.nametagcolor)
+        workspace.Remote.loadchar:InvokeServer(player,var.Misc.NameTagColor.Name)
         player.Character.HumanoidRootPart.CFrame = oldcf
         wait()
         camera.CFrame = oldcameracf
     end
 })
 
+local ConfigName = "Untitled"
+local SelectedConfig = ""
+local Config = UI.New({
+    Title = "Configuration"
+})
+Config.TextField({
+    Text = "Config Name",
+    Type = "Default",
+    Callback = function(value)
+        if value:gsub(" ","") ~= "" then
+            ConfigName = value 
+        end
+    end
+})
+Config.Button({
+    Text = "Save",
+    Callback = function()
+        writefile("PrisonLife\\Configs\\"..ConfigName..".json",HttpService:JSONEncode(var))
+    end
+})
+local configs = Config.Dropdown({
+    Text = "Your Configs",
+    Callback = function(value)
+        SelectedConfig = value
+    end,
+    Options = {}
+})
+if isfolder("PrisonLife\\Configs") then
+    configs:SetOptions(GetConfigs())
+end
+Config.Button({
+    Text = "Load Config",
+    Callback = function()
+        LoadConfig(SelectedConfig)
+    end
+})
+Config.Button({
+    Text = "Refresh",
+    Callback = function()
+        if isfolder("PrisonLife\\Configs") then
+            configs:SetOptions(GetConfigs())
+        end
+    end
+})
+Config.Button({
+    Text = "Reset All Settings",
+    Callback = function()
+        LoadConfig("Default")
+    end
+})
+print("Loaded UI         [5/5]")
+
+for i,v in next, Settings do
+    print(i,v)
+end
 
 UpdateList(playertp)
 UpdateList(spectate)
@@ -657,11 +855,11 @@ players.PlayerRemoving:Connect(function()
 end)
 player.CharacterAdded:Connect(function(char)
     char:WaitForChild("Humanoid")
-    char.Humanoid.WalkSpeed = var.walkspeed 
-    char.Humanoid.JumpPower = var.jumppower
+    char.Humanoid.WalkSpeed = var.Player.WalkSpeed
+    char.Humanoid.JumpPower = var.Player.JumpPower
 end)
 RunService.Heartbeat:Connect(function()
-    if var.noclip and player.Character and player.Character.Humanoid.Health > 0 then
+    if var.Player.Noclip and player.Character and player.Character.Humanoid.Health > 0 then
         player.Character.Humanoid:ChangeState(11)
     end
 end)
@@ -669,21 +867,21 @@ UIS.InputBegan:Connect(function(i,gp)
     if gp then
         return
     end
-    if i.KeyCode == Enum.KeyCode.Space and var.infjump then
+    if i.KeyCode == Enum.KeyCode.Space and var.Player.InfiniteJump then
         player.Character.Humanoid:ChangeState(3)
-    elseif i.KeyCode == Enum.KeyCode.F and var.superpunchenabled then
+    elseif i.KeyCode == Enum.KeyCode.F and var.Player.SuperPunch then
         SuperPunch()
     end
 end)
 player.Character.Humanoid.Changed:Connect(function(prop)
-    if prop == "WalkSpeed" and player.Character.Humanoid.WalkSpeed ~= var.walkspeed then
-        player.Character.Humanoid.WalkSpeed = var.walkspeed
-    elseif prop == "JumpPower" and player.Character.Humanoid.JumpPower ~= var.JumpPower then
-        player.Character.Humanoid.JumpPower = var.jumppower
+    if prop == "WalkSpeed" and player.Character.Humanoid.WalkSpeed ~= var.Player.WalkSpeed then
+        player.Character.Humanoid.WalkSpeed = var.Player.WalkSpeed
+    elseif prop == "JumpPower" and player.Character.Humanoid.JumpPower ~= var.Player.JumpPower then
+        player.Character.Humanoid.JumpPower = var.Player.JumpPower
     end
 end)
 game.CoreGui.RobloxPromptGui.promptOverlay.ChildAdded:Connect(function()
-    if var.rejoinonkick then
+    if var.Misc.RejoinOnKick then
         if queue_on_teleport or syn.queue_on_teleport then
             local queue_on_teleport = queue_on_teleport or syn.queue_on_teleport
             queue_on_teleport('loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/prisonlife.lua"))()')
@@ -693,7 +891,7 @@ game.CoreGui.RobloxPromptGui.promptOverlay.ChildAdded:Connect(function()
 end)
 while wait() do
     if player.Character and player.Character.Humanoid.Health < 1 then
-        if var.godmode then
+        if var.Player.GodMode then
             local oldcf = player.Character.HumanoidRootPart.CFrame
             local oldcameracf = camera.CFrame
             workspace.Remote.loadchar:InvokeServer()
@@ -701,20 +899,28 @@ while wait() do
             wait()
             camera.CFrame = oldcameracf
         end
-        if var.antitaze then
+        if var.Player.AntiTaze then
             AntiTaze()
         end
-        if var.infstamina then
+        if var.Player.AntiArrest then
+            AntiArrest()
+        end
+        if var.Player.InfiniteStamina then
             InfiniteStamina()
         end
     end
-    if var.fullbright then
+    if var.Misc.Fullbright then
         Lighting.Ambient = Color3.fromRGB(255,255,255)
         Lighting.Brightness = 10
     end
     for i,v in next, workspace.Doors:GetDescendants() do
         if v:IsA("Part") then
-            v.CanCollide = var.doorcollision
+            v.CanCollide = var.Misc.DoorCollision
         end
+    end
+    if workspace.Prison_ITEMS.single:FindFirstChild("Key card") then
+        keycard:SetText("Get Keycard (Available)")
+    else
+        keycard:SetText("Get Keycard (Unavailable)")
     end
 end
