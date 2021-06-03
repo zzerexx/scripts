@@ -62,8 +62,8 @@ v1.0.0
 basic silent aim  
 
 # Custom Output  
-Updated May 28, 2021  
-v1.0.0  
+Updated June 2, 2021  
+v1.0.1  
 basically just the developer console since the roblox one is broken lol  
 works the same as the developer console  
 F9 to toggle  
