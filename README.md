@@ -88,7 +88,8 @@ function getsynasset(path) -- this is only needed if you want to use getsynasset
 	return getcustomasset(path)
 end
 
--- Using syn.crypt.custom (synapse's custom encrypt is slightly different than script-ware's)
+-- Using syn.crypt.custom
+-- Synapse's custom encrypt is slightly different than Script-Ware's (check the docs here: https://x.synapse.to/docs/reference/crypt_lib.html#custom)
 local enc = syn.crypt.custom.encrypt(
 	"aes-gcm", -- Cipher
 	"hi gamers!", -- Data
