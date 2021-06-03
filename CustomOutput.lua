@@ -274,11 +274,12 @@ local function FUZQ_fake_script() -- Topbar.MainScript
 	end)
 	
 	LogService.MessageOut:Connect(function(msg,msgtype)
+		local date = os.date("*t")
 		local new = script.Parent.Log.Example:Clone()
 		new.Parent = script.Parent.Log
 		new.Visible = true
 		new.Name = "Output"
-		new.Text = os.date():split(" ")[4].." -- "..msg:gsub("\n","\n            ")
+		new.Text = date.hour..":"..date.min..":"..date.sec.." -- "..msg:gsub("\n","\n            ")
 		if msgtype == Enum.MessageType.MessageOutput then
 			new.TextColor3 = Color3.fromRGB(255,255,255)
 		elseif msgtype == Enum.MessageType.MessageInfo then
