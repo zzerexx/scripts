@@ -7,7 +7,7 @@ if typeof(Drawing.new) ~= "function" then
     })
     return
 end
-if typeof(getgenv().UNIVERSALESP_OBJECTS) == "table"then
+if typeof(getgenv().UNIVERSALESP_OBJECTS) == "table" then
     for i,v in next, getgenv().UNIVERSALESP_OBJECTS do
         v:Remove()
         table.remove(getgenv().UNIVERSALESP_OBJECTS,i)
