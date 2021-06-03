@@ -9,7 +9,9 @@ mt.__namecall = newcclosure(function(self,...)
     return oldnc(self,...)
 end)
 setreadonly(mt, true)
-getconnections(game.DescendantAdded)[1]:Disable()
+for i,v in next, getconnections(game.DescendantAdded) do
+	v:Disable()
+end
 
 local CustomOutput = Instance.new("ScreenGui")
 local Topbar = Instance.new("Frame")
