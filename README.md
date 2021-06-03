@@ -88,20 +88,20 @@ function getsynasset(path) -- this is only needed if you want to use getsynasset
 	return getcustomasset(path)
 end
 
--- Using syn.crypt.custom
+-- Using syn.crypt.custom (synapse's custom encrypt is slightly different than script-ware's)
 local enc = syn.crypt.custom.encrypt(
-	"aes-gcm",
-	"hi gamers!",
-	"$nLliCMdi7gcynsFCK9u0aVNdtkNIiZG",
-	"Agd13KuKIL2$")
+	"aes-gcm", -- Cipher
+	"hi gamers!", -- Data
+	"$nLliCMdi7gcynsFCK9u0aVNdtkNIiZG", -- Key
+	"Agd13KuKIL2$") -- Nonce
 
 print(enc) -- iQg5LoK5GmWmkO7HtuHH4Q==
 
 local dec = syn.crypt.custom.decrypt(
-	"aes-gcm",
-	enc,
-	"$nLliCMdi7gcynsFCK9u0aVNdtkNIiZG",
-	"Agd13KuKIL2$"
+	"aes-gcm", -- Cipher
+	enc, -- Data
+	"$nLliCMdi7gcynsFCK9u0aVNdtkNIiZG", -- Key
+	"Agd13KuKIL2$" -- Nonce
 )
 
 print(dec) -- hi gamers!
