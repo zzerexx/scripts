@@ -13,6 +13,10 @@ for i,v in next, getconnections(game.DescendantAdded) do
 	v:Disable()
 end
 
+if typeof(getgenv().CustomOutput) == "Instance" then
+    getgenv().CustomOutput:Destroy()
+end
+
 local CustomOutput = Instance.new("ScreenGui")
 local Topbar = Instance.new("Frame")
 local Background = Instance.new("Frame")
@@ -51,7 +55,7 @@ Topbar.AnchorPoint = Vector2.new(0.5, 0.5)
 Topbar.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 Topbar.BackgroundTransparency = 0.800
 Topbar.BorderSizePixel = 0
-Topbar.Position = UDim2.new(0.5, 0, 0.15, 0)
+Topbar.Position = UDim2.new(0, workspace.CurrentCamera.ViewportSize.X / 2, 0, workspace.CurrentCamera.ViewportSize.Y / 2 - 250)
 Topbar.Size = UDim2.new(0, 700, 0, 30)
 Topbar.Visible = true
 
@@ -250,6 +254,8 @@ Close.Position = UDim2.new(1, -22, 0, 9)
 Close.Size = UDim2.new(0, 13, 0, 13)
 Close.Image = "rbxasset://textures/DevConsole/Close.png"
 
+getgenv().CustomOutput = CustomOutput
+
 -- Scripts:
 
 local function FUZQ_fake_script() -- Topbar.MainScript 
@@ -274,7 +280,7 @@ local function FUZQ_fake_script() -- Topbar.MainScript
 	end)
 	
 	LogService.MessageOut:Connect(function(msg,msgtype)
-		local date = os.date("*t")
+        local date = os.date("*t")
 		local new = script.Parent.Log.Example:Clone()
 		new.Parent = script.Parent.Log
 		new.Visible = true
