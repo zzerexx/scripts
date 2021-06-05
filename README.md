@@ -5,7 +5,6 @@ my cool scripts
 Updated May 5, 2021  
 v1.2.0  
 Create your own custom crosshair using the Drawing Library  
-Open a new issue to request a game for HideGameCrosshair  
 ```
 Script: https://pastebin.com/raw/eGiC2jPg
 ``` 
@@ -16,7 +15,7 @@ v1.0.3
 Check the settings for features  
 ```
 Script: https://pastebin.com/raw/FwYmgtCX
-```.  
+```. 
    
 # Universal Esp  
 Updated May 29, 2021  
