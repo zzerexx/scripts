@@ -46,7 +46,6 @@ F9 to toggle
 # Synapse to Script-Ware  
 Updated June 5, 2021  
 Allows you to use Synapse exclusive functions with Script-Ware v2  
-This does not work with obfuscated scripts.  
   
 **Loader**  
 ```lua
@@ -120,26 +119,6 @@ syn.crypt.custom.decrypt
 syn.crypt.custom.hash
 syn.websocket.connect
 ```  
-  
-**Loadstrings**  
-Normally, you would just put the Synapse to Script-Ware loadstring at the top, and it would work.  
-However, if the script you are trying to use is a loadstring, then it will not work.  
-You must use this before your loadstring.  
-```lua
-local syn = 'getgenv().protected={}local a=getrawmetatable(game)local b=a.__namecall;setreadonly(a,false)a.__namecall=newcclosure(function(self,...)local c={...}if self==game and getnamecallmethod()=="FindFirstChild"and c[2]~=nil and c[2]==true then for d,e in next,getgenv().protected do if c[1]==e.Name then return false end end end;return b(self,...)end)setreadonly(a,true)local syn={cache_replace=cache.replace,cache_invalidate=cache.invalidate,is_cached=cache.iscached,set_thread_identity=setthreadidentity,write_clipboard=setclipboard,queue_on_teleport=queue_on_teleport,protect_gui=function(f)if typeof(f)~="Instance"then error("Attempted to protect a "..typeof(f))end;table.insert(getgenv().protected,#getgenv().protected+1,f)for d,e in next,f:GetDescendants()do table.insert(getgenv().protected,#getgenv().protected+1,e)end end,unprotect_gui=function(f)if typeof(f)~="Instance"then error("Attempted to unprotect a "..typeof(f))end;table.remove(getgenv().protected,table.find(getgenv().protected,f))for d,e in next,f:GetDescendants()do if table.find(getgenv().protected,e)then table.remove(getgenv().protected,table.find(getgenv().protected,e))end end end,is_beta=function()return false end,request=request,crypt={encrypt=crypt.encrypt,decrypt=crypt.decrypt,base64={encode=crypt.base64encode,decode=crypt.base64decode},hash=crypt.hash,derive=function(g,h)return crypt.generatebytes(h)end,random=crypt.generatekey,custom={encrypt=function(i,j,k,l)return crypt.custom_encrypt(j,k,l,i)end,decrypt=function(i,j,k,l)return crypt.custom_decrypt(j,k,l,i)end,hash=function(m,j)return crypt.hash(j,m)end}},websocket={connect=WebSocket.connect}}'
-```  
-I know its long, but I cannot find another way to do this. (it wouldnt work with game:HttpGet)  
-Now, you need to modify your loadstring.  
-Lets use this as an example  
-```lua
-loadstring(game:HttpGet("https://pastebin.com/raw/nZDUf0Cm"))()
-```  
-Change it to this  
-```lua
-local syn = 'getgenv().protected={}local a=getrawmetatable(game)local b=a.__namecall;setreadonly(a,false)a.__namecall=newcclosure(function(self,...)local c={...}if self==game and getnamecallmethod()=="FindFirstChild"and c[2]~=nil and c[2]==true then for d,e in next,getgenv().protected do if c[1]==e.Name then return false end end end;return b(self,...)end)setreadonly(a,true)local syn={cache_replace=cache.replace,cache_invalidate=cache.invalidate,is_cached=cache.iscached,set_thread_identity=setthreadidentity,write_clipboard=setclipboard,queue_on_teleport=queue_on_teleport,protect_gui=function(f)if typeof(f)~="Instance"then error("Attempted to protect a "..typeof(f))end;table.insert(getgenv().protected,#getgenv().protected+1,f)for d,e in next,f:GetDescendants()do table.insert(getgenv().protected,#getgenv().protected+1,e)end end,unprotect_gui=function(f)if typeof(f)~="Instance"then error("Attempted to unprotect a "..typeof(f))end;table.remove(getgenv().protected,table.find(getgenv().protected,f))for d,e in next,f:GetDescendants()do if table.find(getgenv().protected,e)then table.remove(getgenv().protected,table.find(getgenv().protected,e))end end end,is_beta=function()return false end,request=request,crypt={encrypt=crypt.encrypt,decrypt=crypt.decrypt,base64={encode=crypt.base64encode,decode=crypt.base64decode},hash=crypt.hash,derive=function(g,h)return crypt.generatebytes(h)end,random=crypt.generatekey,custom={encrypt=function(i,j,k,l)return crypt.custom_encrypt(j,k,l,i)end,decrypt=function(i,j,k,l)return crypt.custom_decrypt(j,k,l,i)end,hash=function(m,j)return crypt.hash(j,m)end}},websocket={connect=WebSocket.connect}}'
-loadstring(syn..game:HttpGet("https://pastebin.com/raw/nZDUf0Cm"))() -- It should copy "Hello" to your clipboard using syn.write_clipboard
-```  
-Now it should work!  
   
 # Counter Blox Spectator Viewer  
 see who is spectating you  
