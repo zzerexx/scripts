@@ -15,10 +15,6 @@ mt.__namecall = newcclosure(function(self,...) -- protect_gui thing
 end)
 setreadonly(mt,true)
 
-function newfunc(name,f)
-    getgenv()[name] = f
-end
-
 local functions = {
 	['syn_websocket_connect'] = WebSocket.connect,
 	['syn_websocket_send'] = WebSocket.Send,
@@ -98,7 +94,7 @@ local functions = {
 }
 
 for i,v in next, functions do
-    newfunc(i,v)
+    getgenv()[i] = v
 end
 
 getgenv().syn = {
