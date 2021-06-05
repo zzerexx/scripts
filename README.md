@@ -15,7 +15,7 @@ v1.0.3
 Check the settings for features  
 ```
 Script: https://pastebin.com/raw/FwYmgtCX
-```. 
+```  
    
 # Universal Esp  
 Updated May 29, 2021  
