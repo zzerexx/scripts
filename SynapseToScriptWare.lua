@@ -110,23 +110,23 @@ getgenv().syn = {
 	['queue_on_teleport'] = queue_on_teleport,
 	['protect_gui'] = function(obj)
 		if typeof(obj) ~= "Instance" then
-        	error("Attempted to protect a "..typeof(obj))
-    	end
+        		error("Attempted to protect a "..typeof(obj))
+    		end
 		table.insert(getgenv().protected,#getgenv().protected+1,obj)
-    	for i,v in next, obj:GetDescendants() do
-        	table.insert(getgenv().protected,#getgenv().protected+1,v)
-    	end
+    		for i,v in next, obj:GetDescendants() do
+        		table.insert(getgenv().protected,#getgenv().protected+1,v)
+    		end
 	end,
 	['unprotect_gui'] = function(obj)
 		if typeof(obj) ~= "Instance" then
-        	error("Attempted to unprotect a "..typeof(obj))
-    	end
+        		error("Attempted to unprotect a "..typeof(obj))
+    		end
 		table.remove(getgenv().protected,table.find(getgenv().protected,obj))
-    	for i,v in next, obj:GetDescendants() do
-        	if table.find(getgenv().protected,v) then
-            	table.remove(getgenv().protected,table.find(getgenv().protected,v))
-        	end
-    	end
+    		for i,v in next, obj:GetDescendants() do
+        		if table.find(getgenv().protected,v) then
+            			table.remove(getgenv().protected,table.find(getgenv().protected,v))
+        		end
+    		end
 	end,
 	['is_beta'] = function()
 		return false
