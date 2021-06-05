@@ -80,20 +80,20 @@ local functions = {
 	['syn_isactive'] = isrbxactive,
 	['is_synapse_function'] = isourclosure,
 
-    ['iswindowactive'] = isrbxactive,
-    ['gethiddenprop'] = gethiddenproperty,
-    ['gethiddenprops'] = gethiddenproperties,
-    ['sethiddenprop'] = sethiddenproperty,
-    ['getlocals'] = debug.getlocals,
-    --['getstates'] = nil,
-    --['validfgwindow'] = nil,
-    --['readbinarystring'] = nil,
-    --['isuntouched'] = nil,
-    --['setuntouched'] = nil,
-    ['get_calling_script'] = getcallingscript,
-    --['clonefunction'] = nil,
-    ['getpcdprop'] = getpcd,
-    --['setupvaluename'] = nil,
+	['iswindowactive'] = isrbxactive,
+	['gethiddenprop'] = gethiddenproperty,
+	['gethiddenprops'] = gethiddenproperties,
+	['sethiddenprop'] = sethiddenproperty,
+	['getlocals'] = debug.getlocals,
+	--['getstates'] = nil,
+	--['validfgwindow'] = nil,
+	--['readbinarystring'] = nil,
+	--['isuntouched'] = nil,
+	--['setuntouched'] = nil,
+	['get_calling_script'] = getcallingscript,
+	--['clonefunction'] = nil,
+	['getpcdprop'] = getpcd,
+	--['setupvaluename'] = nil,
 
 }
 
@@ -159,7 +159,7 @@ getgenv().syn = {
 	['websocket'] = {
 		['connect'] = WebSocket.connect
 	},
-    --['secure_call'] = nil,
-    --['create_secure_function'] = nil,
-    --['run_secure_function'] = nil,
+	--['secure_call'] = nil,
+	--['create_secure_function'] = nil,
+	--['run_secure_function'] = nil,
 }
