@@ -1,3 +1,4 @@
+local timer = os.time()
 getgenv().protected = {}
 local mt = getrawmetatable(game)
 local oldnc = mt.__namecall
@@ -163,3 +164,4 @@ getgenv().syn = {
 	--['create_secure_function'] = nil,
 	--['run_secure_function'] = nil,
 }
+warn("Synapse To Script-Ware has successfully loaded in "..os.time()-timer.." seconds.")
