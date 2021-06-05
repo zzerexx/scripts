@@ -15,6 +15,10 @@ mt.__namecall = newcclosure(function(self,...)
 end)
 setreadonly(mt,true)
 
+getgenv().getsynasset = function(path)
+	return getcustomasset(path)
+end
+
 return {
 	cache_replace = cache.replace,
 	cache_invalidate = cache.invalidate,
