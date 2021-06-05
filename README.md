@@ -2,9 +2,10 @@
 my cool scripts  
   
 # Custom Crosshair  
-Updated May 5, 2021  
-v1.2.0  
+Updated June 4, 2021  
+v1.2.1  
 Create your own custom crosshair using the Drawing Library  
+executing multiple times will not cause fps drops  
 ```
 Script: https://pastebin.com/raw/eGiC2jPg
 ``` 
