@@ -44,22 +44,22 @@ works the same as the developer console
 F9 to toggle  
 
 # Synapse to Script-Ware  
-Updated June 1, 2021  
+Updated June 5, 2021  
 Allows you to use Synapse exclusive functions with Script-Ware v2  
 This does not work with obfuscated scripts.  
   
 **Loader**  
 ```lua
-local syn = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/SynapseToScriptWare.lua", true))()
-function getsynasset(path)
+getgenv().syn = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/SynapseToScriptWare.lua", true))()
+getgenv().getsynasset = function(path)
 	return getcustomasset(path)
 end
 ```  
   
 **Example**    
 ```lua
-local syn = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/SynapseToScriptWare.lua", true))()
-function getsynasset(path) -- this is only needed if you want to use getsynasset
+getgenv().syn = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/SynapseToScriptWare.lua", true))()
+getgenv().getsynasset = function(path)
 	return getcustomasset(path)
 end
 
