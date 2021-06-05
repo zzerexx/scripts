@@ -1,23 +1,4 @@
 -- Custom Crosshair by zzerexx#3970
---[[
-    HideGameCrosshair Supported Games
-    Arsenal
-    Counter Blox
-    Unit: Classified
-    Phantom Forces
-    Polybattle
-    Bad Business
-    Strucid
-    AceOfSpadez
-    RECOIL
-    Jailbreak
-    Blackhawk Rescue Mission 5
-    Project Lazarus
-    Mad City
-    Big Paintball
-    POLYGUNS
-]]
-
 function msg(text,duration)
     local hint = Instance.new("Hint",game.CoreGui)
     hint.Text = text
@@ -146,18 +127,15 @@ getgenv().crosshairrs = RunService.RenderStepped:Connect(function()
     line4.Color = ss.Color
     dot.Transparency = ss.Opacity
     dot.Color = ss.Color
-    if ss.Dot then
-        dot.Visible = true
-        dot.Transparency = ss.Opacity
-        dot.Color = ss.Color
-    else
-        dot.Visible = false
+    if ss.Dot and not dot.Visible then
+        
     end
     if ss.RainbowColor then
         line1.Color = Color3.fromHSV(tick()%5/5,1,1)
         line2.Color = Color3.fromHSV(tick()%5/5,1,1)
         line3.Color = Color3.fromHSV(tick()%5/5,1,1)
         line4.Color = Color3.fromHSV(tick()%5/5,1,1)
+        dot.Color = Color3.fromHSV(tick()%5/5,1,1)
     end
     
     line1.From = Vector2.new(middle.X,middle.Y-ss.Offset)
@@ -214,7 +192,7 @@ getgenv().crosshairrs = RunService.RenderStepped:Connect(function()
             elseif game.PlaceId == 3527629287 then -- Big Paintball
                 player.PlayerGui.Crosshair.Frame.Visible = false
             elseif game.Placeid == 388599755 then -- POLYGUNS
-                for i,v in pairs(player.PlayerGui.ScreenGui.Reticle:GetChildren()) do
+                for i,v in next, player.PlayerGui.ScreenGui.Reticle:GetChildren() do
                     v.Visible = false
                 end
             end
