@@ -49,12 +49,12 @@ Allows you to use Synapse exclusive functions with Script-Ware v2
   
 **Loader**  
 ```lua
-getgenv().syn = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/SynapseToScriptWare.lua", true))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/SynapseToScriptWare.lua", true))()
 ```  
   
 **Example**    
 ```lua
-getgenv().syn = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/SynapseToScriptWare.lua", true))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/SynapseToScriptWare.lua", true))()
 
 -- Using syn.crypt.custom
 -- Synapse's custom encrypt is slightly different than Script-Ware's (check the docs here: https://x.synapse.to/docs/reference/crypt_lib.html#custom)
