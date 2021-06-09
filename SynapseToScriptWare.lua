@@ -112,6 +112,11 @@ getgenv().syn = {
     		for i,v in next, obj:GetDescendants() do
         		table.insert(getgenv().protected,#getgenv().protected+1,v)
     		end
+		obj.DescendantAdded:Connect(function(d)
+        		if table.find(getgenv().protected,obj) then
+            			table.insert(getgenv().protected,#getgenv().protected+1,d)
+        		end
+    		end)
 	end,
 	['unprotect_gui'] = function(obj)
 		if typeof(obj) ~= "Instance" then
