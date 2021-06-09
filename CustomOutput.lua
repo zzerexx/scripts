@@ -1,20 +1,19 @@
 local mt = getrawmetatable(game)
 local oldnc = mt.__namecall
-setreadonly(mt, false)
+setreadonly(mt,false)
 mt.__namecall = newcclosure(function(self,...)
-    local args = {...}
-    if getnamecallmethod() == "FindFirstChild" and args[2] and args[2] == true then
-        return false
-    end
-    return oldnc(self,...)
+	local args = {...}
+	if self == game and getnamecallmethod() == "FindFirstChild" and args[2] == true then
+		return false
+	end
+	return oldnc(self,...)
 end)
-setreadonly(mt, true)
+setreadonly(mt,true)
 for i,v in next, getconnections(game.DescendantAdded) do
 	v:Disable()
 end
-
 if typeof(getgenv().CustomOutput) == "Instance" then
-    getgenv().CustomOutput:Destroy()
+	getgenv().CustomOutput:Destroy()
 end
 
 local CustomOutput = Instance.new("ScreenGui")
@@ -39,10 +38,14 @@ local Box = Instance.new("TextBox")
 local Search_2 = Instance.new("ImageButton")
 local Clear = Instance.new("TextButton")
 local Close = Instance.new("ImageButton")
+local ErrorIcon = Instance.new("ImageButton")
+local Count = Instance.new("TextLabel")
+local WarningIcon = Instance.new("ImageButton")
+local Count_2 = Instance.new("TextLabel")
 
---Properties:
+getgenv().CustomOutput = CustomOutput
 
-CustomOutput.Name = "CustomOutput"
+CustomOutput.Name = game:GetService("HttpService"):GenerateGUID(false)
 CustomOutput.Parent = game.CoreGui
 CustomOutput.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 CustomOutput.DisplayOrder = 1000
@@ -55,9 +58,8 @@ Topbar.AnchorPoint = Vector2.new(0.5, 0.5)
 Topbar.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 Topbar.BackgroundTransparency = 0.800
 Topbar.BorderSizePixel = 0
-Topbar.Position = UDim2.new(0, workspace.CurrentCamera.ViewportSize.X / 2, 0, workspace.CurrentCamera.ViewportSize.Y / 2 - 250)
+Topbar.Position = UDim2.new(0.5, 0, 0.5, -250)
 Topbar.Size = UDim2.new(0, 700, 0, 30)
-Topbar.Visible = true
 
 Background.Name = "Background"
 Background.Parent = Topbar
@@ -254,38 +256,85 @@ Close.Position = UDim2.new(1, -22, 0, 9)
 Close.Size = UDim2.new(0, 13, 0, 13)
 Close.Image = "rbxasset://textures/DevConsole/Close.png"
 
-getgenv().CustomOutput = CustomOutput
+ErrorIcon.Name = "ErrorIcon"
+ErrorIcon.Parent = Topbar
+ErrorIcon.AnchorPoint = Vector2.new(0.5, 0.5)
+ErrorIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+ErrorIcon.BackgroundTransparency = 1.000
+ErrorIcon.BorderSizePixel = 0
+ErrorIcon.Position = UDim2.new(0.5, -30, 0.5, 0)
+ErrorIcon.Size = UDim2.new(0, 18, 0, 18)
+ErrorIcon.Image = "rbxasset://textures/DevConsole/Error.png"
 
--- Scripts:
+Count.Name = "Count"
+Count.Parent = ErrorIcon
+Count.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Count.BackgroundTransparency = 1.000
+Count.BorderSizePixel = 0
+Count.Position = UDim2.new(1, 5, 0, 1)
+Count.Size = UDim2.new(0, 9, 0, 18)
+Count.Font = Enum.Font.Gotham
+Count.Text = "0"
+Count.TextColor3 = Color3.fromRGB(255, 255, 255)
+Count.TextSize = 14.000
+Count.TextXAlignment = Enum.TextXAlignment.Left
 
-local function FUZQ_fake_script() -- Topbar.MainScript 
+WarningIcon.Name = "WarningIcon"
+WarningIcon.Parent = Topbar
+WarningIcon.AnchorPoint = Vector2.new(0.5, 0.5)
+WarningIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+WarningIcon.BackgroundTransparency = 1.000
+WarningIcon.BorderSizePixel = 0
+WarningIcon.Position = UDim2.new(0.5, 30, 0.5, 0)
+WarningIcon.Size = UDim2.new(0, 18, 0, 18)
+WarningIcon.Image = "rbxasset://textures/DevConsole/Warning.png"
+
+Count_2.Name = "Count"
+Count_2.Parent = WarningIcon
+Count_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Count_2.BackgroundTransparency = 1.000
+Count_2.BorderSizePixel = 0
+Count_2.Position = UDim2.new(1, 5, 0, 1)
+Count_2.Size = UDim2.new(0, 9, 0, 18)
+Count_2.Font = Enum.Font.Gotham
+Count_2.Text = "0"
+Count_2.TextColor3 = Color3.fromRGB(255, 255, 255)
+Count_2.TextSize = 14.000
+Count_2.TextXAlignment = Enum.TextXAlignment.Left
+
+local function HFYC_fake_script() -- Topbar.MainScript 
 	local script = Instance.new('LocalScript', Topbar)
 
 	local UIS = game:GetService("UserInputService")
 	local StarterGui = game:GetService("StarterGui")
 	local LogService = game:GetService("LogService")
-	
+
 	script.Parent.Draggable = true
 	script.Parent.Log.Example.AutomaticSize = Enum.AutomaticSize.Y
-	
+	StarterGui:SetCore("DevConsoleVisible",false)
+
 	UIS.InputBegan:Connect(function(i,gp)
 		if i.KeyCode == Enum.KeyCode.F9 then
 			StarterGui:SetCore("DevConsoleVisible", false)
 			script.Parent.Visible = not script.Parent.Visible
 		end
 	end)
-	
+
 	script.Parent.Close.MouseButton1Click:Connect(function()
 		script.Parent.Visible = false
 	end)
-	
+
 	LogService.MessageOut:Connect(function(msg,msgtype)
-        local date = os.date("*t")
 		local new = script.Parent.Log.Example:Clone()
 		new.Parent = script.Parent.Log
 		new.Visible = true
 		new.Name = "Output"
-		new.Text = date.hour..":"..date.min..":"..date.sec.." -- "..msg:gsub("\n","\n            ")
+		new.Text = ""
+		if os.date():split(" ")[4]:len() < 3 then
+			new.Text = os.date():split(" ")[5].." -- "..msg:gsub("\n","\n        ")
+		else
+			new.Text = os.date():split(" ")[4].." -- "..msg:gsub("\n","\n        ")
+		end
 		if msgtype == Enum.MessageType.MessageOutput then
 			new.TextColor3 = Color3.fromRGB(255,255,255)
 		elseif msgtype == Enum.MessageType.MessageInfo then
@@ -294,16 +343,18 @@ local function FUZQ_fake_script() -- Topbar.MainScript
 		elseif msgtype == Enum.MessageType.MessageWarning then
 			new.TextColor3 = Color3.fromRGB(255,255,0)
 			new.Name = "Warning"
+			script.Parent.WarningIcon.Count.Text = script.Parent.WarningIcon.Count.Text + 1
 		elseif msgtype == Enum.MessageType.MessageError then
 			new.TextColor3 = Color3.fromRGB(255,0,0)
 			new.Name = "Error"
+			script.Parent.ErrorIcon.Count.Text = script.Parent.ErrorIcon.Count.Text + 1
 		end
 	end)
-	
+
 	script.Parent.Log.UIListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
 		script.Parent.Log.CanvasSize = UDim2.new(0,0,0,script.Parent.Log.UIListLayout.AbsoluteContentSize.Y)
 	end)
-	
+
 	local stuff = {
 		Output = true,
 		Info = true,
@@ -334,15 +385,17 @@ local function FUZQ_fake_script() -- Topbar.MainScript
 			end)
 		end
 	end
-	
+
 	script.Parent.Clear.MouseButton1Click:Connect(function()
 		for i,v in next, script.Parent.Log:GetChildren() do
-			if v:IsA("TextLabel") then
+			if v:IsA("TextLabel") and v.Name ~= "Example" then
 				v:Destroy()
 			end
 		end
+		script.Parent.WarningIcon.Count.Text = "0"
+		script.Parent.ErrorIcon.Count.Text = "0"
 	end)
-	
+
 	script.Parent.Search.Search.MouseButton1Click:Connect(function()
 		if script.Parent.Search.Box.Text:gsub(" ","") ~= "" then
 			for i,v in next, script.Parent.Log:GetChildren() do
@@ -364,5 +417,50 @@ local function FUZQ_fake_script() -- Topbar.MainScript
 			end
 		end
 	end)
+
+	script.Parent.ErrorIcon.MouseButton1Click:Connect(function()
+		for i,v in next, script.Parent.Buttons:GetChildren() do
+			if stuff[v.Name] then
+				stuff[v.Name] = false
+				v.Icon.Image = ""
+				v.Icon.BackgroundColor3 = Color3.fromRGB(78,84,96)
+				for i2,v2 in next, script.Parent.Log:GetChildren() do
+					if v2.Name == v.Name then
+						v2.Visible = false
+					end
+				end
+			end
+		end
+		stuff["Error"] = true
+		script.Parent.Buttons.Error.Icon.Image = "rbxasset://textures/ui/LuaChat/icons/ic-check.png"
+		script.Parent.Buttons.Error.Icon.BackgroundColor3 = Color3.fromRGB(50,181,255)
+		for i,v in next, script.Parent.Log:GetChildren() do
+			if v.Name == "Error" then
+				v.Visible = true
+			end
+		end
+	end)
+	script.Parent.WarningIcon.MouseButton1Click:Connect(function()
+		for i,v in next, script.Parent.Buttons:GetChildren() do
+			if stuff[v.Name] then
+				stuff[v.Name] = false
+				v.Icon.Image = ""
+				v.Icon.BackgroundColor3 = Color3.fromRGB(78,84,96)
+				for i2,v2 in next, script.Parent.Log:GetChildren() do
+					if v2.Name == v.Name then
+						v2.Visible = false
+					end
+				end
+			end
+		end
+		stuff["Warning"] = true
+		script.Parent.Buttons.Warning.Icon.Image = "rbxasset://textures/ui/LuaChat/icons/ic-check.png"
+		script.Parent.Buttons.Warning.Icon.BackgroundColor3 = Color3.fromRGB(50,181,255)
+		for i,v in next, script.Parent.Log:GetChildren() do
+			if v.Name == "Warning" then
+				v.Visible = true
+			end
+		end
+	end)
 end
-coroutine.wrap(FUZQ_fake_script)()
+coroutine.wrap(HFYC_fake_script)()
