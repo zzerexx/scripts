@@ -63,9 +63,7 @@ local functions = {
 	['syn_context_set'] = setthreadidentity,
 	['syn_context_get'] = getthreadidentity,
 	['syn_setfflag'] = setfflag,
-	['syn_dumpstring'] = function(script)
-		return disassemble(getscriptbytecode(script)) -- i think thats how it works?
-	end,
+	['syn_dumpstring'] = getscriptbytecode,
 	['syn_islclosure'] = islclosure,
 	['syn_checkcaller'] = checkcaller,
 	['syn_clipboard_set'] = setclipboard,
