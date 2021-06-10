@@ -44,7 +44,7 @@ works the same as the developer console
 F9 to toggle  
 
 # Synapse to Script-Ware  
-Updated June 8, 2021  
+Updated June 9, 2021  
 Allows you to use Synapse exclusive functions with Script-Ware v2  
   
 **Loader**  
