@@ -37,7 +37,7 @@ end
 local http = game:GetService("HttpService")
 local Material = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kinlei/MaterialLua/master/Module.lua"))()
 local UI = Material.Load({
-	Title = "Universal ESP",
+	Title = "Universal Esp",
 	Style = 3,
 	SizeX = 350,
 	SizeY = 235,
