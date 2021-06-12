@@ -159,12 +159,16 @@ function Name(plr)
                 local mag = (player.Character.HumanoidRootPart.Position - plr.Character.HumanoidRootPart.Position).Magnitude
                 local health = plr.Character:FindFirstChildOfClass("Humanoid").Health
                 local maxhealth = plr.Character:FindFirstChildOfClass("Humanoid").MaxHealth
+                local plrname = plr.Name
+                if ss.Names.UseDisplayName then
+                    plrname = plr.DisplayName
+                end
                 if ss.Names.ShowDistance and ss.Names.ShowHealth then
-                    name.Text = plr.Name.." [ "..math.floor(mag).." ] [ "..math.floor(health).."/"..math.floor(maxhealth).." ]"
+                    name.Text = plrname.." [ "..math.floor(mag).." ] [ "..math.floor(health).."/"..math.floor(maxhealth).." ]"
                 elseif ss.Names.ShowDistance then
-                    name.Text = plr.Name.." [ "..math.floor(mag).." ]"
+                    name.Text = plrname.." [ "..math.floor(mag).." ]"
                 elseif ss.Names.ShowHealth then
-                    name.Text = plr.Name.." [ "..math.floor(health).."/"..math.floor(maxhealth).." ]"
+                    name.Text = plrname.." [ "..math.floor(health).."/"..math.floor(maxhealth).." ]"
                 else
                     name.Text = plr.Name
                 end
