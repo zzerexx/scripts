@@ -170,7 +170,7 @@ function Name(plr)
                 elseif ss.Names.ShowHealth then
                     name.Text = plrname.." [ "..math.floor(health).."/"..math.floor(maxhealth).." ]"
                 else
-                    name.Text = plr.Name
+                    name.Text = plrname
                 end
             else
                 name.Visible = false
