@@ -19,11 +19,11 @@ Script: https://pastebin.com/raw/FwYmgtCX
 ```  
    
 # Universal Esp  
-Updated May 29, 2021  
-v1.0.2  
+Updated June 11, 2021  
+v1.1.0  
 - Box Esp  
 - Tracers  
-- Name Esp (with Distance and Health)  
+- Name Esp (with Distance and Health and Display Name)  
   
 REQUIRES DRAWING LIBRARY  
 executing multiple times will cause fps drops  
