@@ -28,8 +28,9 @@ if not getgenv().EspSettings then
 			OutlineColor = Color3.fromRGB(0,0,0),
 			ShowDistance = false,
 			ShowHealth = false,
+			UseDisplayName = false
 		}
-	} -- v1.0.2
+	} -- v1.1.0
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEsp.lua"))()
 end
 
@@ -86,7 +87,8 @@ local ui = {
 		Outline,
 		OutlineColor,
 		ShowDistance,
-		ShowHealth
+		ShowHealth,
+		UseDisplayName
 	},
 	Other = {
 		TeamCheck
@@ -242,6 +244,13 @@ ui.Names.ShowHealth = Names.Toggle({
 	Text = "Show Health",
 	Callback = function(value)
 		ss.Names.ShowHealth = value
+	end,
+	Enabled = false
+})
+ui.Names.UseDisplayName = Names.Toggle({
+	Text = "Use Display Name",
+	Callback = function(value)
+		ss.Names.UseDisplayName = value
 	end,
 	Enabled = false
 })
