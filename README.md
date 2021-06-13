@@ -19,17 +19,19 @@ Script: https://pastebin.com/raw/FwYmgtCX
 ```  
    
 # Universal Esp  
-Updated June 11, 2021  
-v1.1.0  
+Updated June 13, 2021  
+v1.2.0  
 - Box Esp  
 - Tracers  
 - Name Esp (with Distance and Health and Display Name)  
   
-REQUIRES DRAWING LIBRARY  
-executing multiple times will cause fps drops  
 ```
 Script: https://pastebin.com/raw/5zw0rLH9
 ```  
+## Update v1.2.0  
+Optimized! Only 1 RunService loop is used instead of multiple  
+You can now execute multiple times without lagging!  
+New Setting: ToggleKey | Press this key to toggle esp visibility.  
   
 # Universal Esp with UI  
 Updated June 11, 2021  
