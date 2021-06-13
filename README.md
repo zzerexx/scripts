@@ -30,11 +30,11 @@ Script: https://pastebin.com/raw/5zw0rLH9
 ```  
 ## Update v1.2.0  
 Optimized! Only 1 RunService loop is used instead of multiple  
-You can now execute multiple times without lagging!  
+You can now execute multiple times without frame drops!  
 New Setting: ToggleKey | Press this key to toggle esp visibility.  
   
 # Universal Esp with UI  
-Updated June 11, 2021  
+Updated June 13, 2021  
 universal esp but with a ui  
 ui lib made by twink marie  
 ```
