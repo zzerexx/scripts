@@ -2,7 +2,7 @@
 -- ui lib made by twink marie
 if not getgenv().EspSettings then
 	getgenv().EspSettings = {
-		TeamCheck = true,
+		TeamCheck = false,
 		Boxes = {
 			Enabled = true,
 			Transparency = 0.7,
@@ -260,7 +260,7 @@ ui.Other.TeamCheck = Other.Toggle({
 	Callback = function(value)
 		ss.TeamCheck = value
 	end,
-	Enabled = true
+	Enabled = false
 })
 
 --[[ config stuff
