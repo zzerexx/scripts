@@ -3,6 +3,7 @@
 if not getgenv().EspSettings then
 	getgenv().EspSettings = {
 		TeamCheck = false,
+        ToggleKey = Enum.KeyCode.RightAlt,
 		Boxes = {
 			Enabled = true,
 			Transparency = 0.7,
@@ -91,7 +92,8 @@ local ui = {
 		UseDisplayName
 	},
 	Other = {
-		TeamCheck
+		TeamCheck,
+        ToggleKey
 	}
 }
 
@@ -261,6 +263,17 @@ ui.Other.TeamCheck = Other.Toggle({
 		ss.TeamCheck = value
 	end,
 	Enabled = false
+})
+ui.Other.ToggleKey = Other.TextField({
+    Text = "Toggle Key (Default is RightAlt)",
+    Type = "Default",
+    Callback = function(value)
+        if value:gsub(" ","") == "" then
+            ss.ToggleKey = Enum.KeyCode.RightAlt
+        else
+            ss.ToggleKey = Enum.KeyCode[value]
+        end
+    end
 })
 
 --[[ config stuff
