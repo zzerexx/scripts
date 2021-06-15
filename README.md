@@ -19,8 +19,8 @@ https://pastebin.com/raw/FwYmgtCX
 ```  
    
 # Universal Esp  
-Updated June 13, 2021  
-v1.3.0  
+Updated June 15, 2021  
+v1.3.1  
 - Box Esp  
 - Tracers  
 - Name Esp (with Distance and Health and Display Name) 
@@ -29,8 +29,9 @@ v1.3.0
 ```
 https://pastebin.com/raw/5zw0rLH9
 ```  
-## Update v1.3.0  
-Added Skeleton Esp  
+## Update v1.3.1  
+Added AntiDetection  
+Disables common detection methods  
   
 # Universal Esp with UI  
 Updated June 13, 2021  
