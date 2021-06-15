@@ -1,4 +1,15 @@
 -- Universal Esp by zzerexx#3970
+if getgenv().EspSettings and getgenv().EspSettings.AntiDetection then
+	for i,v in next, getconnections(game:GetService("ScriptContext").Error) do
+		v:Disable()
+	end
+	for i,v in next, getconnections(game.DescendantAdded) do -- for the ui version
+		v:Disable()
+	end
+	hookfunction((gcinfo or collectgarbage),function(...)
+		return math.random(150,300)
+	end)
+end
 if typeof(Drawing.new) ~= "function" then
     game:GetService("Players").LocalPlayer:Kick("\n\nUniversal Esp\nYour exploit does not have a Drawing Library!\n")
     return
@@ -27,18 +38,6 @@ local RunService = game:GetService("RunService")
 local ss = getgenv().EspSettings
 getgenv().UNIVERSALESP_OBJECTS = {}
 getgenv().UNIVERSALESP_VISIBLE = true
-
-if ss.AntiDetection then
-	for i,v in next, getconnections(game:GetService("ScriptContext").Error) do
-		v:Disable()
-	end
-	for i,v in next, getconnections(game.DescendantAdded) do -- for the ui version
-		v:Disable()
-	end
-	hookfunction((gcinfo or collectgarbage),function(...)
-		return math.random(150,300)
-	end)
-end
 
 function Box(plr)
     ss = getgenv().EspSettings
