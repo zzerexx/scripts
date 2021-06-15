@@ -30,7 +30,13 @@ if not getgenv().EspSettings then
 			ShowDistance = false,
 			ShowHealth = false,
 			UseDisplayName = false
-		}
+		},
+        Skeletons = {
+            Enabled = true,
+            Transparency = 0.7,
+            Color = Color3.fromRGB(255,0,0),
+            UseTeamColor = true
+        }
 	} -- v1.1.0
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEsp.lua"))()
 end
@@ -53,6 +59,9 @@ local Tracers = UI.New({
 })
 local Names = UI.New({
 	Title = "Names"
+})
+local Skeletons = UI.New({
+    Title = "Skeletons"
 })
 local Other = UI.New({
 	Title = "Other"
@@ -91,6 +100,12 @@ local ui = {
 		ShowHealth,
 		UseDisplayName
 	},
+    Skeletons = {
+        Enabled,
+        Transparency,
+        Color, 
+        UseTeamColor
+    },
 	Other = {
 		TeamCheck,
         ToggleKey
@@ -255,6 +270,37 @@ ui.Names.UseDisplayName = Names.Toggle({
 		ss.Names.UseDisplayName = value
 	end,
 	Enabled = false
+})
+
+ui.Skeletons.Enabled = Skeletons.Toggle({
+	Text = "Enabled",
+	Callback = function(value)
+		ss.Skeletons.Enabled = value
+	end,
+	Enabled = true
+})
+ui.Skeletons.Transparency = Skeletons.Slider({
+	Text = "Transparency",
+	Callback = function(value)
+		ss.Skeletons.Transparency = value / 10
+	end,
+	Min = 0,
+	Max = 10,
+	Def = 7
+})
+ui.Skeletons.Color = Skeletons.ColorPicker({
+	Text = "Color",
+	Default = Color3.fromHSV(1,1,1),
+	Callback = function(value)
+		ss.Skeletons.Color = value
+	end,
+})
+ui.Skeletons.UseTeamColor = Skeletons.Toggle({
+	Text = "Use Team Color",
+	Callback = function(value)
+		ss.Skeletons.UseTeamColor = value
+	end,
+	Enabled = true
 })
 
 ui.Other.TeamCheck = Other.Toggle({
