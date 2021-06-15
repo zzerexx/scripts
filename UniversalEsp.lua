@@ -9,7 +9,13 @@ if typeof(Drawing.new) ~= "function" then
 end
 if typeof(getgenv().UNIVERSALESP_OBJECTS) == "table" then
     for i,v in next, getgenv().UNIVERSALESP_OBJECTS do
-        v.Object:Remove()
+        if typeof(v.Object) == "table" then
+            for i2,v2 in next, v.Object do
+                v2:Remove()
+            end
+        else
+            v:Remove()
+        end
         table.remove(getgenv().UNIVERSALESP_OBJECTS,i)
     end
 end
@@ -63,6 +69,7 @@ function Name(plr)
 end
 
 function Skeleton(plr)
+    ss = getgenv().EspSettings
     local objects = {
         UpperTorso = Drawing.new("Line"),
         LowerTorso = Drawing.new("Line"),
@@ -323,7 +330,13 @@ end)
 players.PlayerRemoving:Connect(function(plr)
     for i,v in next, getgenv().UNIVERSALESP_OBJECTS do
         if v.Player == plr then
-            v.Object:Remove()
+            if typeof(v.Object) == "table" then
+                for i2,v2 in next, v.Object do
+                    v2:Remove()
+                end
+            else
+                v:Remove()
+            end
             table.remove(getgenv().UNIVERSALESP_OBJECTS,i)
         end
     end
