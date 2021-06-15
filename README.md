@@ -15,7 +15,7 @@ Updated April 10, 2021
 v1.0.3  
 Check the settings for features  
 ```
-Script: https://pastebin.com/raw/FwYmgtCX
+https://pastebin.com/raw/FwYmgtCX
 ```  
    
 # Universal Esp  
@@ -27,7 +27,7 @@ v1.3.0
 - Skeleton Esp   
   
 ```
-Script: https://pastebin.com/raw/5zw0rLH9
+https://pastebin.com/raw/5zw0rLH9
 ```  
 ## Update v1.3.0  
 Added Skeleton Esp  
@@ -37,7 +37,7 @@ Updated June 13, 2021
 universal esp but with a ui  
 ui lib made by twink marie  
 ```
-Script: loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua"))()
 ```  
   
 # Aimblox Silent Aim  
