@@ -4,6 +4,7 @@ if not getgenv().EspSettings then
 	getgenv().EspSettings = {
 		TeamCheck = false,
         	ToggleKey = Enum.KeyCode.RightAlt,
+		AntiDetection = true,
 		Boxes = {
 			Enabled = true,
 			Transparency = 0.7,
@@ -38,7 +39,7 @@ if not getgenv().EspSettings then
             		UseTeamColor = true,
 			Thickness = 1
         	}
-	} -- v1.3.0
+	} -- v1.3.1
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEsp.lua"))()
 end
 
