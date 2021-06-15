@@ -34,7 +34,7 @@ Added AntiDetection
 Disables common detection methods  
   
 # Universal Esp with UI  
-Updated June 13, 2021  
+Updated June 15, 2021  
 universal esp but with a ui  
 ui lib made by twink marie  
 ```
