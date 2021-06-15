@@ -83,6 +83,7 @@ function Skeleton(plr)
         v.Visible = false
         v.Transparency = ss.Skeletons.Transparency
         v.Color = ss.Skeletons.Color
+        v.Thickness = ss.Skeletons.Thickness
     end
     table.insert(getgenv().UNIVERSALESP_OBJECTS,{Object = objects,Type = "Skeleton",Player = plr})
 end
@@ -220,11 +221,12 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
                         v2.Visible = true
                         v2.Transparency = ss.Skeletons.Transparency
                         v2.Color = ss.Skeletons.Color
+                        v2.Thickness = ss.Skeletons.Thickness
                         if ss.TeamCheck and plr.Team == player.Team then
                             v2.Visible = false
                         end
                     end
-                    local head = camera:WorldToViewportPoint(plr.Character.Head.Position)
+                    local head = camera:WorldToViewportPoint(plr.Character.Head.Position) -- bruh
                     local utorso = camera:WorldToViewportPoint(plr.Character.UpperTorso.Position)
                     local ltorso = camera:WorldToViewportPoint(plr.Character.LowerTorso.Position)
                     local luarm = camera:WorldToViewportPoint(plr.Character.LeftUpperArm.Position)
