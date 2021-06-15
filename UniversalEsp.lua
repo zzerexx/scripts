@@ -29,7 +29,7 @@ getgenv().UNIVERSALESP_VISIBLE = true
 function Box(plr)
     ss = getgenv().EspSettings
     local box = Drawing.new("Square")
-    box.Visible = true
+    box.Visible = false
     box.Transparency = ss.Boxes.Transparency
     box.Color = ss.Boxes.Color
     box.Thickness = 1
@@ -40,7 +40,7 @@ end
 function Tracer(plr)
     ss = getgenv().EspSettings
     local tracer = Drawing.new("Line")
-    tracer.Visible = true
+    tracer.Visible = false
     tracer.Transparency = ss.Tracers.Transparency
     tracer.Color = ss.Tracers.Color
     tracer.Thickness = ss.Tracers.Thickness
@@ -50,7 +50,7 @@ end
 function Name(plr)
     ss = getgenv().EspSettings
     local name = Drawing.new("Text")
-    name.Visible = true
+    name.Visible = false
     name.Transparency = ss.Names.Transparency
     name.Color = ss.Names.Color
     name.Text = plr.Name
@@ -60,6 +60,31 @@ function Name(plr)
     name.OutlineColor = ss.Names.OutlineColor
     name.Font = ss.Names.Font
     table.insert(getgenv().UNIVERSALESP_OBJECTS,{Object = name,Type = "Name",Player = plr})
+end
+
+function Skeleton(plr)
+    local objects = {
+        UpperTorso = Drawing.new("Line"),
+        LowerTorso = Drawing.new("Line"),
+        LeftUpperArm = Drawing.new("Line"),
+        LeftLowerArm = Drawing.new("Line"),
+        LeftHand = Drawing.new("Line"),
+        RightUpperArm = Drawing.new("Line"),
+        RightLowerArm = Drawing.new("Line"),
+        RightHand = Drawing.new("Line"),
+        LeftUpperLeg = Drawing.new("Line"),
+        LeftLowerLeg = Drawing.new("Line"),
+        LeftFoot = Drawing.new("Line"),
+        RightUpperLeg = Drawing.new("Line"),
+        RightLowerLeg = Drawing.new("Line"),
+        RightFoot = Drawing.new("Line")
+    }
+    for i,v in next, objects do
+        v.Visible = false
+        v.Transparency = ss.Skeletons.Transparency
+        v.Color = ss.Skeletons.Color
+    end
+    table.insert(getgenv().UNIVERSALESP_OBJECTS,{Object = objects,Type = "Skeleton",Player = plr})
 end
 
 getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
@@ -186,6 +211,93 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
             else
                 name.Visible = false
             end
+        elseif v.Type == "Skeleton" then
+            local skeleton = v.Object
+            if getgenv().UNIVERSALESP_VISIBLE and ss.Skeletons.Enabled and plr and plr ~= player and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChildOfClass("Humanoid") and plr.Character:FindFirstChildOfClass("Humanoid").Health > 0 then
+                local vector, inViewport = camera:WorldToViewportPoint(plr.Character.HumanoidRootPart.Position)
+                if inViewport then
+                    for i2,v2 in next, skeleton do
+                        v2.Visible = true
+                        v2.Transparency = ss.Skeletons.Transparency
+                        v2.Color = ss.Skeletons.Color
+                        if ss.TeamCheck and plr.Team == player.Team then
+                            v2.Visible = false
+                        end
+                    end
+                    local head = camera:WorldToViewportPoint(plr.Character.Head.Position)
+                    local utorso = camera:WorldToViewportPoint(plr.Character.UpperTorso.Position)
+                    local ltorso = camera:WorldToViewportPoint(plr.Character.LowerTorso.Position)
+                    local luarm = camera:WorldToViewportPoint(plr.Character.LeftUpperArm.Position)
+                    local llarm = camera:WorldToViewportPoint(plr.Character.LeftLowerArm.Position)
+                    local lhand = camera:WorldToViewportPoint(plr.Character.LeftHand.Position)
+                    local ruarm = camera:WorldToViewportPoint(plr.Character.RightUpperArm.Position)
+                    local rlarm = camera:WorldToViewportPoint(plr.Character.RightLowerArm.Position)
+                    local rhand = camera:WorldToViewportPoint(plr.Character.RightHand.Position)
+                    local luleg = camera:WorldToViewportPoint(plr.Character.LeftUpperLeg.Position)
+                    local llleg = camera:WorldToViewportPoint(plr.Character.LeftLowerLeg.Position)
+                    local lfoot = camera:WorldToViewportPoint(plr.Character.LeftFoot.Position)
+                    local ruleg = camera:WorldToViewportPoint(plr.Character.RightUpperLeg.Position)
+                    local rlleg = camera:WorldToViewportPoint(plr.Character.RightLowerLeg.Position)
+                    local rfoot = camera:WorldToViewportPoint(plr.Character.RightFoot.Position)
+
+                    v.Object.UpperTorso.From = Vector2.new(head.X,head.Y)
+                    v.Object.UpperTorso.To = Vector2.new(utorso.X,utorso.Y)
+                        
+                    v.Object.LowerTorso.From = Vector2.new(utorso.X,utorso.Y)
+                    v.Object.LowerTorso.To = Vector2.new(ltorso.X,ltorso.Y)
+
+                    v.Object.LeftUpperArm.From = Vector2.new(utorso.X,utorso.Y)
+                    v.Object.LeftUpperArm.To = Vector2.new(luarm.X,luarm.Y)
+
+                    v.Object.LeftLowerArm.From = Vector2.new(luarm.X,luarm.Y)
+                    v.Object.LeftLowerArm.To = Vector2.new(llarm.X,llarm.Y)
+
+                    v.Object.LeftHand.From = Vector2.new(llarm.X,llarm.Y)
+                    v.Object.LeftHand.To = Vector2.new(lhand.X,lhand.Y)
+
+                    v.Object.RightUpperArm.From = Vector2.new(utorso.X,utorso.Y)
+                    v.Object.RightUpperArm.To = Vector2.new(ruarm.X,ruarm.Y)
+
+                    v.Object.RightLowerArm.From = Vector2.new(ruarm.X,ruarm.Y)
+                    v.Object.RightLowerArm.To = Vector2.new(rlarm.X,rlarm.Y)
+
+                    v.Object.RightHand.From = Vector2.new(rlarm.X,rlarm.Y)
+                    v.Object.RightHand.To = Vector2.new(rhand.X,rhand.Y)
+
+                    v.Object.LeftUpperLeg.From = Vector2.new(ltorso.X,ltorso.Y)
+                    v.Object.LeftUpperLeg.To = Vector2.new(luleg.X,luleg.Y)
+
+                    v.Object.LeftLowerLeg.From = Vector2.new(luleg.X,luleg.Y)
+                    v.Object.LeftLowerLeg.To = Vector2.new(llleg.X,llleg.Y)
+
+                    v.Object.LeftFoot.From = Vector2.new(llleg.X,llleg.Y)
+                    v.Object.LeftFoot.To = Vector2.new(lfoot.X,lfoot.Y)
+
+                    v.Object.RightUpperLeg.From = Vector2.new(ltorso.X,ltorso.Y)
+                    v.Object.RightUpperLeg.To = Vector2.new(ruleg.X,ruleg.Y)
+
+                    v.Object.RightLowerLeg.From = Vector2.new(ruleg.X,ruleg.Y)
+                    v.Object.RightLowerLeg.To = Vector2.new(rlleg.X,rlleg.Y)
+
+                    v.Object.RightFoot.From = Vector2.new(rlleg.X,rlleg.Y)
+                    v.Object.RightFoot.To = Vector2.new(rfoot.X,rfoot.Y)
+                else
+                    for i2,v2 in next, skeleton do
+                        v2.Visible = false
+                    end
+                end
+                for i2,v2 in next, skeleton do
+                    if ss.Skeletons.UseTeamColor then
+                        v2.Color = plr.TeamColor.Color
+                    else
+                        v2.Color = ss.Skeletons.Color
+                    end
+                end
+            else
+                for i2,v2 in next, skeleton do
+                    v2.Visible = false
+                end
+            end
         end
     end
 end)
@@ -198,11 +310,13 @@ for i,v in next, players:GetPlayers() do
     Box(v)
     Tracer(v)
     Name(v)
+    Skeleton(v)
 end
 players.PlayerAdded:Connect(function(v)
     Box(v)
     Tracer(v)
     Name(v)
+    Skeleton(v)
 end)
 players.PlayerRemoving:Connect(function(plr)
     for i,v in next, getgenv().UNIVERSALESP_OBJECTS do
