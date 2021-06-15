@@ -31,13 +31,13 @@ if not getgenv().EspSettings then
 			ShowHealth = false,
 			UseDisplayName = false
 		},
-        Skeletons = {
-            Enabled = true,
-            Transparency = 0.7,
-            Color = Color3.fromRGB(255,0,0),
-            UseTeamColor = true
-        }
-	} -- v1.1.0
+        	Skeletons = {
+            		Enabled = true,
+            		Transparency = 0.7,
+            		Color = Color3.fromRGB(255,0,0),
+            		UseTeamColor = true
+        	}
+	} -- v1.3.0
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEsp.lua"))()
 end
 
@@ -100,15 +100,16 @@ local ui = {
 		ShowHealth,
 		UseDisplayName
 	},
-    Skeletons = {
-        Enabled,
-        Transparency,
-        Color, 
-        UseTeamColor
-    },
+    	Skeletons = {
+        	Enabled,
+        	Transparency,
+        	Color, 
+        	UseTeamColor,
+		Thickness
+    	},
 	Other = {
 		TeamCheck,
-        ToggleKey
+        	ToggleKey
 	}
 }
 
@@ -301,6 +302,15 @@ ui.Skeletons.UseTeamColor = Skeletons.Toggle({
 		ss.Skeletons.UseTeamColor = value
 	end,
 	Enabled = true
+})
+ui.Skeletons.Thickness = Skeletons.Slider({
+	Text = "Thickness",
+	Callback = function(value)
+		ss.Skeletons.Thickness = value	
+	end,
+	Min = 1,
+	Max = 5,
+	Def = 1
 })
 
 ui.Other.TeamCheck = Other.Toggle({
