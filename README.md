@@ -20,18 +20,17 @@ Script: https://pastebin.com/raw/FwYmgtCX
    
 # Universal Esp  
 Updated June 13, 2021  
-v1.2.0  
+v1.3.0  
 - Box Esp  
 - Tracers  
-- Name Esp (with Distance and Health and Display Name)  
+- Name Esp (with Distance and Health and Display Name) 
+- Skeleton Esp   
   
 ```
 Script: https://pastebin.com/raw/5zw0rLH9
 ```  
-## Update v1.2.0  
-Optimized! Only 1 RunService loop is used instead of multiple  
-You can now execute multiple times without frame drops!  
-New Setting: ToggleKey | Press this key to toggle esp visibility.  
+## Update v1.3.0  
+Added Skeleton Esp  
   
 # Universal Esp with UI  
 Updated June 13, 2021  
