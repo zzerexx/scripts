@@ -7,7 +7,7 @@ v1.2.1
 Create your own custom crosshair using the Drawing Library  
 executing multiple times will not cause fps drops  
 ```
-Script: https://pastebin.com/raw/eGiC2jPg
+https://pastebin.com/raw/eGiC2jPg
 ``` 
   
 # Murder Mystery 2 Utilities  
