@@ -35,7 +35,8 @@ if not getgenv().EspSettings then
             		Enabled = true,
             		Transparency = 0.7,
             		Color = Color3.fromRGB(255,0,0),
-            		UseTeamColor = true
+            		UseTeamColor = true,
+			Thickness = 1
         	}
 	} -- v1.3.0
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEsp.lua"))()
