@@ -221,7 +221,7 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
             end
         elseif v.Type == "Skeleton" then
             local skeleton = v.Object
-            if getgenv().UNIVERSALESP_VISIBLE and ss.Skeletons.Enabled and plr and plr ~= player and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChildOfClass("Humanoid") and plr.Character:FindFirstChildOfClass("Humanoid").Health > 0 then
+            if getgenv().UNIVERSALESP_VISIBLE and ss.Skeletons.Enabled and plr and plr ~= player and plr.Character and plr.Character:FindFirstChild("UpperTorso") and plr.Character:FindFirstChild("LowerTorso") and plr.Character:FindFirstChild("LeftUpperArm") and plr.Character:FindFirstChild("LeftLowerArm") and plr.Character:FindFirstChild("LeftHand") and plr.Character:FindFirstChild("RightUpperArm") and plr.Character:FindFirstChild("RightLowerArm") and plr.Character:FindFirstChild("RightHand") and plr.Character:FindFirstChild("LeftUpperLeg") and plr.Character:FindFirstChild("LeftLowerLeg") and plr.Character:FindFirstChild("LeftFoot") and plr.Character:FindFirstChild("RightUpperLeg") and plr.Character:FindFirstChild("RightLowerLeg") and plr.Character:FindFirstChild("RightFoot") and plr.Character:FindFirstChildOfClass("Humanoid") and plr.Character:FindFirstChildOfClass("Humanoid").Health > 0 then
                 local vector, inViewport = camera:WorldToViewportPoint(plr.Character.HumanoidRootPart.Position)
                 if inViewport then
                     for i2,v2 in next, skeleton do
