@@ -3,7 +3,7 @@
 if not getgenv().EspSettings then
 	getgenv().EspSettings = {
 		TeamCheck = false,
-        ToggleKey = Enum.KeyCode.RightAlt,
+        	ToggleKey = Enum.KeyCode.RightAlt,
 		Boxes = {
 			Enabled = true,
 			Transparency = 0.7,
