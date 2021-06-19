@@ -4,7 +4,7 @@ local oldnc = mt.__namecall
 setreadonly(mt,false)
 mt.__namecall = newcclosure(function(self,...) -- protect_gui thing
 	local args = {...}
-	if self == game and getnamecallmethod() == "FindFirstChild" and args[2] ~= nil and args[2] == true then
+	if self == game and getnamecallmethod() == "FindFirstChild" and args[2] == true then
 		for i,v in next, getgenv().protected do
 			if args[1] == v.Name then
 				return false
