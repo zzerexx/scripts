@@ -110,9 +110,12 @@ getgenv().syn = {
     		for i,v in next, obj:GetDescendants() do
         		table.insert(getgenv().protected,#getgenv().protected+1,v)
     		end
-		obj.DescendantAdded:Connect(function(d)
+		local c
+		c = obj.DescendantAdded:Connect(function(d)
         		if table.find(getgenv().protected,obj) then
             			table.insert(getgenv().protected,#getgenv().protected+1,d)
+			else
+				c:Disconnect()
         		end
     		end)
 	end,
