@@ -38,8 +38,16 @@ if not getgenv().EspSettings then
             		Color = Color3.fromRGB(255,0,0),
             		UseTeamColor = true,
 			Thickness = 1
-        	}
-	} -- v1.3.1
+        	},
+		LookTracers = {
+			Enabled = true,
+			Transparency = 0.7,
+			Color = Color3.fromRGB(255,255,255),
+			UseTeamColor = true,
+			IgnoreWater = true,
+			Thickness = 1
+	    	}
+	} -- v1.4.0
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEsp.lua"))()
 end
 
@@ -64,6 +72,9 @@ local Names = UI.New({
 })
 local Skeletons = UI.New({
     Title = "Skeletons"
+})
+local LookTracers = UI.New({
+	Title = "Look Tracers"
 })
 local Other = UI.New({
 	Title = "Other"
@@ -109,6 +120,14 @@ local ui = {
         	UseTeamColor,
 		Thickness
     	},
+	LookTracers = {
+		Enabled,
+		Transparency,
+		Color,
+		UseTeamColor,
+		IgnoreWater,
+		Thickness
+	},
 	Other = {
 		TeamCheck,
         	ToggleKey
@@ -309,6 +328,53 @@ ui.Skeletons.Thickness = Skeletons.Slider({
 	Text = "Thickness",
 	Callback = function(value)
 		ss.Skeletons.Thickness = value	
+	end,
+	Min = 1,
+	Max = 5,
+	Def = 1
+})
+
+ui.LookTracers.Enabled = LookTracers.Toggle({
+	Text = "Enabled",
+	Callback = function(value)
+		ss.LookTracers.Enabled = value
+	end,
+	Enabled = true
+})
+ui.LookTracers.Transparency = LookTracers.Slider({
+	Text = "Transparency",
+	Callback = function(value)
+		ss.LookTracers.Transparency = value / 10
+	end,
+	Min = 0,
+	Max = 10,
+	Def = 7
+})
+ui.LookTracers.Color = LookTracers.ColorPicker({
+	Text = "Color",
+	Default = Color3.fromHSV(1,1,1),
+	Callback = function(value)
+		ss.LookTracers.Color = value
+	end,
+})
+ui.LookTracers.UseTeamColor = LookTracers.Toggle({
+	Text = "Use Team Color",
+	Callback = function(value)
+		ss.LookTracers.UseTeamColor = value
+	end,
+	Enabled = true
+})
+ui.LookTracers.IgnoreWater = LookTracers.Toggle({
+	Text = "Ignore Water",
+	Callback = function(value)
+		ss.LookTracers.IgnoreWater = value
+	end,
+	Enabled = true
+})
+ui.LookTracers.Thickness = LookTracers.Slider({
+	Text = "Thickness",
+	Callback = function(value)
+		ss.LookTracers.Thickness = value
 	end,
 	Min = 1,
 	Max = 5,
