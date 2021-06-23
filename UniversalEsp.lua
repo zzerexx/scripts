@@ -102,6 +102,16 @@ function Skeleton(plr)
     table.insert(getgenv().UNIVERSALESP_OBJECTS,{Object = objects,Type = "Skeleton",Player = plr})
 end
 
+function LookTracer(plr)
+	ss = getgenv().EspSettings
+	local tracer = Drawing.new("Line")
+	tracer.Visible = false
+    tracer.Transparency = ss.LookTracers.Transparency
+    tracer.Color = ss.LookTracers.Color
+    tracer.Thickness = ss.LookTracers.Thickness
+    table.insert(getgenv().UNIVERSALESP_OBJECTS,{Object = tracer,Type = "LookTracer",Player = plr})
+end
+
 getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
     for i,v in next, getgenv().UNIVERSALESP_OBJECTS do
         ss = getgenv().EspSettings
@@ -314,6 +324,36 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
                     v2.Visible = false
                 end
             end
+        elseif v.Type == "LookTracer" then
+            local tracer = v.Object
+            if getgenv().UNIVERSALESP_VISIBLE and ss.LookTracers.Enabled and plr and plr ~= player and plr.Character and plr.Character:FindFirstChild("Head") and plr.Character:FindFirstChildOfClass("Humanoid") and plr.Character:FindFirstChildOfClass("Humanoid").Health > 0 then
+                local vector, inViewport = camera:WorldToViewportPoint(plr.Character.Head.Position)
+                local ray = Ray.new(plr.Character.Head.Position,plr.Character.Head.CFrame.LookVector * 1000)
+                local _, pos = workspace:FindPartOnRay(ray,plr.Character,true,ss.LookTracers.IgnoreWater)
+                local vector2, inViewport2 = camera:WorldToViewportPoint(pos)
+    
+                if inViewport and inViewport2 then
+                    tracer.Transparency = ss.LookTracers.Transparency
+                    tracer.Thickness = ss.LookTracers.Thickness
+                    tracer.From = Vector2.new(vector.X,vector.Y)
+                    tracer.To = Vector2.new(vector2.X,vector2.Y)
+    
+                    if ss.TeamCheck and plr.Team == player.Team then
+                        tracer.Visible = false
+                    else
+                        tracer.Visible = true
+                    end
+                else
+                    tracer.Visible = false
+                end
+                if ss.LookTracers.UseTeamColor then
+                    tracer.Color = plr.TeamColor.Color
+                else
+                    tracer.Color = ss.LookTracers.Color
+                end
+            else
+                tracer.Visible = false
+            end
         end
     end
 end)
@@ -327,12 +367,14 @@ for i,v in next, players:GetPlayers() do
     Tracer(v)
     Name(v)
     Skeleton(v)
+    LookTracer(v)
 end
 players.PlayerAdded:Connect(function(v)
     Box(v)
     Tracer(v)
     Name(v)
     Skeleton(v)
+    LookTracer(v)
 end)
 players.PlayerRemoving:Connect(function(plr)
     for i,v in next, getgenv().UNIVERSALESP_OBJECTS do
