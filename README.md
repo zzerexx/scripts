@@ -32,8 +32,9 @@ https://pastebin.com/raw/5zw0rLH9
 ```  
 ## Update v1.4.0  
 Added Look Tracers  
-Shows where the player is looking  
-Note that this is based on the player's head cframe, so its not actually showing their cursor position  
+Draws a line that shows where the player is looking  
+Notes: This is based on the player's head cframe, so its not actually showing their cursor position  
+       Both the head and look position must be on-screen to make the tracer visible (might change this in the future)  
   
 # Universal Esp with UI  
 Updated June 23, 2021  
