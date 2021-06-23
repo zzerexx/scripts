@@ -19,22 +19,24 @@ https://pastebin.com/raw/FwYmgtCX
 ```  
    
 # Universal Esp  
-Updated June 15, 2021  
-v1.3.1  
+Updated June 23, 2021  
+v1.4.0  
 - Box Esp  
 - Tracers  
 - Name Esp (with Distance and Health and Display Name) 
 - Skeleton Esp   
+- Look Tracers  
   
 ```
 https://pastebin.com/raw/5zw0rLH9
 ```  
-## Update v1.3.1  
-Added AntiDetection  
-Disables common detection methods  
+## Update v1.4.0  
+Added Look Tracers  
+Shows where the player is looking  
+Note that this is based on the player's head cframe, so its not actually showing their cursor position  
   
 # Universal Esp with UI  
-Updated June 15, 2021  
+Updated June 23, 2021  
 universal esp but with a ui  
 ui lib made by twink marie  
 ```
