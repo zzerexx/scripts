@@ -30,6 +30,13 @@ v1.4.0
 ```
 https://pastebin.com/raw/5zw0rLH9
 ```  
+
+Your exploit must have the following functions:  
+- getgenv
+- getconnections
+- hookfunction
+- Drawing.new
+  
 ## Update v1.4.0  
 Added Look Tracers  
 Draws a line that shows where the player is looking  
