@@ -30,12 +30,11 @@ v1.4.0
 ```
 https://pastebin.com/raw/5zw0rLH9
 ```  
-
-Your exploit must have the following functions:  
-- getgenv
-- getconnections
-- hookfunction
-- Drawing.new
+  
+**NOTICE**  
+```
+You are allowed to use this ESP in your script as long as you credit me (zzerexx or zzerexx#3970)
+```  
   
 ## Update v1.4.0  
 Added Look Tracers  
@@ -72,44 +71,6 @@ Allows you to use Synapse exclusive functions with Script-Ware v2
 **Loader**  
 ```lua
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/SynapseToScriptWare.lua", true))()
-```  
-  
-**Example**    
-```lua
-loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/SynapseToScriptWare.lua", true))()
-
--- Using syn.crypt.custom
--- Synapse's custom encrypt is slightly different than Script-Ware's (check the docs here: https://x.synapse.to/docs/reference/crypt_lib.html#custom)
-local enc = syn.crypt.custom.encrypt(
-	"aes-gcm", -- Cipher
-	"hi gamers!", -- Data
-	"$nLliCMdi7gcynsFCK9u0aVNdtkNIiZG", -- Key
-	"Agd13KuKIL2$") -- Nonce
-
-print(enc) -- iQg5LoK5GmWmkO7HtuHH4Q==
-
-local dec = syn.crypt.custom.decrypt(
-	"aes-gcm", -- Cipher
-	enc, -- Data
-	"$nLliCMdi7gcynsFCK9u0aVNdtkNIiZG", -- Key
-	"Agd13KuKIL2$" -- Nonce
-)
-
-print(dec) -- hi gamers!
-
--- Using syn.protect_gui and getsynasset
-writefile("dog.png", game:HttpGet("https://i.imgur.com/aVEAmYC.png"))
-local ScreenGui = Instance.new("ScreenGui")
-syn.protect_gui(ScreenGui)
-ScreenGui.Parent = game.CoreGui
-ScreenGui.Name = "protected_dog"
-local ImageLabel = Instance.new("ImageLabel",ScreenGui)
-ImageLabel.AnchorPoint = Vector2.new(0.5, 0.5)
-ImageLabel.Position = UDim2.new(0.5, 0, 0.5, 0)
-ImageLabel.Size = UDim2.new(0, 250, 0, 250)
-ImageLabel.Image = getsynasset("dog.png")
-
-print(game:FindFirstChild("protected_dog",true)) -- should print false
 ```  
   
 **Supported Functions**  
