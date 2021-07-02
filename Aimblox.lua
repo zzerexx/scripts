@@ -1,3 +1,4 @@
+-- hey there, this is an older version of the aimbot gui so yeah
 local ss = {
     SilentAim = {
         Enabled = true,
