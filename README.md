@@ -52,7 +52,7 @@ ui lib made by twink marie
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua"))()
 ```  
   
-# Aimblox Silent Aim  
+# Aimblox Silent Aim (OUTDATED)  
 Updated May 26, 2021  
 v1.0.0  
 basic silent aim  
