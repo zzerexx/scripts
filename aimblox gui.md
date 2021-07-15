@@ -3,7 +3,7 @@
 ## Features  
 ### Silent Aim  
 Enabled - Enables/Disables Silent Aim  
-Target Type - Determines the targeting method  
+Target Type - The targeting method  
 Target Part - The part that silent aim will hit  
 Visible Check - Checks for player visibility    
 Hit Chance - How often silent aim will hit players  
@@ -15,7 +15,7 @@ Fov Visible - The fov circle visibility
 Fov Transparency - The fov circle transparency  
 Fov Color - The fov circle color  
 Rainbow Fov - Makes the fov circle cycle through colors  
-Whitelist Players - Silent Aim will ignore players that are in this list  
+Whitelist Players - Silent aim will ignore players that are in this list  
   
 ### ESP  
 Boxes - Displays a box around the player  
