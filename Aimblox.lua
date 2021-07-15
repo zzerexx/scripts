@@ -438,7 +438,7 @@ function SaveSettings()
 end
 
 if ss.Version < version then
-    do end
+    Banner("Theres a new update! Please delete 'aimbloxsettings.json' to prevent any errors.")
 end
 
 SilentAim.Toggle({
