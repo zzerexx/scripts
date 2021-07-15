@@ -1485,16 +1485,15 @@ function ImpactPoint()
     end
 end
 
-function GunEngine()
+function GunEngine(func)
     for i,v in next, getgc(true) do
-        if typeof(v) == "table" and typeof(v._FireInternal) == "function" and tostring(getfenv(v._FireInternal).script) == "Gun" then
-            return v
+        if typeof(v) == "table" and typeof(rawget(v,func)) == "function" and tostring(getfenv(rawget(v,func)).script) == "Gun" then
+            return rawget(v,func)
         end
     end
 end
 
-local oldfire
-oldfire = hookfunction(GunEngine()._FireInternal,function(...)
+oldfire = hookfunction(GunEngine("_FireInternal"),function(...)
     spawn(BulletTracer)
     spawn(ImpactPoint)
     return oldfire(...)
