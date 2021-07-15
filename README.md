@@ -13,7 +13,10 @@ https://pastebin.com/raw/eGiC2jPg
 # Aimblox  
 Updated July 15, 2021  
 v1  
-aimblox gui
+aimblox gui  
+```
+loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/Aimblox.lua"))()
+```  
   
 # Murder Mystery 2 Utilities  
 Updated April 10, 2021  
