@@ -1493,6 +1493,7 @@ function GunEngine(func)
     end
 end
 
+local oldfire
 oldfire = hookfunction(GunEngine("_FireInternal"),function(...)
     spawn(BulletTracer)
     spawn(ImpactPoint)
