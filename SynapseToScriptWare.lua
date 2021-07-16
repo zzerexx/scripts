@@ -100,6 +100,7 @@ getgenv().syn = {
 	['cache_invalidate'] = cache.invalidate,
 	['is_cached'] = cache.iscached,
 	['set_thread_identity'] = setthreadidentity,
+	['get_thread_identity'] = getthreadidentity,
 	['write_clipboard'] = setclipboard,
 	['queue_on_teleport'] = queue_on_teleport,
 	['protect_gui'] = function(obj)
