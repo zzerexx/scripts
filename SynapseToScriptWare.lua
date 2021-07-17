@@ -166,4 +166,3 @@ getgenv().syn = {
 	--['create_secure_function'] = nil,
 	--['run_secure_function'] = nil,
 }
-warn("Synapse To Script-Ware has loaded!")
