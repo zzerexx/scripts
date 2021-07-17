@@ -1,1 +1,1 @@
-game.Players.LocalPlayer:Kick("\n\nAIMBLOX GUI\nSCRIPT IS DETECTED DO NOT USE\n")
+game.Players.LocalPlayer:Kick("\n\naimblox gui\nScript is currently detected, please wait for an update.\n")
