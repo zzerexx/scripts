@@ -45,9 +45,9 @@ Gun Rotation - Changes your weapon's rotation
 Custom Mods - Apply any weapon mod with any value  
   
 ### Stages  
-Aimbot Targets - Moves your mouse to the targets  
-Strength - How strong the aimbot is  
-Require ADS - Determines whether it requires ADS to aimbot  
+Aim Assist - Moves your mouse to the targets  
+Strength - How strong the aim assist is  
+Require ADS - Determines whether it requires ADS to use aim assist  
   
 ### Player  
 WalkSpeed - Changes your character's movement speed  
