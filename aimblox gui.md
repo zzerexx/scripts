@@ -44,6 +44,11 @@ Firing Mode - Changes your weapon's firing mode
 Gun Rotation - Changes your weapon's rotation  
 Custom Mods - Apply any weapon mod with any value  
   
+### Stages  
+Aimbot Targets - Moves your mouse to the targets  
+Strength - How strong the aimbot is  
+Require ADS - Determines whether it requires ADS to aimbot  
+  
 ### Player  
 WalkSpeed - Changes your character's movement speed  
 Infinite Jump - Allows you to jump infinitely  
@@ -63,6 +68,7 @@ Teleport to Lobby - Teleports to the lobby
 Teleport to Competitive - Teleports to the competitive mode  
 Redeem All Codes - Redeems all available codes  
 Rejoin Game - Rejoins the current server  
+Sound Replication - Determines whether sound will replicate to the server  
 Bullet Tracers - Shows bullet trajectory  
 Bullet Tracer Transparency - The bullet tracer transparency  
 Bullet Tracer Duration - How long the bullet tracer lasts  
@@ -83,6 +89,7 @@ Arm Reflectance - Changes your arms' reflectance
 Arm Color - Changes your arms' color  
 Rainbow Arms - Makes your arms cycle through colors  
 Hide Gloves - Determines whether your gloves are visible or not  
+Join Team - Joins the selected team  
 Skybox - Changes the skybox    
   
 ### Settings  
@@ -90,10 +97,10 @@ Auto Save - Automatically saves your settings
 Auto Save Intervals - Changes how often auto save will save  
 Last Save - Shows the last time you saved your settings  
 Delete Save - Deletes your save file  
+Safe Mode - Checks if Aimblox has updated before loading Aimblox Gui. Hopefully this will prevent any newly-added detections  
 UI Style - Changes the UI style (1-3)  
 UI Theme - Changes the UI theme  
-Reload Script - Reloads aimblox gui  
----  
+
 ## Required Functions  
 Your exploit must have the following functions to run aimblox gui.  
 - getgenv  
@@ -107,7 +114,7 @@ Your exploit must have the following functions to run aimblox gui.
 - hookfunction  
 - hookmetamethod  
 - Drawing.new  
----  
+
 ## Error Codes  
 Sometimes aimblox gui will error, a message box should appear with an error message and code.  
   
