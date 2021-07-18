@@ -12,9 +12,7 @@ https://pastebin.com/raw/eGiC2jPg
 
 # Aimblox  
 Updated July 17, 2021  
-v1  
-aimblox gui  
-UNPATCHED  
+v2  
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/Aimblox.lua"))()
 ```  
