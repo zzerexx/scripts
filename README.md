@@ -10,12 +10,19 @@ executing multiple times will not cause fps drops
 https://pastebin.com/raw/eGiC2jPg
 ``` 
 
-# Aimblox  
+# Aimblox Gui  
 Updated July 17, 2021  
 v2  
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/Aimblox.lua"))()
 ```  
+### v2  
+- [NEW] Sound Replication
+- [NEW] Safe Mode
+- [NEW] Stages Page | stuff related to the stages area
+- RPM and FiringMode should now re-apply after you respawn
+- Bullet Tracers and Impact Points should be working now
+- aimblox gui will now be obfuscated since aimblox devs are trying to patch it
   
 # Murder Mystery 2 Utilities  
 Updated April 10, 2021  
