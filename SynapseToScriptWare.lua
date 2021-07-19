@@ -1,19 +1,16 @@
 getgenv().protected = {}
-local mt = getrawmetatable(game)
-local oldnc = mt.__namecall
-setreadonly(mt,false)
-mt.__namecall = newcclosure(function(self,...) -- protect_gui thing
-	local args = {...}
-	if self == game and getnamecallmethod() == "FindFirstChild" and args[2] == true then
-		for i,v in next, getgenv().protected do
-			if args[1] == v.Name then
-				return false
-			end
-		end
-	end
-	return oldnc(self,...)
+local oldnc
+oldnc = hookmetamethod(game,"__namecall",function(...) -- protect_gui thing
+    local args = {...}
+    if args[1] == game and getnamecallmethod() == "FindFirstChild" and args[3] == true then
+        for i,v in next, getgenv().protected do
+            if args[2] == v.Name then
+                return false
+            end
+        end
+    end
+    return oldnc(...)
 end)
-setreadonly(mt,true)
 
 local functions = {
 	['syn_websocket_connect'] = WebSocket.connect,
