@@ -1,13 +1,13 @@
-getgenv().protected = {}
+if getgenv().SYNTOSW_LOADED then return end
+local protected = {}
+local consolecolor = "white"
 local oldnc
 oldnc = hookmetamethod(game,"__namecall",function(...) -- protect_gui thing
     local args = {...}
     if args[1] == game and getnamecallmethod() == "FindFirstChild" and args[3] == true then
-        for i,v in next, getgenv().protected do
-            if args[2] == v.Name then
-                return false
-            end
-        end
+		if table.find(protected,args[2]) then
+			return false
+		end
     end
     return oldnc(...)
 end)
@@ -69,6 +69,7 @@ local functions = {
 	['syn_getloadedmodules'] = getloadedmodules,
 	['syn_getcallingscript'] = getcallingscript,
 	['syn_isactive'] = isrbxactive,
+	['get_calling_script'] = getcallingscript,
 	['is_synapse_function'] = isourclosure,
 
 	['iswindowactive'] = isrbxactive,
@@ -81,11 +82,42 @@ local functions = {
 	--['readbinarystring'] = nil,
 	--['isuntouched'] = nil,
 	--['setuntouched'] = nil,
-	['get_calling_script'] = getcallingscript,
 	--['clonefunction'] = nil,
 	['getpcdprop'] = getpcd,
 	--['setupvaluename'] = nil,
-
+	['rconsoleprint'] = function(msg)
+		consolecreate()
+		if string.find(msg,"@@") then
+			consolecolor = msg:gsub("@@",""):lower()
+		else
+			consoleprint(msg,consolecolor)
+		end
+	end,
+	['rconsoleinfo'] = function(msg)
+		consolecreate()
+		consoleprint("\n[","white")
+		consoleprint("INFO","cyan")
+		consoleprint("] ","white")
+		consoleprint(msg,consolecolor)
+	end,
+	['rconsolewarn'] = function(msg)
+		consolecreate()
+		consoleprint("\n[","white")
+		consoleprint("WARNING","yellow")
+		consoleprint("] ","white")
+		consoleprint(msg,consolecolor)
+	end,
+	['rconsoleerr'] = function(msg)
+		consolecreate()
+		consoleprint("\n[","white")
+		consoleprint("ERROR","red")
+		consoleprint("] ","white")
+		consoleprint(msg,consolecolor)
+	end,
+	['rconsolename'] = function(title)
+		consolecreate()
+		consolesettitle(title)
+	end,
 }
 
 for i,v in next, functions do
@@ -102,31 +134,31 @@ getgenv().syn = {
 	['queue_on_teleport'] = queue_on_teleport,
 	['protect_gui'] = function(obj)
 		if typeof(obj) ~= "Instance" then
-        		error("Attempted to protect a "..typeof(obj))
-    		end
-		table.insert(getgenv().protected,#getgenv().protected+1,obj)
-    		for i,v in next, obj:GetDescendants() do
-        		table.insert(getgenv().protected,#getgenv().protected+1,v)
-    		end
+        	error("Attempted to protect a "..typeof(obj))
+    	end
+		table.insert(protected,obj)
+    	for i,v in next, obj:GetDescendants() do
+        	table.insert(protected,v)
+    	end
 		local c
 		c = obj.DescendantAdded:Connect(function(d)
-        		if table.find(getgenv().protected,obj) then
-            			table.insert(getgenv().protected,#getgenv().protected+1,d)
+			if table.find(protected,obj) then
+				table.insert(protected,d)
 			else
 				c:Disconnect()
-        		end
-    		end)
+			end
+		end)
 	end,
 	['unprotect_gui'] = function(obj)
 		if typeof(obj) ~= "Instance" then
-        		error("Attempted to unprotect a "..typeof(obj))
-    		end
-		table.remove(getgenv().protected,table.find(getgenv().protected,obj))
-    		for i,v in next, obj:GetDescendants() do
-        		if table.find(getgenv().protected,v) then
-            			table.remove(getgenv().protected,table.find(getgenv().protected,v))
-        		end
-    		end
+        	error("Attempted to unprotect a "..typeof(obj))
+    	end
+		table.remove(protected,table.find(protected,obj))
+		for i,v in next, obj:GetDescendants() do
+			if table.find(protected,v) then
+				table.remove(protected,table.find(protected,v))
+			end
+		end
 	end,
 	['is_beta'] = function()
 		return false
@@ -159,7 +191,11 @@ getgenv().syn = {
 	['websocket'] = {
 		['connect'] = WebSocket.connect
 	},
-	--['secure_call'] = nil,
+	--['secure_call'] = function(func,script,...)
+    --    
+    --end,
 	--['create_secure_function'] = nil,
 	--['run_secure_function'] = nil,
 }
+
+getgenv().SYNTOSW_LOADED = true
