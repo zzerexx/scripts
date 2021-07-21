@@ -118,6 +118,7 @@ local functions = {
 		consolecreate()
 		consolesettitle(title)
 	end,
+	['printconsole'] = output,
 }
 
 for i,v in next, functions do
