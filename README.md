@@ -168,6 +168,13 @@ sethiddenprop
 getlocals
 get_calling_script
 getpcdprop
+
+rconsoleprint
+rconsoleinfo
+rconsolewarn
+rconsoleerr
+rconsolename
+printconsole
 ```  
   
 # Counter Blox Spectator Viewer  
