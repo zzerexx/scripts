@@ -20,8 +20,8 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/
 - [NEW] Sound Replication
 - [NEW] Safe Mode
 - [NEW] Stages Page | stuff related to the stages area
-- RPM and FiringMode should now re-apply after you respawn
-- Bullet Tracers and Impact Points should be working now
+- RPM and FiringMode should now re-apply after you respawn (this will cause lag spikes when you respawn unfortunately)
+- Bullet Tracers and Impact Points should be working now (doesnt work after obfuscation ???)
 - aimblox gui will now be obfuscated since aimblox devs are trying to patch it
   
 # Murder Mystery 2 Utilities  
