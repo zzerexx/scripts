@@ -1,4 +1,4 @@
--- yo
+-- DO NOT USE!! YOU WILL GET BANNED!
 if game.PlaceId ~= 6808489605 then
     return
 end
