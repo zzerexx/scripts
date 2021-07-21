@@ -79,8 +79,8 @@ works the same as the developer console
 F9 to toggle  
 
 # Synapse to Script-Ware  
-Updated June 9, 2021  
-Allows you to use Synapse exclusive functions with Script-Ware v2  
+Updated July 20, 2021  
+Allows you to use Synapse functions on Script-Ware!  
   
 **Loader**  
 ```lua
