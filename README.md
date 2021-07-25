@@ -5,24 +5,17 @@ my cool scripts
 Updated June 4, 2021  
 v1.2.1  
 Create your own custom crosshair using the Drawing Library  
-executing multiple times will not cause fps drops  
 ```
 https://pastebin.com/raw/eGiC2jPg
 ``` 
 
 # Aimblox Gui  
-Updated July 17, 2021  
+Updated July 24, 2021  
 v2  
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/Aimblox.lua"))()
 ```  
-### v2  
-- [NEW] Sound Replication
-- [NEW] Safe Mode
-- [NEW] Stages Page | stuff related to the stages area
-- RPM and FiringMode should now re-apply after you respawn (this will cause lag spikes when you respawn unfortunately)
-- Bullet Tracers and Impact Points should be working now (doesnt work after obfuscation ???)
-- aimblox gui will now be obfuscated since aimblox devs are trying to patch it
+NOTE: Silent Aim is PATCHED in both Competitive and Lobby. Everything else should be working.  
   
 # Murder Mystery 2 Utilities  
 Updated April 10, 2021  
