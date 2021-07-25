@@ -59,6 +59,10 @@ ui lib made by twink marie
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua"))()
 ```  
   
+# More Color3  
+Updated July 25, 2021  
+Provides more Color3 functions.  
+  
 # Aimblox Silent Aim (OUTDATED)  
 Updated May 26, 2021  
 v1.0.0  
