@@ -2,6 +2,7 @@
   
 ## Features  
 ### Silent Aim  
+### SILENT AIM IS PATCHED  
 Enabled - Enables/Disables Silent Aim  
 Target Type - The targeting method  
 Target Part - The part that silent aim will hit  
