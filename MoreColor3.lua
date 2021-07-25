@@ -8,6 +8,7 @@ end
 function Color3.toRGB(c)
     return math.floor(c.R * 255), math.floor(c.G * 255), math.floor(c.B * 255)
 end
+getgenv().COLOR3LOADED = true
 
 --[[
     Value Tables
