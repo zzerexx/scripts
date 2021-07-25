@@ -358,7 +358,7 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
     end
 end)
 game:GetService("UserInputService").InputBegan:Connect(function(i,gp)
-    if not gp and i.KeyCode == ss.ToggleKey then
+    if not gp and i.KeyCode == (ss.ToggleKey or Enum.KeyCode[ss.ToggleKey]) then
         getgenv().UNIVERSALESP_VISIBLE = not getgenv().UNIVERSALESP_VISIBLE
     end
 end)
