@@ -1,22 +1,21 @@
 # Aimblox Gui  
   
 ## Features  
-### Silent Aim  
-### SILENT AIM IS PATCHED  
-Enabled - Enables/Disables Silent Aim  
+### Aimbot  
+Enabled - Enables/Disables Aimbot  
 Target Type - The targeting method  
-Target Part - The part that silent aim will hit  
-Visible Check - Checks for player visibility    
-Hit Chance - How often silent aim will hit players  
+Target Part - The part that aimbot will aim at  
+Visible Check - Checks for player visibility  
+Require ADS - Determines whether it requires ADS to use aimbot  
 Fov - The radius of the fov circle  
 Fov Sides - The number of sides the fov circle has  
-Use Fov Circle - Limits the silent aim to only hit in the fov circle  
+Use Fov Circle - Limits aimbot to only aim in the fov circle  
 Dynamic Fov - Changes the fov size based on your camera's field of view  
 Fov Visible - The fov circle visibility  
 Fov Transparency - The fov circle transparency  
 Fov Color - The fov circle color  
 Rainbow Fov - Makes the fov circle cycle through colors  
-Whitelist Players - Silent aim will ignore players that are in this list  
+Whitelist Players - Aimbot will ignore players that are in this list  
   
 ### ESP  
 Boxes - Displays a box around the player  
@@ -38,7 +37,6 @@ No Spread - Removes bullet spread
 No Gun Bob - Removes gun bob  
 Instant Equip - Allows you to equip your weapon without a delay  
 Instant Reload - Allows you to reload your weapon without a delay  
-Instant Kill - Kills players with 1 shot (Silent Aim must be enabled)  
 Bullet Speed - Determines how fast the bullet travels  
 Fire Rate - Determines how fast your weapon shoots  
 Firing Mode - Changes your weapon's firing mode  
@@ -121,7 +119,7 @@ Sometimes aimblox gui will error, a message box should appear with an error mess
   
 ### 0  
 "Failed to load save file"  
-Your save file is probably messed up, please delete "aimbloxsettings.json" and try again.  
+Your save file is probably messed up or outdated. Please delete "aimbloxsettings.json", rejoin, and try again.  
   
 ### 1  
 "Universal ESP failed to load"  
@@ -133,7 +131,7 @@ This means that Universal ESP errored, or Github is down.
 This means that one of the pages has an error, please report this to zzerexx#3970.  
   
 ### 8  
-"Failed to hook _FireInternal function"  
+"Failed to hook Fire function"  
 Make sure your exploit has "hookfunction"  
 
 ### 9  
