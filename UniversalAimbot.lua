@@ -3,7 +3,7 @@ if not getgenv().AimbotSettings then
         Aimbot = {
             TargetPart = "Head",
             VisibleCheck = true,
-            Use_mousemoverel = true,
+            Use_mousemoverel = false,
             TeamCheck = true, -- Press ] to toggle
         },
         FovCircle = {
