@@ -15,7 +15,6 @@ v2
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/Aimblox.lua"))()
 ```  
-NOTE: Silent Aim is PATCHED in both Competitive and Lobby. Everything else should be working.  
   
 # Murder Mystery 2 Utilities  
 Updated April 10, 2021  
@@ -57,6 +56,13 @@ universal esp but with a ui
 ui lib made by twink marie  
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua"))()
+```  
+  
+# Universal Aimbot  
+Updated July 27, 2021  
+v1.0.0  
+```
+https://pastebin.com/eGiC2jPg
 ```  
   
 # More Color3  
