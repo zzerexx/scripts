@@ -1,6 +1,7 @@
 if getgenv().SYNTOSW_LOADED then return end
 local protected = {}
 local consolecolor = "white"
+local newline = false
 local oldnc
 oldnc = hookmetamethod(game,"__namecall",function(...) -- protect_gui thing
     local args = {...}
@@ -89,9 +90,15 @@ local functions = {
 		consolecreate()
 		if string.find(msg,"@@") then
 			consolecolor = msg:gsub("@@",""):lower()
+			consolecolor = consolecolor:gsub("brown","white"):gsub("light_gray","white"):gsub("dark_gray","white"):gsub("light_blue","blue"):gsub("light_green","green"):gsub("light_cyan","cyan"):gsub("light_red","red"):gsub("light_magenta","magenta")
 		else
-			consoleprint(msg,consolecolor)
+			if newline then
+				consoleprint("\n"..msg,consolecolor)
+			else
+				consoleprint(msg,consolecolor)
+			end
 		end
+		newline = false
 	end,
 	['rconsoleinfo'] = function(msg)
 		consolecreate()
@@ -99,6 +106,7 @@ local functions = {
 		consoleprint("INFO","cyan")
 		consoleprint("] ","white")
 		consoleprint(msg,consolecolor)
+		newline = true
 	end,
 	['rconsolewarn'] = function(msg)
 		consolecreate()
@@ -106,6 +114,7 @@ local functions = {
 		consoleprint("WARNING","yellow")
 		consoleprint("] ","white")
 		consoleprint(msg,consolecolor)
+		newline = true
 	end,
 	['rconsoleerr'] = function(msg)
 		consolecreate()
@@ -113,12 +122,14 @@ local functions = {
 		consoleprint("ERROR","red")
 		consoleprint("] ","white")
 		consoleprint(msg,consolecolor)
+		newline = true
 	end,
 	['rconsolename'] = function(title)
 		consolecreate()
 		consolesettitle(title)
 	end,
 	['printconsole'] = output,
+	['rconsoleclose'] = function() return "lol" end
 }
 
 for i,v in next, functions do
