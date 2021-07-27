@@ -1,4 +1,52 @@
--- Universal Esp by zzerexx#3970
+if not getgenv().EspSettings then
+	getgenv().EspSettings = {
+	    TeamCheck = false,
+	    ToggleKey = Enum.KeyCode.RightAlt,
+	    AntiDetection = true,
+	    Boxes = {
+		Enabled = true,
+		Transparency = 0.7,
+		Color = Color3.fromRGB(255,255,255),
+		UseTeamColor = true,
+	    },
+	    Tracers = {
+		Enabled = true,
+		Transparency = 0.7,
+		Color = Color3.fromRGB(255,255,255),
+		UseTeamColor = true,
+		Origin = "Top", -- "Top" or "Center" or "Bottom" or "Mouse"
+		Thickness = 1
+	    },
+	    Names = {
+		Enabled = true,
+		Transparency = 0.7,
+		Color = Color3.fromRGB(255,255,255),
+		UseTeamColor = true,
+		Font = Drawing.Fonts.UI, -- UI or System or Plex or Monospace
+		Size = 18,
+		Outline = true,
+		OutlineColor = Color3.fromRGB(0,0,0),
+		ShowDistance = false,
+		ShowHealth = false,
+		UseDisplayName = false,
+	    },
+	    Skeletons = {
+		Enabled = true,
+		Transparency = 0.7,
+		Color = Color3.fromRGB(255,255,255),
+		UseTeamColor = true,
+		Thickness = 1
+	    },
+	    LookTracers = {
+		Enabled = true,
+		Transparency = 0.7,
+		Color = Color3.fromRGB(255,255,255),
+		UseTeamColor = true,
+		IgnoreWater = true,
+		Thickness = 1
+	    }
+	} -- v1.4.0
+end
 if getgenv().EspSettings and getgenv().EspSettings.AntiDetection then
 	for i,v in next, getconnections(game:GetService("ScriptContext").Error) do
 		v:Disable()
