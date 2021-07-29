@@ -62,7 +62,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/
 Updated July 27, 2021  
 v1.0.0  
 ```
-https://pastebin.com/raw/eGiC2jPg
+https://pastebin.com/raw/nwqE7v07
 ```  
   
 # More Color3  
