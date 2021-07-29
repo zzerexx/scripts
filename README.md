@@ -77,8 +77,7 @@ basic silent aim
 # Custom Output  
 Updated June 9, 2021  
 v1.1.0  
-basically just the developer console since the roblox one is broken lol  
-works the same as the developer console  
+basically just the developer console  
 F9 to toggle  
 
 # Synapse to Script-Ware  
