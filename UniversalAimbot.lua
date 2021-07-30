@@ -3,8 +3,11 @@ if not getgenv().AimbotSettings then
         Aimbot = {
             TargetPart = "Head",
             VisibleCheck = true,
-            Use_mousemoverel = false,
+            Use_mousemoverel = true,
             TeamCheck = true, -- Press ] to toggle
+            Keybind = Enum.UserInputType.MouseButton2, -- Must be a UserInputType or KeyCode
+            AimType = "Hold", -- "Hold" or "Toggle"
+            AlwaysActive = false,
         },
         FovCircle = {
             Enabled = true,
@@ -121,8 +124,12 @@ UIS.InputBegan:Connect(function(i,gp)
     if gp then
         return
     end
-    if i.UserInputType == Enum.UserInputType.MouseButton2 or i.KeyCode == Enum.KeyCode.Q then
-        ads = true
+    if i.UserInputType == ss.Aimbot.Keybind or i.KeyCode == ss.Aimbot.Keybind then
+        if ss.Aimbot.AimType == "Toggle" then
+            ads = not ads
+        else
+            ads = true
+        end
     elseif i.KeyCode == Enum.KeyCode.RightBracket then
         ss.TeamCheck = not ss.TeamCheck
     end
@@ -131,7 +138,7 @@ UIS.InputEnded:Connect(function(i,gp)
     if gp then
         return
     end
-    if i.UserInputType == Enum.UserInputType.MouseButton2 or i.KeyCode == Enum.KeyCode.Q then
+    if (i.UserInputType == ss.Aimbot.Keybind or i.KeyCode == ss.Aimbot.Keybind) and ss.Aimbot.AimType == "Hold" then
         ads = false
     end
 end)
@@ -160,7 +167,7 @@ getgenv().AIMBOT_RS = RunService.RenderStepped:Connect(function()
     else
         fov.Transparency = 0
     end
-    if ads then
+    if ads or ss.Aimbot.AlwaysActive then
         local plr = ClosestPlayer()
         if plr ~= nil then
             if IsVisible(plr) and InFov(plr) and not IsWhitelisted(plr) and plr.Character:FindFirstChild(ss.Aimbot.TargetPart) then
