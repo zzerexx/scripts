@@ -19,6 +19,12 @@ if not getgenv().AimbotSettings then
     }
 end
 
+if game.GameId == (111958650 or 115797356 or 147332621) then -- arsenal, counter blox, typical colors 2
+	getgenv().AimbotSettings.Ignore = workspace.Ray_Ignore
+elseif game.GameId == 833423526 then -- strucid
+	getgenv().AimbotSettings.Ignore = workspace.IgnoreThese
+end
+
 if typeof(getgenv().AIMBOT_FOV) == ("userdata" or "table") then
     getgenv().AIMBOT_FOV:Remove()
     getgenv().AIMBOT_FOV = nil
