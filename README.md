@@ -59,11 +59,17 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/
 ```  
   
 # Universal Aimbot  
-Updated July 27, 2021  
-v1.0.0  
+Updated July 30, 2021  
+v1.1.0  
 ```
 https://pastebin.com/raw/nwqE7v07
 ```  
+  
+## Update v1.1.0  
+Added Keybind; This will be the button that triggers the aimbot  
+Added AimType  
+Added AlwaysActive; Aimbot will always be active  
+Added preset Raycast Ignores. Supports Arsenal, Counter Blox, Typical Colors 2, and Strucid  
   
 # More Color3  
 Updated July 25, 2021  
