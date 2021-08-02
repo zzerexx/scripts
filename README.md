@@ -25,8 +25,8 @@ https://pastebin.com/raw/FwYmgtCX
 ```  
    
 # Universal Esp  
-Updated June 23, 2021  
-v1.4.0  
+Updated August 2, 2021  
+v1.4.1  
 - Box Esp  
 - Tracers  
 - Name Esp (with Distance and Health and Display Name) 
@@ -42,13 +42,8 @@ https://pastebin.com/raw/5zw0rLH9
 You are allowed to use this ESP in your script as long as you credit me (zzerexx or zzerexx#3970)
 ```  
   
-## Update v1.4.0  
-Added Look Tracers  
-Draws a line that shows where the player is looking  
-Similar to the lines you see while observing in csgo/valorant  
-Notes:
-- This is based on the player's head cframe, so its not actually showing their cursor position  
-- Both the head and look position must be on-screen to make the tracer visible (might change this in the future)  
+## Update v1.4.1  
+Minor script changes  
   
 # Universal Esp with UI  
 Updated June 23, 2021  
