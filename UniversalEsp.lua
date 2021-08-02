@@ -4,46 +4,46 @@ if not getgenv().EspSettings then
 	    ToggleKey = Enum.KeyCode.RightAlt,
 	    AntiDetection = true,
 	    Boxes = {
-		Enabled = true,
-		Transparency = 0.7,
-		Color = Color3.fromRGB(255,255,255),
-		UseTeamColor = true,
+            Enabled = true,
+            Transparency = 0.7,
+            Color = Color3.fromRGB(255,255,255),
+            UseTeamColor = true,
 	    },
 	    Tracers = {
-		Enabled = true,
-		Transparency = 0.7,
-		Color = Color3.fromRGB(255,255,255),
-		UseTeamColor = true,
-		Origin = "Top", -- "Top" or "Center" or "Bottom" or "Mouse"
-		Thickness = 1
+            Enabled = true,
+            Transparency = 0.7,
+            Color = Color3.fromRGB(255,255,255),
+            UseTeamColor = true,
+            Origin = "Top", -- "Top" or "Center" or "Bottom" or "Mouse"
+            Thickness = 1
 	    },
 	    Names = {
-		Enabled = true,
-		Transparency = 0.7,
-		Color = Color3.fromRGB(255,255,255),
-		UseTeamColor = true,
-		Font = Drawing.Fonts.UI, -- UI or System or Plex or Monospace
-		Size = 18,
-		Outline = true,
-		OutlineColor = Color3.fromRGB(0,0,0),
-		ShowDistance = false,
-		ShowHealth = false,
-		UseDisplayName = false,
+            Enabled = true,
+            Transparency = 0.7,
+            Color = Color3.fromRGB(255,255,255),
+            UseTeamColor = true,
+            Font = Drawing.Fonts.UI, -- UI or System or Plex or Monospace
+            Size = 18,
+            Outline = true,
+            OutlineColor = Color3.fromRGB(0,0,0),
+            ShowDistance = false,
+            ShowHealth = false,
+            UseDisplayName = false,
 	    },
 	    Skeletons = {
-		Enabled = true,
-		Transparency = 0.7,
-		Color = Color3.fromRGB(255,255,255),
-		UseTeamColor = true,
-		Thickness = 1
+            Enabled = true,
+            Transparency = 0.7,
+            Color = Color3.fromRGB(255,255,255),
+            UseTeamColor = true,
+            Thickness = 1
 	    },
 	    LookTracers = {
-		Enabled = true,
-		Transparency = 0.7,
-		Color = Color3.fromRGB(255,255,255),
-		UseTeamColor = true,
-		IgnoreWater = true,
-		Thickness = 1
+            Enabled = true,
+            Transparency = 0.7,
+            Color = Color3.fromRGB(255,255,255),
+            UseTeamColor = true,
+            IgnoreWater = true,
+            Thickness = 1
 	    }
 	} -- v1.4.0
 end
@@ -86,7 +86,20 @@ local RunService = game:GetService("RunService")
 local ss = getgenv().EspSettings
 getgenv().UNIVERSALESP_OBJECTS = {}
 getgenv().UNIVERSALESP_VISIBLE = true
+local bodyparts = {"Head","UpperTorso","LowerTorso","LeftUpperArm","LeftLowerArm","LeftHand","RightUpperArm","RightLowerArm","RightHand","LeftUpperLeg","LeftLowerLeg","LeftFoot","RightUpperLeg","RightLowerLeg","RightFoot","Torso","Left Arm","Right Arm","Left Leg","Right Leg"}
 
+function IsAlive(plr)
+	if plr and plr ~= player and plr.Character and plr.Character:FindFirstChild("Head") and plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChildOfClass("Humanoid") and plr.Character:FindFirstChildOfClass("Humanoid").Health > 0 then
+		return true
+	end
+	return false
+end
+function RigType(plr)
+	if plr.Character:FindFirstChild("UpperTorso") and plr.Character:FindFirstChild("LowerTorso") and plr.Character:FindFirstChild("LeftUpperArm") and plr.Character:FindFirstChild("LeftLowerArm") and plr.Character:FindFirstChild("LeftHand") and plr.Character:FindFirstChild("RightUpperArm") and plr.Character:FindFirstChild("RightLowerArm") and plr.Character:FindFirstChild("RightHand") and plr.Character:FindFirstChild("LeftUpperLeg") and plr.Character:FindFirstChild("LeftLowerLeg") and plr.Character:FindFirstChild("LeftFoot") and plr.Character:FindFirstChild("RightUpperLeg") and plr.Character:FindFirstChild("RightLowerLeg") and plr.Character:FindFirstChild("RightFoot") then
+		return "R15"
+	end
+	return "R6"
+end
 function Box(plr)
     ss = getgenv().EspSettings
     local box = Drawing.new("Square")
@@ -97,7 +110,6 @@ function Box(plr)
     box.Filled = false
     table.insert(getgenv().UNIVERSALESP_OBJECTS,{Object = box,Type = "Box",Player = plr})
 end
-
 function Tracer(plr)
     ss = getgenv().EspSettings
     local tracer = Drawing.new("Line")
@@ -139,7 +151,13 @@ function Skeleton(plr)
         LeftFoot = Drawing.new("Line"),
         RightUpperLeg = Drawing.new("Line"),
         RightLowerLeg = Drawing.new("Line"),
-        RightFoot = Drawing.new("Line")
+        RightFoot = Drawing.new("Line"),
+
+		Torso = Drawing.new("Line"),
+		["Left Arm"] = Drawing.new("Line"),
+		["Right Arm"] = Drawing.new("Line"),
+		["Left Leg"] = Drawing.new("Line"),
+		["Right Leg"] = Drawing.new("Line")
     }
     for i,v in next, objects do
         v.Visible = false
@@ -166,7 +184,7 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
         local plr = v.Player
         if v.Type == "Box" then
             local box = v.Object
-            if getgenv().UNIVERSALESP_VISIBLE and ss.Boxes.Enabled and plr and plr ~= player and plr.Character and plr.Character:FindFirstChild("Head") and plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChildOfClass("Humanoid") and plr.Character:FindFirstChildOfClass("Humanoid").Health > 0 then
+            if getgenv().UNIVERSALESP_VISIBLE and ss.Boxes.Enabled and IsAlive(plr) then
                 local vector, inViewport = camera:WorldToViewportPoint(plr.Character.HumanoidRootPart.Position)
                 
                 local root = plr.Character.HumanoidRootPart
@@ -198,7 +216,7 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
             end
         elseif v.Type == "Tracer" then
             local tracer = v.Object
-            if getgenv().UNIVERSALESP_VISIBLE and ss.Tracers.Enabled and plr and plr ~= player and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChildOfClass("Humanoid") and plr.Character:FindFirstChildOfClass("Humanoid").Health > 0 then
+            if getgenv().UNIVERSALESP_VISIBLE and ss.Tracers.Enabled and IsAlive(plr) then
                 local vector, inViewport = camera:WorldToViewportPoint(plr.Character.HumanoidRootPart.Position)
                 
                 local top = Vector2.new(camera.ViewportSize.X / 2, 0)
@@ -240,7 +258,7 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
             end
         elseif v.Type == "Name" then
             local name = v.Object
-            if getgenv().UNIVERSALESP_VISIBLE and ss.Names.Enabled and plr and plr ~= player and plr.Character and plr.Character:FindFirstChild("Head") and plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChildOfClass("Humanoid") and plr.Character:FindFirstChildOfClass("Humanoid").Health > 0 then
+            if getgenv().UNIVERSALESP_VISIBLE and ss.Names.Enabled and IsAlive(plr) then
                 local vector, inViewport = camera:WorldToViewportPoint(plr.Character.Head.Position)
                 if inViewport then
                     name.Transparency = ss.Names.Transparency
@@ -286,9 +304,31 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
             end
         elseif v.Type == "Skeleton" then
             local skeleton = v.Object
-            if getgenv().UNIVERSALESP_VISIBLE and ss.Skeletons.Enabled and plr and plr ~= player and plr.Character and plr.Character:FindFirstChild("UpperTorso") and plr.Character:FindFirstChild("LowerTorso") and plr.Character:FindFirstChild("LeftUpperArm") and plr.Character:FindFirstChild("LeftLowerArm") and plr.Character:FindFirstChild("LeftHand") and plr.Character:FindFirstChild("RightUpperArm") and plr.Character:FindFirstChild("RightLowerArm") and plr.Character:FindFirstChild("RightHand") and plr.Character:FindFirstChild("LeftUpperLeg") and plr.Character:FindFirstChild("LeftLowerLeg") and plr.Character:FindFirstChild("LeftFoot") and plr.Character:FindFirstChild("RightUpperLeg") and plr.Character:FindFirstChild("RightLowerLeg") and plr.Character:FindFirstChild("RightFoot") and plr.Character:FindFirstChildOfClass("Humanoid") and plr.Character:FindFirstChildOfClass("Humanoid").Health > 0 then
-                local vector, inViewport = camera:WorldToViewportPoint(plr.Character.HumanoidRootPart.Position)
+            if getgenv().UNIVERSALESP_VISIBLE and ss.Skeletons.Enabled and IsAlive(plr) and RigType(plr) == "R15" then
+                local _, inViewport = camera:WorldToViewportPoint(plr.Character.HumanoidRootPart.Position)
                 if inViewport then
+					local From = {
+						['UpperTorso'] = "Head",
+						['LowerTorso'] = "UpperTorso",
+						['LeftUpperArm'] = "UpperTorso",
+						['RightUpperArm'] = "UpperTorso",
+						['LeftLowerArm'] = "LeftUpperArm",
+						['RightLowerArm'] = "RightUpperArm",
+						['LeftHand'] = "LeftLowerArm",
+						['RightHand'] = "RightLowerArm",
+						['LeftUpperLeg'] = "LowerTorso",
+						['RightUpperLeg'] = "LowerTorso",
+						['LeftLowerLeg'] = "LeftUpperLeg",
+						['RightLowerLeg'] = "RightUpperLeg",
+						['LeftFoot'] = "LeftLowerLeg",
+						['RightFoot'] = "RightLowerLeg",
+
+						['Torso'] = "Head",
+						['Left Arm'] = "Torso",
+						['Right Arm'] = "Torso",
+						['Left Leg'] = "Torso",
+						['Right Leg'] = "Torso",
+					}
                     for i2,v2 in next, skeleton do
                         v2.Visible = true
                         v2.Transparency = ss.Skeletons.Transparency
@@ -297,64 +337,15 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
                         if ss.TeamCheck and plr.Team == player.Team then
                             v2.Visible = false
                         end
+
+						if plr.Character:FindFirstChild(i2) then
+							local vector1 = camera:WorldToViewportPoint(plr.Character:FindFirstChild(From[i2]).Position)
+							v2.From = Vector2.new(vector1.X,vector1.Y)
+
+							local vector2 = camera:WorldToViewportPoint(plr.Character[i2].Position)
+							v2.To = Vector2.new(vector2.X,vector2.Y)
+						end
                     end
-                    local head = camera:WorldToViewportPoint(plr.Character.Head.Position) -- bruh
-                    local utorso = camera:WorldToViewportPoint(plr.Character.UpperTorso.Position)
-                    local ltorso = camera:WorldToViewportPoint(plr.Character.LowerTorso.Position)
-                    local luarm = camera:WorldToViewportPoint(plr.Character.LeftUpperArm.Position)
-                    local llarm = camera:WorldToViewportPoint(plr.Character.LeftLowerArm.Position)
-                    local lhand = camera:WorldToViewportPoint(plr.Character.LeftHand.Position)
-                    local ruarm = camera:WorldToViewportPoint(plr.Character.RightUpperArm.Position)
-                    local rlarm = camera:WorldToViewportPoint(plr.Character.RightLowerArm.Position)
-                    local rhand = camera:WorldToViewportPoint(plr.Character.RightHand.Position)
-                    local luleg = camera:WorldToViewportPoint(plr.Character.LeftUpperLeg.Position)
-                    local llleg = camera:WorldToViewportPoint(plr.Character.LeftLowerLeg.Position)
-                    local lfoot = camera:WorldToViewportPoint(plr.Character.LeftFoot.Position)
-                    local ruleg = camera:WorldToViewportPoint(plr.Character.RightUpperLeg.Position)
-                    local rlleg = camera:WorldToViewportPoint(plr.Character.RightLowerLeg.Position)
-                    local rfoot = camera:WorldToViewportPoint(plr.Character.RightFoot.Position)
-
-                    v.Object.UpperTorso.From = Vector2.new(head.X,head.Y)
-                    v.Object.UpperTorso.To = Vector2.new(utorso.X,utorso.Y)
-                        
-                    v.Object.LowerTorso.From = Vector2.new(utorso.X,utorso.Y)
-                    v.Object.LowerTorso.To = Vector2.new(ltorso.X,ltorso.Y)
-
-                    v.Object.LeftUpperArm.From = Vector2.new(utorso.X,utorso.Y)
-                    v.Object.LeftUpperArm.To = Vector2.new(luarm.X,luarm.Y)
-
-                    v.Object.LeftLowerArm.From = Vector2.new(luarm.X,luarm.Y)
-                    v.Object.LeftLowerArm.To = Vector2.new(llarm.X,llarm.Y)
-
-                    v.Object.LeftHand.From = Vector2.new(llarm.X,llarm.Y)
-                    v.Object.LeftHand.To = Vector2.new(lhand.X,lhand.Y)
-
-                    v.Object.RightUpperArm.From = Vector2.new(utorso.X,utorso.Y)
-                    v.Object.RightUpperArm.To = Vector2.new(ruarm.X,ruarm.Y)
-
-                    v.Object.RightLowerArm.From = Vector2.new(ruarm.X,ruarm.Y)
-                    v.Object.RightLowerArm.To = Vector2.new(rlarm.X,rlarm.Y)
-
-                    v.Object.RightHand.From = Vector2.new(rlarm.X,rlarm.Y)
-                    v.Object.RightHand.To = Vector2.new(rhand.X,rhand.Y)
-
-                    v.Object.LeftUpperLeg.From = Vector2.new(ltorso.X,ltorso.Y)
-                    v.Object.LeftUpperLeg.To = Vector2.new(luleg.X,luleg.Y)
-
-                    v.Object.LeftLowerLeg.From = Vector2.new(luleg.X,luleg.Y)
-                    v.Object.LeftLowerLeg.To = Vector2.new(llleg.X,llleg.Y)
-
-                    v.Object.LeftFoot.From = Vector2.new(llleg.X,llleg.Y)
-                    v.Object.LeftFoot.To = Vector2.new(lfoot.X,lfoot.Y)
-
-                    v.Object.RightUpperLeg.From = Vector2.new(ltorso.X,ltorso.Y)
-                    v.Object.RightUpperLeg.To = Vector2.new(ruleg.X,ruleg.Y)
-
-                    v.Object.RightLowerLeg.From = Vector2.new(ruleg.X,ruleg.Y)
-                    v.Object.RightLowerLeg.To = Vector2.new(rlleg.X,rlleg.Y)
-
-                    v.Object.RightFoot.From = Vector2.new(rlleg.X,rlleg.Y)
-                    v.Object.RightFoot.To = Vector2.new(rfoot.X,rfoot.Y)
                 else
                     for i2,v2 in next, skeleton do
                         v2.Visible = false
@@ -374,11 +365,14 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
             end
         elseif v.Type == "LookTracer" then
             local tracer = v.Object
-            if getgenv().UNIVERSALESP_VISIBLE and ss.LookTracers.Enabled and plr and plr ~= player and plr.Character and plr.Character:FindFirstChild("Head") and plr.Character:FindFirstChildOfClass("Humanoid") and plr.Character:FindFirstChildOfClass("Humanoid").Health > 0 then
+            if getgenv().UNIVERSALESP_VISIBLE and ss.LookTracers.Enabled and IsAlive(plr) then
                 local vector, inViewport = camera:WorldToViewportPoint(plr.Character.Head.Position)
-                local ray = Ray.new(plr.Character.Head.Position,plr.Character.Head.CFrame.LookVector * 1000)
-                local _, pos = workspace:FindPartOnRay(ray,plr.Character,true,ss.LookTracers.IgnoreWater)
-                local vector2, inViewport2 = camera:WorldToViewportPoint(pos)
+				local params = RaycastParams.new()
+				params.FilterDescendantsInstances = {plr.Character}
+				params.FilterType = Enum.RaycastFilterType.Blacklist
+				params.IgnoreWater = ss.LookTracers.IgnoreWater
+				local result = workspace:Raycast(plr.Character.Head.Position,plr.Character.Head.CFrame.LookVector * 500,params)
+                local vector2, inViewport2 = camera:WorldToViewportPoint(result.Position)
     
                 if inViewport and inViewport2 then
                     tracer.Transparency = ss.LookTracers.Transparency
