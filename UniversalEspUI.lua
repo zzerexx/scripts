@@ -1,5 +1,6 @@
 -- my universal esp script but with a ui
 -- ui lib made by twink marie
+return messagebox("Universal Esp","I haven't updated the UI version to 1.5.0 yet, so please use the non-UI version for now.",0x10)
 if not getgenv().EspSettings then
 	getgenv().EspSettings = {
 		TeamCheck = false,
