@@ -65,11 +65,11 @@ end
 if typeof(getgenv().UNIVERSALESP_OBJECTS) == "table" then
 	for i,v in next, getgenv().UNIVERSALESP_OBJECTS do
 		if typeof(v.Object) == "table" then
-			for i2,v2 in next, v.Object do
+			for _,v2 in next, v.Object do
 				v2:Remove()
 			end
 		else
-			v:Remove()
+			v.Object:Remove()
 		end
 		table.remove(getgenv().UNIVERSALESP_OBJECTS,i)
 	end
@@ -478,7 +478,7 @@ players.PlayerRemoving:Connect(function(plr)
 					v2:Remove()
 				end
 			else
-				v:Remove()
+				v.Object:Remove()
 			end
 			table.remove(getgenv().UNIVERSALESP_OBJECTS,i)
 		end
