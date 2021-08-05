@@ -442,6 +442,9 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 					bar.Visible = false
 					outline.Visible = false
 				end
+			else
+				bar.Visible = false
+				outline.Visible = false
 			end
 		end
 	end
@@ -471,7 +474,7 @@ players.PlayerRemoving:Connect(function(plr)
 	for i,v in next, getgenv().UNIVERSALESP_OBJECTS do
 		if v.Player == plr then
 			if typeof(v.Object) == "table" then
-				for i2,v2 in next, v.Object do
+				for _,v2 in next, v.Object do
 					v2:Remove()
 				end
 			else
