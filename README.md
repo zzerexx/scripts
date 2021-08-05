@@ -46,7 +46,6 @@ You are allowed to use this ESP in your script as long as you credit me (zzerexx
 ## Update v1.5.0  
 AntiDetection now only disables ScriptContext.Error  
 Added HealthBars; Visualizes the player's health with a bar  
-ik healthbars arent being removed correctly ill fix it later  
   
 # Universal Esp with UI  
 Updated June 23, 2021  
