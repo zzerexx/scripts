@@ -26,6 +26,8 @@ if game.GameId == (111958650 or 115797356 or 147332621) then -- arsenal, counter
 	getgenv().AimbotSettings.Ignore = workspace.Ray_Ignore
 elseif game.GameId == 833423526 then -- strucid
 	getgenv().AimbotSettings.Ignore = workspace.IgnoreThese
+elseif workspace:FindFirstChild("Ignore") then
+    getgenv().AimbotSettings.Ignore = workspace.Ignore
 end
 
 if typeof(getgenv().AIMBOT_FOV) == ("userdata" or "table") then
