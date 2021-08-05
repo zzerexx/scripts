@@ -45,12 +45,6 @@ if not getgenv().EspSettings then
             IgnoreWater = true,
             Thickness = 1
 	    },
-        HealthBars = {
-            Enabled = true,
-            Transparency = 0.7,
-            Color = Color3.fromRGB(0,255,0),
-            OutlineColor = Color3.fromRGB(0,0,0)
-        }
 	} -- v1.4.2
 end
 if getgenv().EspSettings and getgenv().EspSettings.AntiDetection then
@@ -173,23 +167,6 @@ function LookTracer(plr)
     tracer.Color = ss.LookTracers.Color
     tracer.Thickness = ss.LookTracers.Thickness
     table.insert(getgenv().UNIVERSALESP_OBJECTS,{Object = tracer,Type = "LookTracer",Player = plr})
-end
-function HealthBar(plr)
-    ss = getgenv().EspSettings
-    local objects = {
-        Bar = Drawing.new("Square"),
-        Outline = Drawing.new("Square")
-    }
-    for i,v in next, objects do
-        v.Visible = false
-        v.Transparency = ss.HealthBars.Transparency
-        v.Thickness = 1
-    end
-    objects.Bar.Color = ss.HealthBars.Color
-    objects.Bar.Filled = true
-    objects.Outline.Color = ss.HealthBars.OutlineColor
-    objects.Outline.Filled = false
-    table.insert(getgenv().UNIVERSALESP_OBJECTS,{Object = objects,Type = "HealthBar",Player = plr})
 end
 
 getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
@@ -407,33 +384,6 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
             else
                 tracer.Visible = false
             end
-        elseif v.Type == "HealthBar" then
-            local bar = v.Object.Bar
-            local outline = v.Object.Outline
-            if getgenv().UNIVERSALESP_VISIBLE and ss.HealthBars.Enabled and IsAlive(plr) then
-                local hrp, inViewport = camera:WorldToViewportPoint(plr.Character.HumanoidRootPart.Position)
-                local head = camera:WorldToViewportPoint(plr.Character.Head.Position + Vector3.new(0,0.5,0))
-                local leg = camera:WorldToViewportPoint(plr.Character.HumanoidRootPart.Position - Vector3.new(0,3,0))
-
-                if inViewport then
-                    bar.Color = ss.HealthBars.Color
-                    bar.Transparency = ss.HealthBars.Transparency
-                    bar.Size = Vector2.new(3, (head.Y - leg.Y) - 2)
-                    bar.Position = Vector2.new((hrp.X - bar.Size.X / 2) - 6, (hrp.Y - (bar.Size.Y / 2)) - 2)
-                    outline.Color = ss.HealthBars.OutlineColor
-                    outline.Transparency = ss.HealthBars.Transparency
-                    outline.Size = Vector2.new(5, (head.Y - leg.Y))
-                    outline.Position = Vector2.new((hrp.X - bar.Size.X / 2) - 7, (hrp.Y - (bar.Size.Y / 2)))
-
-                    if ss.TeamCheck and plr.Team == player.Team then
-                        bar.Visible = false
-                    else
-                        bar.Visible = true
-                    end
-                else
-                    bar.Visible = false
-                end
-            end
         end
     end
 end)
@@ -448,7 +398,6 @@ for i,v in next, players:GetPlayers() do
     Name(v)
     Skeleton(v)
     LookTracer(v)
-    HealthBar(v)
 end
 players.PlayerAdded:Connect(function(v)
     Box(v)
@@ -456,7 +405,6 @@ players.PlayerAdded:Connect(function(v)
     Name(v)
     Skeleton(v)
     LookTracer(v)
-    HealthBar(v)
 end)
 players.PlayerRemoving:Connect(function(plr)
     for i,v in next, getgenv().UNIVERSALESP_OBJECTS do
