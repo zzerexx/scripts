@@ -44,19 +44,19 @@ if not getgenv().EspSettings then
             UseTeamColor = true,
             IgnoreWater = true,
             Thickness = 1
-	    }
-	} -- v1.4.0
+	    },
+        HealthBars = {
+            Enabled = true,
+            Transparency = 0.7,
+            Color = Color3.fromRGB(0,255,0),
+            OutlineColor = Color3.fromRGB(0,0,0)
+        }
+	} -- v1.4.2
 end
 if getgenv().EspSettings and getgenv().EspSettings.AntiDetection then
 	for i,v in next, getconnections(game:GetService("ScriptContext").Error) do
 		v:Disable()
 	end
-	for i,v in next, getconnections(game.DescendantAdded) do -- for the ui version
-		v:Disable()
-	end
-	hookfunction((gcinfo or collectgarbage),function(...)
-		return math.random(150,300)
-	end)
 end
 if typeof(Drawing.new) ~= "function" then
     game:GetService("Players").LocalPlayer:Kick("\n\nUniversal Esp\nYour exploit does not have a Drawing Library!\n")
@@ -119,7 +119,6 @@ function Tracer(plr)
     tracer.Thickness = ss.Tracers.Thickness
     table.insert(getgenv().UNIVERSALESP_OBJECTS,{Object = tracer,Type = "Tracer",Player = plr})
 end
-
 function Name(plr)
     ss = getgenv().EspSettings
     local name = Drawing.new("Text")
@@ -134,7 +133,6 @@ function Name(plr)
     name.Font = ss.Names.Font
     table.insert(getgenv().UNIVERSALESP_OBJECTS,{Object = name,Type = "Name",Player = plr})
 end
-
 function Skeleton(plr)
     ss = getgenv().EspSettings
     local objects = {
@@ -167,7 +165,6 @@ function Skeleton(plr)
     end
     table.insert(getgenv().UNIVERSALESP_OBJECTS,{Object = objects,Type = "Skeleton",Player = plr})
 end
-
 function LookTracer(plr)
 	ss = getgenv().EspSettings
 	local tracer = Drawing.new("Line")
@@ -177,6 +174,23 @@ function LookTracer(plr)
     tracer.Thickness = ss.LookTracers.Thickness
     table.insert(getgenv().UNIVERSALESP_OBJECTS,{Object = tracer,Type = "LookTracer",Player = plr})
 end
+function HealthBar(plr)
+    ss = getgenv().EspSettings
+    local objects = {
+        Bar = Drawing.new("Square"),
+        Outline = Drawing.new("Square")
+    }
+    for i,v in next, objects do
+        v.Visible = false
+        v.Transparency = ss.HealthBars.Transparency
+        v.Thickness = 1
+    end
+    objects.Bar.Color = ss.HealthBars.Color
+    objects.Bar.Filled = true
+    objects.Outline.Color = ss.HealthBars.OutlineColor
+    objects.Outline.Filled = false
+    table.insert(getgenv().UNIVERSALESP_OBJECTS,{Object = objects,Type = "HealthBar",Player = plr})
+end
 
 getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
     for i,v in next, getgenv().UNIVERSALESP_OBJECTS do
@@ -185,18 +199,14 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
         if v.Type == "Box" then
             local box = v.Object
             if getgenv().UNIVERSALESP_VISIBLE and ss.Boxes.Enabled and IsAlive(plr) then
-                local vector, inViewport = camera:WorldToViewportPoint(plr.Character.HumanoidRootPart.Position)
-                
-                local root = plr.Character.HumanoidRootPart
-                local head = plr.Character.Head
-                local rootpos = camera:WorldToViewportPoint(root.Position)
-                local headpos = camera:WorldToViewportPoint(head.Position + Vector3.new(0,0.5,0))
-                local legpos = camera:WorldToViewportPoint(root.Position - Vector3.new(0,3,0))
+                local hrp, inViewport = camera:WorldToViewportPoint(plr.Character.HumanoidRootPart.Position)
+                local head = camera:WorldToViewportPoint(plr.Character.Head.Position + Vector3.new(0,0.5,0))
+                local leg = camera:WorldToViewportPoint(plr.Character.HumanoidRootPart.Position - Vector3.new(0,3,0))
 
                 if inViewport then
                     box.Transparency = ss.Boxes.Transparency
-                    box.Size = Vector2.new(1000 / rootpos.Z, headpos.Y - legpos.Y)
-                    box.Position = Vector2.new(rootpos.X - box.Size.X / 2, rootpos.Y - (box.Size.Y / 2))
+                    box.Size = Vector2.new(1000 / hrp.Z, head.Y - leg.Y)
+                    box.Position = Vector2.new(hrp.X - box.Size.X / 2, hrp.Y - (box.Size.Y / 2))
 
                     if ss.TeamCheck and plr.Team == player.Team then
                         box.Visible = false
@@ -372,29 +382,57 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 				params.FilterType = Enum.RaycastFilterType.Blacklist
 				params.IgnoreWater = ss.LookTracers.IgnoreWater
 				local result = workspace:Raycast(plr.Character.Head.Position,plr.Character.Head.CFrame.LookVector * 500,params)
-                local vector2, inViewport2 = camera:WorldToViewportPoint(result.Position)
-    
-                if inViewport and inViewport2 then
-                    tracer.Transparency = ss.LookTracers.Transparency
-                    tracer.Thickness = ss.LookTracers.Thickness
-                    tracer.From = Vector2.new(vector.X,vector.Y)
-                    tracer.To = Vector2.new(vector2.X,vector2.Y)
-    
-                    if ss.TeamCheck and plr.Team == player.Team then
-                        tracer.Visible = false
+                if result ~= nil then
+                    local vector2, inViewport2 = camera:WorldToViewportPoint(result.Position)
+                    if inViewport and inViewport2 then
+                        tracer.Transparency = ss.LookTracers.Transparency
+                        tracer.Thickness = ss.LookTracers.Thickness
+                        tracer.From = Vector2.new(vector.X,vector.Y)
+                        tracer.To = Vector2.new(vector2.X,vector2.Y)
+        
+                        if ss.TeamCheck and plr.Team == player.Team then
+                            tracer.Visible = false
+                        else
+                            tracer.Visible = true
+                        end
                     else
-                        tracer.Visible = true
+                        tracer.Visible = false
                     end
-                else
-                    tracer.Visible = false
-                end
-                if ss.LookTracers.UseTeamColor then
-                    tracer.Color = plr.TeamColor.Color
-                else
-                    tracer.Color = ss.LookTracers.Color
+                    if ss.LookTracers.UseTeamColor then
+                        tracer.Color = plr.TeamColor.Color
+                    else
+                        tracer.Color = ss.LookTracers.Color
+                    end
                 end
             else
                 tracer.Visible = false
+            end
+        elseif v.Type == "HealthBar" then
+            local bar = v.Object.Bar
+            local outline = v.Object.Outline
+            if getgenv().UNIVERSALESP_VISIBLE and ss.HealthBars.Enabled and IsAlive(plr) then
+                local hrp, inViewport = camera:WorldToViewportPoint(plr.Character.HumanoidRootPart.Position)
+                local head = camera:WorldToViewportPoint(plr.Character.Head.Position + Vector3.new(0,0.5,0))
+                local leg = camera:WorldToViewportPoint(plr.Character.HumanoidRootPart.Position - Vector3.new(0,3,0))
+
+                if inViewport then
+                    bar.Color = ss.HealthBars.Color
+                    bar.Transparency = ss.HealthBars.Transparency
+                    bar.Size = Vector2.new(3, (head.Y - leg.Y) - 2)
+                    bar.Position = Vector2.new((hrp.X - bar.Size.X / 2) - 6, (hrp.Y - (bar.Size.Y / 2)) - 2)
+                    outline.Color = ss.HealthBars.OutlineColor
+                    outline.Transparency = ss.HealthBars.Transparency
+                    outline.Size = Vector2.new(5, (head.Y - leg.Y))
+                    outline.Position = Vector2.new((hrp.X - bar.Size.X / 2) - 7, (hrp.Y - (bar.Size.Y / 2)))
+
+                    if ss.TeamCheck and plr.Team == player.Team then
+                        bar.Visible = false
+                    else
+                        bar.Visible = true
+                    end
+                else
+                    bar.Visible = false
+                end
             end
         end
     end
@@ -410,6 +448,7 @@ for i,v in next, players:GetPlayers() do
     Name(v)
     Skeleton(v)
     LookTracer(v)
+    HealthBar(v)
 end
 players.PlayerAdded:Connect(function(v)
     Box(v)
@@ -417,6 +456,7 @@ players.PlayerAdded:Connect(function(v)
     Name(v)
     Skeleton(v)
     LookTracer(v)
+    HealthBar(v)
 end)
 players.PlayerRemoving:Connect(function(plr)
     for i,v in next, getgenv().UNIVERSALESP_OBJECTS do
