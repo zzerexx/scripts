@@ -25,13 +25,14 @@ https://pastebin.com/raw/FwYmgtCX
 ```  
    
 # Universal Esp  
-Updated August 4, 2021  
-v1.4.2  
+Updated August 5, 2021  
+v1.5.0  
 - Box Esp  
 - Tracers  
 - Name Esp (with Distance and Health and Display Name) 
 - Skeleton Esp   
 - Look Tracers  
+- Health Bars  
   
 ```
 https://pastebin.com/raw/5zw0rLH9
@@ -42,8 +43,9 @@ https://pastebin.com/raw/5zw0rLH9
 You are allowed to use this ESP in your script as long as you credit me (zzerexx or zzerexx#3970)
 ```  
   
-## Update v1.4.2  
+## Update v1.5.0  
 AntiDetection now only disables ScriptContext.Error  
+Added HealthBars; Visualizes the player's health with a bar  
   
 # Universal Esp with UI  
 Updated June 23, 2021  
