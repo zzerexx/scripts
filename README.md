@@ -25,8 +25,8 @@ https://pastebin.com/raw/FwYmgtCX
 ```  
    
 # Universal Esp  
-Updated August 5, 2021  
-v1.5.0  
+Updated August 8, 2021  
+v1.5.1  
 - Box Esp  
 - Tracers  
 - Name Esp (with Distance and Health and Display Name) 
@@ -43,9 +43,9 @@ https://pastebin.com/raw/5zw0rLH9
 You are allowed to use this ESP in your script as long as you credit me (zzerexx or zzerexx#3970)
 ```  
   
-## Update v1.5.0  
-AntiDetection now only disables ScriptContext.Error  
-Added HealthBars; Visualizes the player's health with a bar  
+## Update v1.5.1  
+Added UseTeamColor for HealthBars  
+this only applies to the outline  
   
 # Universal Esp with UI  
 Updated June 23, 2021  
