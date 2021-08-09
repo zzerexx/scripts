@@ -49,9 +49,10 @@ if not getgenv().EspSettings then
 			Enabled = true,
 			Transparency = 0.7,
 			Color = Color3.fromRGB(0,255,0),
-			OutlineColor = Color3.fromRGB(255,255,255)
+			OutlineColor = Color3.fromRGB(255,255,255),
+			UseTeamColor = true -- this only applies to the outline
 		}
-	} -- v1.5.0
+	} -- v1.5.1
 end
 if getgenv().EspSettings and getgenv().EspSettings.AntiDetection then
 	for i,v in next, getconnections(game:GetService("ScriptContext").Error) do
@@ -287,17 +288,21 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 						mag = math.floor((player.Character.HumanoidRootPart.Position - plr.Character.HumanoidRootPart.Position).Magnitude)
 					end
 					local health = math.floor(plr.Character:FindFirstChildOfClass("Humanoid").Health)
-					local maxhealth = math.floor(plr.Character:FindFirstChildOfClass("Humanoid").MaxHealth)
+					local max = math.floor(plr.Character:FindFirstChildOfClass("Humanoid").MaxHealth)
+					if game.GameId == 111958650 then
+						health = plr.NRPBS.Health.Value
+						max = plr.NRPBS.MaxHealth.Value
+					end
 					local plrname = plr.Name
 					if ss.Names.UseDisplayName then
 						plrname = plr.DisplayName
 					end
 					if ss.Names.ShowDistance and ss.Names.ShowHealth then
-						name.Text = plrname.." [ "..mag.." ] [ "..health.."/"..maxhealth.." ]"
+						name.Text = plrname.." [ "..mag.." ] [ "..health.."/"..max.." ]"
 					elseif ss.Names.ShowDistance then
 						name.Text = plrname.." [ "..mag.." ]"
 					elseif ss.Names.ShowHealth then
-						name.Text = plrname.." [ "..health.."/"..maxhealth.." ]"
+						name.Text = plrname.." [ "..health.."/"..max.." ]"
 					else
 						name.Text = plrname
 					end
@@ -428,6 +433,10 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 
 					local health = math.floor(plr.Character:FindFirstChildOfClass("Humanoid").Health)
 					local max = math.floor(plr.Character:FindFirstChildOfClass("Humanoid").MaxHealth)
+					if game.GameId == 111958650 then
+						health = plr.NRPBS.Health.Value
+						max = plr.NRPBS.MaxHealth.Value
+					end
 					bar.Size = Vector2.new(3, ((head.Y - leg.Y) - 4) * (health / max))
 					bar.Position = Vector2.new((hrp.X - size.X / 2) -6, (hrp.Y - (bar.Size.Y / 2)) - (bar.Size.Y / 1000))
 
@@ -437,6 +446,11 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 					else
 						bar.Visible = true
 						outline.Visible = true
+					end
+					if ss.HealthBars.UseTeamColor then
+						outline.Color = plr.TeamColor.Color
+					else
+						outline.Color = ss.HealthBars.OutlineColor
 					end
 				else
 					bar.Visible = false
