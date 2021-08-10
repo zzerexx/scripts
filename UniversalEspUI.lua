@@ -1,504 +1,379 @@
 -- my universal esp script but with a ui
 -- ui lib made by twink marie
-return messagebox("I haven't updated the UI version to 1.5.0 yet, so please use the non-UI version for now.","Universal Esp",0x10)
-if not getgenv().EspSettings then
-	getgenv().EspSettings = {
-		TeamCheck = false,
-        	ToggleKey = Enum.KeyCode.RightAlt,
-		AntiDetection = true,
-		Boxes = {
-			Enabled = true,
-			Transparency = 0.7,
-			Color = Color3.fromRGB(255,0,0),
-			UseTeamColor = true,
-		},
-		Tracers = {
-			Enabled = true,
-			Transparency = 0.7,
-			Color = Color3.fromRGB(255,0,0),
-			UseTeamColor = true,
-			Origin = "Top",
-			Thickness = 1
-		},
-		Names = {
-			Enabled = true,
-			Transparency = 0.7,
-			Color = Color3.fromRGB(255,0,0),
-			UseTeamColor = true,
-			Font = Drawing.Fonts.UI,
-			Size = 18,
-			Outline = true,
-			OutlineColor = Color3.fromRGB(0,0,0),
-			ShowDistance = false,
-			ShowHealth = false,
-			UseDisplayName = false
-		},
-        	Skeletons = {
-            		Enabled = true,
-            		Transparency = 0.7,
-            		Color = Color3.fromRGB(255,0,0),
-            		UseTeamColor = true,
-			Thickness = 1
-        	},
-		LookTracers = {
-			Enabled = true,
-			Transparency = 0.7,
-			Color = Color3.fromRGB(255,255,255),
-			UseTeamColor = true,
-			IgnoreWater = true,
-			Thickness = 1
-	    	}
-	} -- v1.4.0
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEsp.lua"))()
-end
+getgenv().EspSettings = {
+	TeamCheck = false,
+	ToggleKey = Enum.KeyCode.RightAlt,
+	AntiDetection = true,
+	Boxes = {
+		Enabled = true,
+		Transparency = 0.7,
+		Color = Color3.fromRGB(255,255,255),
+		UseTeamColor = true,
+	},
+	Tracers = {
+		Enabled = true,
+		Transparency = 0.7,
+		Color = Color3.fromRGB(255,255,255),
+		UseTeamColor = true,
+		Origin = "Top", -- "Top" or "Center" or "Bottom" or "Mouse"
+		Thickness = 1
+	},
+	Names = {
+		Enabled = true,
+		Transparency = 0.7,
+		Color = Color3.fromRGB(255,255,255),
+		UseTeamColor = true,
+		Font = Drawing.Fonts.UI, -- UI or System or Plex or Monospace
+		Size = 18,
+		Outline = true,
+		OutlineColor = Color3.fromRGB(0,0,0),
+		ShowDistance = false,
+		ShowHealth = false,
+		UseDisplayName = false,
+	},
+	Skeletons = {
+		Enabled = true,
+		Transparency = 0.7,
+		Color = Color3.fromRGB(255,255,255),
+		UseTeamColor = true,
+		Thickness = 1
+	},
+	LookTracers = {
+		Enabled = true,
+		Transparency = 0.7,
+		Color = Color3.fromRGB(255,255,255),
+		UseTeamColor = true,
+		IgnoreWater = true,
+		Thickness = 1
+	},
+	HealthBars = {
+		Enabled = true,
+		Transparency = 0.7,
+		Color = Color3.fromRGB(0,255,0),
+		OutlineColor = Color3.fromRGB(255,255,255),
+		UseTeamColor = true -- this only applies to the outline
+	}
+} -- v1.5.2
 
-local http = game:GetService("HttpService")
+local esp = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEsp.lua", true))()
 local Material = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kinlei/MaterialLua/master/Module.lua"))()
 local UI = Material.Load({
 	Title = "Universal Esp",
-	Style = 3,
-	SizeX = 350,
-	SizeY = 235,
+	Style = 2,
+	SizeX = 514,
+	SizeY = 500,
 	Theme = "Dark"
 })
+function Banner(text)
+	UI.Banner({Text = text})
+end
 
-local Boxes = UI.New({
-	Title = "Boxes"
-})
-local Tracers = UI.New({
-	Title = "Tracers"
-})
-local Names = UI.New({
-	Title = "Names"
-})
-local Skeletons = UI.New({
-    Title = "Skeletons"
-})
-local LookTracers = UI.New({
-	Title = "Look Tracers"
-})
-local Other = UI.New({
-	Title = "Other"
-})
---[[local Config = UI.New({
-	Title = "Configuration"
-})]]
+local Boxes = UI.New({Title = "Boxes"})
+local Tracers = UI.New({Title = "Tracers"})
+local Names = UI.New({Title = "Names"})
+local Skeletons = UI.New({Title = "Skeletons"})
+local LookTracers = UI.New({Title = "Look Tracers"})
+local HealthBars = UI.New({Title = "Health Bars"})
+local Other = UI.New({Title = "Other"})
 
-local ss = getgenv().EspSettings
-
-local ui = {
-	Boxes = {
-		Enabled,
-		Transparency,
-		Color,
-		UseTeamColor
-	},
-	Tracers = {
-		Enabled,
-		Transparency,
-		Color,
-		UseTeamColor,
-		Origin,
-		Thickness
-	},
-	Names = {
-		Enabled,
-		Transparency,
-		Color,
-		UseTeamColor,
-		Font,
-		Size,
-		Outline,
-		OutlineColor,
-		ShowDistance,
-		ShowHealth,
-		UseDisplayName
-	},
-    	Skeletons = {
-        	Enabled,
-        	Transparency,
-        	Color, 
-        	UseTeamColor,
-		Thickness
-    	},
-	LookTracers = {
-		Enabled,
-		Transparency,
-		Color,
-		UseTeamColor,
-		IgnoreWater,
-		Thickness
-	},
-	Other = {
-		TeamCheck,
-        	ToggleKey
-	}
-}
-
-ui.Boxes.Enabled = Boxes.Toggle({
+Boxes.Toggle({
 	Text = "Enabled",
 	Callback = function(value)
-		ss.Boxes.Enabled = value
+		esp:Set("Boxes","Enabled",value)
 	end,
 	Enabled = true
 })
-ui.Boxes.Transparency = Boxes.Slider({
+Boxes.Slider({
 	Text = "Transparency",
 	Callback = function(value)
-		ss.Boxes.Transparency = value / 10
+		esp:Set("Boxes","Transparency",value / 10)
 	end,
 	Min = 0,
 	Max = 10,
 	Def = 7
 })
-ui.Boxes.Color = Boxes.ColorPicker({
+Boxes.ColorPicker({
 	Text = "Color",
-	Default = Color3.fromHSV(1,1,1),
+	Default = Color3.fromHSV(0,0,1),
 	Callback = function(value)
-		ss.Boxes.Color = value
-	end,
+		esp:Set("Boxes","Color",value)
+	end
 })
-ui.Boxes.UseTeamColor = Boxes.Toggle({
+Boxes.Toggle({
 	Text = "Use Team Color",
 	Callback = function(value)
-		ss.Boxes.UseTeamColor = value
+		esp:Set("Boxes","UseTeamColor",value)
 	end,
 	Enabled = true
 })
 
-ui.Tracers.Enabled = Tracers.Toggle({
+Tracers.Toggle({
 	Text = "Enabled",
 	Callback = function(value)
-		ss.Tracers.Enabled = value
+		esp:Set("Tracers","Enabled",value)
 	end,
 	Enabled = true
 })
-ui.Tracers.Transparency = Tracers.Slider({
+Tracers.Slider({
 	Text = "Transparency",
 	Callback = function(value)
-		ss.Tracers.Transparency = value / 10
+		esp:Set("Tracers","Transparency",value / 10)
 	end,
 	Min = 0,
 	Max = 10,
 	Def = 7
 })
-ui.Tracers.Color = Tracers.ColorPicker({
+Tracers.ColorPicker({
 	Text = "Color",
-	Default = Color3.fromHSV(1,1,1),
+	Default = Color3.fromHSV(0,0,1),
 	Callback = function(value)
-		ss.Tracers.Color = value
-	end,
+		esp:Set("Tracers","Color",value)
+	end
 })
-ui.Tracers.UseTeamColor = Tracers.Toggle({
+Tracers.Toggle({
 	Text = "Use Team Color",
 	Callback = function(value)
-		ss.Tracers.UseTeamColor = value
+		esp:Set("Tracers","UseTeamColor",value)
 	end,
 	Enabled = true
 })
-ui.Tracers.Origin = Tracers.Dropdown({
+Tracers.Dropdown({
 	Text = "Origin",
 	Callback = function(value)
-		ss.Tracers.Origin = value
+		esp:Set("Tracers","Origin",value)
 	end,
 	Options = {"Top","Center","Bottom","Mouse"}
 })
-ui.Tracers.Thickness = Tracers.Slider({
+Tracers.Slider({
 	Text = "Thickness",
 	Callback = function(value)
-		ss.Tracers.Thickness = value
+		esp:Set("Tracers","Thickness",value)
 	end,
 	Min = 1,
 	Max = 5,
 	Def = 1
 })
 
-ui.Names.Enabled = Names.Toggle({
+Names.Toggle({
 	Text = "Enabled",
 	Callback = function(value)
-		ss.Names.Enabled = value
+		esp:Set("Names","Enabled",value)
 	end,
 	Enabled = true
 })
-ui.Names.Transparency = Names.Slider({
+Names.Slider({
 	Text = "Transparency",
 	Callback = function(value)
-		ss.Names.Transparency = value / 10
+		esp:Set("Names","Transparency",value / 10)
 	end,
 	Min = 0,
 	Max = 10,
 	Def = 7
 })
-ui.Names.Color = Names.ColorPicker({
+Names.ColorPicker({
 	Text = "Color",
-	Default = Color3.fromHSV(1,1,1),
+	Default = Color3.fromHSV(0,0,1),
 	Callback = function(value)
-		ss.Names.Color = value
-	end,
+		esp:Set("Names","Color",value)
+	end
 })
-ui.Names.UseTeamColor = Names.Toggle({
+Names.Toggle({
 	Text = "Use Team Color",
 	Callback = function(value)
-		ss.Names.UseTeamColor = value
+		esp:Set("Names","UseTeamColor",value)
 	end,
 	Enabled = true
 })
-ui.Names.Font = Names.Dropdown({
-	Text = "Text Font",
+Names.Dropdown({
+	Text = "Font",
 	Callback = function(value)
-		ss.Names.Font = Drawing.Fonts[value]
+		esp:Set("Names","Font",Drawing.Fonts[value])
 	end,
 	Options = {"UI","System","Plex","Monospace"}
 })
-ui.Names.Size = Names.Slider({
+Names.Slider({
 	Text = "Text Size",
 	Callback = function(value)
-		ss.Names.Size = value
+		esp:Set("Names","Size",value)
 	end,
-	Min = 0,
+	Min = 1,
 	Max = 32,
 	Def = 18
 })
-ui.Names.Outline = Names.Toggle({
+Names.Toggle({
 	Text = "Outline",
 	Callback = function(value)
-		ss.Names.Outline = value
+		esp:Set("Names","Outline",value)
 	end,
 	Enabled = true
 })
-ui.Names.OutlineColor = Names.ColorPicker({
+Names.ColorPicker({
 	Text = "Outline Color",
 	Default = Color3.fromHSV(0,0,0),
 	Callback = function(value)
-		ss.Names.OutlineColor = value
-	end,
+		esp:Set("Names","OutlineColor",value)
+	end
 })
-ui.Names.ShowDistance = Names.Toggle({
+Names.Toggle({
 	Text = "Show Distance",
 	Callback = function(value)
-		ss.Names.ShowDistance = value
+		esp:Set("Names","ShowDistance",value)
 	end,
 	Enabled = false
 })
-ui.Names.ShowHealth = Names.Toggle({
+Names.Toggle({
 	Text = "Show Health",
 	Callback = function(value)
-		ss.Names.ShowHealth = value
+		esp:Set("Names","ShowHealth",value)
 	end,
 	Enabled = false
 })
-ui.Names.UseDisplayName = Names.Toggle({
+Names.Toggle({
 	Text = "Use Display Name",
 	Callback = function(value)
-		ss.Names.UseDisplayName = value
+		esp:Set("Names","UseDisplayName",value)
 	end,
 	Enabled = false
 })
 
-ui.Skeletons.Enabled = Skeletons.Toggle({
+Skeletons.Toggle({
 	Text = "Enabled",
 	Callback = function(value)
-		ss.Skeletons.Enabled = value
+		esp:Set("Skeletons","Enabled",value)
 	end,
 	Enabled = true
 })
-ui.Skeletons.Transparency = Skeletons.Slider({
+Skeletons.Slider({
 	Text = "Transparency",
 	Callback = function(value)
-		ss.Skeletons.Transparency = value / 10
+		esp:Set("Skeletons","Transparency",value / 10)
 	end,
 	Min = 0,
 	Max = 10,
 	Def = 7
 })
-ui.Skeletons.Color = Skeletons.ColorPicker({
+Skeletons.ColorPicker({
 	Text = "Color",
-	Default = Color3.fromHSV(1,1,1),
+	Default = Color3.fromHSV(0,0,1),
 	Callback = function(value)
-		ss.Skeletons.Color = value
-	end,
+		esp:Set("Skeletons","Color",value)
+	end
 })
-ui.Skeletons.UseTeamColor = Skeletons.Toggle({
+Skeletons.Toggle({
 	Text = "Use Team Color",
 	Callback = function(value)
-		ss.Skeletons.UseTeamColor = value
+		esp:Set("Skeletons","UseTeamColor",value)
 	end,
 	Enabled = true
 })
-ui.Skeletons.Thickness = Skeletons.Slider({
+Skeletons.Slider({
 	Text = "Thickness",
 	Callback = function(value)
-		ss.Skeletons.Thickness = value	
+		esp:Set("Skeletons","Thickness",value)
 	end,
 	Min = 1,
 	Max = 5,
 	Def = 1
 })
 
-ui.LookTracers.Enabled = LookTracers.Toggle({
+LookTracers.Toggle({
 	Text = "Enabled",
 	Callback = function(value)
-		ss.LookTracers.Enabled = value
+		esp:Set("LookTracers","Enabled",value)
 	end,
 	Enabled = true
 })
-ui.LookTracers.Transparency = LookTracers.Slider({
+LookTracers.Slider({
 	Text = "Transparency",
 	Callback = function(value)
-		ss.LookTracers.Transparency = value / 10
+		esp:Set("LookTracers","Transparency",value / 10)
 	end,
 	Min = 0,
 	Max = 10,
 	Def = 7
 })
-ui.LookTracers.Color = LookTracers.ColorPicker({
+LookTracers.ColorPicker({
 	Text = "Color",
-	Default = Color3.fromHSV(1,1,1),
+	Default = Color3.fromHSV(0,0,1),
 	Callback = function(value)
-		ss.LookTracers.Color = value
-	end,
+		esp:Set("LookTracers","Color",value)
+	end
 })
-ui.LookTracers.UseTeamColor = LookTracers.Toggle({
+LookTracers.Toggle({
 	Text = "Use Team Color",
 	Callback = function(value)
-		ss.LookTracers.UseTeamColor = value
+		esp:Set("LookTracers","UseTeamColor",value)
 	end,
 	Enabled = true
 })
-ui.LookTracers.IgnoreWater = LookTracers.Toggle({
+LookTracers.Toggle({
 	Text = "Ignore Water",
 	Callback = function(value)
-		ss.LookTracers.IgnoreWater = value
+		esp:Set("LookTracers","IgnoreWater",value)
 	end,
 	Enabled = true
 })
-ui.LookTracers.Thickness = LookTracers.Slider({
+LookTracers.Slider({
 	Text = "Thickness",
 	Callback = function(value)
-		ss.LookTracers.Thickness = value
+		esp:Set("LookTracers","Thickness",value)
 	end,
 	Min = 1,
 	Max = 5,
 	Def = 1
 })
 
-ui.Other.TeamCheck = Other.Toggle({
-	Text = "Team Check",
+HealthBars.Toggle({
+	Text = "Enabled",
 	Callback = function(value)
-		ss.TeamCheck = value
+		esp:Set("HealthBars","Enabled",value)
 	end,
-	Enabled = false
+	Enabled = true
 })
-ui.Other.ToggleKey = Other.TextField({
-    Text = "Toggle Key (Default is RightAlt)",
-    Type = "Default",
-    Callback = function(value)
-        if value:gsub(" ","") == "" then
-            ss.ToggleKey = Enum.KeyCode.RightAlt
-        else
-            ss.ToggleKey = Enum.KeyCode[value]
-        end
-    end
+HealthBars.Slider({
+	Text = "Transparency",
+	Callback = function(value)
+		esp:Set("HealthBars","Transparency",value / 10)
+	end,
+	Min = 0,
+	Max = 10,
+	Def = 7
+})
+HealthBars.ColorPicker({
+	Text = "Color",
+	Default = Color3.fromHSV(0.3,1,1),
+	Callback = function(value)
+		esp:Set("HealthBars","Color",value)
+	end
+})
+HealthBars.ColorPicker({
+	Text = "Outline Color",
+	Default = Color3.fromHSV(0,0,1),
+	Callback = function(value)
+		esp:Set("HealthBars","OutlineColor",value)
+	end
+})
+HealthBars.Toggle({
+	Text = "Use Team Color",
+	Callback = function(value)
+		esp:Set("HealthBars","UseTeamColor",value)
+	end,
+	Enabled = true
 })
 
---[[ config stuff
-function Banner(text)
-	UI.Banner({
-		Text = text
-	})
-end
-function RefreshList(dropdown)
-	if isfolder("EspConfigs") then
-		local t = {}
-		for i,v in next, listfiles("EspConfigs") do
-			if v ~= "DefaultConfig.txt" then
-				table.insert(t,v:split("\\")[2]:split(".")[1])
-			end
-		end
-		dropdown:SetOptions(t)
-	end
-end
-function LoadConfig(name)
-	if isfile("EspConfigs\\"..name..".json") then
-		local data = http:JSONDecode(readfile("EspConfigs\\"..name..".json"))
-		for i,v in next, data do
-			if typeof(v) == "table" then
-				for i2,v2 in next, v do
-					ss[i][i2] = v2
-				end
-			else
-				ss[i] = v
-			end
-		end
-		ui.Boxes.Enabled:SetState(data.Boxes.Enabled)
-		local BoxesColor = data.Boxes.Color:split(", ")
-		ui.Boxes.Color:SetColor(Color3.fromHSV(tonumber(BoxesColor[1]),tonumber(BoxesColor[2]),tonumber(BoxesColor[3])))
-		ui.Boxes.UseTeamColor:SetState(data.Boxes.UseTeamColor)
-		ui.Tracers.Enabled:SetState(data.Tracers.Enabled)
-		local TracersColor = data.Tracers.Color:split(", ")
-		ui.Tracers.Color:SetColor(Color3.fromHSV(tonumber(TracersColor[1]),tonumber(TracersColor[2]),tonumber(TracersColor[3])))
-		ui.Tracers.UseTeamColor:SetState(data.Tracers.UseTeamColor)
-		ui.Names.Enabled:SetState(data.Names.Enabled)
-		local NamesColor = data.Names.Color:split(", ")
-		ui.Names.Color:SetColor(Color3.fromHSV(tonumber(NamesColor[1]),tonumber(NamesColor[2]),tonumber(NamesColor[3])))
-		ui.Names.UseTeamColor:SetState(data.Names.UseTeamColor)
-		ui.Names.Outline:SetState(data.Names.Outline)
-		local NamesOutlineColor = data.Names.Color:split(", ")
-		ui.Names.OutlineColor:SetColor(Color3.fromHSV(tonumber(NamesOutlineColor[1]),tonumber(NamesOutlineColor[2]),tonumber(NamesOutlineColor[3])))
-		ui.Names.ShowDistance:SetState(data.Names.ShowDistance)
-		ui.Names.ShowHealth:SetState(data.Names.ShowHealth)
-		ui.Other.TeamCheck:SetState(data.Other.TeamCheck)
-	end
-end
-function SaveConfig(name)
-	local data = ss
-	data.Boxes.Color = tostring(ss.Boxes.Color)
-	data.Tracers.Color = tostring(ss.Tracers.Color)
-	data.Names.Color = tostring(ss.Names.Color)
-	data.Names.OutlineColor = tostring(ss.Names.OutlineColor)
-	data = http:JSONEncode(data)
-	if not isfolder("EspConfigs") then
-		makefolder("EspConfigs")
-	end
-	writefile("EspConfigs\\"..name..".json",data)
-	Banner("Saved Configuration: "..name)
-end
-local SelectedConfig = nil
-local ConfigList
-local ConfigName = "Untitled"
-ConfigList = Config.Dropdown({
-	Text = "Your Configs",
+Other.Toggle({
+	Text = "Team Check",
 	Callback = function(value)
-		SelectedConfig = value
-	end,
-	Options = {}
-})
-RefreshList(ConfigList)
-Config.Button({
-	Text = "Load Config",
-	Callback = function()
-		if SelectedConfig ~= nil then
-			LoadConfig(SelectedConfig)
-		end
+		esp:Set("Other","TeamCheck",value)
 	end
 })
-Config.Button({
-	Text = "Refresh List",
-	Callback = function()
-		RefreshList(ConfigList)
-	end
-})
-Config.TextField({
-	Text = "Config Name",
+Other.TextField({
+	Text = "Toggle Key",
 	Type = "Default",
 	Callback = function(value)
-		ConfigName = value
+		if not Enum.KeyCode[value] then
+			return Banner("Invalid KeyCode")
+		end
+		esp:Set("Other","ToggleKey",Enum.KeyCode[value])
 	end
 })
-Config.Button({
-	Text = "Save Config",
-	Callback = function()
-		SaveConfig(ConfigName)
-	end
-})
-]]
