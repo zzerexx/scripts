@@ -500,13 +500,13 @@ end)
 local esp = {}
 
 function ValidType(type)
-	if getgenv().EspSettings[type] ~= nil then
+	if type == "Other" or getgenv().EspSettings[type] ~= nil then
 		return true
 	end
 	return false
 end
 function ValidOption(type,option)
-	if getgenv().EspSettings[type][option] ~= nil then
+	if type == "Other" or getgenv().EspSettings[type][option] ~= nil then
 		return true
 	end
 	return false
