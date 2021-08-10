@@ -59,7 +59,7 @@ if getgenv().EspSettings and getgenv().EspSettings.AntiDetection then
 		v:Disable()
 	end
 end
-if typeof(Drawing.new) ~= "function" then
+if not Drawing then
 	game:GetService("Players").LocalPlayer:Kick("\n\nUniversal Esp\nYour exploit does not have a Drawing Library!\n")
 	return
 end
@@ -235,9 +235,7 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 				local bottom = Vector2.new(camera.ViewportSize.X / 2,camera.ViewportSize.Y)
 				mouse = game:GetService("UserInputService"):GetMouseLocation()
 				local origin = top
-				if ss.Tracers.Origin:lower() == "top" then
-					origin = top
-				elseif ss.Tracers.Origin:lower() == "center" then
+				if ss.Tracers.Origin:lower() == "center" then
 					origin = center
 				elseif ss.Tracers.Origin:lower() == "bottom" then
 					origin = bottom
@@ -498,3 +496,35 @@ players.PlayerRemoving:Connect(function(plr)
 		end
 	end
 end)
+
+local esp = {}
+
+function ValidType(type)
+	if getgenv().EspSettings[type] then
+		return true
+	end
+	return false
+end
+function ValidOption(type,option)
+	if getgenv().EspSettings[type][option] then
+		return true
+	end
+	return false
+end
+function esp:Toggle(type)
+	assert(ValidType(type),"Universal Esp: bad argument to #1 'Toggle' (Invalid Esp Type)")
+	getgenv().EspSettings[type].Enabled = not getgenv().EspSettings[type].Enabled
+end
+function esp:Get(type,option)
+	assert(ValidType(type),"Universal Esp: bad argument to #1 'Get' (Invalid Esp Type)")
+	assert(ValidOption(type,option),"Universal Esp: bad argument to #2 'Get' (Invalid Option)")
+	return getgenv().EspSettings[type][option]
+end
+function esp:Set(type,option,value)
+	assert(ValidType(type),"Universal Esp: bad argument to #1 'Set' (Invalid Esp Type)")
+	assert(ValidOption(type,option),"Universal Esp: bad argument to #2 'Set' (Invalid Option)")
+	assert(value ~= nil,"Universal Esp: bad argument to #3 'Set'")
+	getgenv().EspSettings[type][option] = value
+end
+
+return esp
