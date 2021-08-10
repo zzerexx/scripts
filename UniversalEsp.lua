@@ -531,7 +531,6 @@ function esp:Set(type,option,value)
 	assert(ValidType(type),"Universal Esp: bad argument to #1 'Set' (Invalid Esp Type)")
 	assert(ValidOption(type,option),"Universal Esp: bad argument to #2 'Set' (Invalid Option)")
 	assert(value ~= nil,"Universal Esp: bad argument to #3 'Set'")
-	getgenv().EspSettings[type][option] = value
 	if type == "Other" then
 		getgenv().EspSettings[option] = value
 	else
