@@ -200,18 +200,29 @@ function ValidOption(type,option)
 end
 function aimbot:Toggle(type)
 	assert(ValidType(type),"Universal Aimbot: bad argument to #1 'Toggle' (Invalid Aimbot Type)")
-	getgenv().AimbotSettings[type].Enabled = not getgenv().AimbotSettings[type].Enabled
+	if type == ("Whitelisted" or "Ignore") then
+		getgenv().AimbotSettings[type] = not getgenv().AimbotSettings[type]
+	else
+		getgenv().AimbotSettings[type].Enabled = not getgenv().AimbotSettings[type].Enabled
+	end
 end
 function aimbot:Get(type,option)
 	assert(ValidType(type),"Universal Aimbot: bad argument to #1 'Get' (Invalid Aimbot Type)")
 	assert(ValidOption(type,option),"Universal Aimbot: bad argument to #2 'Get' (Invalid Option)")
+	if type == "Other" then
+		return getgenv().AimbotSettings[option]
+	end
 	return getgenv().AimbotSettings[type][option]
 end
 function aimbot:Set(type,option,value)
 	assert(ValidType(type),"Universal Aimbot: bad argument to #1 'Set' (Invalid Aimbot Type)")
 	assert(ValidOption(type,option),"Universal Aimbot: bad argument to #2 'Set' (Invalid Option)")
 	assert(value ~= nil,"Universal Aimbot: bad argument to #3 'Set'")
-	getgenv().AimbotSettings[type][option] = value
+	if type == "Other" then
+		getgenv().AimbotSettings[option] = value
+	else
+		getgenv().AimbotSettings[type][option] = value
+	end
 end
 
 return aimbot
