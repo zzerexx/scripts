@@ -1,5 +1,4 @@
 # Universal Esp Documentation  
-coming soon  
   
 ## Loading Universal Esp  
 ```
