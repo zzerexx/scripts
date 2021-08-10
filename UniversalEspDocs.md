@@ -26,3 +26,11 @@ esp:Set(type, option, value)
 `type` must be a valid Esp type. (such as Boxes, Tracers, Names, etc)  
 `option` must be a valid Esp option. (such as Transparency, Color, etc)  
 `value` is whatever you want to set the option's value to.  
+  
+# Script Errors  
+
+## Invalid Esp Type  
+The type you provided is invalid. Check for spelling or capitalization mistakes. Types are case sensitive.  
+  
+## Invalid Option  
+The option you provided is invalid. Check for spelling or capitalization mistakes. Options are case sensitive.  
