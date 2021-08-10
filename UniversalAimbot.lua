@@ -204,7 +204,7 @@ function aimbot:Toggle(type)
 end
 function aimbot:Get(type,option)
 	assert(ValidType(type),"Universal Aimbot: bad argument to #1 'Get' (Invalid Aimbot Type)")
-	assert(ValidOption(type,option),"Universal Esp: bad argument to #2 'Get' (Invalid Option)")
+	assert(ValidOption(type,option),"Universal Aimbot: bad argument to #2 'Get' (Invalid Option)")
 	return getgenv().AimbotSettings[type][option]
 end
 function aimbot:Set(type,option,value)
