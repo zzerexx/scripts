@@ -41,6 +41,7 @@ https://pastebin.com/raw/5zw0rLH9
 **NOTICE**  
 ```
 You are allowed to use this ESP in your script as long as you credit me (zzerexx or zzerexx#3970)
+u should read UniversalEspDocs.md for more info
 ```  
   
 ## Update v1.5.2  
