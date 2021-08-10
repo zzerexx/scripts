@@ -15,8 +15,12 @@ end)
 
 local functions = {
 	['syn_websocket_connect'] = WebSocket.connect,
-	['syn_websocket_send'] = WebSocket.Send,
-	['syn_websocket_close'] = WebSocket.Close,
+	['syn_websocket_send'] = function(socket,msg)
+		socket:Send(msg)	
+	end,
+	['syn_websocket_close'] = function(socket)
+		socket:Close()	
+	end,
 	
 	['syn_io_read'] = readfile,
 	['syn_io_write'] = writefile,
@@ -203,11 +207,6 @@ getgenv().syn = {
 	['websocket'] = {
 		['connect'] = WebSocket.connect
 	},
-	--['secure_call'] = function(func,script,...)
-    --    
-    --end,
-	--['create_secure_function'] = nil,
-	--['run_secure_function'] = nil,
 }
 
 getgenv().SYNTOSW_LOADED = true
