@@ -27,6 +27,14 @@ esp:Set(type, option, value)
 `option` must be a valid Esp option. (such as Transparency, Color, etc)  
 `value` is whatever you want to set the option's value to.  
   
+If you want to use Get or Set on TeamCheck or ToggleKey, set `type` to `Other`  
+You don't have to do this for Toggle.  
+```
+esp:Toggle("TeamCheck")
+esp:Get("Other","TeamCheck")
+esp:Set("Other","TeamCheck",true)
+```  
+  
 # Script Errors  
 
 ## Invalid Esp Type  
