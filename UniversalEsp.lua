@@ -513,7 +513,7 @@ function ValidOption(type,option)
 end
 function esp:Toggle(type)
 	assert(ValidType(type),"Universal Esp: bad argument to #1 'Toggle' (Invalid Esp Type)")
-	if type == ("TeamCheck" or "ToggleKey" or "AntiDetection") then
+	if type == ("TeamCheck" or "AntiDetection") then
 		getgenv().EspSettings[type] = not getgenv().EspSettings[type]
 	else
 		getgenv().EspSettings[type].Enabled = not getgenv().EspSettings[type].Enabled
@@ -522,8 +522,8 @@ end
 function esp:Get(type,option)
 	assert(ValidType(type),"Universal Esp: bad argument to #1 'Get' (Invalid Esp Type)")
 	assert(ValidOption(type,option),"Universal Esp: bad argument to #2 'Get' (Invalid Option)")
-	if type == ("TeamCheck" or "ToggleKey" or "AntiDetection") then
-		return getgenv().EspSettings[type]
+	if type == "Other" then
+		return getgenv().EspSettings[option]
 	end
 	return getgenv().EspSettings[type][option]
 end
@@ -532,8 +532,8 @@ function esp:Set(type,option,value)
 	assert(ValidOption(type,option),"Universal Esp: bad argument to #2 'Set' (Invalid Option)")
 	assert(value ~= nil,"Universal Esp: bad argument to #3 'Set'")
 	getgenv().EspSettings[type][option] = value
-	if type == ("TeamCheck" or "ToggleKey" or "AntiDetection") then
-		getgenv().EspSettings[type] = value
+	if type == "Other" then
+		getgenv().EspSettings[option] = value
 	else
 		getgenv().EspSettings[type][option] = value
 	end
