@@ -8,16 +8,12 @@ local esp = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/s
   
 ## Toggle Esp  
 ```
-local esp = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEsp.lua"))
-
-Esp:Toggle(type)
+esp:Toggle(type)
 ```  
 `type` must be a valid Esp type. (such as Boxes, Tracers, Names, etc)  
   
 ## Get Option Value  
 ```
-local esp = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEsp.lua"))
-
 esp:Get(type, option)
 ```  
 `type` must be a valid Esp type. (such as Boxes, Tracers, Names, etc)  
@@ -25,8 +21,6 @@ esp:Get(type, option)
   
 ## Set Option Value  
 ```
-local esp = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEsp.lua"))
-
 esp:Set(type, option, value)
 ```  
 `type` must be a valid Esp type. (such as Boxes, Tracers, Names, etc)  
