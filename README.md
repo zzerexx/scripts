@@ -25,8 +25,8 @@ https://pastebin.com/raw/FwYmgtCX
 ```  
    
 # Universal Esp  
-Updated August 15, 2021  
-v1.5.3  
+Updated August 10, 2021  
+v1.5.2  
 - Box Esp  
 - Tracers  
 - Name Esp (with Distance and Health and Display Name) 
@@ -44,11 +44,8 @@ You are allowed to use this ESP in your script as long as you credit me (zzerexx
 u should read UniversalEspDocs.md for more info
 ```  
   
-## Update v1.5.3  
-Added 2 new settings:  
-- HighlightWhenVisible
-- HighlightColor
-When players are visible, it changes the esp color to whatever the highlight color is.  
+## Update v1.5.2  
+Added some functions, read `UniversalEspDocs.md`.  
   
 # Universal Esp with UI  
 Updated August 10, 2021  
