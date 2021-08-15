@@ -3,6 +3,8 @@ if not getgenv().EspSettings then
 		TeamCheck = false,
 		ToggleKey = Enum.KeyCode.RightAlt,
 		AntiDetection = true,
+		HighlightWhenVisible = true,
+		HighlightColor = Color3.fromRGB(255,100,255),
 		Boxes = {
 			Enabled = true,
 			Transparency = 0.7,
@@ -52,7 +54,7 @@ if not getgenv().EspSettings then
 			OutlineColor = Color3.fromRGB(255,255,255),
 			UseTeamColor = true -- this only applies to the outline
 		}
-	} -- v1.5.1
+	} -- v1.5.3
 end
 if getgenv().EspSettings and getgenv().EspSettings.AntiDetection then
 	for i,v in next, getconnections(game:GetService("ScriptContext").Error) do
@@ -92,6 +94,30 @@ local bodyparts = {"Head","UpperTorso","LowerTorso","LeftUpperArm","LeftLowerArm
 function IsAlive(plr)
 	if plr and plr ~= player and plr.Character and plr.Character:FindFirstChild("Head") and plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChildOfClass("Humanoid") and plr.Character:FindFirstChildOfClass("Humanoid").Health > 0 then
 		return true
+	end
+	return false
+end
+function IsVisible(plr)
+	if IsAlive(plr) then
+		for _,v in next, plr.Character:GetChildren() do
+			if table.find(bodyparts,v.Name) then
+				local params = RaycastParams.new()
+				params.FilterDescendantsInstances = {camera,player.Character}
+				params.FilterType = Enum.RaycastFilterType.Blacklist
+				params.IgnoreWater = true
+				if game.GameId == (111958650 or 115797356 or 147332621) then -- arsenal, counter blox, typical colors 2
+					params.FilterDescendantsInstances = {camera,player.Character,workspace.Ray_Ignore}
+				elseif game.GameId == 833423526 then -- strucid
+					params.FilterDescendantsInstances = {camera,player.Character,workspace.IgnoreThese}
+				elseif workspace:FindFirstChild("Ignore") then
+					params.FilterDescendantsInstances = {camera,player.Character,workspace.Ignore}
+				end
+				local result = workspace:Raycast(camera.CFrame.Position,(v.Position - camera.CFrame.Position).Unit * 500,params)
+				if result and result.Instance:FindFirstAncestor(plr.Name) then
+					return true
+				end
+			end
+		end
 	end
 	return false
 end
@@ -222,6 +248,11 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 				else
 					box.Color = ss.Boxes.Color
 				end
+				if ss.HighlightWhenVisible then
+					if IsVisible(plr) then
+						box.Color = ss.HighlightColor
+					end
+				end
 			else
 				box.Visible = false
 			end
@@ -261,6 +292,11 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 					tracer.Color = plr.TeamColor.Color
 				else
 					tracer.Color = ss.Tracers.Color
+				end
+				if ss.HighlightWhenVisible then
+					if IsVisible(plr) then
+						tracer.Color = ss.HighlightColor
+					end
 				end
 			else
 				tracer.Visible = false
@@ -312,6 +348,11 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 				else
 					name.Color = ss.Names.Color
 				end
+				if ss.HighlightWhenVisible then
+					if IsVisible(plr) then
+						name.Color = ss.HighlightColor
+					end
+				end
 			else
 				name.Visible = false
 			end
@@ -360,15 +401,22 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 						end
 					end
 				else
-					for i2,v2 in next, skeleton do
+					for _,v2 in next, skeleton do
 						v2.Visible = false
 					end
 				end
-				for i2,v2 in next, skeleton do
+				for _,v2 in next, skeleton do
 					if ss.Skeletons.UseTeamColor then
 						v2.Color = plr.TeamColor.Color
 					else
 						v2.Color = ss.Skeletons.Color
+					end
+				end
+				if ss.HighlightWhenVisible then
+					if IsVisible(plr) then
+						for _,v2 in next, skeleton do
+							v2.Color = ss.HighlightColor
+						end
 					end
 				end
 			else
@@ -405,6 +453,11 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 						tracer.Color = plr.TeamColor.Color
 					else
 						tracer.Color = ss.LookTracers.Color
+					end
+					if ss.HighlightWhenVisible then
+						if IsVisible(plr) then
+							tracer.Color = ss.HighlightColor
+						end
 					end
 				end
 			else
@@ -449,6 +502,11 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 						outline.Color = plr.TeamColor.Color
 					else
 						outline.Color = ss.HealthBars.OutlineColor
+					end
+					if ss.HighlightWhenVisible then
+						if IsVisible(plr) then
+							outline.Color = ss.HighlightColor
+						end
 					end
 				else
 					bar.Visible = false
