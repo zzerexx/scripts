@@ -285,20 +285,5 @@ work in progress
 # Synapse XI  
 Updated March 12, 2021  
 v1.0.0   
-Synapse X, recreated in Roblox.  
-Execute **:settings** for the secret settings menu. (buggy)  
-```
-To-Do List:
-Script Hub           DONE
-Options Menu         DONE
-Loader               DONE
-Maximize             
-Open                 DONE
-Syntax Highlighting  
-Numbered Lines       DONE
-Scrollable Editor    DONE
-Multiple Tabs        
-Customizable Theme   
-```  
-View upcoming features in v1.1.0 in **SynapseXI Test.lua**  
+syanpse in roblos  
 not updating cuz boring
