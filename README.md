@@ -25,12 +25,12 @@ https://pastebin.com/raw/FwYmgtCX
 ```  
    
 # Universal Esp  
-Updated August 10, 2021  
-v1.5.2  
+Updated August 21, 2021  
+v1.5.3  
 - Box Esp  
 - Tracers  
-- Name Esp (with Distance and Health and Display Name) 
-- Skeleton Esp   
+- Name Esp  
+- Skeleton Esp  
 - Look Tracers  
 - Health Bars  
   
@@ -44,8 +44,9 @@ You are allowed to use this ESP in your script as long as you credit me (zzerexx
 u should read UniversalEspDocs.md for more info
 ```  
   
-## Update v1.5.2  
-Added some functions, read `UniversalEspDocs.md`.  
+## Update v1.5.3  
+u can now change the name offset on name esp  
+works on phantom forces now  
   
 # Universal Esp with UI  
 Updated August 10, 2021  
