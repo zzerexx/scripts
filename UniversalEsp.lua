@@ -26,6 +26,7 @@ if not getgenv().EspSettings then
 			Size = 18,
 			Outline = true,
 			OutlineColor = Color3.fromRGB(0,0,0),
+			Offset = Vector3.new(0,2,0),
 			ShowDistance = false,
 			ShowHealth = false,
 			UseDisplayName = false,
@@ -52,7 +53,7 @@ if not getgenv().EspSettings then
 			OutlineColor = Color3.fromRGB(255,255,255),
 			UseTeamColor = true -- this only applies to the outline
 		}
-	} -- v1.5.2
+	} -- v1.5.3
 end
 if getgenv().EspSettings and getgenv().EspSettings.AntiDetection then
 	for i,v in next, getconnections(game:GetService("ScriptContext").Error) do
@@ -88,18 +89,44 @@ local ss = getgenv().EspSettings
 getgenv().UNIVERSALESP_OBJECTS = {}
 getgenv().UNIVERSALESP_VISIBLE = true
 local bodyparts = {"Head","UpperTorso","LowerTorso","LeftUpperArm","LeftLowerArm","LeftHand","RightUpperArm","RightLowerArm","RightHand","LeftUpperLeg","LeftLowerLeg","LeftFoot","RightUpperLeg","RightLowerLeg","RightFoot","Torso","Left Arm","Right Arm","Left Leg","Right Leg"}
+local pids = { -- place ids
+	['pf'] = 292439477
+}
+local gids = { -- game ids
+	['arsenal'] = 111958650
+}
+
+if game.PlaceId == pids.pf then
+	for i,v in next, getgc(true) do
+		if typeof(v) == "table" and rawget(v,"getbodyparts") then
+			getchar = rawget(v,"getbodyparts")
+		end
+	end
+end
 
 function IsAlive(plr)
 	if plr and plr ~= player and plr.Character and plr.Character:FindFirstChild("Head") and plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChildOfClass("Humanoid") and plr.Character:FindFirstChildOfClass("Humanoid").Health > 0 then
 		return true
+	elseif game.PlaceId == pids.pf then
+		if plr and plr ~= player and getchar(plr) ~= nil then
+			return true
+		end
 	end
 	return false
 end
 function RigType(plr)
-	if plr.Character:FindFirstChild("UpperTorso") and plr.Character:FindFirstChild("LowerTorso") and plr.Character:FindFirstChild("LeftUpperArm") and plr.Character:FindFirstChild("LeftLowerArm") and plr.Character:FindFirstChild("LeftHand") and plr.Character:FindFirstChild("RightUpperArm") and plr.Character:FindFirstChild("RightLowerArm") and plr.Character:FindFirstChild("RightHand") and plr.Character:FindFirstChild("LeftUpperLeg") and plr.Character:FindFirstChild("LeftLowerLeg") and plr.Character:FindFirstChild("LeftFoot") and plr.Character:FindFirstChild("RightUpperLeg") and plr.Character:FindFirstChild("RightLowerLeg") and plr.Character:FindFirstChild("RightFoot") then
+	if game.PlaceId ~= pids.pf and plr.Character:FindFirstChild("UpperTorso") and plr.Character:FindFirstChild("LowerTorso") and plr.Character:FindFirstChild("LeftUpperArm") and plr.Character:FindFirstChild("LeftLowerArm") and plr.Character:FindFirstChild("LeftHand") and plr.Character:FindFirstChild("RightUpperArm") and plr.Character:FindFirstChild("RightLowerArm") and plr.Character:FindFirstChild("RightHand") and plr.Character:FindFirstChild("LeftUpperLeg") and plr.Character:FindFirstChild("LeftLowerLeg") and plr.Character:FindFirstChild("LeftFoot") and plr.Character:FindFirstChild("RightUpperLeg") and plr.Character:FindFirstChild("RightLowerLeg") and plr.Character:FindFirstChild("RightFoot") then
 		return "R15"
 	end
 	return "R6"
+end
+function GetChar(plr)
+	if game.PlaceId == pids.pf then
+		return getchar(plr).rootpart.Parent
+	elseif plr.Character ~= nil then
+		return plr.Character
+	end
+	return nil
 end
 function Box(plr)
 	ss = getgenv().EspSettings
@@ -200,9 +227,9 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 		if v.Type == "Box" then
 			local box = v.Object
 			if getgenv().UNIVERSALESP_VISIBLE and ss.Boxes.Enabled and IsAlive(plr) then
-				local hrp, inViewport = camera:WorldToViewportPoint(plr.Character.HumanoidRootPart.Position)
-				local head = camera:WorldToViewportPoint(plr.Character.Head.Position + Vector3.new(0,0.5,0))
-				local leg = camera:WorldToViewportPoint(plr.Character.HumanoidRootPart.Position - Vector3.new(0,3,0))
+				local hrp, inViewport = camera:WorldToViewportPoint(GetChar(plr).HumanoidRootPart.Position)
+				local head = camera:WorldToViewportPoint(GetChar(plr).Head.Position + Vector3.new(0,0.5,0))
+				local leg = camera:WorldToViewportPoint(GetChar(plr).HumanoidRootPart.Position - Vector3.new(0,3,0))
 
 				if inViewport then
 					box.Transparency = ss.Boxes.Transparency
@@ -228,7 +255,7 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 		elseif v.Type == "Tracer" then
 			local tracer = v.Object
 			if getgenv().UNIVERSALESP_VISIBLE and ss.Tracers.Enabled and IsAlive(plr) then
-				local vector, inViewport = camera:WorldToViewportPoint(plr.Character.HumanoidRootPart.Position)
+				local vector, inViewport = camera:WorldToViewportPoint(GetChar(plr).HumanoidRootPart.Position)
 				
 				local top = Vector2.new(camera.ViewportSize.X / 2, 0)
 				local center = Vector2.new(camera.ViewportSize.X / 2,camera.ViewportSize.Y / 2)
@@ -268,7 +295,7 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 		elseif v.Type == "Name" then
 			local name = v.Object
 			if getgenv().UNIVERSALESP_VISIBLE and ss.Names.Enabled and IsAlive(plr) then
-				local vector, inViewport = camera:WorldToViewportPoint(plr.Character.Head.Position + Vector3.new(0,plr.Character.Head.Size.Y * 2,0))
+				local vector, inViewport = camera:WorldToViewportPoint(GetChar(plr).Head.Position + ss.Names.Offset)
 				if inViewport then
 					name.Transparency = ss.Names.Transparency
 					name.Size = ss.Names.Size
@@ -281,13 +308,14 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 					else
 						name.Visible = true
 					end
-					local mag = 0
-					if player.Character:FindFirstChild("HumanoidRootPart") then
-						mag = math.floor((player.Character.HumanoidRootPart.Position - plr.Character.HumanoidRootPart.Position).Magnitude)
+					local mag = math.floor((camera.CFrame.Position - GetChar(plr).HumanoidRootPart.Position).Magnitude)
+					local health = 100
+					local max = 100
+					if game.PlaceId ~= pids.pf then
+						health = math.floor(GetChar(plr):FindFirstChildOfClass("Humanoid").Health)
+						max = math.floor(GetChar(plr):FindFirstChildOfClass("Humanoid").MaxHealth)
 					end
-					local health = math.floor(plr.Character:FindFirstChildOfClass("Humanoid").Health)
-					local max = math.floor(plr.Character:FindFirstChildOfClass("Humanoid").MaxHealth)
-					if game.GameId == 111958650 then
+					if game.GameId == gids.arsenal then
 						health = plr.NRPBS.Health.Value
 						max = plr.NRPBS.MaxHealth.Value
 					end
@@ -318,7 +346,7 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 		elseif v.Type == "Skeleton" then
 			local skeleton = v.Object
 			if getgenv().UNIVERSALESP_VISIBLE and ss.Skeletons.Enabled and IsAlive(plr) and RigType(plr) == "R15" then
-				local _, inViewport = camera:WorldToViewportPoint(plr.Character.HumanoidRootPart.Position)
+				local _, inViewport = camera:WorldToViewportPoint(GetChar(plr).HumanoidRootPart.Position)
 				if inViewport then
 					local From = {
 						['UpperTorso'] = "Head",
@@ -351,11 +379,11 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 							v2.Visible = false
 						end
 
-						if plr.Character:FindFirstChild(i2) then
-							local vector1 = camera:WorldToViewportPoint(plr.Character:FindFirstChild(From[i2]).Position)
+						if game.PlaceId ~= pids.pf and GetChar(plr):FindFirstChild(i2) then
+							local vector1 = camera:WorldToViewportPoint(GetChar(plr):FindFirstChild(From[i2]).Position)
 							v2.From = Vector2.new(vector1.X,vector1.Y)
 
-							local vector2 = camera:WorldToViewportPoint(plr.Character[i2].Position)
+							local vector2 = camera:WorldToViewportPoint(GetChar(plr)[i2].Position)
 							v2.To = Vector2.new(vector2.X,vector2.Y)
 						end
 					end
@@ -379,12 +407,12 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 		elseif v.Type == "LookTracer" then
 			local tracer = v.Object
 			if getgenv().UNIVERSALESP_VISIBLE and ss.LookTracers.Enabled and IsAlive(plr) then
-				local vector, inViewport = camera:WorldToViewportPoint(plr.Character.Head.Position)
+				local vector, inViewport = camera:WorldToViewportPoint(GetChar(plr).Head.Position)
 				local params = RaycastParams.new()
-				params.FilterDescendantsInstances = {plr.Character}
+				params.FilterDescendantsInstances = {GetChar(plr)}
 				params.FilterType = Enum.RaycastFilterType.Blacklist
 				params.IgnoreWater = ss.LookTracers.IgnoreWater
-				local result = workspace:Raycast(plr.Character.Head.Position,plr.Character.Head.CFrame.LookVector * 500,params)
+				local result = workspace:Raycast(GetChar(plr).Head.Position,GetChar(plr).Head.CFrame.LookVector * 500,params)
 				if result ~= nil then
 					local vector2, inViewport2 = camera:WorldToViewportPoint(result.Position)
 					if inViewport and inViewport2 then
@@ -414,9 +442,9 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 			local bar = v.Object.Bar
 			local outline = v.Object.Outline
 			if getgenv().UNIVERSALESP_VISIBLE and ss.HealthBars.Enabled and IsAlive(plr) then
-				local hrp, inViewport = camera:WorldToViewportPoint(plr.Character.HumanoidRootPart.Position)
-				local head = camera:WorldToViewportPoint(plr.Character.Head.Position + Vector3.new(0,0.5,0))
-				local leg = camera:WorldToViewportPoint(plr.Character.HumanoidRootPart.Position - Vector3.new(0,3,0))
+				local hrp, inViewport = camera:WorldToViewportPoint(GetChar(plr).HumanoidRootPart.Position)
+				local head = camera:WorldToViewportPoint(GetChar(plr).Head.Position + Vector3.new(0,0.5,0))
+				local leg = camera:WorldToViewportPoint(GetChar(plr).HumanoidRootPart.Position - Vector3.new(0,3,0))
 
 				if inViewport then
 					local size = Vector2.new(1000 / hrp.Z,head.Y - leg.Y)
@@ -429,9 +457,13 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 					outline.Size = Vector2.new(5, (head.Y - leg.Y))
 					outline.Position = Vector2.new((hrp.X - size.X / 2) - 7, (hrp.Y - (bar.Size.Y / 2)) - 2)
 
-					local health = math.floor(plr.Character:FindFirstChildOfClass("Humanoid").Health)
-					local max = math.floor(plr.Character:FindFirstChildOfClass("Humanoid").MaxHealth)
-					if game.GameId == 111958650 then
+					local health = 100
+					local max = 100
+					if game.PlaceId ~= pids.pf then
+						health = math.floor(GetChar(plr):FindFirstChildOfClass("Humanoid").Health)
+						max = math.floor(GetChar(plr):FindFirstChildOfClass("Humanoid").MaxHealth)
+					end
+					if game.GameId == gids.arsenal then
 						health = plr.NRPBS.Health.Value
 						max = plr.NRPBS.MaxHealth.Value
 					end
@@ -512,7 +544,7 @@ function ValidOption(type,option)
 	return false
 end
 function esp:Toggle(type)
-	assert(ValidType(type),"Universal Esp: bad argument to #1 'Toggle' (Invalid Esp Type)")
+	assert(ValidType(type),"Universal Esp: bad argument to #1 'Toggle' (Invalid Type)")
 	if type == ("TeamCheck" or "AntiDetection") then
 		getgenv().EspSettings[type] = not getgenv().EspSettings[type]
 	else
@@ -520,7 +552,7 @@ function esp:Toggle(type)
 	end
 end
 function esp:Get(type,option)
-	assert(ValidType(type),"Universal Esp: bad argument to #1 'Get' (Invalid Esp Type)")
+	assert(ValidType(type),"Universal Esp: bad argument to #1 'Get' (Invalid Type)")
 	assert(ValidOption(type,option),"Universal Esp: bad argument to #2 'Get' (Invalid Option)")
 	if type == "Other" then
 		return getgenv().EspSettings[option]
@@ -528,7 +560,7 @@ function esp:Get(type,option)
 	return getgenv().EspSettings[type][option]
 end
 function esp:Set(type,option,value)
-	assert(ValidType(type),"Universal Esp: bad argument to #1 'Set' (Invalid Esp Type)")
+	assert(ValidType(type),"Universal Esp: bad argument to #1 'Set' (Invalid Type)")
 	assert(ValidOption(type,option),"Universal Esp: bad argument to #2 'Set' (Invalid Option)")
 	assert(value ~= nil,"Universal Esp: bad argument to #3 'Set'")
 	if type == "Other" then
