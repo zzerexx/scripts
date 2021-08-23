@@ -100,6 +100,8 @@ if game.PlaceId == pids.pf then
 	for i,v in next, getgc(true) do
 		if typeof(v) == "table" and rawget(v,"getbodyparts") then
 			getchar = rawget(v,"getbodyparts")
+		elseif typeof(v) == "table" and rawget(v,"getplayerhealth") then
+			gethealth = rawget(v,"getplayerhealth")
 		end
 	end
 end
@@ -127,6 +129,16 @@ function GetChar(plr)
 		return plr.Character
 	end
 	return nil
+end
+function GetHealth(plr)
+	if game.PlaceId == pids.pf then
+		return {math.floor(gethealth(plr,plr)),100}
+	elseif game.GameId == gids.arsenal then
+		return {math.floor(plr.NRPBS.Health.Value),math.floor(plr.NRPBS.MaxHealth.Value)}
+	elseif plr.Character ~= nil and plr.Character:FindFirstChildOfClass("Humanoid") then
+		return {math.floor(plr.Character.Humanoid.Health),math.floor(plr.Character.Humanoid.MaxHealth)}
+	end
+	return {100,100}
 end
 function Box(plr)
 	ss = getgenv().EspSettings
@@ -309,26 +321,17 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 						name.Visible = true
 					end
 					local mag = math.floor((camera.CFrame.Position - GetChar(plr).HumanoidRootPart.Position).Magnitude)
-					local health = 100
-					local max = 100
-					if game.PlaceId ~= pids.pf then
-						health = math.floor(GetChar(plr):FindFirstChildOfClass("Humanoid").Health)
-						max = math.floor(GetChar(plr):FindFirstChildOfClass("Humanoid").MaxHealth)
-					end
-					if game.GameId == gids.arsenal then
-						health = plr.NRPBS.Health.Value
-						max = plr.NRPBS.MaxHealth.Value
-					end
+					local health = GetHealth(plr)
 					local plrname = plr.Name
 					if ss.Names.UseDisplayName then
 						plrname = plr.DisplayName
 					end
 					if ss.Names.ShowDistance and ss.Names.ShowHealth then
-						name.Text = plrname.." [ "..mag.." ] [ "..health.."/"..max.." ]"
+						name.Text = plrname.." [ "..mag.." ] [ "..health[1].."/"..health[2].." ]"
 					elseif ss.Names.ShowDistance then
 						name.Text = plrname.." [ "..mag.." ]"
 					elseif ss.Names.ShowHealth then
-						name.Text = plrname.." [ "..health.."/"..max.." ]"
+						name.Text = plrname.." [ "..health[1].."/"..health[2].." ]"
 					else
 						name.Text = plrname
 					end
@@ -457,17 +460,8 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 					outline.Size = Vector2.new(5, (head.Y - leg.Y))
 					outline.Position = Vector2.new((hrp.X - size.X / 2) - 7, (hrp.Y - (bar.Size.Y / 2)) - 2)
 
-					local health = 100
-					local max = 100
-					if game.PlaceId ~= pids.pf then
-						health = math.floor(GetChar(plr):FindFirstChildOfClass("Humanoid").Health)
-						max = math.floor(GetChar(plr):FindFirstChildOfClass("Humanoid").MaxHealth)
-					end
-					if game.GameId == gids.arsenal then
-						health = plr.NRPBS.Health.Value
-						max = plr.NRPBS.MaxHealth.Value
-					end
-					bar.Size = Vector2.new(3, ((head.Y - leg.Y) - 4) * (health / max))
+					local health = GetHealth(plr)
+					bar.Size = Vector2.new(3, ((head.Y - leg.Y) - 4) * (health[1] / health[2]))
 					bar.Position = Vector2.new((hrp.X - size.X / 2) -6, (hrp.Y - (bar.Size.Y / 2)) - (bar.Size.Y / 1000))
 
 					if ss.TeamCheck and plr.Team == player.Team then
