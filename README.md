@@ -82,7 +82,7 @@ basically just the developer console
 F9 to toggle  
 
 # Synapse to Script-Ware  
-Updated August 10, 2021  
+Updated August 25, 2021  
 Allows you to use Synapse functions on Script-Ware!  
   
 **Loader**  
@@ -182,7 +182,7 @@ printconsole
 ```  
   
 # Synapse to Krnl
-Updated August 10, 2021  
+Updated August 25, 2021  
 Allows you to use Synapse functions on Krnl!  
   
 **Loader**  
