@@ -1,6 +1,7 @@
 if not getgenv().AimbotSettings then
 	getgenv().AimbotSettings = {
 		Aimbot = {
+			Enabled = true,
 			TargetPart = "Head",
 			VisibleCheck = true,
 			Use_mousemoverel = true,
@@ -8,6 +9,7 @@ if not getgenv().AimbotSettings then
 			Keybind = Enum.UserInputType.MouseButton2, -- Must be a UserInputType or KeyCode
 			AimType = "Hold", -- "Hold" or "Toggle"
 			AlwaysActive = false,
+			ToggleKey = Enum.KeyCode.RightShift,
 		},
 		FovCircle = {
 			Enabled = true,
@@ -134,6 +136,8 @@ UIS.InputBegan:Connect(function(i,gp)
 		end
 	elseif i.KeyCode == Enum.KeyCode.RightBracket then
 		ss.TeamCheck = not ss.TeamCheck
+	elseif i.KeyCode == ss.Aimbot.ToggleKey then
+		ss.Aimbot.Enabled = not ss.Aimbot.Enabled
 	end
 end)
 UIS.InputEnded:Connect(function(i,gp)
@@ -199,7 +203,7 @@ function ValidOption(type,option)
 	return false
 end
 function aimbot:Toggle(type)
-	assert(ValidType(type),"Universal Aimbot: bad argument to #1 'Toggle' (Invalid Aimbot Type)")
+	assert(ValidType(type),"Universal Aimbot: bad argument to #1 'Toggle' (Invalid Type)")
 	if type == ("Whitelisted" or "Ignore") then
 		getgenv().AimbotSettings[type] = not getgenv().AimbotSettings[type]
 	else
@@ -207,7 +211,7 @@ function aimbot:Toggle(type)
 	end
 end
 function aimbot:Get(type,option)
-	assert(ValidType(type),"Universal Aimbot: bad argument to #1 'Get' (Invalid Aimbot Type)")
+	assert(ValidType(type),"Universal Aimbot: bad argument to #1 'Get' (Invalid Type)")
 	assert(ValidOption(type,option),"Universal Aimbot: bad argument to #2 'Get' (Invalid Option)")
 	if type == "Other" then
 		return getgenv().AimbotSettings[option]
@@ -215,7 +219,7 @@ function aimbot:Get(type,option)
 	return getgenv().AimbotSettings[type][option]
 end
 function aimbot:Set(type,option,value)
-	assert(ValidType(type),"Universal Aimbot: bad argument to #1 'Set' (Invalid Aimbot Type)")
+	assert(ValidType(type),"Universal Aimbot: bad argument to #1 'Set' (Invalid Type)")
 	assert(ValidOption(type,option),"Universal Aimbot: bad argument to #2 'Set' (Invalid Option)")
 	assert(value ~= nil,"Universal Aimbot: bad argument to #3 'Set'")
 	if type == "Other" then
