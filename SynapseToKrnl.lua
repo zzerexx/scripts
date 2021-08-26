@@ -2,23 +2,19 @@ if getgenv().SYNTOKRNL_LOADED then return end
 local protected = {}
 local oldnc
 oldnc = hookmetamethod(game,"__namecall",function(...) -- protect_gui thing
-    local args = {...}
-    if args[1] == game and getnamecallmethod() == "FindFirstChild" and args[3] == true then
+	local args = {...}
+	if args[1] == game and getnamecallmethod() == "FindFirstChild" and args[3] == true then
 		if table.find(protected,args[2]) then
-			return false
+			return nil
 		end
-    end
-    return oldnc(...)
+	end
+	return oldnc(...)
 end)
 
 local functions = {
 	['syn_websocket_connect'] = WebSocket.connect,
-	['syn_websocket_send'] = function(socket,msg)
-		socket:Send(msg)	
-	end,
-	['syn_websocket_close'] = function(socket)
-		socket:Close()	
-	end,
+	['syn_websocket_send'] = WebSocket.Send,
+	['syn_websocket_close'] = WebSocket.Close,
 	
 	['syn_io_read'] = readfile,
 	['syn_io_write'] = writefile,
@@ -73,7 +69,7 @@ local functions = {
 }
 
 for i,v in next, functions do
-    getgenv()[i] = v
+	getgenv()[i] = v
 end
 
 getgenv().syn = {
@@ -82,13 +78,11 @@ getgenv().syn = {
 	['write_clipboard'] = setclipboard,
 	['queue_on_teleport'] = queue_on_teleport,
 	['protect_gui'] = function(obj)
-		if typeof(obj) ~= "Instance" then
-        	error("Attempted to protect a "..typeof(obj))
-    	end
+		assert(typeof(obj) == "Instance","bad argument #1 to 'protect_gui' (Instance expected, got "..typeof(obj)..")")
 		table.insert(protected,obj)
-    	for i,v in next, obj:GetDescendants() do
-        	table.insert(protected,v)
-    	end
+		for i,v in next, obj:GetDescendants() do
+			table.insert(protected,v)
+		end
 		local c
 		c = obj.DescendantAdded:Connect(function(d)
 			if table.find(protected,obj) then
@@ -99,9 +93,8 @@ getgenv().syn = {
 		end)
 	end,
 	['unprotect_gui'] = function(obj)
-		if typeof(obj) ~= "Instance" then
-        	error("Attempted to unprotect a "..typeof(obj))
-    	end
+		assert(table.find(protected,obj) ~= nil,obj.." is already protected")
+		assert(typeof(obj) == "Instance","bad argument #1 to 'unprotect_gui' (Instance expected, got "..typeof(obj)..")")
 		table.remove(protected,table.find(protected,obj))
 		for i,v in next, obj:GetDescendants() do
 			if table.find(protected,v) then
