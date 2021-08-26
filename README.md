@@ -57,14 +57,14 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/
 ```  
   
 # Universal Aimbot  
-Updated August 10, 2021  
-v1.1.1  
+Updated August 25, 2021  
+v1.1.2  
 ```
 https://pastebin.com/raw/nwqE7v07
 ```  
   
-## Update v1.1.1  
-Added some new functions that help developers, read `UniversalEspDocs.md`!  
+## Update v1.1.2  
+Aimbot is now toggleable.  
   
 # More Color3  
 Updated July 25, 2021  
