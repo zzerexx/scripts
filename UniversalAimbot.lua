@@ -176,7 +176,7 @@ getgenv().AIMBOT_RS = RunService.RenderStepped:Connect(function()
 	if ads or ss.Aimbot.AlwaysActive then
 		local plr = ClosestPlayer()
 		if plr ~= nil then
-			if IsVisible(plr) and InFov(plr) and not IsWhitelisted(plr) and plr.Character:FindFirstChild(ss.Aimbot.TargetPart) then
+			if ss.Aimbot.Enabled and IsVisible(plr) and InFov(plr) and not IsWhitelisted(plr) and plr.Character:FindFirstChild(ss.Aimbot.TargetPart) then
 				if ss.Aimbot.Use_mousemoverel then
 					local vector = camera:WorldToViewportPoint(plr.Character[ss.Aimbot.TargetPart].Position)
 					mousemoverel(vector.X - mouse.X,vector.Y - mouse.Y)
