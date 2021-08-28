@@ -191,13 +191,13 @@ end)
 local aimbot = {}
 
 function ValidType(type)
-	if getgenv().AimbotSettings[type] then
+	if type == "Other" or getgenv().AimbotSettings[type] ~= nil then
 		return true
 	end
 	return false
 end
 function ValidOption(type,option)
-	if getgenv().AimbotSettings[type][option] then
+	if type == "Other" or getgenv().AimbotSettings[type][option] ~= nil then
 		return true
 	end
 	return false
