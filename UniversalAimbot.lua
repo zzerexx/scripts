@@ -1,15 +1,16 @@
 if not getgenv().AimbotSettings then
 	getgenv().AimbotSettings = {
 		Aimbot = {
-			Enabled = true,
+            Enabled = true,
 			TargetPart = "Head",
 			VisibleCheck = true,
 			Use_mousemoverel = true,
+			Strength = 100, -- 0% - 100%
 			TeamCheck = true, -- Press ] to toggle
 			Keybind = Enum.UserInputType.MouseButton2, -- Must be a UserInputType or KeyCode
 			AimType = "Hold", -- "Hold" or "Toggle"
 			AlwaysActive = false,
-			ToggleKey = Enum.KeyCode.RightShift,
+            ToggleKey = Enum.KeyCode.RightShift,
 		},
 		FovCircle = {
 			Enabled = true,
@@ -136,8 +137,8 @@ UIS.InputBegan:Connect(function(i,gp)
 		end
 	elseif i.KeyCode == Enum.KeyCode.RightBracket then
 		ss.TeamCheck = not ss.TeamCheck
-	elseif i.KeyCode == ss.Aimbot.ToggleKey then
-		ss.Aimbot.Enabled = not ss.Aimbot.Enabled
+    elseif i.KeyCode == ss.Aimbot.ToggleKey then
+        ss.Aimbot.Enabled = not ss.Aimbot.Enabled
 	end
 end)
 UIS.InputEnded:Connect(function(i,gp)
@@ -179,7 +180,8 @@ getgenv().AIMBOT_RS = RunService.RenderStepped:Connect(function()
 			if ss.Aimbot.Enabled and IsVisible(plr) and InFov(plr) and not IsWhitelisted(plr) and plr.Character:FindFirstChild(ss.Aimbot.TargetPart) then
 				if ss.Aimbot.Use_mousemoverel then
 					local vector = camera:WorldToViewportPoint(plr.Character[ss.Aimbot.TargetPart].Position)
-					mousemoverel(vector.X - mouse.X,vector.Y - mouse.Y)
+					ss.Aimbot.Strength = math.clamp(ss.Aimbot.Strength,0,100)
+					mousemoverel((vector.X - mouse.X) * (0 + (ss.Aimbot.Strength / 100)),(vector.Y - mouse.Y) * (0 + (ss.Aimbot.Strength / 100)))
 				else
 					camera.CFrame = CFrame.new(camera.CFrame.Position,plr.Character[ss.Aimbot.TargetPart].Position)
 				end
