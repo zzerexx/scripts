@@ -1,7 +1,7 @@
 if not getgenv().AimbotSettings then
 	getgenv().AimbotSettings = {
 		Aimbot = {
-            Enabled = true,
+			Enabled = true,
 			TargetPart = "Head",
 			VisibleCheck = true,
 			Use_mousemoverel = true,
@@ -10,7 +10,7 @@ if not getgenv().AimbotSettings then
 			Keybind = Enum.UserInputType.MouseButton2, -- Must be a UserInputType or KeyCode
 			AimType = "Hold", -- "Hold" or "Toggle"
 			AlwaysActive = false,
-            ToggleKey = Enum.KeyCode.RightShift,
+			ToggleKey = Enum.KeyCode.RightShift,
 		},
 		FovCircle = {
 			Enabled = true,
