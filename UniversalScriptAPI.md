@@ -26,7 +26,7 @@ Example
 print(esp:Get("Boxes","Transparency"))
 print(aimbot:Get("Aimbot","TargetPart"))
 ```  
-`type` must be a valid type. 
+`type` must be a valid type.  
 `option` must be a valid option.  
   
 ## Set Option Value  
