@@ -67,7 +67,7 @@ function ClosestPlayer()
 			local vector, inViewport = camera:WorldToViewportPoint(v.Character.HumanoidRootPart.Position)
 			if inViewport then
 				local mag = (Vector2.new(mouse.X,mouse.Y) - Vector2.new(vector.X,vector.Y)).Magnitude
-				if mag < closest and ((player.Team ~= nil and v.Team ~= player.Team) or (ss.TeamCheck or player.Team == nil)) then
+				if mag < closest and ((player.Team ~= nil and v.Team ~= player.Team) or (ss.Aimbot.TeamCheck or player.Team == nil)) then
 					plr = v
 					closest = mag
 				end
