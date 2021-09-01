@@ -136,9 +136,9 @@ UIS.InputBegan:Connect(function(i,gp)
 			ads = true
 		end
 	elseif i.KeyCode == Enum.KeyCode.RightBracket then
-		ss.TeamCheck = not ss.TeamCheck
-    elseif i.KeyCode == ss.Aimbot.ToggleKey then
-        ss.Aimbot.Enabled = not ss.Aimbot.Enabled
+		ss.Aimbot.TeamCheck = not ss.Aimbot.TeamCheck
+    	elseif i.KeyCode == ss.Aimbot.ToggleKey then
+        	ss.Aimbot.Enabled = not ss.Aimbot.Enabled
 	end
 end)
 UIS.InputEnded:Connect(function(i,gp)
