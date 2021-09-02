@@ -26,10 +26,10 @@ if not getgenv().EspSettings then
 			Size = 18,
 			Outline = true,
 			OutlineColor = Color3.fromRGB(0,0,0),
-			Offset = Vector3.new(0,2,0),
 			ShowDistance = false,
 			ShowHealth = false,
 			UseDisplayName = false,
+			Position = "Top", -- "Top" or "Bottom"
 		},
 		Skeletons = {
 			Enabled = true,
@@ -88,20 +88,31 @@ local RunService = game:GetService("RunService")
 local ss = getgenv().EspSettings
 getgenv().UNIVERSALESP_OBJECTS = {}
 getgenv().UNIVERSALESP_VISIBLE = true
-local bodyparts = {"Head","UpperTorso","LowerTorso","LeftUpperArm","LeftLowerArm","LeftHand","RightUpperArm","RightLowerArm","RightHand","LeftUpperLeg","LeftLowerLeg","LeftFoot","RightUpperLeg","RightLowerLeg","RightFoot","Torso","Left Arm","Right Arm","Left Leg","Right Leg"}
+local bodyparts = {
+	"Head","UpperTorso","LowerTorso","LeftUpperArm","LeftLowerArm","LeftHand","RightUpperArm","RightLowerArm","RightHand","LeftUpperLeg","LeftLowerLeg","LeftFoot","RightUpperLeg","RightLowerLeg","RightFoot",
+	"Torso","Left Arm","Right Arm","Left Leg","Right Leg",
+	"Chest","Hips","LeftArm","LeftForearm","RightArm","RightForearm","LeftLeg","LeftForeleg","RightLeg","RightForeleg"
+}
 local pids = { -- place ids
-	['pf'] = 292439477
+	['pf'] = 292439477,
+	['bb'] = 3233893879,
 }
 local gids = { -- game ids
 	['arsenal'] = 111958650
 }
 
 if game.PlaceId == pids.pf then
-	for i,v in next, getgc(true) do
+	for _,v in next, getgc(true) do
 		if typeof(v) == "table" and rawget(v,"getbodyparts") then
 			getchar = rawget(v,"getbodyparts")
 		elseif typeof(v) == "table" and rawget(v,"getplayerhealth") then
 			gethealth = rawget(v,"getplayerhealth")
+		end
+	end
+elseif game.PlaceId == pids.bb then
+	for _,v in next, getgc(true) do
+		if typeof(v) == "table" and rawget(v,"InitProjectile") and v.TS then
+			ts = v.TS
 		end
 	end
 end
@@ -113,11 +124,15 @@ function IsAlive(plr)
 		if plr and plr ~= player and getchar(plr) ~= nil then
 			return true
 		end
+	elseif game.PlaceId == pids.bb then
+		if plr and plr ~= player and ts.Characters:GetCharacter(plr) ~= nil and ts.Characters:GetCharacter(plr):FindFirstChild("Health") and ts.Characters:GetCharacter(plr).Health.Value > 0 then
+			return true
+		end
 	end
 	return false
 end
 function RigType(plr)
-	if game.PlaceId ~= pids.pf and plr.Character:FindFirstChild("UpperTorso") and plr.Character:FindFirstChild("LowerTorso") and plr.Character:FindFirstChild("LeftUpperArm") and plr.Character:FindFirstChild("LeftLowerArm") and plr.Character:FindFirstChild("LeftHand") and plr.Character:FindFirstChild("RightUpperArm") and plr.Character:FindFirstChild("RightLowerArm") and plr.Character:FindFirstChild("RightHand") and plr.Character:FindFirstChild("LeftUpperLeg") and plr.Character:FindFirstChild("LeftLowerLeg") and plr.Character:FindFirstChild("LeftFoot") and plr.Character:FindFirstChild("RightUpperLeg") and plr.Character:FindFirstChild("RightLowerLeg") and plr.Character:FindFirstChild("RightFoot") then
+	if game.PlaceId ~= pids.pf and game.PlaceId ~= pids.bb and plr.Character:FindFirstChild("UpperTorso") and plr.Character:FindFirstChild("LowerTorso") and plr.Character:FindFirstChild("LeftUpperArm") and plr.Character:FindFirstChild("LeftLowerArm") and plr.Character:FindFirstChild("LeftHand") and plr.Character:FindFirstChild("RightUpperArm") and plr.Character:FindFirstChild("RightLowerArm") and plr.Character:FindFirstChild("RightHand") and plr.Character:FindFirstChild("LeftUpperLeg") and plr.Character:FindFirstChild("LeftLowerLeg") and plr.Character:FindFirstChild("LeftFoot") and plr.Character:FindFirstChild("RightUpperLeg") and plr.Character:FindFirstChild("RightLowerLeg") and plr.Character:FindFirstChild("RightFoot") then
 		return "R15"
 	end
 	return "R6"
@@ -125,6 +140,8 @@ end
 function GetChar(plr)
 	if game.PlaceId == pids.pf then
 		return getchar(plr).rootpart.Parent
+	elseif game.PlaceId == pids.bb then
+		return ts.Characters:GetCharacter(plr).Body
 	elseif plr.Character ~= nil then
 		return plr.Character
 	end
@@ -133,12 +150,26 @@ end
 function GetHealth(plr)
 	if game.PlaceId == pids.pf then
 		return {math.floor(gethealth(plr,plr)),100}
+	elseif game.PlaceId == pids.bb then 
+		return {math.floor(ts.Characters:GetCharacter(plr).Health.Value),math.floor(ts.Characters:GetCharacter(plr).Health.MaxHealth.Value)}
 	elseif game.GameId == gids.arsenal then
 		return {math.floor(plr.NRPBS.Health.Value),math.floor(plr.NRPBS.MaxHealth.Value)}
 	elseif plr.Character ~= nil and plr.Character:FindFirstChildOfClass("Humanoid") then
 		return {math.floor(plr.Character.Humanoid.Health),math.floor(plr.Character.Humanoid.MaxHealth)}
 	end
 	return {100,100}
+end
+function GetTeam(plr)
+	if game.PlaceId == pids.bb then
+		for i,v in next, game:GetService("Teams"):GetChildren() do
+			if not v.Players:FindFirstChild(plr.Name) then
+				return v.Name
+			end
+		end
+	else
+		return plr.Team
+	end
+	return nil
 end
 function Box(plr)
 	ss = getgenv().EspSettings
@@ -176,6 +207,7 @@ end
 function Skeleton(plr)
 	ss = getgenv().EspSettings
 	local objects = {
+		-- R15
 		UpperTorso = Drawing.new("Line"),
 		LowerTorso = Drawing.new("Line"),
 		LeftUpperArm = Drawing.new("Line"),
@@ -190,12 +222,23 @@ function Skeleton(plr)
 		RightUpperLeg = Drawing.new("Line"),
 		RightLowerLeg = Drawing.new("Line"),
 		RightFoot = Drawing.new("Line"),
-
+		-- R6
 		Torso = Drawing.new("Line"),
 		["Left Arm"] = Drawing.new("Line"),
 		["Right Arm"] = Drawing.new("Line"),
 		["Left Leg"] = Drawing.new("Line"),
-		["Right Leg"] = Drawing.new("Line")
+		["Right Leg"] = Drawing.new("Line"),
+		-- bad business
+		Chest = Drawing.new("Line"),
+		Hips = Drawing.new("Line"),
+		LeftArm = Drawing.new("Line"),
+		LeftForearm = Drawing.new("Line"),
+		RightArm = Drawing.new("Line"),
+		RightForearm = Drawing.new("Line"),
+		LeftLeg = Drawing.new("Line"),
+		LeftForeleg = Drawing.new("Line"),
+		RightLeg = Drawing.new("Line"),
+		RightForeleg = Drawing.new("Line"),
 	}
 	for i,v in next, objects do
 		v.Visible = false
@@ -239,16 +282,21 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 		if v.Type == "Box" then
 			local box = v.Object
 			if getgenv().UNIVERSALESP_VISIBLE and ss.Boxes.Enabled and IsAlive(plr) then
-				local hrp, inViewport = camera:WorldToViewportPoint(GetChar(plr).HumanoidRootPart.Position)
+				local hrp, inViewport
 				local head = camera:WorldToViewportPoint(GetChar(plr).Head.Position + Vector3.new(0,0.5,0))
-				local leg = camera:WorldToViewportPoint(GetChar(plr).HumanoidRootPart.Position - Vector3.new(0,3,0))
+				local leg = camera:WorldToViewportPoint(GetChar(plr).Parent.Root.Position - Vector3.new(0,5.25,0))
+				if game.PlaceId == pids.bb then
+					hrp, inViewport = camera:WorldToViewportPoint(GetChar(plr).Parent.Root.Position)
+				else
+					hrp, inViewport = camera:WorldToViewportPoint(GetChar(plr).HumanoidRootPart.Position)
+				end
 
 				if inViewport then
 					box.Transparency = ss.Boxes.Transparency
 					box.Size = Vector2.new(1000 / hrp.Z, head.Y - leg.Y)
 					box.Position = Vector2.new(hrp.X - box.Size.X / 2, hrp.Y - (box.Size.Y / 2))
 
-					if ss.TeamCheck and plr.Team == player.Team then
+					if ss.TeamCheck and GetTeam(plr) == GetTeam(player) then
 						box.Visible = false
 					else
 						box.Visible = true
@@ -258,6 +306,13 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 				end
 				if ss.Boxes.UseTeamColor then
 					box.Color = plr.TeamColor.Color
+					if game.PlaceId == pids.bb then
+						if GetTeam(plr) == "Omega" then
+							box.Color = Color3.fromRGB(255,116,38)
+						elseif GetTeam(plr) == "Beta" then
+							box.Color = Color3.fromRGB(38,125,255)
+						end
+					end
 				else
 					box.Color = ss.Boxes.Color
 				end
@@ -267,7 +322,12 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 		elseif v.Type == "Tracer" then
 			local tracer = v.Object
 			if getgenv().UNIVERSALESP_VISIBLE and ss.Tracers.Enabled and IsAlive(plr) then
-				local vector, inViewport = camera:WorldToViewportPoint(GetChar(plr).HumanoidRootPart.Position)
+				local vector, inViewport
+				if game.PlaceId == pids.bb then
+					vector, inViewport = camera:WorldToViewportPoint(GetChar(plr).Parent.Root.Position)
+				else
+					vector, inViewport = camera:WorldToViewportPoint(GetChar(plr).HumanoidRootPart.Position)
+				end
 				
 				local top = Vector2.new(camera.ViewportSize.X / 2, 0)
 				local center = Vector2.new(camera.ViewportSize.X / 2,camera.ViewportSize.Y / 2)
@@ -288,7 +348,7 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 					tracer.From = origin
 					tracer.To = Vector2.new(vector.X,vector.Y)
 	
-					if ss.TeamCheck and plr.Team == player.Team then
+					if ss.TeamCheck and GetTeam(plr) == GetTeam(player) then
 						tracer.Visible = false
 					else
 						tracer.Visible = true
@@ -298,6 +358,13 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 				end
 				if ss.Tracers.UseTeamColor then
 					tracer.Color = plr.TeamColor.Color
+					if game.PlaceId == pids.bb then
+						if GetTeam(plr) == "Omega" then
+							tracer.Color = Color3.fromRGB(255,116,38)
+						elseif GetTeam(plr) == "Beta" then
+							tracer.Color = Color3.fromRGB(38,125,255)
+						end
+					end
 				else
 					tracer.Color = ss.Tracers.Color
 				end
@@ -307,20 +374,33 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 		elseif v.Type == "Name" then
 			local name = v.Object
 			if getgenv().UNIVERSALESP_VISIBLE and ss.Names.Enabled and IsAlive(plr) then
-				local vector, inViewport = camera:WorldToViewportPoint(GetChar(plr).Head.Position + ss.Names.Offset)
+				local hrp, inViewport
+				local head = camera:WorldToViewportPoint(GetChar(plr).Head.Position + Vector3.new(0,0.5,0))
+				local leg = camera:WorldToViewportPoint(GetChar(plr).Parent.Root.Position - Vector3.new(0,3,0))
+				if game.PlaceId == pids.bb then
+					hrp, inViewport = camera:WorldToViewportPoint(GetChar(plr).Parent.Root.Position)
+				else
+					hrp, inViewport = camera:WorldToViewportPoint(GetChar(plr).HumanoidRootPart.Position)
+				end
+				local size = Vector2.new(1000 / hrp.Z, head.Y - leg.Y)
 				if inViewport then
 					name.Transparency = ss.Names.Transparency
 					name.Size = ss.Names.Size
 					name.Outline = ss.Names.Outline
 					name.OutlineColor = ss.Names.OutlineColor
-					name.Position = Vector2.new(vector.X,vector.Y)
+					name.Position = Vector2.new((hrp.X - size.X / 2) + size.X / 2, (hrp.Y - (size.Y / 2)) - 10)
 					name.Font = ss.Names.Font
-					if ss.TeamCheck and plr.Team == player.Team then
+					if ss.TeamCheck and GetTeam(plr) == GetTeam(player) then
 						name.Visible = false
 					else
 						name.Visible = true
 					end
-					local mag = math.floor((camera.CFrame.Position - GetChar(plr).HumanoidRootPart.Position).Magnitude)
+					local mag
+					if game.PlaceId == pids.bb then
+						mag = math.floor((camera.CFrame.Position - GetChar(plr).Parent.Root.Position).Magnitude)
+					else
+						mag = math.floor((camera.CFrame.Position - GetChar(plr).HumanoidRootPart.Position).Magnitude)
+					end
 					local health = GetHealth(plr)
 					local plrname = plr.Name
 					if ss.Names.UseDisplayName then
@@ -340,6 +420,13 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 				end
 				if ss.Names.UseTeamColor then
 					name.Color = plr.TeamColor.Color
+					if game.PlaceId == pids.bb then
+						if GetTeam(plr) == "Omega" then
+							name.Color = Color3.fromRGB(255,116,38)
+						elseif GetTeam(plr) == "Beta" then
+							name.Color = Color3.fromRGB(38,125,255)
+						end
+					end
 				else
 					name.Color = ss.Names.Color
 				end
@@ -348,8 +435,13 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 			end
 		elseif v.Type == "Skeleton" then
 			local skeleton = v.Object
-			if getgenv().UNIVERSALESP_VISIBLE and ss.Skeletons.Enabled and IsAlive(plr) and RigType(plr) == "R15" then
-				local _, inViewport = camera:WorldToViewportPoint(GetChar(plr).HumanoidRootPart.Position)
+			if getgenv().UNIVERSALESP_VISIBLE and ss.Skeletons.Enabled and IsAlive(plr) and (RigType(plr) == "R15" or game.PlaceId == pids.bb) then
+				local _, inViewport
+				if game.PlaceId == pids.bb then
+					_, inViewport = camera:WorldToViewportPoint(GetChar(plr).Parent.Root.Position)
+				else
+					_, inViewport = camera:WorldToViewportPoint(GetChar(plr).HumanoidRootPart.Position)
+				end
 				if inViewport then
 					local From = {
 						['UpperTorso'] = "Head",
@@ -372,13 +464,35 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 						['Right Arm'] = "Torso",
 						['Left Leg'] = "Torso",
 						['Right Leg'] = "Torso",
+
+						-- bad business
+						['Chest'] = "Head",
+						['Hips'] = "Chest",
+						['LeftArm'] = "Chest",
+						['LeftForearm'] = "LeftArm",
+						--['LeftHand'] = "LeftForearm",
+						['RightArm'] = "Chest",
+						['RightForearm'] = "RightArm",
+						--['RightHand'] = "RightForearm",
+						['LeftLeg'] = "Hips",
+						['LeftForeleg'] = "LeftLeg",
+						--['LeftFoot'] = "LeftForeleg",
+						['RightLeg'] = "Hips",
+						['RightForeleg'] = "RightLeg",
+						--['RightFoot'] = "RightForeleg",
 					}
+					if game.PlaceId == pids.bb then
+						From['LeftHand'] = "LeftForearm"
+						From['RightHand'] = "RightForearm"
+						From['LeftFoot'] = "LeftForeleg"
+						From['RightFoot'] = "RightForeleg"
+					end
 					for i2,v2 in next, skeleton do
 						v2.Visible = true
 						v2.Transparency = ss.Skeletons.Transparency
 						v2.Color = ss.Skeletons.Color
 						v2.Thickness = ss.Skeletons.Thickness
-						if ss.TeamCheck and plr.Team == player.Team then
+						if ss.TeamCheck and GetTeam(plr) == GetTeam(player) then
 							v2.Visible = false
 						end
 
@@ -389,17 +503,22 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 							local vector2 = camera:WorldToViewportPoint(GetChar(plr)[i2].Position)
 							v2.To = Vector2.new(vector2.X,vector2.Y)
 						end
+						if ss.Skeletons.UseTeamColor then
+							v2.Color = plr.TeamColor.Color
+							if game.PlaceId == pids.bb then
+								if GetTeam(plr) == "Omega" then
+									v2.Color = Color3.fromRGB(255,116,38)
+								elseif GetTeam(plr) == "Beta" then
+									v2.Color = Color3.fromRGB(38,125,255)
+								end
+							end
+						else
+							v2.Color = ss.Skeletons.Color
+						end
 					end
 				else
 					for _,v2 in next, skeleton do
 						v2.Visible = false
-					end
-				end
-				for _,v2 in next, skeleton do
-					if ss.Skeletons.UseTeamColor then
-						v2.Color = plr.TeamColor.Color
-					else
-						v2.Color = ss.Skeletons.Color
 					end
 				end
 			else
@@ -424,7 +543,7 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 						tracer.From = Vector2.new(vector.X,vector.Y)
 						tracer.To = Vector2.new(vector2.X,vector2.Y)
 		
-						if ss.TeamCheck and plr.Team == player.Team then
+						if ss.TeamCheck and GetTeam(plr) == GetTeam(player) then
 							tracer.Visible = false
 						else
 							tracer.Visible = true
@@ -434,6 +553,13 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 					end
 					if ss.LookTracers.UseTeamColor then
 						tracer.Color = plr.TeamColor.Color
+						if game.PlaceId == pids.bb then
+							if GetTeam(plr) == "Omega" then
+								tracer.Color = Color3.fromRGB(255,116,38)
+							elseif GetTeam(plr) == "Beta" then
+								tracer.Color = Color3.fromRGB(38,125,255)
+							end
+						end
 					else
 						tracer.Color = ss.LookTracers.Color
 					end
@@ -445,9 +571,14 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 			local bar = v.Object.Bar
 			local outline = v.Object.Outline
 			if getgenv().UNIVERSALESP_VISIBLE and ss.HealthBars.Enabled and IsAlive(plr) then
-				local hrp, inViewport = camera:WorldToViewportPoint(GetChar(plr).HumanoidRootPart.Position)
+				local hrp, inViewport
 				local head = camera:WorldToViewportPoint(GetChar(plr).Head.Position + Vector3.new(0,0.5,0))
-				local leg = camera:WorldToViewportPoint(GetChar(plr).HumanoidRootPart.Position - Vector3.new(0,3,0))
+				local leg = camera:WorldToViewportPoint(GetChar(plr).Parent.Root.Position - Vector3.new(0,3,0))
+				if game.PlaceId == pids.bb then
+					hrp, inViewport = camera:WorldToViewportPoint(GetChar(plr).Parent.Root.Position)
+				else
+					hrp, inViewport = camera:WorldToViewportPoint(GetChar(plr).HumanoidRootPart.Position)
+				end
 
 				if inViewport then
 					local size = Vector2.new(1000 / hrp.Z,head.Y - leg.Y)
@@ -464,7 +595,7 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 					bar.Size = Vector2.new(3, ((head.Y - leg.Y) - 4) * (health[1] / health[2]))
 					bar.Position = Vector2.new((hrp.X - size.X / 2) -6, (hrp.Y - (bar.Size.Y / 2)) - (bar.Size.Y / 1000))
 
-					if ss.TeamCheck and plr.Team == player.Team then
+					if ss.TeamCheck and GetTeam(plr) == GetTeam(player) then
 						bar.Visible = false
 						outline.Visible = false
 					else
@@ -473,6 +604,13 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 					end
 					if ss.HealthBars.UseTeamColor then
 						outline.Color = plr.TeamColor.Color
+						if game.PlaceId == pids.bb then
+							if GetTeam(plr) == "Omega" then
+								outline.Color = Color3.fromRGB(255,116,38)
+							elseif GetTeam(plr) == "Beta" then
+								outline.Color = Color3.fromRGB(38,125,255)
+							end
+						end
 					else
 						outline.Color = ss.HealthBars.OutlineColor
 					end
