@@ -25,8 +25,8 @@ https://pastebin.com/raw/FwYmgtCX
 ```  
    
 # Universal Esp  
-Updated August 22, 2021  
-v1.5.4  
+Updated September 2, 2021  
+v1.5.5  
 - Box Esp  
 - Tracers  
 - Name Esp  
@@ -44,9 +44,8 @@ You are allowed to use this ESP in your script as long as you credit me (zzerexx
 u should read UniversalEspDocs.md for more info
 ```  
   
-## Update v1.5.4  
-u can now change the name offset on name esp  
-works on phantom forces now  
+## Update v1.5.5  
+Added support for Bad Business  
   
 # Universal Esp with UI  
 Updated August 10, 2021  
