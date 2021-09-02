@@ -1,3 +1,4 @@
+-- bad business stuff https://raw.githubusercontent.com/coastss/releases/main/bad_business_silent_aim.lua
 if not getgenv().EspSettings then
 	getgenv().EspSettings = {
 		TeamCheck = false,
@@ -284,11 +285,13 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 			if getgenv().UNIVERSALESP_VISIBLE and ss.Boxes.Enabled and IsAlive(plr) then
 				local hrp, inViewport
 				local head = camera:WorldToViewportPoint(GetChar(plr).Head.Position + Vector3.new(0,0.5,0))
-				local leg = camera:WorldToViewportPoint(GetChar(plr).Parent.Root.Position - Vector3.new(0,5.25,0))
+				local leg
 				if game.PlaceId == pids.bb then
 					hrp, inViewport = camera:WorldToViewportPoint(GetChar(plr).Parent.Root.Position)
+					leg = camera:WorldToViewportPoint(GetChar(plr).Parent.Root.Position - Vector3.new(0,5.25,0))
 				else
 					hrp, inViewport = camera:WorldToViewportPoint(GetChar(plr).HumanoidRootPart.Position)
+					leg = camera:WorldToViewportPoint(GetChar(plr).HumanoidRootPart.Position - Vector3.new(0,3,0))
 				end
 
 				if inViewport then
@@ -376,11 +379,13 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 			if getgenv().UNIVERSALESP_VISIBLE and ss.Names.Enabled and IsAlive(plr) then
 				local hrp, inViewport
 				local head = camera:WorldToViewportPoint(GetChar(plr).Head.Position + Vector3.new(0,0.5,0))
-				local leg = camera:WorldToViewportPoint(GetChar(plr).Parent.Root.Position - Vector3.new(0,3,0))
+				local leg
 				if game.PlaceId == pids.bb then
 					hrp, inViewport = camera:WorldToViewportPoint(GetChar(plr).Parent.Root.Position)
+					leg = camera:WorldToViewportPoint(GetChar(plr).Parent.Root.Position - Vector3.new(0,5.25,0))
 				else
 					hrp, inViewport = camera:WorldToViewportPoint(GetChar(plr).HumanoidRootPart.Position)
+					leg = camera:WorldToViewportPoint(GetChar(plr).HumanoidRootPart.Position - Vector3.new(0,3,0))
 				end
 				local size = Vector2.new(1000 / hrp.Z, head.Y - leg.Y)
 				if inViewport then
@@ -573,11 +578,13 @@ getgenv().UNIVERSALESP_RS = RunService.RenderStepped:Connect(function()
 			if getgenv().UNIVERSALESP_VISIBLE and ss.HealthBars.Enabled and IsAlive(plr) then
 				local hrp, inViewport
 				local head = camera:WorldToViewportPoint(GetChar(plr).Head.Position + Vector3.new(0,0.5,0))
-				local leg = camera:WorldToViewportPoint(GetChar(plr).Parent.Root.Position - Vector3.new(0,3,0))
+				local leg
 				if game.PlaceId == pids.bb then
 					hrp, inViewport = camera:WorldToViewportPoint(GetChar(plr).Parent.Root.Position)
+					leg = camera:WorldToViewportPoint(GetChar(plr).Parent.Root.Position - Vector3.new(0,5.25,0))
 				else
 					hrp, inViewport = camera:WorldToViewportPoint(GetChar(plr).HumanoidRootPart.Position)
+					leg = camera:WorldToViewportPoint(GetChar(plr).HumanoidRootPart.Position - Vector3.new(0,3,0))
 				end
 
 				if inViewport then
