@@ -25,8 +25,8 @@ https://pastebin.com/raw/FwYmgtCX
 ```  
    
 # Universal Esp  
-Updated September 2, 2021  
-v1.5.6  
+Updated September 5, 2021  
+v1.5.7  
 - Box Esp  
 - Tracers  
 - Name Esp  
@@ -44,9 +44,10 @@ You are allowed to use this ESP in your script as long as you credit me (zzerexx
 u should read UniversalEspDocs.md for more info
 ```  
   
-## Update v1.5.6  
-Added support for Bad Business  
-Changed health on Name Esp to a percentage instead  
+## Update v1.5.7    
+Boxes now use Quad instead of Square  
+Names no longer overlaps boxes  
+LookTracers and HealthBars have been disabled for now  
   
 # Universal Esp with UI  
 Updated August 10, 2021  
