@@ -48,6 +48,7 @@ u should read UniversalEspDocs.md for more info
 Boxes now use Quad instead of Square  
 Names no longer overlaps boxes  
 LookTracers and HealthBars have been disabled for now  
+Added Labels and Chams for Part instances (not players)  
   
 # Universal Esp with UI  
 Updated August 10, 2021  
