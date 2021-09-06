@@ -65,6 +65,10 @@ v1.1.4
 https://pastebin.com/raw/nwqE7v07
 ```  
   
+## Update v1.1.4  
+Added support for Phantom Forces & Bad Business  
+VisibleCheck doesn't work on these games so it's automatically disabled  
+  
 # Universal Aimbot with UI  
 Updated September 5, 2021  
 universal aimbot but with a ui  
@@ -72,9 +76,6 @@ ui lib made by twink marie
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalAimbotUI.lua"))()
 ```  
-  
-## Update v1.1.3  
-Added aimbot strength  
   
 # More Color3  
 Updated July 25, 2021  
