@@ -59,8 +59,8 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/
 ```  
   
 # Universal Aimbot  
-Updated August 29, 2021  
-v1.1.3  
+Updated September 5, 2021  
+v1.1.4  
 ```
 https://pastebin.com/raw/nwqE7v07
 ```  
