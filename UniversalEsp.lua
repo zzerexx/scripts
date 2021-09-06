@@ -362,17 +362,19 @@ getgenv().UESP_RS = RunService.RenderStepped:Connect(function()
 	for i,v in next, getgenv().UESP_OBJECTS do
 		ss = getgenv().EspSettings
 		local plr, part
-		local cf, size, inViewport, tl, tr, bl, br
+		local cf, size, _, inViewport, tl, tr, bl, br
 		local c1, c2, c3, c4, c5, c6, c7, c8, y1
-		if IsAlive(plr) and v.Player then
-			-- from unnamed esp lololol
-			plr = v.Player
-			cf, size = GetChar(plr):GetBoundingBox()
-			size /= 2
-			tl, inViewport = camera:WorldToViewportPoint((cf * CFrame.new(size.X,size.Y,0)).Position)
-			tr = camera:WorldToViewportPoint((cf * CFrame.new(-size.X,size.Y,0)).Position)
-			bl = camera:WorldToViewportPoint((cf * CFrame.new(size.X,-size.Y,0)).Position)
-			br = camera:WorldToViewportPoint((cf * CFrame.new(-size.X,-size.Y,0)).Position)
+		if v.Player then
+			if IsAlive(v.Player) then
+				-- from unnamed esp lololol
+				plr = v.Player
+				cf, size = GetChar(plr):GetBoundingBox()
+				size /= 2
+				tl, inViewport = camera:WorldToViewportPoint((cf * CFrame.new(size.X,size.Y,0)).Position)
+				tr = camera:WorldToViewportPoint((cf * CFrame.new(-size.X,size.Y,0)).Position)
+				bl = camera:WorldToViewportPoint((cf * CFrame.new(size.X,-size.Y,0)).Position)
+				br = camera:WorldToViewportPoint((cf * CFrame.new(-size.X,-size.Y,0)).Position)
+			end
 		elseif v.Part then
 			part = v.Part
 			cf, size = v.Part.CFrame, v.Part.Size / 2
