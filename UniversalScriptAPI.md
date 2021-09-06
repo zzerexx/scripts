@@ -9,6 +9,7 @@ local aimbot = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerex
 ```  
   
 ## Toggle Type  
+Toggles the specified type.  
 ```
 void script:Toggle(type)
 
@@ -19,6 +20,7 @@ aimbot:Toggle("Aimbot")
 `type` must be a valid type.  
   
 ## Get Option Value  
+Returns the specified options' value. 
 ```
 variant script:Get(type, option)
 
@@ -30,6 +32,7 @@ print(aimbot:Get("Aimbot","TargetPart"))
 `option` must be a valid option.  
   
 ## Set Option Value  
+Sets the specified options' value.  
 ```
 void script:Set(type, option, value)
 
@@ -52,6 +55,36 @@ esp:Set("Other","TeamCheck",true)
 aimbot:Get("Other","Whitelisted")
 aimbot:Set("Other","Ignore",workspace.Ignore)
 ```  
+
+# Add Label (Universal Esp)  
+Adds a Label on the specified part.  
+```
+esp.Label(part, options)
+
+esp.Label(workspace.Part,{
+  Text = "Label",
+  Transparency = 1,
+  Color = Color3.fromRGB(255,255,255),
+  Size = 18,
+  Outline = true,
+  OutlineColor = Color3.fromRGB(0,0,0),
+  Font = Drawing.Fonts.UI
+})
+```  
+  
+# Add Cham (Universal Esp)  
+Adds Chams on the specified part.  
+```
+esp.Cham(part, options)
+
+esp.Cham(workspace.Part,{
+  Transparency = 1,
+  Color = Color3.fromRGB(255,255,255),
+  Thickness = 2,
+  Filled = true
+})
+```  
+
   
 # Script Errors  
 
