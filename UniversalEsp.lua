@@ -88,24 +88,52 @@ local ss = getgenv().EspSettings
 getgenv().UESP_OBJECTS = {}
 getgenv().UESP_VISIBLE = true
 getgenv().UESP_TOTALOBJECTS = function() -- returns amount of objects and amount of visible objects
-	local total = 0
-	local totalvis = 0
+	local data = {
+		DrawingObjects = 0,
+		VisibleObjects = 0,
+		Boxes = 0,
+		Tracers = 0,
+		Names = 0,
+		Skeletons = 0,
+		LookTracers = 0,
+		HealthBars = 0,
+		Labels = 0,
+		Chams = 0,
+	}
 	for _,v in next, getgenv().UESP_OBJECTS do
 		if typeof(v.Object) == "table" then
 			for _,v2 in next, v.Object do
-				total += 1
+				data.DrawingObjects += 1
 				if v2.Visible then
-					totalvis += 1
+					data.VisibleObjects += 1
+				end
+				if v.Type == "Name" then
+					data.Names += 1
+				elseif v.Type == "Skeleton" then
+					data.Skeletons += 1
+				elseif v.Type == "HealthBar" then
+					data.HealthBars += 1
+				elseif v.Type == "Cham" then
+					data.Chams += 1
 				end
 			end
 		else
-			total += 1
+			data.DrawingObjects += 1
 			if v.Object.Visible then
-				totalvis += 1
+				data.VisibleObjects += 1
+			end
+			if v.Type == "Box" then
+				data.Boxes += 1
+			elseif v.Type == "Tracer" then
+				data.Tracers += 1
+			elseif v.Type == "LookTracer" then
+				data.LookTracers += 1
+			elseif v.Type == "Label" then
+				data.Labels += 1
 			end
 		end
 	end
-	return {total,totalvis}
+	return data
 end
 local bodyparts = {
 	"Head","UpperTorso","LowerTorso","LeftUpperArm","LeftLowerArm","LeftHand","RightUpperArm","RightLowerArm","RightHand","LeftUpperLeg","LeftLowerLeg","LeftFoot","RightUpperLeg","RightLowerLeg","RightFoot",
@@ -299,19 +327,65 @@ function HealthBar(plr)
 	table.insert(getgenv().UESP_OBJECTS,{Object = objects,Type = "HealthBar",Player = plr})
 end
 
+function Label(part,options)
+	local label = Drawing.new("Text")
+	label.Visible = false
+	label.Transparency = options.Transparency or 0.7
+	label.Color = options.Color or Color3.fromRGB(255,255,255)
+	label.Size = options.Size or 18
+	label.Center = true
+	label.Outline = options.Outline or true
+	label.OutlineColor = options.OutlineColor or Color3.fromRGB(0,0,0)
+	label.Font = options.Font or Drawing.Fonts.UI
+	table.insert(getgenv().UESP_OBJECTS,{Object = label,Type = "Label",Part = part,Options = options})
+end
+function Cham(part,options)
+	local objects = {
+		Top = Drawing.new("Quad"),
+		Bottom = Drawing.new("Quad"),
+		Left = Drawing.new("Quad"),
+		Right = Drawing.new("Quad"),
+		Front = Drawing.new("Quad"),
+		Back = Drawing.new("Quad")
+	}
+	for _,v in next, objects do
+		v.Visible = false
+		v.Transparency = options.Transparency or 0.5
+		v.Color = options.Color or Color3.fromRGB(255,255,255)
+		v.Thickness = 0
+		v.Filled = options.Filled or true
+	end
+	table.insert(getgenv().UESP_OBJECTS,{Object = objects,Type = "Cham",Part = part,Options = options})
+end
+
 getgenv().UESP_RS = RunService.RenderStepped:Connect(function()
 	for _,v in next, getgenv().UESP_OBJECTS do
 		ss = getgenv().EspSettings
-		local plr = v.Player
+		local plr, part
 		local cf, size, inViewport, tl, tr, bl, br
-		if IsAlive(plr) then
+		local c1, c2, c3, c4, c5, c6, c7, c8, y1
+		if IsAlive(plr) and v.Player then
 			-- from unnamed esp lololol
+			plr = v.Player
 			cf, size = GetChar(plr):GetBoundingBox()
 			size /= 2
 			tl, inViewport = camera:WorldToViewportPoint((cf * CFrame.new(size.X,size.Y,0)).Position)
 			tr = camera:WorldToViewportPoint((cf * CFrame.new(-size.X,size.Y,0)).Position)
 			bl = camera:WorldToViewportPoint((cf * CFrame.new(size.X,-size.Y,0)).Position)
 			br = camera:WorldToViewportPoint((cf * CFrame.new(-size.X,-size.Y,0)).Position)
+		elseif v.Part then
+			part = v.Part
+			cf, size = v.Part.CFrame, v.Part.Size / 2
+			_, inViewport = camera:WorldToViewportPoint(cf.Position)
+			c1 = camera:WorldToViewportPoint((cf * CFrame.new(size.X,size.Y,size.Z)).Position)
+			c2 = camera:WorldToViewportPoint((cf * CFrame.new(-size.X,size.Y,size.Z)).Position)
+			c3 = camera:WorldToViewportPoint((cf * CFrame.new(-size.X,-size.Y,size.Z)).Position)
+			c4 = camera:WorldToViewportPoint((cf * CFrame.new(size.X,-size.Y,size.Z)).Position)
+			c5 = camera:WorldToViewportPoint((cf * CFrame.new(size.X,size.Y,-size.Z)).Position)
+			c6 = camera:WorldToViewportPoint((cf * CFrame.new(-size.X,size.Y,-size.Z)).Position)
+			c7 = camera:WorldToViewportPoint((cf * CFrame.new(-size.X,-size.Y,-size.Z)).Position)
+			c8 = camera:WorldToViewportPoint((cf * CFrame.new(size.X,-size.Y,-size.Z)).Position)
+			y1 = camera:WorldToViewportPoint(part.Position + Vector3.new(0,part.Position.Y / 2,0))
 		end
 
 		if v.Type == "Box" then
@@ -606,6 +680,69 @@ getgenv().UESP_RS = RunService.RenderStepped:Connect(function()
 				bar.Visible = false
 				outline.Visible = false
 			end
+		elseif v.Type == "Label" then
+			if getgenv().UESP_VISIBLE then
+				if inViewport then
+					v.Object.Transparency = v.Options.Transparency or 0.7
+					v.Object.Color = v.Options.Color or Color3.fromRGB(255,255,255)
+					v.Object.Text = v.Options.Text or part.Name
+					v.Object.Size = v.Options.Size or 18
+					v.Object.Outline = v.Options.Outline or true
+					v.Object.OutlineColor = v.Options.OutlineColor or Color3.fromRGB(0,0,0)
+					v.Object.Font = v.Options.Font or Drawing.Fonts.UI
+					v.Object.Visible = inViewport
+
+					v.Object.Position = Vector2.new(y1.X,y1.Y - (v.Options.Size or 18) / 2)
+				end
+			else
+				v.Object.Visible = false
+			end
+		elseif v.Type == "Cham" then
+			if getgenv().UESP_VISIBLE then
+				if inViewport then
+					for _,v2 in next, v.Object do
+						v2.Transparency = v.Options.Transparency or 0.5
+						v2.Color = v.Options.Color or Color3.fromRGB(255,255,255)
+						v2.Filled = v.Options.Filled or true
+						v2.Thickness = v.Options.Thickness or 2
+						v2.Visible = inViewport
+					end
+
+					v.Object.Top.PointA = Vector2.new(c5.X,c5.Y)
+					v.Object.Top.PointB = Vector2.new(c6.X,c6.Y)
+					v.Object.Top.PointC = Vector2.new(c2.X,c2.Y)
+					v.Object.Top.PointD = Vector2.new(c1.X,c1.Y)
+
+					v.Object.Bottom.PointA = Vector2.new(c4.X,c4.Y)
+					v.Object.Bottom.PointB = Vector2.new(c3.X,c3.Y)
+					v.Object.Bottom.PointC = Vector2.new(c7.X,c7.Y)
+					v.Object.Bottom.PointD = Vector2.new(c8.X,c8.Y)
+
+					v.Object.Left.PointA = Vector2.new(c2.X,c2.Y)
+					v.Object.Left.PointB = Vector2.new(c6.X,c6.Y)
+					v.Object.Left.PointC = Vector2.new(c7.X,c7.Y)
+					v.Object.Left.PointD = Vector2.new(c3.X,c3.Y)
+
+					v.Object.Right.PointA = Vector2.new(c5.X,c5.Y)
+					v.Object.Right.PointB = Vector2.new(c1.X,c1.Y)
+					v.Object.Right.PointC = Vector2.new(c4.X,c4.Y)
+					v.Object.Right.PointD = Vector2.new(c8.X,c8.Y)
+
+					v.Object.Front.PointA = Vector2.new(c1.X,c1.Y)
+					v.Object.Front.PointB = Vector2.new(c2.X,c2.Y)
+					v.Object.Front.PointC = Vector2.new(c3.X,c3.Y)
+					v.Object.Front.PointD = Vector2.new(c4.X,c4.Y)
+
+					v.Object.Back.PointA = Vector2.new(c5.X,c5.Y)
+					v.Object.Back.PointB = Vector2.new(c6.X,c6.Y)
+					v.Object.Back.PointC = Vector2.new(c7.X,c7.Y)
+					v.Object.Back.PointD = Vector2.new(c8.X,c8.Y)
+				end
+			else
+				for _,v2 in next, v.Object do
+					v2.Visible = false
+				end
+			end
 		end
 	end
 end)
@@ -684,6 +821,14 @@ function esp:Set(type,option,value)
 	else
 		getgenv().EspSettings[type][option] = value
 	end
+end
+function esp.Label(part,options)
+	assert(typeof(part) == "Instance","Universal Esp: bad argument to #1 'Label' (Instance expected, got "..typeof(part)..")")
+	Label(part,options or {})
+end
+function esp.Cham(part,options)
+	assert(typeof(part) == "Instance","Universal Esp: bad argument to #1 'Cham' (Instance expected, got "..typeof(part)..")")
+	Cham(part,options or {})
 end
 
 return esp
