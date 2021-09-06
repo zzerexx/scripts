@@ -352,14 +352,14 @@ function Cham(part,options)
 		v.Visible = false
 		v.Transparency = options.Transparency or 0.5
 		v.Color = options.Color or Color3.fromRGB(255,255,255)
-		v.Thickness = 0
+		v.Thickness = options.Thickness or 2
 		v.Filled = options.Filled or true
 	end
 	table.insert(getgenv().UESP_OBJECTS,{Object = objects,Type = "Cham",Part = part,Options = options})
 end
 
 getgenv().UESP_RS = RunService.RenderStepped:Connect(function()
-	for _,v in next, getgenv().UESP_OBJECTS do
+	for i,v in next, getgenv().UESP_OBJECTS do
 		ss = getgenv().EspSettings
 		local plr, part
 		local cf, size, inViewport, tl, tr, bl, br
@@ -385,7 +385,7 @@ getgenv().UESP_RS = RunService.RenderStepped:Connect(function()
 			c6 = camera:WorldToViewportPoint((cf * CFrame.new(-size.X,size.Y,-size.Z)).Position)
 			c7 = camera:WorldToViewportPoint((cf * CFrame.new(-size.X,-size.Y,-size.Z)).Position)
 			c8 = camera:WorldToViewportPoint((cf * CFrame.new(size.X,-size.Y,-size.Z)).Position)
-			y1 = camera:WorldToViewportPoint(part.Position + Vector3.new(0,part.Position.Y / 2,0))
+			y1 = camera:WorldToViewportPoint(part.Position)
 		end
 
 		if v.Type == "Box" then
@@ -681,67 +681,85 @@ getgenv().UESP_RS = RunService.RenderStepped:Connect(function()
 				outline.Visible = false
 			end
 		elseif v.Type == "Label" then
-			if getgenv().UESP_VISIBLE then
-				if inViewport then
-					v.Object.Transparency = v.Options.Transparency or 0.7
-					v.Object.Color = v.Options.Color or Color3.fromRGB(255,255,255)
-					v.Object.Text = v.Options.Text or part.Name
-					v.Object.Size = v.Options.Size or 18
-					v.Object.Outline = v.Options.Outline or true
-					v.Object.OutlineColor = v.Options.OutlineColor or Color3.fromRGB(0,0,0)
-					v.Object.Font = v.Options.Font or Drawing.Fonts.UI
-					v.Object.Visible = inViewport
-
-					v.Object.Position = Vector2.new(y1.X,y1.Y - (v.Options.Size or 18) / 2)
+			if v.Part.Parent ~= nil then
+				if getgenv().UESP_VISIBLE then
+					if inViewport then
+						v.Object.Visible = true
+						v.Object.Transparency = v.Options.Transparency or 0.7
+						v.Object.Color = v.Options.Color or Color3.fromRGB(255,255,255)
+						v.Object.Text = v.Options.Text or part.Name
+						v.Object.Size = v.Options.Size or 18
+						v.Object.Outline = v.Options.Outline or true
+						v.Object.OutlineColor = v.Options.OutlineColor or Color3.fromRGB(0,0,0)
+						v.Object.Font = v.Options.Font or Drawing.Fonts.UI
+	
+						v.Object.Position = Vector2.new(y1.X,y1.Y - (v.Options.Size or 18) / 2)
+					else
+						v.Object.Visible = false
+					end
+				else
+					v.Object.Visible = false
 				end
 			else
-				v.Object.Visible = false
+				v.Object:Remove()
+				table.remove(getgenv().UESP_OBJECTS,i)
 			end
 		elseif v.Type == "Cham" then
-			if getgenv().UESP_VISIBLE then
-				if inViewport then
-					for _,v2 in next, v.Object do
-						v2.Transparency = v.Options.Transparency or 0.5
-						v2.Color = v.Options.Color or Color3.fromRGB(255,255,255)
-						v2.Filled = v.Options.Filled or true
-						v2.Thickness = v.Options.Thickness or 2
-						v2.Visible = inViewport
+			if v.Part.Parent ~= nil then
+				if getgenv().UESP_VISIBLE then
+					if inViewport then
+						for _,v2 in next, v.Object do
+							v2.Visible = true
+							v2.Transparency = v.Options.Transparency or 0.5
+							v2.Color = v.Options.Color or Color3.fromRGB(255,255,255)
+							v2.Filled = v.Options.Filled or true
+							v2.Thickness = v.Options.Thickness or 2
+						end
+	
+						v.Object.Top.PointA = Vector2.new(c5.X,c5.Y)
+						v.Object.Top.PointB = Vector2.new(c6.X,c6.Y)
+						v.Object.Top.PointC = Vector2.new(c2.X,c2.Y)
+						v.Object.Top.PointD = Vector2.new(c1.X,c1.Y)
+	
+						v.Object.Bottom.PointA = Vector2.new(c4.X,c4.Y)
+						v.Object.Bottom.PointB = Vector2.new(c3.X,c3.Y)
+						v.Object.Bottom.PointC = Vector2.new(c7.X,c7.Y)
+						v.Object.Bottom.PointD = Vector2.new(c8.X,c8.Y)
+	
+						v.Object.Left.PointA = Vector2.new(c2.X,c2.Y)
+						v.Object.Left.PointB = Vector2.new(c6.X,c6.Y)
+						v.Object.Left.PointC = Vector2.new(c7.X,c7.Y)
+						v.Object.Left.PointD = Vector2.new(c3.X,c3.Y)
+	
+						v.Object.Right.PointA = Vector2.new(c5.X,c5.Y)
+						v.Object.Right.PointB = Vector2.new(c1.X,c1.Y)
+						v.Object.Right.PointC = Vector2.new(c4.X,c4.Y)
+						v.Object.Right.PointD = Vector2.new(c8.X,c8.Y)
+	
+						v.Object.Front.PointA = Vector2.new(c1.X,c1.Y)
+						v.Object.Front.PointB = Vector2.new(c2.X,c2.Y)
+						v.Object.Front.PointC = Vector2.new(c3.X,c3.Y)
+						v.Object.Front.PointD = Vector2.new(c4.X,c4.Y)
+	
+						v.Object.Back.PointA = Vector2.new(c5.X,c5.Y)
+						v.Object.Back.PointB = Vector2.new(c6.X,c6.Y)
+						v.Object.Back.PointC = Vector2.new(c7.X,c7.Y)
+						v.Object.Back.PointD = Vector2.new(c8.X,c8.Y)
+					else
+						for _,v2 in next, v.Object do
+							v2.Visible = false
+						end
 					end
-
-					v.Object.Top.PointA = Vector2.new(c5.X,c5.Y)
-					v.Object.Top.PointB = Vector2.new(c6.X,c6.Y)
-					v.Object.Top.PointC = Vector2.new(c2.X,c2.Y)
-					v.Object.Top.PointD = Vector2.new(c1.X,c1.Y)
-
-					v.Object.Bottom.PointA = Vector2.new(c4.X,c4.Y)
-					v.Object.Bottom.PointB = Vector2.new(c3.X,c3.Y)
-					v.Object.Bottom.PointC = Vector2.new(c7.X,c7.Y)
-					v.Object.Bottom.PointD = Vector2.new(c8.X,c8.Y)
-
-					v.Object.Left.PointA = Vector2.new(c2.X,c2.Y)
-					v.Object.Left.PointB = Vector2.new(c6.X,c6.Y)
-					v.Object.Left.PointC = Vector2.new(c7.X,c7.Y)
-					v.Object.Left.PointD = Vector2.new(c3.X,c3.Y)
-
-					v.Object.Right.PointA = Vector2.new(c5.X,c5.Y)
-					v.Object.Right.PointB = Vector2.new(c1.X,c1.Y)
-					v.Object.Right.PointC = Vector2.new(c4.X,c4.Y)
-					v.Object.Right.PointD = Vector2.new(c8.X,c8.Y)
-
-					v.Object.Front.PointA = Vector2.new(c1.X,c1.Y)
-					v.Object.Front.PointB = Vector2.new(c2.X,c2.Y)
-					v.Object.Front.PointC = Vector2.new(c3.X,c3.Y)
-					v.Object.Front.PointD = Vector2.new(c4.X,c4.Y)
-
-					v.Object.Back.PointA = Vector2.new(c5.X,c5.Y)
-					v.Object.Back.PointB = Vector2.new(c6.X,c6.Y)
-					v.Object.Back.PointC = Vector2.new(c7.X,c7.Y)
-					v.Object.Back.PointD = Vector2.new(c8.X,c8.Y)
+				else
+					for _,v2 in next, v.Object do
+						v2.Visible = false
+					end
 				end
 			else
 				for _,v2 in next, v.Object do
-					v2.Visible = false
+					v2:Remove()
 				end
+				table.remove(getgenv().UESP_OBJECTS,i)
 			end
 		end
 	end
