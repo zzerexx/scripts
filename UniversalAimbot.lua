@@ -29,6 +29,8 @@ if game.GameId == (111958650 or 115797356 or 147332621) then -- arsenal, counter
 	getgenv().AimbotSettings.Ignore = workspace.Ray_Ignore
 elseif game.GameId == 833423526 then -- strucid
 	getgenv().AimbotSettings.Ignore = workspace.IgnoreThese
+elseif game.GameId == 1168263273 then -- bad business
+	do end
 elseif workspace:FindFirstChild("Ignore") then
 	getgenv().AimbotSettings.Ignore = workspace.Ignore
 end
@@ -49,14 +51,70 @@ local UIS = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
 local mouse = UIS:GetMouseLocation()
 local ss = getgenv().AimbotSettings
-local bodyparts = {"Head","UpperTorso","LowerTorso","LeftUpperArm","LeftLowerArm","LeftHand","RightUpperArm","RightLowerArm","RightHand","LeftUpperLeg","LeftLowerLeg","LeftFoot","RightUpperLeg","RightLowerLeg","RightFoot","Torso","Left Arm","Right Arm","Left Leg","Right Leg"}
+local bodyparts = {
+	"Head","UpperTorso","LowerTorso","LeftUpperArm","LeftLowerArm","LeftHand","RightUpperArm","RightLowerArm","RightHand","LeftUpperLeg","LeftLowerLeg","LeftFoot","RightUpperLeg","RightLowerLeg","RightFoot",
+	"Torso","Left Arm","Right Arm","Left Leg","Right Leg",
+	"Chest","Hips","LeftArm","LeftForearm","RightArm","RightForearm","LeftLeg","LeftForeleg","RightLeg","RightForeleg"
+}
 local ads = false
+local gids = { -- game ids
+	['arsenal'] = 111958650,
+	['pf'] = 113491250,
+	['pft'] = 115272207, -- pf test place
+	['pfu'] = 1256867479, -- pf unstable branch
+	['bb'] = 1168263273,
+}
+for i,v in next, getgc(true) do
+	if typeof(v) == "table" then
+		if game.GameId == (gids.pf or gids.pft) then
+			if rawget(v,"getbodyparts") then
+				getchar = rawget(v,"getbodyparts")
+			elseif rawget(v,"getplayerhealth") then
+				gethealth = rawget(v,"getplayerhealth")
+			end
+		elseif game.GameId == gids.bb then
+			if rawget(v,"InitProjectile") and v.TS then
+				ts = v.TS
+			end
+		end
+	end
+end
 
 function IsAlive(plr)
-	if plr.Character and plr.Character:FindFirstChildOfClass("Humanoid") and plr.Character:FindFirstChildOfClass("Humanoid").Health > 0 then
+	if plr and plr ~= player and plr.Character and plr.Character:FindFirstChild("Head") and plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChildOfClass("Humanoid") and plr.Character:FindFirstChildOfClass("Humanoid").Health > 0 then
 		return true
+	elseif game.GameId == (gids.pf or gids.pft) then
+		if plr and plr ~= player and getchar(plr) ~= nil then
+			return true
+		end
+	elseif game.GameId == gids.bb then
+		if plr and plr ~= player and ts.Characters:GetCharacter(plr) ~= nil and ts.Characters:GetCharacter(plr):FindFirstChild("Health") and ts.Characters:GetCharacter(plr).Health.Value > 0 then
+			return true
+		end
 	end
 	return false
+end
+function GetChar(plr)
+	if game.GameId == (gids.pf or gids.pft) then
+		return getchar(plr).rootpart.Parent
+	elseif game.GameId == gids.bb then
+		return ts.Characters:GetCharacter(plr).Body
+	elseif plr.Character ~= nil then
+		return plr.Character
+	end
+	return nil
+end
+function GetTeam(plr)
+	if game.GameId == gids.bb then
+		for i,v in next, game:GetService("Teams"):GetChildren() do
+			if not v.Players:FindFirstChild(plr.Name) then
+				return v.Name
+			end
+		end
+	else
+		return plr.Team
+	end
+	return nil
 end
 function ClosestPlayer()
 	mouse = UIS:GetMouseLocation()
@@ -64,10 +122,15 @@ function ClosestPlayer()
 	local closest = math.huge
 	for i,v in next, players:GetPlayers() do
 		if v ~= player and IsAlive(v) then
-			local vector, inViewport = camera:WorldToViewportPoint(v.Character.HumanoidRootPart.Position)
+			local vector, inViewport
+			if game.GameId == gids.bb then
+				vector, inViewport = camera:WorldToViewportPoint(GetChar(v).Parent.Root.Position)
+			else
+				vector, inViewport = camera:WorldToViewportPoint(GetChar(v).HumanoidRootPart.Position)
+			end
 			if inViewport then
 				local mag = (Vector2.new(mouse.X,mouse.Y) - Vector2.new(vector.X,vector.Y)).Magnitude
-				if mag < closest and ((player.Team ~= nil and v.Team ~= player.Team) or (ss.Aimbot.TeamCheck or player.Team == nil)) then
+				if mag < closest and ((GetTeam(player) ~= nil and GetTeam(v) ~= GetTeam(player)) or not ss.Aimbot.TeamCheck) then
 					plr = v
 					closest = mag
 				end
@@ -78,14 +141,14 @@ function ClosestPlayer()
 end
 function IsVisible(plr)
 	if ss.Aimbot.VisibleCheck and IsAlive(plr) then
-		for i,v in next, plr.Character:GetChildren() do
+		for i,v in next, GetChar(plr):GetChildren() do
 			if table.find(bodyparts,v.Name) then
 				local params = RaycastParams.new()
-				params.FilterDescendantsInstances = {camera,player.Character}
+				params.FilterDescendantsInstances = {camera,GetChar(player)}
 				params.FilterType = Enum.RaycastFilterType.Blacklist
 				params.IgnoreWater = true
 				if ss.Ignore ~= nil and typeof(ss.Ignore) == "Instance" then
-					params.FilterDescendantsInstances = {camera,player.Character,ss.Ignore}
+					params.FilterDescendantsInstances = {camera,GetChar(player),ss.Ignore}
 				end
 				local result = workspace:Raycast(camera.CFrame.Position,(v.Position - camera.CFrame.Position).Unit * 500,params)
 				if result and result.Instance:FindFirstAncestor(plr.Name) then
@@ -102,9 +165,9 @@ local fov
 function InFov(plr)
 	mouse = UIS:GetMouseLocation()
 	if IsAlive(plr) then
-		local _, inViewport = camera:WorldToViewportPoint(plr.Character[ss.Aimbot.TargetPart].Position)
+		local _, inViewport = camera:WorldToViewportPoint(GetChar(plr)[ss.Aimbot.TargetPart].Position)
 		if ss.FovCircle.Enabled and inViewport then
-			for i,v in next, plr.Character:GetChildren() do
+			for i,v in next, GetChar(plr):GetChildren() do
 				if table.find(bodyparts,v.Name) then
 					local vector2, inViewport2 = camera:WorldToViewportPoint(v.Position)
 					if inViewport2 and (Vector2.new(mouse.X,mouse.Y) - Vector2.new(vector2.X,vector2.Y)).Magnitude <= (fov.Radius or ss.FovCircle.Radius) then
@@ -137,8 +200,8 @@ UIS.InputBegan:Connect(function(i,gp)
 		end
 	elseif i.KeyCode == Enum.KeyCode.RightBracket then
 		ss.Aimbot.TeamCheck = not ss.Aimbot.TeamCheck
-    	elseif i.KeyCode == ss.Aimbot.ToggleKey then
-        	ss.Aimbot.Enabled = not ss.Aimbot.Enabled
+	elseif i.KeyCode == ss.Aimbot.ToggleKey then
+		ss.Aimbot.Enabled = not ss.Aimbot.Enabled
 	end
 end)
 UIS.InputEnded:Connect(function(i,gp)
@@ -162,6 +225,9 @@ getgenv().AIMBOT_FOV = fov
 getgenv().AIMBOT_RS = RunService.RenderStepped:Connect(function()
 	ss = getgenv().AimbotSettings
 	mouse = UIS:GetMouseLocation()
+	if game.GameId == (gids.pf or gids.pft or gids.pfu or gids.bb) then
+		ss.Aimbot.VisibleCheck = false
+	end
 	if ss.FovCircle.Enabled then
 		fov.Position = mouse
 		fov.NumSides = ss.FovCircle.NumSides
@@ -177,13 +243,16 @@ getgenv().AIMBOT_RS = RunService.RenderStepped:Connect(function()
 	if ads or ss.Aimbot.AlwaysActive then
 		local plr = ClosestPlayer()
 		if plr ~= nil then
-			if ss.Aimbot.Enabled and IsVisible(plr) and InFov(plr) and not IsWhitelisted(plr) and plr.Character:FindFirstChild(ss.Aimbot.TargetPart) then
+			if ss.Aimbot.Enabled and IsVisible(plr) and InFov(plr) and not IsWhitelisted(plr) and GetChar(plr):FindFirstChild(ss.Aimbot.TargetPart) then
 				if ss.Aimbot.Use_mousemoverel then
-					local vector = camera:WorldToViewportPoint(plr.Character[ss.Aimbot.TargetPart].Position)
+					local vector = camera:WorldToViewportPoint(GetChar(plr)[ss.Aimbot.TargetPart].Position)
 					ss.Aimbot.Strength = math.clamp(ss.Aimbot.Strength,1,100)
+					if game.GameId == (gids.pf or gids.pft) then
+						ss.Aimbot.Strength = math.clamp(ss.Aimbot.Strength,1,65)
+					end
 					mousemoverel((vector.X - mouse.X) * (0 + (ss.Aimbot.Strength / 100)),(vector.Y - mouse.Y) * (0 + (ss.Aimbot.Strength / 100)))
 				else
-					camera.CFrame = CFrame.new(camera.CFrame.Position,plr.Character[ss.Aimbot.TargetPart].Position)
+					camera.CFrame = CFrame.new(camera.CFrame.Position,GetChar(plr)[ss.Aimbot.TargetPart].Position)
 				end
 			end
 		end
