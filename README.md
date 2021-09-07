@@ -1,29 +1,6 @@
 # Scripts  
 my cool scripts  
   
-# Custom Crosshair  
-Updated June 4, 2021  
-v1.2.1  
-Create your own custom crosshair using the Drawing Library  
-```
-https://pastebin.com/raw/eGiC2jPg
-``` 
-
-# Aimblox Gui  
-Updated July 24, 2021  
-v2  
-```
-loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/Aimblox.lua"))()
-```  
-  
-# Murder Mystery 2 Utilities  
-Updated April 10, 2021  
-v1.0.3  
-Check the settings for features  
-```
-https://pastebin.com/raw/FwYmgtCX
-```  
-   
 # Universal Esp  
 Updated September 5, 2021  
 v1.5.7  
@@ -77,11 +54,34 @@ ui lib made by twink marie
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalAimbotUI.lua"))()
 ```  
   
+# Custom Crosshair  
+Updated June 4, 2021  
+v1.2.1  
+Create your own custom crosshair using the Drawing Library  
+```
+https://pastebin.com/raw/eGiC2jPg
+``` 
+
+# Aimblox Gui (PATCHED)
+Updated July 24, 2021  
+v2  
+```
+loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/Aimblox.lua"))()
+```  
+  
+# Murder Mystery 2 Utilities  
+Updated April 10, 2021  
+v1.0.3  
+Check the settings for features  
+```
+https://pastebin.com/raw/FwYmgtCX
+```  
+  
 # More Color3  
 Updated July 25, 2021  
 Provides more Color3 functions.  
   
-# Aimblox Silent Aim (OUTDATED)  
+# Aimblox Silent Aim (PATCHED)  
 Updated May 26, 2021  
 v1.0.0  
 basic silent aim  
@@ -203,8 +203,6 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/
   
 **Supported Functions**  
 ```
-syn.cache_replace
-syn.cache_invalidate
 syn.get_thread_identity
 syn.set_thread_identity
 syn.write_clipboard
