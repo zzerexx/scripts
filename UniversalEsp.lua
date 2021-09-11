@@ -398,7 +398,7 @@ getgenv().UESP_RS = RunService.RenderStepped:Connect(function()
 					box.PointA = Vector2.new(tr.X,tr.Y)
 					box.PointB = Vector2.new(tl.X,tl.Y)
 					box.PointC = Vector2.new(bl.X,bl.Y)
-					box.PointD = Vector2.new(br.X,bl.Y)
+					box.PointD = Vector2.new(br.X,br.Y)
 					box.Visible = (not ss.TeamCheck or (GetTeam(plr) ~= GetTeam(player) and ss.TeamCheck))
 				else
 					box.Visible = false
