@@ -277,6 +277,9 @@ skidded from hexagon btw
 Clicks whenever your mouse is hovering over a player  
 press H to toggle  
   
+# CPS Counter  
+self explanatory  
+  
 # Lowest Ping  
 Finds a server with the lowest ping  
 Takes longer on larger games due to the amount of servers  
