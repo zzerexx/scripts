@@ -278,7 +278,8 @@ Clicks whenever your mouse is hovering over a player
 press H to toggle  
   
 # CPS Counter  
-self explanatory  
+shows your cps and fps  
+works best on 60 fps, anything higher or lower can be inaccurate  
   
 # Lowest Ping  
 Finds a server with the lowest ping  
