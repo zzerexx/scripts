@@ -1,23 +1,20 @@
 if getgenv().SYNTOSW_LOADED then return end
-local protected = {}
+getgenv().protected = protected or {}
 local consolecolor = "white"
 local newline = false
-local oldnc
 oldnc = hookmetamethod(game,"__namecall",function(...) -- protect_gui thing
-	local args = {...}
-	if args[1] == game and getnamecallmethod() == "FindFirstChild" and args[3] == true then
-		if table.find(protected,args[2]) then
-			return nil
+    local args = {...}
+    if args[1] == game and getnamecallmethod() == "FindFirstChild" and args[3] == true then
+		for _,v in next, protected do
+			if v.Name == args[2] then
+				return nil
+			end
 		end
-	end
-	return oldnc(...)
+    end
+    return oldnc(...)
 end)
 
 local functions = {
-	['syn_websocket_connect'] = WebSocket.connect,
-	['syn_websocket_send'] = WebSocket.Send,
-	['syn_websocket_close'] = WebSocket.Close,
-	
 	['syn_io_read'] = readfile,
 	['syn_io_write'] = writefile,
 	['syn_io_append'] = appendfile,
@@ -66,7 +63,9 @@ local functions = {
 	['syn_checkcaller'] = checkcaller,
 	['syn_clipboard_set'] = setclipboard,
 	['syn_newcclosure'] = newcclosure,
-	['syn_decompile'] = decompile,
+	['syn_decompile'] = function(s)
+		return disassemble(getscriptbytecode(s))
+	end,
 	['syn_getloadedmodules'] = getloadedmodules,
 	['syn_getcallingscript'] = getcallingscript,
 	['syn_isactive'] = isrbxactive,
@@ -77,15 +76,18 @@ local functions = {
 	['gethiddenprop'] = gethiddenproperty,
 	['gethiddenprops'] = gethiddenproperties,
 	['sethiddenprop'] = sethiddenproperty,
-	['getlocals'] = debug.getlocals,
+	--['getpropvalue'] = nil,
+	--['setpropvalue'] = nil,
 	--['getstates'] = nil,
 	--['validfgwindow'] = nil,
 	--['readbinarystring'] = nil,
 	--['isuntouched'] = nil,
 	--['setuntouched'] = nil,
-	--['clonefunction'] = nil,
 	['getpcdprop'] = getpcd,
 	--['setupvaluename'] = nil,
+	--['XPROTECT'] = nil,
+	--['is_redirection_enabled'] = nil,
+	--['getpointerfromstate'] = nil,
 	['rconsoleprint'] = function(msg)
 		consolecreate()
 		if string.find(msg,"@@") then
@@ -128,12 +130,16 @@ local functions = {
 		consolecreate()
 		consolesettitle(title)
 	end,
+	['rconsoleinputasync'] = function()
+		return spawn(consoleinput)
+	end,
 	['printconsole'] = output,
-	['rconsoleclose'] = function() return "lol" end
+	['rconsoleclose'] = consoledestroy,
+	['htgetf'] = game.HttpGet,
 }
 
 for i,v in next, functions do
-	getgenv()[i] = v
+    getgenv()[i] = v
 end
 
 getgenv().syn = {
@@ -146,10 +152,11 @@ getgenv().syn = {
 	['queue_on_teleport'] = queue_on_teleport,
 	['protect_gui'] = function(obj)
 		assert(typeof(obj) == "Instance","bad argument #1 to 'protect_gui' (Instance expected, got "..typeof(obj)..")")
+		assert(table.find(protected,obj) == nil,tostring(obj.Name).." is already protected")
 		table.insert(protected,obj)
-		for i,v in next, obj:GetDescendants() do
-			table.insert(protected,v)
-		end
+    	for i,v in next, obj:GetDescendants() do
+        	table.insert(protected,v)
+    	end
 		local c
 		c = obj.DescendantAdded:Connect(function(d)
 			if table.find(protected,obj) then
@@ -160,10 +167,10 @@ getgenv().syn = {
 		end)
 	end,
 	['unprotect_gui'] = function(obj)
-		assert(table.find(protected,obj) ~= nil,obj.." is already protected")
 		assert(typeof(obj) == "Instance","bad argument #1 to 'unprotect_gui' (Instance expected, got "..typeof(obj)..")")
+		assert(table.find(protected,obj) ~= nil,tostring(obj.Name).." is not protected")
 		table.remove(protected,table.find(protected,obj))
-		for i,v in next, obj:GetDescendants() do
+		for _,v in next, obj:GetDescendants() do
 			if table.find(protected,v) then
 				table.remove(protected,table.find(protected,v))
 			end
@@ -181,7 +188,7 @@ getgenv().syn = {
 			['decode'] = crypt.base64decode
 		},
 		['hash'] = crypt.hash,
-		['derive'] = function(value,len)
+		['derive'] = function(_,len)
 			return crypt.generatebytes(len)
 		end,
 		['random'] = crypt.generatekey,
@@ -200,9 +207,7 @@ getgenv().syn = {
 	['websocket'] = {
 		['connect'] = WebSocket.connect
 	},
-	--['secure_call'] = function(func,script,...)
-	--	
-	--end,
+	--['secure_call'] = function(func,newscript,...) end,
 	--['create_secure_function'] = nil,
 	--['run_secure_function'] = nil,
 }
