@@ -1,21 +1,18 @@
 if getgenv().SYNTOKRNL_LOADED then return end
-local protected = {}
-local oldnc
-oldnc = hookmetamethod(game,"__namecall",function(...) -- protect_gui thing
-	local args = {...}
-	if args[1] == game and getnamecallmethod() == "FindFirstChild" and args[3] == true then
-		if table.find(protected,args[2]) then
-			return nil
+getgenv().protected = protected or {}
+oldnc = hookmetamethod(game,"__namecall",function(...)
+    local args = {...}
+    if args[1] == game and getnamecallmethod() == "FindFirstChild" and args[3] == true then
+		for _,v in next, protected do
+			if v.Name == args[2] then
+				return nil
+			end
 		end
-	end
-	return oldnc(...)
+    end
+    return oldnc(...)
 end)
 
 local functions = {
-	['syn_websocket_connect'] = WebSocket.connect,
-	['syn_websocket_send'] = WebSocket.Send,
-	['syn_websocket_close'] = WebSocket.Close,
-	
 	['syn_io_read'] = readfile,
 	['syn_io_write'] = writefile,
 	['syn_io_append'] = appendfile,
@@ -69,7 +66,7 @@ local functions = {
 }
 
 for i,v in next, functions do
-	getgenv()[i] = v
+    getgenv()[i] = v
 end
 
 getgenv().syn = {
@@ -80,9 +77,9 @@ getgenv().syn = {
 	['protect_gui'] = function(obj)
 		assert(typeof(obj) == "Instance","bad argument #1 to 'protect_gui' (Instance expected, got "..typeof(obj)..")")
 		table.insert(protected,obj)
-		for i,v in next, obj:GetDescendants() do
-			table.insert(protected,v)
-		end
+    	for i,v in next, obj:GetDescendants() do
+        	table.insert(protected,v)
+    	end
 		local c
 		c = obj.DescendantAdded:Connect(function(d)
 			if table.find(protected,obj) then
