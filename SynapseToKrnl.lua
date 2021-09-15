@@ -63,6 +63,8 @@ local functions = {
 	['iswindowactive'] = isrbxactive,
 	['gethiddenprop'] = gethiddenproperty,
 	['sethiddenprop'] = sethiddenproperty,
+	['printconsole'] = rconsoleprint,
+	['htgetf'] = game.HttpGet
 }
 
 for i,v in next, functions do
@@ -76,6 +78,7 @@ getgenv().syn = {
 	['queue_on_teleport'] = queue_on_teleport,
 	['protect_gui'] = function(obj)
 		assert(typeof(obj) == "Instance","bad argument #1 to 'protect_gui' (Instance expected, got "..typeof(obj)..")")
+		assert(table.find(protected,obj) == nil,tostring(obj.Name).." is already protected")
 		table.insert(protected,obj)
     	for i,v in next, obj:GetDescendants() do
         	table.insert(protected,v)
@@ -90,7 +93,7 @@ getgenv().syn = {
 		end)
 	end,
 	['unprotect_gui'] = function(obj)
-		assert(table.find(protected,obj) ~= nil,obj.." is already protected")
+		assert(table.find(protected,obj) ~= nil,obj.Name.." is not protected")
 		assert(typeof(obj) == "Instance","bad argument #1 to 'unprotect_gui' (Instance expected, got "..typeof(obj)..")")
 		table.remove(protected,table.find(protected,obj))
 		for i,v in next, obj:GetDescendants() do
