@@ -123,7 +123,11 @@ syn.crypt.random
 syn.crypt.custom.encrypt
 syn.crypt.custom.decrypt
 syn.crypt.custom.hash
+syn.crypt.lz4.compress
 syn.websocket.connect
+
+bit.rol
+bit.ror
 
 syn_websocket_connect
 syn_websocket_send
