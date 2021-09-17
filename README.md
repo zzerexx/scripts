@@ -193,6 +193,7 @@ rconsoleinfo
 rconsolewarn
 rconsoleerr
 rconsolename
+rconsoleclose
 printconsole
 ```  
   
