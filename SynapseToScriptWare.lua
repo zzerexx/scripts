@@ -2,7 +2,17 @@ if getgenv().SYNTOSW_LOADED then return end
 getgenv().protected = protected or {}
 local consolecolor = "white"
 local newline = false
-oldnc = hookmetamethod(game,"__namecall",function(...) -- protect_gui thing
+local colors = {
+	['brown'] = "white",
+	['light_gray'] = "white",
+	['dark_gray'] = "white",
+	['light_blue'] = "blue",
+	['light_green'] = "green",
+	['light_cyan'] = "cyan",
+	['light_red'] = "red",
+	['light_magenta'] = "magenta"
+}
+oldnc = hookmetamethod(game,"__namecall",function(...)
     local args = {...}
     if args[1] == game and getnamecallmethod() == "FindFirstChild" and args[3] == true then
 		for _,v in next, protected do
@@ -92,7 +102,7 @@ local functions = {
 		consolecreate()
 		if string.find(msg,"@@") then
 			consolecolor = msg:gsub("@@",""):lower()
-			consolecolor = consolecolor:gsub("brown","white"):gsub("light_gray","white"):gsub("dark_gray","white"):gsub("light_blue","blue"):gsub("light_green","green"):gsub("light_cyan","cyan"):gsub("light_red","red"):gsub("light_magenta","magenta")
+			consolecolor = consolecolor:gsub(consolecolor,colors[consolecolor])
 		else
 			if newline then
 				consoleprint("\n"..msg,consolecolor)
@@ -168,7 +178,7 @@ getgenv().syn = {
 	end,
 	['unprotect_gui'] = function(obj)
 		assert(typeof(obj) == "Instance","bad argument #1 to 'unprotect_gui' (Instance expected, got "..typeof(obj)..")")
-		assert(table.find(protected,obj) ~= nil,tostring(obj.Name).." is not protected")
+		assert(table.find(protected,obj) ~= nil,obj.Name.." is not protected")
 		table.remove(protected,table.find(protected,obj))
 		for _,v in next, obj:GetDescendants() do
 			if table.find(protected,v) then
@@ -203,13 +213,20 @@ getgenv().syn = {
 				return crypt.hash(data,alg)
 			end
 		},
+		['lz4'] = {
+			['compress'] = lz4compress
+		}
 	},
 	['websocket'] = {
 		['connect'] = WebSocket.connect
 	},
-	--['secure_call'] = function(func,newscript,...) end,
+	--['secure_call'] = nil,
 	--['create_secure_function'] = nil,
 	--['run_secure_function'] = nil,
+	--['run_secure_lua'] = nil,
+	--['secrun'] = nil,
 }
+getgenv().bit.ror = bit.rrotate
+getgenv().bit.rol = bit.lrotate
 
 getgenv().SYNTOSW_LOADED = true
