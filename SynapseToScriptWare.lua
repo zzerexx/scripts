@@ -1,8 +1,6 @@
 if getgenv().SYNTOSW_LOADED then return end
 getgenv().protected = protected or {}
-local consolecolor = "white"
-local newline = false
-local colors = {
+local consolecolor, newline, colors = "white", false, {
 	['brown'] = "white",
 	['light_gray'] = "white",
 	['dark_gray'] = "white",
@@ -25,6 +23,7 @@ oldnc = hookmetamethod(game,"__namecall",function(...)
 end)
 
 local functions = {
+	-- syn_ filesystem
 	['syn_io_read'] = readfile,
 	['syn_io_write'] = writefile,
 	['syn_io_append'] = appendfile,
@@ -34,7 +33,7 @@ local functions = {
 	['syn_io_isfolder'] = isfolder,
 	['syn_io_delfile'] = delfile,
 	['syn_io_delfolder'] = delfolder,
-	
+	-- syn_ input
 	['syn_mouse1click'] = mouse1click,
 	['syn_mouse1press'] = mouse1press,
 	['syn_mouse1release'] = mouse1release,
@@ -46,7 +45,7 @@ local functions = {
 	['syn_mousemoveabs'] = mousemoveabs,
 	['syn_keypress'] = keypress,
 	['syn_keyrelease'] = keyrelease,
-	
+	-- syn_ crypt
 	['syn_crypt_encrypt'] = crypt.encrypt,
 	['syn_crypt_decrypt'] = crypt.decrypt,
 	['syn_crypt_b64_encode'] = crypt.base64encode,
@@ -56,7 +55,7 @@ local functions = {
 	['syn_crypt_derive'] = function(_,len)
 		return crypt.generatebytes(len)
 	end,
-	
+	-- syn_
 	['syn_getgenv'] = getgenv,
 	['syn_getrenv'] = getrenv,
 	['syn_getsenv'] = getsenv,
@@ -64,7 +63,6 @@ local functions = {
 	['syn_getreg'] = getreg,
 	['syn_getgc'] = getgc,
 	['syn_getinstances'] = getinstances,
-	['getsynasset'] = getcustomasset,
 	['syn_context_set'] = setthreadidentity,
 	['syn_context_get'] = getthreadidentity,
 	['syn_setfflag'] = setfflag,
@@ -79,30 +77,29 @@ local functions = {
 	['syn_getloadedmodules'] = getloadedmodules,
 	['syn_getcallingscript'] = getcallingscript,
 	['syn_isactive'] = isrbxactive,
-	['get_calling_script'] = getcallingscript,
+	-- stuff
 	['is_synapse_function'] = isourclosure,
-
+	['is_lclosure'] = islclosure,
 	['iswindowactive'] = isrbxactive,
+	['getprops'] = getproperties,
 	['gethiddenprop'] = gethiddenproperty,
 	['gethiddenprops'] = gethiddenproperties,
 	['sethiddenprop'] = sethiddenproperty,
-	--['getpropvalue'] = nil,
-	--['setpropvalue'] = nil,
-	--['getstates'] = nil,
-	--['validfgwindow'] = nil,
-	--['readbinarystring'] = nil,
-	--['isuntouched'] = nil,
-	--['setuntouched'] = nil,
 	['getpcdprop'] = getpcd,
-	--['setupvaluename'] = nil,
-	--['XPROTECT'] = nil,
-	--['is_redirection_enabled'] = nil,
-	--['getpointerfromstate'] = nil,
+	['getsynasset'] = getcustomasset,
+	['htgetf'] = game.HttpGet,
+	-- get_
+	['get_calling_script'] = getcallingscript,
+	['get_instances'] = getinstances,
+	['get_nil_instances'] = getnilinstances,
+	['get_scripts'] = getscripts,
+	['get_loaded_modules'] = getloadedmodules,
+	-- rconsole
 	['rconsoleprint'] = function(msg)
 		consolecreate()
 		if string.find(msg,"@@") then
 			consolecolor = msg:gsub("@@",""):lower()
-			consolecolor = consolecolor:gsub(consolecolor,colors[consolecolor])
+			consolecolor = consolecolor:gsub(consolecolor,colors[consolecolor] or "white")
 		else
 			if newline then
 				consoleprint("\n"..msg,consolecolor)
@@ -114,25 +111,23 @@ local functions = {
 	end,
 	['rconsoleinfo'] = function(msg)
 		consolecreate()
-		consoleprint("\n[","white")
-		consoleprint("INFO","cyan")
-		consoleprint("] ","white")
+		consoleprint("\n[*]: ","white")
 		consoleprint(msg,consolecolor)
 		newline = true
 	end,
 	['rconsolewarn'] = function(msg)
 		consolecreate()
 		consoleprint("\n[","white")
-		consoleprint("WARNING","yellow")
-		consoleprint("] ","white")
+		consoleprint("*","yellow")
+		consoleprint("]: ","white")
 		consoleprint(msg,consolecolor)
 		newline = true
 	end,
 	['rconsoleerr'] = function(msg)
 		consolecreate()
 		consoleprint("\n[","white")
-		consoleprint("ERROR","red")
-		consoleprint("] ","white")
+		consoleprint("*","red")
+		consoleprint("]: ","white")
 		consoleprint(msg,consolecolor)
 		newline = true
 	end,
@@ -145,7 +140,22 @@ local functions = {
 	end,
 	['printconsole'] = output,
 	['rconsoleclose'] = consoledestroy,
-	['htgetf'] = game.HttpGet,
+	-- unavailable
+	--['getspecialinfo'] = nil,
+	--['setscriptable'] = nil,
+	--['getlocal'] = nil,
+	--['getlocals'] = nil,
+	--['getpropvalue'] = nil,
+	--['setpropvalue'] = nil,
+	--['getstates'] = nil,
+	--['validfgwindow'] = nil,
+	--['readbinarystring'] = nil,
+	--['isuntouched'] = nil,
+	--['setuntouched'] = nil,
+	--['setupvaluename'] = nil,
+	--['XPROTECT'] = nil,
+	--['is_redirection_enabled'] = nil,
+	--['getpointerfromstate'] = nil,
 }
 
 for i,v in next, functions do
