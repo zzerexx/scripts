@@ -110,16 +110,17 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/
 ```
 syn.cache_replace
 syn.cache_invalidate
-syn.get_thread_identity
+syn.is_cached
 syn.set_thread_identity
+syn.get_thread_identity
 syn.write_clipboard
 syn.queue_on_teleport
 syn.protect_gui
 syn.unprotect_gui
 syn.is_beta
 syn.request
-syn.crypt.encrypt
-syn.crypt.decrypt
+syn.crypt.encrypt - NOT THE SAME AS SYNAPSE
+syn.crypt.decrypt - NOT THE SAME AS SYNAPSE
 syn.crypt.base64.encode
 syn.crypt.base64.decode
 syn.crypt.hash
@@ -131,12 +132,6 @@ syn.crypt.custom.hash
 syn.crypt.lz4.compress
 syn.websocket.connect
 
-bit.rol
-bit.ror
-
-syn_websocket_connect
-syn_websocket_send
-syn_websocket_close
 syn_io_read
 syn_io_write
 syn_io_append
@@ -146,6 +141,7 @@ syn_io_isfile
 syn_io_isfolder
 syn_io_delfile
 syn_io_delfolder
+
 syn_mouse1click
 syn_mouse1press
 syn_mouse1release
@@ -157,6 +153,7 @@ syn_mousemoverel
 syn_mousemoveabs
 syn_keypress
 syn_keyrelease
+
 syn_crypt_encrypt
 syn_crypt_decrypt
 syn_crypt_b64_encode
@@ -164,6 +161,7 @@ syn_crypt_b64_decode
 syn_crypt_random
 syn_crypt_hash
 syn_crypt_derive
+
 syn_getgenv
 syn_getrenv
 syn_getsenv
@@ -171,7 +169,6 @@ syn_getmenv
 syn_getreg
 syn_getgc
 syn_getinstances
-getsynasset
 syn_context_set
 syn_context_get
 syn_setfflag
@@ -184,22 +181,34 @@ syn_decompile
 syn_getloadedmodules
 syn_getcallingscript
 syn_isactive
+
 is_synapse_function
+is_lclosure
 iswindowactive
+validfgwindow
+getprops
 gethiddenprop
 gethiddenprops
 sethiddenprop
-getlocals
-get_calling_script
 getpcdprop
+getsynasset
+htgetf
+getspecialinfo
+
+get_calling_script
+get_instances
+get_nil_instances
+get_scripts
+get_loaded_modules
 
 rconsoleprint
 rconsoleinfo
 rconsolewarn
 rconsoleerr
 rconsolename
-rconsoleclose
+rconsoleinputasync
 printconsole
+rconsoleclose
 ```  
   
 # Synapse to Krnl
