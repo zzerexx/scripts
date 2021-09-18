@@ -1,6 +1,6 @@
 if getgenv().SYNTOSW_LOADED then return end
 getgenv().protected = protected or {}
-local consolecolor, newline, colors = "white", false, {
+local consolecolor, colors = "white", {
 	['brown'] = "white",
 	['light_gray'] = "white",
 	['dark_gray'] = "white",
@@ -81,6 +81,7 @@ local functions = {
 	['is_synapse_function'] = isourclosure,
 	['is_lclosure'] = islclosure,
 	['iswindowactive'] = isrbxactive,
+	['validfgwindow'] = isrbxactive,
 	['getprops'] = getproperties,
 	['gethiddenprop'] = gethiddenproperty,
 	['gethiddenprops'] = gethiddenproperties,
@@ -88,6 +89,29 @@ local functions = {
 	['getpcdprop'] = getpcd,
 	['getsynasset'] = getcustomasset,
 	['htgetf'] = game.HttpGet,
+	['getspecialinfo'] = function(obj)
+		assert(typeof(obj) == "Instance","bad argument #1 to 'getspecialinfo' (Instance expected, got "..typeof(obj)..")")
+		if obj.ClassName == "MeshPart" then
+			return {
+				['PhysicsData'] = gethiddenproperty(obj,"PhysicsData"),
+				['InitialSize'] = gethiddenproperty(obj,"InitialSize")
+			}
+		elseif obj.ClassName == "UnionOperations" then
+			return {
+				['AssetId'] = gethiddenproperty(obj,"AssetId"),
+				['ChildData'] = gethiddenproperty(obj,"ChildData"),
+				['FormFactor'] = gethiddenproperty(obj,"FormFactor"),
+				['InitialSize'] = gethiddenproperty(obj,"InitialSize"),
+				['MeshData'] = gethiddenproperty(obj,"MeshData"),
+				['PhysicsData'] = gethiddenproperty(obj,"PhysicsData")
+			}
+		elseif obj.ClassName == "Terrain" then
+			return {
+				['SmoothGrid'] = gethiddenproperty(obj,"SmoothGrid"),
+				['MaterialColors'] = gethiddenproperty(obj,"MaterialColors")
+			}
+		end
+	end,
 	-- get_
 	['get_calling_script'] = getcallingscript,
 	['get_instances'] = getinstances,
@@ -101,35 +125,27 @@ local functions = {
 			consolecolor = msg:gsub("@@",""):lower()
 			consolecolor = consolecolor:gsub(consolecolor,colors[consolecolor] or "white")
 		else
-			if newline then
-				consoleprint("\n"..msg,consolecolor)
-			else
-				consoleprint(msg,consolecolor)
-			end
+			consoleprint(msg,consolecolor)
 		end
-		newline = false
 	end,
 	['rconsoleinfo'] = function(msg)
 		consolecreate()
 		consoleprint("\n[*]: ","white")
-		consoleprint(msg,consolecolor)
-		newline = true
+		consoleprint(msg.."\n",consolecolor)
 	end,
 	['rconsolewarn'] = function(msg)
 		consolecreate()
 		consoleprint("\n[","white")
 		consoleprint("*","yellow")
 		consoleprint("]: ","white")
-		consoleprint(msg,consolecolor)
-		newline = true
+		consoleprint(msg.."\n",consolecolor)
 	end,
 	['rconsoleerr'] = function(msg)
 		consolecreate()
 		consoleprint("\n[","white")
 		consoleprint("*","red")
 		consoleprint("]: ","white")
-		consoleprint(msg,consolecolor)
-		newline = true
+		consoleprint(msg.."\n",consolecolor)
 	end,
 	['rconsolename'] = function(title)
 		consolecreate()
@@ -141,14 +157,12 @@ local functions = {
 	['printconsole'] = output,
 	['rconsoleclose'] = consoledestroy,
 	-- unavailable
-	--['getspecialinfo'] = nil,
 	--['setscriptable'] = nil,
 	--['getlocal'] = nil,
 	--['getlocals'] = nil,
 	--['getpropvalue'] = nil,
 	--['setpropvalue'] = nil,
 	--['getstates'] = nil,
-	--['validfgwindow'] = nil,
 	--['readbinarystring'] = nil,
 	--['isuntouched'] = nil,
 	--['setuntouched'] = nil,
@@ -201,8 +215,14 @@ getgenv().syn = {
 	end,
 	['request'] = request,
 	['crypt'] = {
-		['encrypt'] = crypt.encrypt,
-		['decrypt'] = crypt.decrypt,
+		['encrypt'] = function(data,key)
+			local nonce = crypt.generatekey()
+			local a = crypt.custom_encrypt(data,key,nonce,"CBC")
+			return crypt.base64encode(a.."::"..nonce)
+		end,
+		['decrypt'] = function(data,key)
+			return crypt.custom_decrypt(crypt.base64decode(data):split("::")[1],key,crypt.base64decode(data):split("::")[2],"CBC")
+		end,
 		['base64'] =  {
 			['encode'] = crypt.base64encode,
 			['decode'] = crypt.base64decode
@@ -230,7 +250,10 @@ getgenv().syn = {
 	['websocket'] = {
 		['connect'] = WebSocket.connect
 	},
-	--['secure_call'] = nil,
+	--['secure_call'] = function(func,s,...)
+	--	assert(typeof(func) == "function","bad argument to #1 to 'secure_call' (function expected, got "..typeof(func)..")")
+	--	assert(s.ClassName == ("LocalScript" or "ModuleScript"),"bad argument to #2 to 'secure_call' (LocalScript or ModuleScript expected, got "..s.ClassName..")")
+	--end,
 	--['create_secure_function'] = nil,
 	--['run_secure_function'] = nil,
 	--['run_secure_lua'] = nil,
@@ -238,5 +261,8 @@ getgenv().syn = {
 }
 getgenv().bit.ror = bit.rrotate
 getgenv().bit.rol = bit.lrotate
+getgenv().bit.tohex = function(a)
+	return tonumber(string.format("%08x", a % 4294967296))
+end
 
 getgenv().SYNTOSW_LOADED = true
