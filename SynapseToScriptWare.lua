@@ -22,6 +22,15 @@ oldnc = hookmetamethod(game,"__namecall",function(...)
     return oldnc(...)
 end)
 
+function encrypt(data,key)
+	local nonce = crypt.generatekey()
+	local a = crypt.custom_encrypt(data,key,nonce,"CBC")
+	return crypt.base64encode(a.."::"..nonce)
+end
+function decrypt(data,key)
+	return crypt.custom_decrypt(crypt.base64decode(data):split("::")[1],key,crypt.base64decode(data):split("::")[2],"CBC")
+end
+
 local functions = {
 	-- syn_ filesystem
 	['syn_io_read'] = readfile,
@@ -46,12 +55,14 @@ local functions = {
 	['syn_keypress'] = keypress,
 	['syn_keyrelease'] = keyrelease,
 	-- syn_ crypt
-	['syn_crypt_encrypt'] = crypt.encrypt,
-	['syn_crypt_decrypt'] = crypt.decrypt,
+	['syn_crypt_encrypt'] = encrypt,
+	['syn_crypt_decrypt'] = decrypt,
 	['syn_crypt_b64_encode'] = crypt.base64encode,
 	['syn_crypt_b64_decode'] = crypt.base64decode,
 	['syn_crypt_random'] = crypt.generatekey,
-	['syn_crypt_hash'] = crypt.hash,
+	['syn_crypt_hash'] = function(data)
+		return crypt.hash(data,"sha384")
+	end,
 	['syn_crypt_derive'] = function(_,len)
 		return crypt.generatebytes(len)
 	end,
@@ -215,19 +226,15 @@ getgenv().syn = {
 	end,
 	['request'] = request,
 	['crypt'] = {
-		['encrypt'] = function(data,key)
-			local nonce = crypt.generatekey()
-			local a = crypt.custom_encrypt(data,key,nonce,"CBC")
-			return crypt.base64encode(a.."::"..nonce)
-		end,
-		['decrypt'] = function(data,key)
-			return crypt.custom_decrypt(crypt.base64decode(data):split("::")[1],key,crypt.base64decode(data):split("::")[2],"CBC")
-		end,
+		['encrypt'] = encrypt,
+		['decrypt'] = decrypt,
 		['base64'] =  {
 			['encode'] = crypt.base64encode,
 			['decode'] = crypt.base64decode
 		},
-		['hash'] = crypt.hash,
+		['hash'] = function(data)
+			return crypt.hash(data,"sha384")
+		end,
 		['derive'] = function(_,len)
 			return crypt.generatebytes(len)
 		end,
