@@ -54,6 +54,11 @@ ui lib made by twink marie
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalAimbotUI.lua"))()
 ```  
   
+# Keystrokes  
+Updated September 18, 2021  
+minecraft keystrokes  
+shows W, A, S, D, LMB, RMB, Space, CPS, and FPS  
+  
 # Custom Crosshair  
 Updated June 4, 2021  
 v1.2.1  
