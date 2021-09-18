@@ -168,7 +168,7 @@ local function YAZCKSA_fake_script() -- Keystrokes.LocalScript
 			TweenService:Create(script.Parent.Main[i[input].Name],TweenInfo.new(0.15,Enum.EasingStyle.Sine,Enum.EasingDirection.Out),{BackgroundColor3 = Color3.fromRGB(255,255,255),TextColor3 = Color3.fromRGB(0,0,0)}):Play()
 			if i.UserInputType.Name == "MouseButton1" or i.UserInputType.Name == "MouseButton2" then
 				CPS[i.UserInputType.Name] += 1
-				wait(0.8)
+				wait(1)
 				CPS[i.UserInputType.Name] -= 1
 			end
 		end
@@ -182,7 +182,7 @@ local function YAZCKSA_fake_script() -- Keystrokes.LocalScript
 	RunService.RenderStepped:Connect(function()
 		spawn(function()
 			FPS += 1
-			wait(0.8)
+			wait(1)
 			FPS -= 1
 		end)
 		script.Parent.Main.CPS.Text = CPS["MouseButton1"].." | "..CPS["MouseButton2"].." CPS"
