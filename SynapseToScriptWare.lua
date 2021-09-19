@@ -10,6 +10,37 @@ local consolecolor, colors = "white", {
 	['light_red'] = "red",
 	['light_magenta'] = "magenta"
 }
+local ciphers = {
+	['aes-cbc'] = "CBC",
+	['aes-cfb'] = "CFB",
+	['aes-ctr'] = "CTR",
+	['aes-ofb'] = "OFB",
+	['aes-gcm'] = "GCM"
+	-- no aes-eax, bf-cbc, bf-cfb, bf-ofb
+}
+
+local headers = game:GetService("HttpService"):JSONDecode(request({Url = "https://httpbin.org/get"}).Body).headers
+old = hookfunction(request,function(options)
+	local h = {}
+	h['Syn-Fingerprint'] = headers['Sw-Fingerprint']
+	h['Syn-User-Identifier'] = headers['Sw-User-Identifier']
+	h['User-Agent'] = headers['User-Agent']
+	if options.Headers then
+		for i,v in next, options.Headers do
+			h[i] = v
+		end
+	end
+	return old({
+		Url = options.Url,
+		Method = options.Method or "GET",
+		Headers = h,
+		Cookies = options.Cookies or {},
+		Body = options.Body or ""
+	})
+end)
+
+local oldmt = getrawmetatable(game)
+
 oldnc = hookmetamethod(game,"__namecall",function(...)
     local args = {...}
     if args[1] == game and getnamecallmethod() == "FindFirstChild" and args[3] == true then
@@ -90,6 +121,8 @@ local functions = {
 	['syn_isactive'] = isrbxactive,
 	-- stuff
 	['is_synapse_function'] = isourclosure,
+	['is_protosmasher_closure'] = isourclosure,
+	['is_protosmasher_caller'] = checkcaller,
 	['is_lclosure'] = islclosure,
 	['iswindowactive'] = isrbxactive,
 	['validfgwindow'] = isrbxactive,
@@ -100,29 +133,10 @@ local functions = {
 	['getpcdprop'] = getpcd,
 	['getsynasset'] = getcustomasset,
 	['htgetf'] = game.HttpGet,
-	['getspecialinfo'] = function(obj)
-		assert(typeof(obj) == "Instance","bad argument #1 to 'getspecialinfo' (Instance expected, got "..typeof(obj)..")")
-		if obj.ClassName == "MeshPart" then
-			return {
-				['PhysicsData'] = gethiddenproperty(obj,"PhysicsData"),
-				['InitialSize'] = gethiddenproperty(obj,"InitialSize")
-			}
-		elseif obj.ClassName == "UnionOperations" then
-			return {
-				['AssetId'] = gethiddenproperty(obj,"AssetId"),
-				['ChildData'] = gethiddenproperty(obj,"ChildData"),
-				['FormFactor'] = gethiddenproperty(obj,"FormFactor"),
-				['InitialSize'] = gethiddenproperty(obj,"InitialSize"),
-				['MeshData'] = gethiddenproperty(obj,"MeshData"),
-				['PhysicsData'] = gethiddenproperty(obj,"PhysicsData")
-			}
-		elseif obj.ClassName == "Terrain" then
-			return {
-				['SmoothGrid'] = gethiddenproperty(obj,"SmoothGrid"),
-				['MaterialColors'] = gethiddenproperty(obj,"MaterialColors")
-			}
-		end
+	['gbmt'] = function()
+		return oldmt
 	end,
+	['setscriptable'] = sethidden,
 	-- get_
 	['get_calling_script'] = getcallingscript,
 	['get_instances'] = getinstances,
@@ -168,7 +182,6 @@ local functions = {
 	['printconsole'] = output,
 	['rconsoleclose'] = consoledestroy,
 	-- unavailable
-	--['setscriptable'] = nil,
 	--['getlocal'] = nil,
 	--['getlocals'] = nil,
 	--['getpropvalue'] = nil,
@@ -181,6 +194,10 @@ local functions = {
 	--['XPROTECT'] = nil,
 	--['is_redirection_enabled'] = nil,
 	--['getpointerfromstate'] = nil,
+	--['getinstancefromstate'] = nil,
+	--['getstates'] = nil,
+	--['getstateenv'] = nil,
+	--['setnonreplicatedproperty'] = nil,
 }
 
 for i,v in next, functions do
@@ -241,12 +258,17 @@ getgenv().syn = {
 		['random'] = crypt.generatekey,
 		['custom'] = {
 			['encrypt'] = function(cipher,data,key,nonce)
-				return crypt.custom_encrypt(data,key,nonce,cipher)
+				assert(cipher:find("eax"),"aes-eax is not supported")
+				assert(cipher:find("bf"),"Blowfish ciphers are not supported")
+				return crypt.custom_encrypt(data,key,nonce,ciphers[cipher:gsub("_","-")])
 			end,
 			['decrypt'] = function(cipher,data,key,nonce)
-				return crypt.custom_decrypt(data,key,nonce,cipher)
+				assert(cipher:find("eax"),"aes-eax is not supported")
+				assert(cipher:find("bf"),"Blowfish ciphers are not supported")
+				return crypt.custom_decrypt(data,key,nonce,ciphers[cipher:gsub("_","-")])
 			end,
 			['hash'] = function(alg,data)
+				assert(alg ~= ("sha224" or "sha3-384"),alg.." is not supported")
 				return crypt.hash(data,alg)
 			end
 		},
@@ -266,6 +288,7 @@ getgenv().syn = {
 	--['run_secure_lua'] = nil,
 	--['secrun'] = nil,
 }
+getgenv().syn.crypto = syn.crypt
 getgenv().bit.ror = bit.rrotate
 getgenv().bit.rol = bit.lrotate
 getgenv().bit.tohex = function(a)
