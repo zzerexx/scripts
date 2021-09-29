@@ -5,7 +5,7 @@ if not getgenv().AimbotSettings then
 			TargetPart = "Head",
 			VisibleCheck = true,
 			Use_mousemoverel = true,
-			Strength = 100, -- 1% - 100%
+			Strength = 100, -- 1% - 200%
 			TeamCheck = true, -- Press ] to toggle
 			Keybind = Enum.UserInputType.MouseButton2, -- Must be a UserInputType or KeyCode
 			AimType = "Hold", -- "Hold" or "Toggle"
@@ -246,7 +246,7 @@ getgenv().AIMBOT_RS = RunService.RenderStepped:Connect(function()
 			if ss.Aimbot.Enabled and IsVisible(plr) and InFov(plr) and not IsWhitelisted(plr) and GetChar(plr):FindFirstChild(ss.Aimbot.TargetPart) then
 				if ss.Aimbot.Use_mousemoverel then
 					local vector = camera:WorldToViewportPoint(GetChar(plr)[ss.Aimbot.TargetPart].Position)
-					ss.Aimbot.Strength = math.clamp(ss.Aimbot.Strength,1,100)
+					ss.Aimbot.Strength = math.clamp(ss.Aimbot.Strength,1,200)
 					if game.GameId == (gids.pf or gids.pft) then
 						ss.Aimbot.Strength = math.clamp(ss.Aimbot.Strength,1,65)
 					end
