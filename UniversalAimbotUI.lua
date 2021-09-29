@@ -4,7 +4,7 @@ getgenv().AimbotSettings = {
 		TargetPart = "Head",
 		VisibleCheck = true,
 		Use_mousemoverel = true,
-		Strength = 100, -- 1% - 100%
+		Strength = 100, -- 1% - 200%
 		TeamCheck = true, -- Press ] to toggle
 		Keybind = Enum.UserInputType.MouseButton2, -- Must be a UserInputType or KeyCode
 		AimType = "Hold", -- "Hold" or "Toggle"
@@ -77,7 +77,7 @@ Aimbot.Slider({
 		aimbot:Set("Aimbot","Strength",value)
 	end,
 	Min = 1,
-	Max = 100,
+	Max = 200,
 	Def = 100
 })
 Aimbot.Toggle({
