@@ -36,15 +36,14 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/
 ```  
   
 # Universal Aimbot  
-Updated September 5, 2021  
-v1.1.4  
+Updated September 29, 2021  
+v1.1.5  
 ```
 https://pastebin.com/raw/nwqE7v07
 ```  
   
-## Update v1.1.4  
-Added support for Phantom Forces & Bad Business  
-VisibleCheck doesn't work on these games so it's automatically disabled  
+## Update v1.1.5  
+You can now set aimbot strength to 200%  
   
 # Universal Aimbot with UI  
 Updated September 5, 2021  
