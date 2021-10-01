@@ -97,7 +97,7 @@ basically just the developer console
 F9 to toggle  
 
 # Synapse to Script-Ware  
-Updated September 18, 2021  
+Updated September 30, 2021  
 Allows you to use Synapse functions on Script-Ware!  
   
 **Loader**  
