@@ -1,6 +1,12 @@
-if getgenv().SYNTOSW_LOADED then return end
+assert(identifyexecutor():find("ScriptWare"),"you are not using script ware")
 getgenv().protected = protected or {}
 local consolecolor, colors = "white", {
+	['black'] = "black",
+	['blue'] = "blue",
+	['green'] = "green",
+	['cyan'] = "cyan",
+	['red'] = "red",
+	['magenta'] = "magenta",
 	['brown'] = "white",
 	['light_gray'] = "white",
 	['dark_gray'] = "white",
@@ -8,7 +14,8 @@ local consolecolor, colors = "white", {
 	['light_green'] = "green",
 	['light_cyan'] = "cyan",
 	['light_red'] = "red",
-	['light_magenta'] = "magenta"
+	['light_magenta'] = "magenta",
+	['yellow'] = "yellow",
 }
 local ciphers = {
 	['aes-cbc'] = "CBC",
@@ -21,15 +28,10 @@ local ciphers = {
 
 local headers = game:GetService("HttpService"):JSONDecode(request({Url = "https://httpbin.org/get"}).Body).headers
 old = hookfunction(request,function(options)
-	local h = {}
+	local h = options.Headers or {}
 	h['Syn-Fingerprint'] = headers['Sw-Fingerprint']
 	h['Syn-User-Identifier'] = headers['Sw-User-Identifier']
 	h['User-Agent'] = headers['User-Agent']
-	if options.Headers then
-		for i,v in next, options.Headers do
-			h[i] = v
-		end
-	end
 	return old({
 		Url = options.Url,
 		Method = options.Method or "GET",
@@ -148,7 +150,7 @@ local functions = {
 		consolecreate()
 		if string.find(msg,"@@") then
 			consolecolor = msg:gsub("@@",""):lower()
-			consolecolor = consolecolor:gsub(consolecolor,colors[consolecolor] or "white")
+			consolecolor = consolecolor:gsub(consolecolor,colors[consolecolor])
 		else
 			consoleprint(msg,consolecolor)
 		end
@@ -288,11 +290,12 @@ getgenv().syn = {
 	--['run_secure_lua'] = nil,
 	--['secrun'] = nil,
 }
+getgenv().decompile = function(s)
+	return disassemble(getscriptbytecode(s))
+end
 getgenv().syn.crypto = syn.crypt
 getgenv().bit.ror = bit.rrotate
 getgenv().bit.rol = bit.lrotate
 getgenv().bit.tohex = function(a)
 	return tonumber(string.format("%08x", a % 4294967296))
 end
-
-getgenv().SYNTOSW_LOADED = true
