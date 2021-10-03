@@ -50,4 +50,14 @@ game:GetService("RunService").RenderStepped:Connect(function()
 	cps1.Text = "LMB - "..tostring(lclicks)
 	cps2.Text = "RMB - "..tostring(rclicks)
 	fps1.Text = "FPS - "..tostring(fps)
+    
+    if cps and cps.rgb then
+        cps1.Color = Color3.fromHSV(tick()%5/5,1,1)
+        cps2.Color = Color3.fromHSV(tick()%5/5,1,1)
+        fps1.Color = Color3.fromHSV(tick()%5/5,1,1)
+    else
+        cps1.Color = Color3.fromRGB(255,255,255)
+        cps2.Color = Color3.fromRGB(255,255,255)
+        fps1.Color = Color3.fromRGB(255,255,255)
+    end
 end)
