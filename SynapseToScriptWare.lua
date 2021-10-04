@@ -1,5 +1,6 @@
 assert(identifyexecutor():find("ScriptWare"),"you are not using script ware")
 getgenv().protected = protected or {}
+getgenv().temp = temp or {}
 local consolecolor, colors = "white", {
 	['black'] = "black",
 	['blue'] = "blue",
@@ -54,7 +55,29 @@ oldnc = hookmetamethod(game,"__namecall",function(...)
     end
     return oldnc(...)
 end)
+oldidx = hookmetamethod(game,"__index",function(...)
+	local self = ({...})[1]
+	for _,v in next, temp do
+		if self:GetFullName() == v then
+			return nil
+		end
+	end
+	return oldidx(...)
+end)
+oldnew = hookmetamethod(game,"__newindex",function(...)
+	local self = ({...})[1]
+	for _,v in next, temp do
+		if self:GetFullName() == v then
+			return nil
+		end
+	end
+	return oldnew(...)
+end)
 
+--[[
+	encrypt/decrypt cannot be made accurately because idk what nonce synapse uses for encryption
+	also doesnt work because AES-GCM on sw doesnt work LOL (thats why it uses AES-CBC)
+]]
 function encrypt(data,key)
 	local nonce = crypt.generatekey()
 	local a = crypt.custom_encrypt(data,key,nonce,"CBC")
@@ -139,6 +162,16 @@ local functions = {
 		return oldmt
 	end,
 	['setscriptable'] = sethidden,
+	['getpropvalue'] = function(obj,prop)
+		table.insert(temp,obj:GetFullName())
+		delay(0,function() table.remove(temp,table.find(temp,obj:GetFullName())) end)
+		return obj[prop]
+	end,
+	['setpropvalue'] = function(obj,prop,value)
+		table.insert(temp,obj:GetFullName())
+		obj[prop] = value
+		table.remove(temp,table.find(temp,obj:GetFullName()))
+	end,
 	-- get_
 	['get_calling_script'] = getcallingscript,
 	['get_instances'] = getinstances,
@@ -186,8 +219,6 @@ local functions = {
 	-- unavailable
 	--['getlocal'] = nil,
 	--['getlocals'] = nil,
-	--['getpropvalue'] = nil,
-	--['setpropvalue'] = nil,
 	--['getstates'] = nil,
 	--['readbinarystring'] = nil,
 	--['isuntouched'] = nil,
