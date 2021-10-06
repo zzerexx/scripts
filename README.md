@@ -218,3 +218,9 @@ Updated March 12, 2021
 v1.0.0   
 syanpse in roblos  
 not updating cuz boring
+
+# Krnl Internal
+Updated ???  
+krnl in roblos  
+not everything works  
+i made this a while ago just wanted to release it now  
