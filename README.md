@@ -2,8 +2,8 @@
 my cool scripts  
   
 # Universal Esp  
-Updated September 5, 2021  
-v1.5.7  
+Updated October 8, 2021  
+v1.5.8  
 - Box Esp  
 - Tracers  
 - Name Esp  
@@ -21,11 +21,8 @@ You are allowed to use this ESP in your script as long as you credit me (zzerexx
 u should read UniversalEspDocs.md for more info
 ```  
   
-## Update v1.5.7    
-Boxes now use Quad instead of Square  
-Names no longer overlaps boxes  
-LookTracers and HealthBars have been disabled for now  
-Added Labels and Chams for Part instances (not players)  
+## Update v1.5.8    
+Updated to work on the latest version of phantom forces  
   
 # Universal Esp with UI  
 Updated August 10, 2021  
@@ -36,14 +33,15 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/
 ```  
   
 # Universal Aimbot  
-Updated September 29, 2021  
-v1.1.5  
+Updated October 10, 2021  
+v1.1.6  
 ```
 https://pastebin.com/raw/nwqE7v07
 ```  
   
-## Update v1.1.5  
-You can now set aimbot strength to 200%  
+## Update v1.1.6  
+Updated to work on the latest version of phantom forces  
+Added WhitelistFriends; Automatically adds friends to the whitelist  
   
 # Universal Aimbot with UI  
 Updated September 5, 2021  
