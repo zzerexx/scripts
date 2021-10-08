@@ -64,8 +64,11 @@ if not Drawing then
 	game:GetService("Players").LocalPlayer:Kick("\n\nUniversal Esp\nYour exploit does not have a Drawing Library!\n")
 	return
 end
+if typeof(getgenv().UESP_RS) == "RBXScriptConnection" then
+	getgenv().UESP_RS:Disconnect()
+end
 if typeof(getgenv().UESP_OBJECTS) == "table" then
-	for i,v in next, getgenv().UESP_OBJECTS do
+	for _,v in next, getgenv().UESP_OBJECTS do
 		if typeof(v.Object) == "table" then
 			for _,v2 in next, v.Object do
 				v2:Remove()
@@ -73,11 +76,8 @@ if typeof(getgenv().UESP_OBJECTS) == "table" then
 		else
 			v.Object:Remove()
 		end
-		table.remove(getgenv().UESP_OBJECTS,i)
 	end
-end
-if typeof(getgenv().UESP_RS) == "RBXScriptConnection" then
-	getgenv().UESP_RS:Disconnect()
+	table.clear(getgenv().UESP_OBJECTS)
 end
 
 local players = game:GetService("Players")
@@ -168,7 +168,7 @@ function IsAlive(plr)
 	if plr and plr ~= player and plr.Character and plr.Character:FindFirstChild("Head") and plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChildOfClass("Humanoid") and plr.Character:FindFirstChildOfClass("Humanoid").Health > 0 then
 		return true
 	elseif game.GameId == (gids.pf or gids.pft or gids.pfu) then
-		if plr and plr ~= player and getchar(plr) ~= nil then
+		if plr and plr ~= player and getchar(plr,plr) ~= nil then
 			return true
 		end
 	elseif game.GameId == gids.bb then
@@ -186,7 +186,7 @@ function RigType(plr)
 end
 function GetChar(plr)
 	if game.GameId == (gids.pf or gids.pft or gids.pfu) then
-		return getchar(plr).rootpart.Parent
+		return getchar(plr).torso.Parent
 	elseif game.GameId == gids.bb then
 		return ts.Characters:GetCharacter(plr).Body
 	elseif plr.Character ~= nil then
@@ -274,12 +274,12 @@ function Skeleton(plr)
 		RightUpperLeg = Drawing.new("Line"),
 		RightLowerLeg = Drawing.new("Line"),
 		RightFoot = Drawing.new("Line"),
-		-- R6, unused
-		--Torso = Drawing.new("Line"),
-		--["Left Arm"] = Drawing.new("Line"),
-		--["Right Arm"] = Drawing.new("Line"),
-		--["Left Leg"] = Drawing.new("Line"),
-		--["Right Leg"] = Drawing.new("Line"),
+		-- R6
+		Torso = Drawing.new("Line"),
+		["Left Arm"] = Drawing.new("Line"),
+		["Right Arm"] = Drawing.new("Line"),
+		["Left Leg"] = Drawing.new("Line"),
+		["Right Leg"] = Drawing.new("Line"),
 		-- bad business
 		Chest = Drawing.new("Line"),
 		Hips = Drawing.new("Line"),
@@ -370,10 +370,11 @@ getgenv().UESP_RS = RunService.RenderStepped:Connect(function()
 				plr = v.Player
 				cf, size = GetChar(plr):GetBoundingBox()
 				size /= 2
-				tl, inViewport = camera:WorldToViewportPoint((cf * CFrame.new(size.X,size.Y,0)).Position)
-				tr = camera:WorldToViewportPoint((cf * CFrame.new(-size.X,size.Y,0)).Position)
-				bl = camera:WorldToViewportPoint((cf * CFrame.new(size.X,-size.Y,0)).Position)
-				br = camera:WorldToViewportPoint((cf * CFrame.new(-size.X,-size.Y,0)).Position)
+				_, inViewport = camera:WorldToViewportPoint(cf.Position)
+				tl = camera:WorldToViewportPoint((cf * CFrame.new(-size.X,size.Y,0)).Position)
+				tr = camera:WorldToViewportPoint((cf * CFrame.new(size.X,size.Y,0)).Position)
+				bl = camera:WorldToViewportPoint((cf * CFrame.new(-size.X,-size.Y,0)).Position)
+				br = camera:WorldToViewportPoint((cf * CFrame.new(size.X,-size.Y,0)).Position)
 			end
 		elseif v.Part then
 			part = v.Part
@@ -464,13 +465,18 @@ getgenv().UESP_RS = RunService.RenderStepped:Connect(function()
 						v2.OutlineColor = ss.Names.OutlineColor
 						v2.Font = ss.Names.Font
 					end
-					name.Name.Position = Vector2.new(tl.X + (tr.X - tl.X) / 2,tl.Y - 20)
+					name.Name.Position = Vector2.new(tl.X + (tr.X - tl.X) / 2,tl.Y - (ss.Names.Size + 2))
 					name.Data.Position = Vector2.new(tl.X + (tr.X - tl.X) / 2,bl.Y)
+					if ss.HealthBars.Enabled then
+						name.Data.Position = Vector2.new(name.Data.Position.X,name.Data.Position.Y + 15)
+					end
 					name.Name.Visible = (not ss.TeamCheck or (GetTeam(plr) ~= GetTeam(player) and ss.TeamCheck))
 					name.Data.Visible = (not ss.TeamCheck or (GetTeam(plr) ~= GetTeam(player) and ss.TeamCheck))
 					local mag
 					if game.GameId == gids.bb then
 						mag = math.floor((camera.CFrame.Position - GetChar(plr).Parent.Root.Position).Magnitude)
+					elseif game.GameId == (gids.pf or gids.pft or gids.pfu) then
+						mag = math.floor((camera.CFrame.Position - GetChar(plr).Torso.Position).Magnitude)
 					else
 						mag = math.floor((camera.CFrame.Position - GetChar(plr).HumanoidRootPart.Position).Magnitude)
 					end
@@ -509,7 +515,7 @@ getgenv().UESP_RS = RunService.RenderStepped:Connect(function()
 			end
 		elseif v.Type == "Skeleton" then
 			local skeleton = v.Object
-			if getgenv().UESP_VISIBLE and ss.Skeletons.Enabled and IsAlive(plr) and (RigType(plr) == "R15" or game.GameId == gids.bb) then
+			if getgenv().UESP_VISIBLE and ss.Skeletons.Enabled and IsAlive(plr) or getgenv().UESP_VISIBLE and ss.Skeletons.Enabled and IsAlive(plr) and game.GameId == gids.bb then
 				if inViewport then
 					local From = {
 						['UpperTorso'] = "Head",
@@ -562,7 +568,7 @@ getgenv().UESP_RS = RunService.RenderStepped:Connect(function()
 						v2.Thickness = ss.Skeletons.Thickness
 						v2.Visible = (not ss.TeamCheck or (GetTeam(plr) ~= GetTeam(player) and ss.TeamCheck))
 
-						if game.GameId ~= gids.pf and GetChar(plr):FindFirstChild(i2) then
+						if GetChar(plr):FindFirstChild(i2) then
 							local vector1 = camera:WorldToViewportPoint(GetChar(plr):FindFirstChild(From[i2]).Position)
 							v2.From = Vector2.new(vector1.X,vector1.Y)
 
@@ -644,16 +650,31 @@ getgenv().UESP_RS = RunService.RenderStepped:Connect(function()
 					outline.Color = ss.HealthBars.OutlineColor
 					outline.Transparency = ss.HealthBars.Transparency
 
-					local health = GetHealth(plr)
-					bar.PointA = Vector2.new(bl.X - 16,bl.Y + (bl.Y / health[1] / health[2]))
-					bar.PointB = Vector2.new(bl.X - 24,bl.Y + (bl.Y / health[1] / health[2]))
-					bar.PointC = Vector2.new(bl.X - 24,bl.Y)
-					bar.PointD = Vector2.new(bl.X - 16,bl.Y)
+					local higher = (bl.Y < br.Y and bl.Y) or (bl.Y > br.Y and br.Y)
+					local lower = (bl.Y > br.Y and bl.Y) or (bl.Y < br.Y and br.Y)
+					local health = (GetHealth(plr)[1] / GetHealth(plr)[2])
+					bar.PointA = Vector2.new(
+						bl.X + ((br.X - bl.X) * health),
+						br.Y + ((higher + ((lower - higher) / health)) / 100)
+					)
+					bar.PointB = Vector2.new(
+						bl.X,
+						bl.Y + 5
+					)
+					bar.PointC = Vector2.new(
+						bl.X,
+						bl.Y + 12
+					)
+					bar.PointD = Vector2.new(
+						bl.X + ((br.X - bl.X) * health),
+						br.Y + ((higher + ((lower - higher) / health)) / 100)
+					)
+					print((higher + ((lower - higher) / health)) / 100)
 
-					outline.PointA = Vector2.new(tl.X - 15,tl.Y)
-					outline.PointB = Vector2.new(tl.X - 25,tl.Y)
-					outline.PointC = Vector2.new(bl.X - 25,bl.Y)
-					outline.PointD = Vector2.new(bl.X - 15,bl.Y)
+					outline.PointA = Vector2.new(br.X,br.Y + 6)
+					outline.PointB = Vector2.new(bl.X,bl.Y + 6)
+					outline.PointC = Vector2.new(bl.X,bl.Y + 12)
+					outline.PointD = Vector2.new(br.X,br.Y + 12)
 
 					if ss.TeamCheck and GetTeam(plr) == GetTeam(player) then
 						bar.Visible = false
@@ -772,24 +793,29 @@ game:GetService("UserInputService").InputBegan:Connect(function(i,gp)
 	end
 end)
 for _,v in next, players:GetPlayers() do
-	Box(v)
-	Tracer(v)
-	Name(v)
-	Skeleton(v)
-	--LookTracer(v)
-	--HealthBar(v)
+	if v ~= player then
+		Box(v)
+		Tracer(v)
+		Name(v)
+		Skeleton(v)
+		--LookTracer(v)
+		--HealthBar(v)
+	end
 end
 players.PlayerAdded:Connect(function(v)
-	Box(v)
-	Tracer(v)
-	Name(v)
-	Skeleton(v)
-	--LookTracer(v)
-	--HealthBar(v)
+	if v ~= player then
+		Box(v)
+		Tracer(v)
+		Name(v)
+		Skeleton(v)
+		--LookTracer(v)
+		--HealthBar(v)
+	end
 end)
 players.PlayerRemoving:Connect(function(plr)
 	for i,v in next, getgenv().UESP_OBJECTS do
 		if v.Player == plr then
+			table.remove(getgenv().UESP_OBJECTS,i)
 			if typeof(v.Object) == "table" then
 				for _,v2 in next, v.Object do
 					v2:Remove()
@@ -797,7 +823,6 @@ players.PlayerRemoving:Connect(function(plr)
 			else
 				v.Object:Remove()
 			end
-			table.remove(getgenv().UESP_OBJECTS,i)
 		end
 	end
 end)
