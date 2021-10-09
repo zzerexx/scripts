@@ -33,15 +33,16 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/
 ```  
   
 # Universal Aimbot  
-Updated October 10, 2021  
-v1.1.6  
+Updated October 8, 2021  
+v1.1.7  
 ```
 https://pastebin.com/raw/nwqE7v07
 ```  
   
-## Update v1.1.6  
+## Update v1.1.7  
 Updated to work on the latest version of phantom forces  
 Added WhitelistFriends; Automatically adds friends to the whitelist  
+Added MaximumDistance; Checks if the player is within the provided distance before aimbotting, recommended if you aren't using visible check  
   
 # Universal Aimbot with UI  
 Updated September 5, 2021  
