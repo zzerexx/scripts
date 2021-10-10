@@ -40,7 +40,7 @@ Added WhitelistFriends; Automatically adds friends to the whitelist
 Added MaximumDistance; Checks if the player is within the provided distance before aimbotting, recommended if you aren't using visible check  
   
 # Universal Aimbot with UI  
-Updated September 5, 2021  
+Updated October 10, 2021  
 universal aimbot but with a ui  
 ui lib made by twink marie  
 ```
