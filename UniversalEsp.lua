@@ -1,3 +1,4 @@
+-- bad business stuff https://raw.githubusercontent.com/coastss/releases/main/bad_business_silent_aim.lua
 if not getgenv().EspSettings then
 	getgenv().EspSettings = {
 		TeamCheck = false,
@@ -360,6 +361,19 @@ end
 getgenv().UESP_RS = RunService.RenderStepped:Connect(function()
 	for i,v in next, getgenv().UESP_OBJECTS do
 		ss = getgenv().EspSettings
+
+		if v.Player == nil then
+			if typeof(v.Object) == "table" then
+				for _,v2 in next, v.Object do
+					v2:Remove()
+				end
+			else
+				v.Object:Remove()
+			end
+			table.remove(getgenv().UESP_OBJECTS,i)
+			return
+		end
+
 		local plr, part
 		local cf, size, _, inViewport, tl, tr, bl, br
 		local c1, c2, c3, c4, c5, c6, c7, c8, y1
@@ -807,7 +821,7 @@ players.PlayerAdded:Connect(function(v)
 	end
 end)
 players.PlayerRemoving:Connect(function(plr)
-	for i,v in next, getgenv().UESP_OBJECTS do
+	--[[for i,v in next, getgenv().UESP_OBJECTS do
 		if v.Player == plr then
 			table.remove(getgenv().UESP_OBJECTS,i)
 			if typeof(v.Object) == "table" then
@@ -818,7 +832,7 @@ players.PlayerRemoving:Connect(function(plr)
 				v.Object:Remove()
 			end
 		end
-	end
+	end]]
 end)
 
 local esp = {}
