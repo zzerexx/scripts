@@ -27,9 +27,8 @@ if not getgenv().EspSettings then
 			Outline = true,
 			OutlineColor = Color3.fromRGB(0,0,0),
 			ShowDistance = false,
-			ShowHealth = false,
+			ShowHealth = true,
 			UseDisplayName = false,
-			Position = "Top", -- "Top" or "Bottom"
 		},
 		Skeletons = {
 			Enabled = true,
@@ -434,7 +433,7 @@ getgenv().UESP_RS = RunService.RenderStepped:Connect(function()
 					tracer.Transparency = ss.Tracers.Transparency
 					tracer.Thickness = ss.Tracers.Thickness
 					tracer.From = origin
-					tracer.To = Vector2.new(tl.X + (tr.X - tl.X) / 2,tl.Y)
+					tracer.To = Vector2.new(tl.X + (tr.X - tl.X) / 2,tl.Y + (tr.Y - tl.Y) / 2)
 					tracer.Visible = (not ss.TeamCheck or (GetTeam(plr) ~= GetTeam(player) and ss.TeamCheck))
 				else
 					tracer.Visible = false
@@ -466,7 +465,7 @@ getgenv().UESP_RS = RunService.RenderStepped:Connect(function()
 						v2.Font = ss.Names.Font
 					end
 					name.Name.Position = Vector2.new(tl.X + (tr.X - tl.X) / 2,tl.Y - (ss.Names.Size + 2))
-					name.Data.Position = Vector2.new(tl.X + (tr.X - tl.X) / 2,bl.Y)
+					name.Data.Position = Vector2.new(tl.X + (tr.X - tl.X) / 2,bl.Y + (br.Y - bl.Y) / 2)
 					if ss.HealthBars.Enabled then
 						name.Data.Position = Vector2.new(name.Data.Position.X,name.Data.Position.Y + 15)
 					end
@@ -640,22 +639,18 @@ getgenv().UESP_RS = RunService.RenderStepped:Connect(function()
 				tracer.Visible = false
 			end
 		elseif v.Type == "HealthBar" then
-			-- Health Bars have been disabled since it doesn't really work well with Quad Esp + it doesn't work rn lol
 			local bar = v.Object.Bar
 			local outline = v.Object.Outline
-			if getgenv().UESP_VISIBLE and ss.HealthBars.Enabled and IsAlive(plr) and true == false then
+			if getgenv().UESP_VISIBLE and ss.HealthBars.Enabled and IsAlive(plr) then
 				if inViewport then
 					bar.Color = ss.HealthBars.Color
 					bar.Transparency = ss.HealthBars.Transparency
 					outline.Color = ss.HealthBars.OutlineColor
 					outline.Transparency = ss.HealthBars.Transparency
-
-					local higher = (bl.Y < br.Y and bl.Y) or (bl.Y > br.Y and br.Y)
-					local lower = (bl.Y > br.Y and bl.Y) or (bl.Y < br.Y and br.Y)
 					local health = (GetHealth(plr)[1] / GetHealth(plr)[2])
 					bar.PointA = Vector2.new(
-						bl.X + ((br.X - bl.X) * health),
-						br.Y + ((higher + ((lower - higher) / health)) / 100)
+						bl.X + (br.X - bl.X) * health,
+						(bl.Y + (br.Y - bl.Y) * health) + 5
 					)
 					bar.PointB = Vector2.new(
 						bl.X,
@@ -663,19 +658,18 @@ getgenv().UESP_RS = RunService.RenderStepped:Connect(function()
 					)
 					bar.PointC = Vector2.new(
 						bl.X,
-						bl.Y + 12
+						bl.Y + math.clamp(1000 / tl.Z,8,12)
 					)
 					bar.PointD = Vector2.new(
-						bl.X + ((br.X - bl.X) * health),
-						br.Y + ((higher + ((lower - higher) / health)) / 100)
+						bl.X + (br.X - bl.X) * health,
+						(bl.Y + (br.Y - bl.Y) * health) + math.clamp(1000 / tl.Z,8,12)
 					)
-					print((higher + ((lower - higher) / health)) / 100)
 
-					outline.PointA = Vector2.new(br.X,br.Y + 6)
-					outline.PointB = Vector2.new(bl.X,bl.Y + 6)
-					outline.PointC = Vector2.new(bl.X,bl.Y + 12)
-					outline.PointD = Vector2.new(br.X,br.Y + 12)
-
+					outline.PointA = Vector2.new(br.X,br.Y + 5)
+					outline.PointB = Vector2.new(bl.X,bl.Y + 5)
+					outline.PointC = Vector2.new(bl.X,bl.Y + math.clamp(1000 / tl.Z,8,12))
+					outline.PointD = Vector2.new(br.X,br.Y + math.clamp(1000 / tl.Z,8,12))
+					
 					if ss.TeamCheck and GetTeam(plr) == GetTeam(player) then
 						bar.Visible = false
 						outline.Visible = false
@@ -799,7 +793,7 @@ for _,v in next, players:GetPlayers() do
 		Name(v)
 		Skeleton(v)
 		--LookTracer(v)
-		--HealthBar(v)
+		HealthBar(v)
 	end
 end
 players.PlayerAdded:Connect(function(v)
@@ -809,7 +803,7 @@ players.PlayerAdded:Connect(function(v)
 		Name(v)
 		Skeleton(v)
 		--LookTracer(v)
-		--HealthBar(v)
+		HealthBar(v)
 	end
 end)
 players.PlayerRemoving:Connect(function(plr)
