@@ -1,4 +1,3 @@
--- bad business stuff https://raw.githubusercontent.com/coastss/releases/main/bad_business_silent_aim.lua
 if not getgenv().EspSettings then
 	getgenv().EspSettings = {
 		TeamCheck = false,
