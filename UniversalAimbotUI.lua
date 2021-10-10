@@ -10,6 +10,7 @@ getgenv().AimbotSettings = {
 		AimType = "Hold", -- "Hold" or "Toggle"
 		AlwaysActive = false,
 		ToggleKey = Enum.KeyCode.RightShift,
+		MaximumDistance = 1000,
 	},
 	FovCircle = {
 		Enabled = true,
@@ -20,6 +21,7 @@ getgenv().AimbotSettings = {
 		NumSides = 64,
 	},
 	Whitelisted = {}, -- Username or User ID
+	WhitelistFriends = true,
 	Ignore = nil -- Raycast Ignore
 } -- v1.1.5
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalAimbot.lua"))()
@@ -108,6 +110,15 @@ Aimbot.TextField({
 		aimbot:Set("Aimbot","ToggleKey",Enum.KeyCode[value])
 	end
 })
+Aimbot.Slider({
+	Text = "Maximum Distance",
+	Callback = function(value)
+		aimbot:Set("Aimbot","MaximumDistance",value)
+	end,
+	Min = 0,
+	Max = 1000,
+	Def = 300,
+})
 
 Fov.Toggle({
 	Text = "Enabled",
@@ -194,4 +205,11 @@ Other.Button({
 		end
 		table.remove(list,table.find(list,plr))
 	end
+})
+Other.Toggle({
+	Text = "Whitelist Friends",
+	Callback = function(value)
+		aimbot:Set("Other","WhitelistFriends",value)
+	end,
+	Enabled = true
 })
