@@ -3,7 +3,7 @@ my cool scripts
   
 # Universal Esp  
 Updated October 10, 2021  
-v1.5.9  
+v1.5.10  
 - Box Esp  
 - Tracers  
 - Name Esp  
@@ -15,9 +15,10 @@ v1.5.9
 https://pastebin.com/raw/5zw0rLH9
 ```  
   
-## Update v1.5.9    
+## Update v1.5.10    
 Updated to work on the latest version of phantom forces  
 Fixed and re-enabled Health Bars!  
+Added some new functions, read `UniversalScriptAPI.md`  
   
 # Universal Esp with UI  
 Updated August 10, 2021  
@@ -28,16 +29,17 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/
 ```  
   
 # Universal Aimbot  
-Updated October 8, 2021  
-v1.1.7  
+Updated October 10, 2021  
+v1.1.8  
 ```
 https://pastebin.com/raw/nwqE7v07
 ```  
   
-## Update v1.1.7  
+## Update v1.1.8  
 Updated to work on the latest version of phantom forces  
 Added WhitelistFriends; Automatically adds friends to the whitelist  
 Added MaximumDistance; Checks if the player is within the provided distance before aimbotting, recommended if you aren't using visible check  
+Added some new functions, read `UniversalScriptAPI.md`  
   
 # Universal Aimbot with UI  
 Updated October 10, 2021  
