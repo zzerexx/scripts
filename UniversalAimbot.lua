@@ -303,5 +303,9 @@ function aimbot:Set(type,option,value)
 		getgenv().AimbotSettings[type][option] = value
 	end
 end
+function aimbot:Destroy()
+	AIMBOT_RS:Disconnect()
+	fov:Remove()
+end
 
 return aimbot
