@@ -55,8 +55,22 @@ esp:Set("Other","TeamCheck",true)
 aimbot:Get("Other","Whitelisted")
 aimbot:Set("Other","Ignore",workspace.Ignore)
 ```  
+  
+## Destroy  
+Removes all drawing objects and stops all processes.  
+```
+void esp:Destroy()
+void aimbot:Destroy()
 
-# Add Label (Universal Esp)  
+Example
+esp:Destroy()
+aimbot:Destroy()
+```  
+  
+# Universal Esp Functions  
+These are only available on Universal Esp!  
+  
+## Add Label  
 Adds a Label on the specified part.  
 ```
 esp.Label(part, options)
@@ -72,7 +86,7 @@ esp.Label(workspace.Part,{
 })
 ```  
   
-# Add Cham (Universal Esp)  
+## Add Cham  
 Adds Chams on the specified part.  
 ```
 esp.Cham(part, options)
@@ -85,6 +99,23 @@ esp.Cham(workspace.Part,{
 })
 ```  
 
+## Get Objects  
+Returns a table of objects for the specified player.  
+```
+table esp:GetObjects(player)
+
+Example
+table.foreach(esp:GetObjects(game.Players.Roblox),print)
+```  
+
+## Remove  
+Removes specific object(s).  
+```
+void table:Remove()
+
+Example
+esp:GetObjects(game.Players.Roblox).Box:Remove() -- Only call Remove on the table.
+```  
   
 # Script Errors  
 
