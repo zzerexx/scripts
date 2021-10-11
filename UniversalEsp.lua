@@ -225,7 +225,12 @@ function Box(plr)
 	box.Color = ss.Boxes.Color
 	box.Thickness = 1
 	box.Filled = false
-	table.insert(getgenv().UESP_OBJECTS,{Object = box,Type = "Box",Player = plr})
+	local a = {Object = box,Type = "Box",Player = plr,Destroyed = false}
+	function a:Remove()
+		box:Remove()
+		a.Destroyed = true
+	end
+	table.insert(getgenv().UESP_OBJECTS,a)
 end
 function Tracer(plr)
 	ss = getgenv().EspSettings
@@ -234,7 +239,12 @@ function Tracer(plr)
 	tracer.Transparency = ss.Tracers.Transparency
 	tracer.Color = ss.Tracers.Color
 	tracer.Thickness = ss.Tracers.Thickness
-	table.insert(getgenv().UESP_OBJECTS,{Object = tracer,Type = "Tracer",Player = plr})
+	local a = {Object = tracer,Type = "Tracer",Player = plr,Destroyed = false}
+	function a:Remove()
+		tracer:Remove()
+		a.Destroyed = true
+	end
+	table.insert(getgenv().UESP_OBJECTS,a)
 end
 function Name(plr)
 	ss = getgenv().EspSettings
@@ -253,7 +263,13 @@ function Name(plr)
 		v.OutlineColor = ss.Names.OutlineColor
 		v.Font = ss.Names.Font
 	end
-	table.insert(getgenv().UESP_OBJECTS,{Object = objects,Type = "Name",Player = plr})
+	local a = {Object = objects,Type = "Name",Player = plr,Destroyed = false}
+	function a:Remove()
+		objects.Name:Remove()
+		objects.Data:Remove()
+		a.Destroyed = true
+	end
+	table.insert(getgenv().UESP_OBJECTS,a)
 end
 function Skeleton(plr)
 	ss = getgenv().EspSettings
@@ -297,7 +313,14 @@ function Skeleton(plr)
 		v.Color = ss.Skeletons.Color
 		v.Thickness = ss.Skeletons.Thickness
 	end
-	table.insert(getgenv().UESP_OBJECTS,{Object = objects,Type = "Skeleton",Player = plr})
+	local a = {Object = objects,Type = "Skeleton",Player = plr,Destroyed = false}
+	function a:Remove()
+		for _,v in next, objects do
+			v:Remove()
+		end
+		a.Destroyed = true
+	end
+	table.insert(getgenv().UESP_OBJECTS,a)
 end
 function LookTracer(plr)
 	ss = getgenv().EspSettings
@@ -306,7 +329,12 @@ function LookTracer(plr)
 	tracer.Transparency = ss.LookTracers.Transparency
 	tracer.Color = ss.LookTracers.Color
 	tracer.Thickness = ss.LookTracers.Thickness
-	table.insert(getgenv().UESP_OBJECTS,{Object = tracer,Type = "LookTracer",Player = plr})
+	local a = {Object = tracer,Type = "LookTracer",Player = plr,Destroyed = false}
+	function a:Remove()
+		tracer:Remove()
+		a.Destroyed = true
+	end
+	table.insert(getgenv().UESP_OBJECTS,a)
 end
 function HealthBar(plr)
 	ss = getgenv().EspSettings
@@ -323,7 +351,13 @@ function HealthBar(plr)
 	objects.Bar.Filled = true
 	objects.Outline.Color = ss.HealthBars.OutlineColor
 	objects.Outline.Filled = false
-	table.insert(getgenv().UESP_OBJECTS,{Object = objects,Type = "HealthBar",Player = plr})
+	local a = {Object = objects,Type = "HealthBar",Player = plr,Destroyed = false}
+	function a:Remove()
+		objects.Bar:Remove()
+		objects.Outline:Remove()
+		a.Destroyed = true
+	end
+	table.insert(getgenv().UESP_OBJECTS,a)
 end
 
 function Label(part,options)
@@ -333,10 +367,18 @@ function Label(part,options)
 	label.Color = options.Color or Color3.fromRGB(255,255,255)
 	label.Size = options.Size or 18
 	label.Center = true
-	label.Outline = options.Outline or true
+	label.Outline = options.Outline
 	label.OutlineColor = options.OutlineColor or Color3.fromRGB(0,0,0)
 	label.Font = options.Font or Drawing.Fonts.UI
-	table.insert(getgenv().UESP_OBJECTS,{Object = label,Type = "Label",Part = part,Options = options})
+	if options.Outline == nil then
+		label.Outline = true
+	end
+	local a = {Object = label,Type = "Label",Part = part,Options = options,Destroyed = false}
+	function a:Remove()
+		label:Remove()
+		a.Destroyed = true
+	end
+	table.insert(getgenv().UESP_OBJECTS,a)
 end
 function Cham(part,options)
 	local objects = {
@@ -352,25 +394,30 @@ function Cham(part,options)
 		v.Transparency = options.Transparency or 0.5
 		v.Color = options.Color or Color3.fromRGB(255,255,255)
 		v.Thickness = options.Thickness or 2
-		v.Filled = options.Filled or true
+		v.Filled = options.Filled
+		if options.Filled == nil then
+			v.Filled = true
+		end
 	end
-	table.insert(getgenv().UESP_OBJECTS,{Object = objects,Type = "Cham",Part = part,Options = options})
+	local a = {Object = objects,Type = "Cham",Part = part,Options = options,Destroyed = false}
+	function a:Remove()
+		for _,v in next, objects do
+			v:Remove()
+		end
+		a.Destroyed = true
+	end
+	table.insert(getgenv().UESP_OBJECTS,a)
 end
 
 getgenv().UESP_RS = RunService.RenderStepped:Connect(function()
 	for i,v in next, getgenv().UESP_OBJECTS do
 		ss = getgenv().EspSettings
 
-		if v.Player == nil then
-			if typeof(v.Object) == "table" then
-				for _,v2 in next, v.Object do
-					v2:Remove()
-				end
-			else
-				v.Object:Remove()
-			end
-			table.remove(getgenv().UESP_OBJECTS,i)
-			return
+		if v.Player == nil and not v.Options then
+			v:Remove()
+		end
+		if v.Part == nil and v.Options then
+			v:Remove()
 		end
 
 		local plr, part
@@ -405,7 +452,7 @@ getgenv().UESP_RS = RunService.RenderStepped:Connect(function()
 
 		if v.Type == "Box" then
 			local box = v.Object
-			if getgenv().UESP_VISIBLE and ss.Boxes.Enabled and IsAlive(plr) then
+			if getgenv().UESP_VISIBLE and ss.Boxes.Enabled and IsAlive(plr) and not v.Destroyed then
 				if inViewport then
 					box.Transparency = ss.Boxes.Transparency
 					box.PointA = Vector2.new(tr.X,tr.Y)
@@ -428,12 +475,12 @@ getgenv().UESP_RS = RunService.RenderStepped:Connect(function()
 				else
 					box.Color = ss.Boxes.Color
 				end
-			else
+			elseif not v.Destroyed then
 				box.Visible = false
 			end
 		elseif v.Type == "Tracer" then
 			local tracer = v.Object
-			if getgenv().UESP_VISIBLE and ss.Tracers.Enabled and IsAlive(plr) then
+			if getgenv().UESP_VISIBLE and ss.Tracers.Enabled and IsAlive(plr) and not v.Destroyed then
 				local origins = {
 					['top'] = Vector2.new(camera.ViewportSize.X / 2, 0),
 					['center'] = Vector2.new(camera.ViewportSize.X / 2,camera.ViewportSize.Y / 2),
@@ -463,12 +510,12 @@ getgenv().UESP_RS = RunService.RenderStepped:Connect(function()
 				else
 					tracer.Color = ss.Tracers.Color
 				end
-			else
+			elseif not v.Destroyed then
 				tracer.Visible = false
 			end
 		elseif v.Type == "Name" then
 			local name = v.Object
-			if getgenv().UESP_VISIBLE and ss.Names.Enabled and IsAlive(plr) then
+			if getgenv().UESP_VISIBLE and ss.Names.Enabled and IsAlive(plr) and not v.Destroyed then
 				if inViewport then
 					for _,v2 in next, name do
 						v2.Transparency = ss.Names.Transparency
@@ -521,7 +568,7 @@ getgenv().UESP_RS = RunService.RenderStepped:Connect(function()
 					name.Name.Color = ss.Names.Color
 					name.Data.Color = ss.Names.Color
 				end
-			else
+			elseif not v.Destroyed then
 				name.Name.Visible = false
 				name.Data.Visible = false
 			end
@@ -573,39 +620,40 @@ getgenv().UESP_RS = RunService.RenderStepped:Connect(function()
 						From['LeftFoot'] = "LeftForeleg"
 						From['RightFoot'] = "RightForeleg"
 					end
-					for i2,v2 in next, skeleton do
-						v2.Visible = true
-						v2.Transparency = ss.Skeletons.Transparency
-						v2.Color = ss.Skeletons.Color
-						v2.Thickness = ss.Skeletons.Thickness
-						v2.Visible = (not ss.TeamCheck or (GetTeam(plr) ~= GetTeam(player) and ss.TeamCheck))
-
-						if GetChar(plr):FindFirstChild(i2) then
-							local vector1 = camera:WorldToViewportPoint(GetChar(plr):FindFirstChild(From[i2]).Position)
-							v2.From = Vector2.new(vector1.X,vector1.Y)
-
-							local vector2 = camera:WorldToViewportPoint(GetChar(plr)[i2].Position)
-							v2.To = Vector2.new(vector2.X,vector2.Y)
-						end
-						if ss.Skeletons.UseTeamColor then
-							v2.Color = plr.TeamColor.Color
-							if game.GameId == gids.bb then
-								if GetTeam(plr) == "Omega" then
-									v2.Color = Color3.fromRGB(38,125,255)
-								elseif GetTeam(plr) == "Beta" then
-									v2.Color = Color3.fromRGB(255,116,38)
-								end
-							end
-						else
+					if not v.Destroyed then
+						for i2,v2 in next, skeleton do
+							v2.Transparency = ss.Skeletons.Transparency
 							v2.Color = ss.Skeletons.Color
+							v2.Thickness = ss.Skeletons.Thickness
+							v2.Visible = (not ss.TeamCheck or (GetTeam(plr) ~= GetTeam(player) and ss.TeamCheck))
+	
+							if GetChar(plr):FindFirstChild(i2) then
+								local vector1 = camera:WorldToViewportPoint(GetChar(plr):FindFirstChild(From[i2]).Position)
+								v2.From = Vector2.new(vector1.X,vector1.Y)
+	
+								local vector2 = camera:WorldToViewportPoint(GetChar(plr)[i2].Position)
+								v2.To = Vector2.new(vector2.X,vector2.Y)
+							end
+							if ss.Skeletons.UseTeamColor then
+								v2.Color = plr.TeamColor.Color
+								if game.GameId == gids.bb then
+									if GetTeam(plr) == "Omega" then
+										v2.Color = Color3.fromRGB(38,125,255)
+									elseif GetTeam(plr) == "Beta" then
+										v2.Color = Color3.fromRGB(255,116,38)
+									end
+								end
+							else
+								v2.Color = ss.Skeletons.Color
+							end
 						end
 					end
-				else
+				elseif not v.Destroyed then
 					for _,v2 in next, skeleton do
 						v2.Visible = false
 					end
 				end
-			else
+			elseif not v.Destroyed then
 				for _,v2 in next, skeleton do
 					v2.Visible = false
 				end
@@ -613,7 +661,7 @@ getgenv().UESP_RS = RunService.RenderStepped:Connect(function()
 		elseif v.Type == "LookTracer" then
 			-- Look Tracers have been disabled since it's kinda useless
 			local tracer = v.Object
-			if getgenv().UESP_VISIBLE and ss.LookTracers.Enabled and IsAlive(plr) and true == false then
+			if getgenv().UESP_VISIBLE and ss.LookTracers.Enabled and IsAlive(plr) and true == false and not v.Destroyed then
 				local params = RaycastParams.new()
 				params.FilterDescendantsInstances = {GetChar(plr)}
 				params.FilterType = Enum.RaycastFilterType.Blacklist
@@ -644,17 +692,17 @@ getgenv().UESP_RS = RunService.RenderStepped:Connect(function()
 								tracer.Color = Color3.fromRGB(255,116,38)
 							end
 						end
-					else
+					elseif not v.Destroyed then
 						tracer.Color = ss.LookTracers.Color
 					end
 				end
-			else
+			elseif not v.Destroyed then
 				tracer.Visible = false
 			end
 		elseif v.Type == "HealthBar" then
 			local bar = v.Object.Bar
 			local outline = v.Object.Outline
-			if getgenv().UESP_VISIBLE and ss.HealthBars.Enabled and IsAlive(plr) then
+			if getgenv().UESP_VISIBLE and ss.HealthBars.Enabled and IsAlive(plr) and not v.Destroyed then
 				if inViewport then
 					bar.Color = ss.HealthBars.Color
 					bar.Transparency = ss.HealthBars.Transparency
@@ -706,13 +754,13 @@ getgenv().UESP_RS = RunService.RenderStepped:Connect(function()
 					bar.Visible = false
 					outline.Visible = false
 				end
-			else
+			elseif not v.Destroyed then
 				bar.Visible = false
 				outline.Visible = false
 			end
 		elseif v.Type == "Label" then
 			if v.Part.Parent ~= nil then
-				if getgenv().UESP_VISIBLE then
+				if getgenv().UESP_VISIBLE and not v.Destroyed then
 					if inViewport then
 						v.Object.Visible = true
 						v.Object.Transparency = v.Options.Transparency or 0.7
@@ -730,13 +778,13 @@ getgenv().UESP_RS = RunService.RenderStepped:Connect(function()
 				else
 					v.Object.Visible = false
 				end
-			else
-				v.Object:Remove()
+			elseif not v.Destroyed then
+				v:Remove()
 				table.remove(getgenv().UESP_OBJECTS,i)
 			end
 		elseif v.Type == "Cham" then
 			if v.Part.Parent ~= nil then
-				if getgenv().UESP_VISIBLE then
+				if getgenv().UESP_VISIBLE and not v.Destroyed then
 					if inViewport then
 						for _,v2 in next, v.Object do
 							v2.Visible = true
@@ -780,12 +828,12 @@ getgenv().UESP_RS = RunService.RenderStepped:Connect(function()
 							v2.Visible = false
 						end
 					end
-				else
+				elseif not v.Destroyed then
 					for _,v2 in next, v.Object do
 						v2.Visible = false
 					end
 				end
-			else
+			elseif not v.Destroyed then
 				for _,v2 in next, v.Object do
 					v2:Remove()
 				end
@@ -818,20 +866,6 @@ players.PlayerAdded:Connect(function(v)
 		--LookTracer(v)
 		HealthBar(v)
 	end
-end)
-players.PlayerRemoving:Connect(function(plr)
-	--[[for i,v in next, getgenv().UESP_OBJECTS do
-		if v.Player == plr then
-			table.remove(getgenv().UESP_OBJECTS,i)
-			if typeof(v.Object) == "table" then
-				for _,v2 in next, v.Object do
-					v2:Remove()
-				end
-			else
-				v.Object:Remove()
-			end
-		end
-	end]]
 end)
 
 local esp = {}
@@ -881,6 +915,30 @@ end
 function esp.Cham(part,options)
 	assert(typeof(part) == "Instance","Universal Esp: bad argument to #1 'Cham' (Instance expected, got "..typeof(part)..")")
 	Cham(part,options or {})
+end
+function esp:GetObjects(plr)
+	assert(typeof(plr) == "Instance","Universal Esp: bad argument to #1 'GetObjects' (Instance expected, got nil)")
+	assert(plr.ClassName == "Player","Universal Esp: bad argument to #1 'GetObjects' (Player expected, got "..plr.ClassName..")")
+	local objects = {
+		['Box'] = nil,
+		['Tracer'] = nil,
+		['Name'] = nil,
+		['Skeleton'] = nil,
+		['LookTracer'] = nil,
+		['HealthBar'] = nil
+	}
+	for _,v in next, UESP_OBJECTS do
+		if v.Player == plr then
+			objects[v.Type] = v
+		end
+	end
+	return objects
+end
+function esp:Destroy()
+	UESP_RS:Disconnect()
+	for _,v in next, UESP_OBJECTS do
+		v:Remove()
+	end
 end
 
 return esp
