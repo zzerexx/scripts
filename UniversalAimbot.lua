@@ -242,7 +242,6 @@ getgenv().AIMBOT_RS = RunService.RenderStepped:Connect(function()
 	if ss.Aimbot.Enabled and (ads or ss.Aimbot.AlwaysActive) and plr ~= nil then
 		if plr ~= nil then
 			if IsVisible(plr) and InFov(plr) and not IsWhitelisted(plr) and GetChar(plr):FindFirstChild(ss.Aimbot.TargetPart) and (camera.CFrame.Position - GetChar(plr):FindFirstChild(ss.Aimbot.TargetPart).Position).Magnitude <= ss.Aimbot.MaximumDistance then
-				print("Active")
 				if ss.Aimbot.Use_mousemoverel then
 					local vector = camera:WorldToViewportPoint(GetChar(plr)[ss.Aimbot.TargetPart].Position)
 					ss.Aimbot.Strength = math.clamp(ss.Aimbot.Strength,1,200)
