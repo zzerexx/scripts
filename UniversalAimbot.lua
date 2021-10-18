@@ -134,7 +134,7 @@ function ClosestPlayer()
 			end
 			if inViewport then
 				local mag = (Vector2.new(mouse.X,mouse.Y) - Vector2.new(vector.X,vector.Y)).Magnitude
-				if mag < closest and ((GetTeam(player) ~= nil and GetTeam(v) ~= GetTeam(player)) or not ss.Aimbot.TeamCheck) then
+				if mag < closest and (GetTeam(v) ~= GetTeam(player) or not ss.Aimbot.TeamCheck) then
 					plr = v
 					closest = mag
 				end
