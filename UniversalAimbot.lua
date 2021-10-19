@@ -1,7 +1,7 @@
 if not getgenv().AimbotSettings then
 	getgenv().AimbotSettings = {
 		Aimbot = {
-			Enabled = true,
+            Enabled = true,
 			TargetPart = "Head",
 			VisibleCheck = true,
 			Use_mousemoverel = true,
@@ -10,7 +10,7 @@ if not getgenv().AimbotSettings then
 			Keybind = Enum.UserInputType.MouseButton2, -- Must be a UserInputType or KeyCode
 			AimType = "Hold", -- "Hold" or "Toggle"
 			AlwaysActive = false,
-			ToggleKey = Enum.KeyCode.RightShift,
+            ToggleKey = Enum.KeyCode.RightShift,
 			MaximumDistance = 300, -- Set this to something lower if you dont wannalock on some random person across the map
 		},
 		FovCircle = {
@@ -60,10 +60,10 @@ local bodyparts = {
 }
 local ads = false
 local gids = { -- game ids
-	['arsenal'] = 111958650,
+    ['arsenal'] = 111958650,
 	['pf'] = 113491250,
 	['pft'] = 115272207, -- pf test place
-	['pfu'] = 1256867479, -- pf unstable branch
+    ['pfu'] = 1256867479, -- pf unstable branch
 	['bb'] = 1168263273,
 }
 for _,v in next, getgc(true) do
@@ -85,26 +85,26 @@ end
 function IsAlive(plr)
 	if plr and plr ~= player and plr.Character and plr.Character:FindFirstChild("Head") and plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChildOfClass("Humanoid") and plr.Character:FindFirstChildOfClass("Humanoid").Health > 0 then
 		return true
-	elseif game.GameId == (gids.pf or gids.pft or gids.pfu) then
-		if plr and plr ~= player and getchar(plr) ~= nil then
-			return true
-		end
-	elseif game.GameId == gids.bb then
-		if plr and plr ~= player and ts.Characters:GetCharacter(plr) ~= nil and ts.Characters:GetCharacter(plr):FindFirstChild("Health") and ts.Characters:GetCharacter(plr).Health.Value > 0 then
-			return true
-		end
+    elseif game.GameId == (gids.pf or gids.pft or gids.pfu) then
+        if plr and plr ~= player and getchar(plr) ~= nil then
+            return true
+        end
+    elseif game.GameId == gids.bb then
+        if plr and plr ~= player and ts.Characters:GetCharacter(plr) ~= nil and ts.Characters:GetCharacter(plr):FindFirstChild("Health") and ts.Characters:GetCharacter(plr).Health.Value > 0 then
+            return true
+        end
 	end
 	return false
 end
 function GetChar(plr)
-	if game.GameId == (gids.pf or gids.pft or gids.pfu) then
-		return getchar(plr).torso.Parent
-	elseif game.GameId == gids.bb then
-		return ts.Characters:GetCharacter(plr).Body
-	elseif plr.Character ~= nil then
-		return plr.Character
-	end
-	return nil
+    if game.GameId == (gids.pf or gids.pft or gids.pfu) then
+        return getchar(plr).torso.Parent
+    elseif game.GameId == gids.bb then
+        return ts.Characters:GetCharacter(plr).Body
+    elseif plr.Character ~= nil then
+        return plr.Character
+    end
+    return nil
 end
 function GetTeam(plr)
 	if game.GameId == gids.bb then
@@ -134,7 +134,7 @@ function ClosestPlayer()
 			end
 			if inViewport then
 				local mag = (Vector2.new(mouse.X,mouse.Y) - Vector2.new(vector.X,vector.Y)).Magnitude
-				if mag < closest and (GetTeam(v) ~= GetTeam(player) or not ss.Aimbot.TeamCheck) then
+				if mag < closest and ((GetTeam(v) ~= nil and GetTeam(v) ~= GetTeam(player)) or GetTeam(v) == nil or not ss.Aimbot.TeamCheck) then
 					plr = v
 					closest = mag
 				end
@@ -198,8 +198,8 @@ UIS.InputBegan:Connect(function(i,gp)
 		else
 			ads = true
 		end
-	elseif i.KeyCode == ss.Aimbot.ToggleKey then
-		ss.Aimbot.Enabled = not ss.Aimbot.Enabled
+    elseif i.KeyCode == ss.Aimbot.ToggleKey then
+        ss.Aimbot.Enabled = not ss.Aimbot.Enabled
 	end
 end)
 UIS.InputEnded:Connect(function(i,gp)
@@ -240,18 +240,17 @@ getgenv().AIMBOT_RS = RunService.RenderStepped:Connect(function()
 	end
 	local plr = ClosestPlayer()
 	if ss.Aimbot.Enabled and (ads or ss.Aimbot.AlwaysActive) and plr ~= nil then
-		if plr ~= nil then
-			if IsVisible(plr) and InFov(plr) and not IsWhitelisted(plr) and GetChar(plr):FindFirstChild(ss.Aimbot.TargetPart) and (camera.CFrame.Position - GetChar(plr):FindFirstChild(ss.Aimbot.TargetPart).Position).Magnitude <= ss.Aimbot.MaximumDistance then
-				if ss.Aimbot.Use_mousemoverel then
-					local vector = camera:WorldToViewportPoint(GetChar(plr)[ss.Aimbot.TargetPart].Position)
-					ss.Aimbot.Strength = math.clamp(ss.Aimbot.Strength,1,200)
-					if game.GameId == (gids.pf or gids.pft or gids.pfu) then
-						ss.Aimbot.Strength = math.clamp(ss.Aimbot.Strength,1,65)
-					end
-					mousemoverel((vector.X - mouse.X) * (ss.Aimbot.Strength / 100),(vector.Y - mouse.Y) * (ss.Aimbot.Strength / 100))
-				else
-					camera.CFrame = CFrame.new(camera.CFrame.Position,GetChar(plr)[ss.Aimbot.TargetPart].Position)
+		if IsVisible(plr) and InFov(plr) and not IsWhitelisted(plr) and GetChar(plr):FindFirstChild(ss.Aimbot.TargetPart) and (camera.CFrame.Position - GetChar(plr):FindFirstChild(ss.Aimbot.TargetPart).Position).Magnitude <= ss.Aimbot.MaximumDistance then
+			if ss.Aimbot.Use_mousemoverel then
+				print("Active")
+				local vector = camera:WorldToViewportPoint(GetChar(plr)[ss.Aimbot.TargetPart].Position)
+				ss.Aimbot.Strength = math.clamp(ss.Aimbot.Strength,1,200)
+				if game.GameId == (gids.pf or gids.pft or gids.pfu) then
+					ss.Aimbot.Strength = math.clamp(ss.Aimbot.Strength,1,65)
 				end
+				mousemoverel((vector.X - mouse.X) * (ss.Aimbot.Strength / 100),(vector.Y - mouse.Y) * (ss.Aimbot.Strength / 100))
+			else
+				camera.CFrame = CFrame.new(camera.CFrame.Position,GetChar(plr)[ss.Aimbot.TargetPart].Position)
 			end
 		end
 	end
