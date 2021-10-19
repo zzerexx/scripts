@@ -1,6 +1,8 @@
-local message = ""
-message = message:gsub("r","w")
-message = message:gsub("l","w")
-message = message:gsub("R","W")
-message = message:gsub("L","W")
-setclipboard(message)
+old = hookmetamethod(game,"__namecall",function(...)
+	local args = {...}
+	if getnamecallmethod() == "FireServer" and args[1].Name == "SayMessageRequest" then
+		args[2] = args[2]:gsub("r","w"):gsub("l","w"):gsub("R","W"):gsub("L","W")
+		return old(unpack(args))
+	end
+	return old(...)
+end)
