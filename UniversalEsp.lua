@@ -5,13 +5,13 @@ if not getgenv().EspSettings then
 		AntiDetection = true,
 		Boxes = {
 			Enabled = true,
-			Transparency = 0.7,
+			Transparency = 1,
 			Color = Color3.fromRGB(255,255,255),
 			UseTeamColor = true,
 		},
 		Tracers = {
 			Enabled = true,
-			Transparency = 0.7,
+			Transparency = 1,
 			Color = Color3.fromRGB(255,255,255),
 			UseTeamColor = true,
 			Origin = "Top", -- "Top" or "Center" or "Bottom" or "Mouse"
@@ -19,7 +19,7 @@ if not getgenv().EspSettings then
 		},
 		Names = {
 			Enabled = true,
-			Transparency = 0.7,
+			Transparency = 1,
 			Color = Color3.fromRGB(255,255,255),
 			UseTeamColor = true,
 			Font = Drawing.Fonts.UI, -- UI or System or Plex or Monospace
@@ -32,14 +32,14 @@ if not getgenv().EspSettings then
 		},
 		Skeletons = {
 			Enabled = true,
-			Transparency = 0.7,
+			Transparency = 1,
 			Color = Color3.fromRGB(255,255,255),
 			UseTeamColor = true,
 			Thickness = 1
 		},
 		LookTracers = {
 			Enabled = true,
-			Transparency = 0.7,
+			Transparency = 1,
 			Color = Color3.fromRGB(255,255,255),
 			UseTeamColor = true,
 			IgnoreWater = true,
@@ -47,14 +47,14 @@ if not getgenv().EspSettings then
 		},
 		HealthBars = {
 			Enabled = true,
-			Transparency = 0.7,
+			Transparency = 1,
 			Color = Color3.fromRGB(0,255,0),
 			OutlineColor = Color3.fromRGB(255,255,255),
 			UseTeamColor = true -- this only applies to the outline
 		}
 	} -- v1.5.3
 end
-if getgenv().EspSettings and getgenv().EspSettings.AntiDetection then
+if getgenv().EspSettings and getgenv().EspSettings.AntiDetection and getconnections then
 	for _,v in next, getconnections(game:GetService("ScriptContext").Error) do
 		v:Disable()
 	end
@@ -78,6 +78,11 @@ if typeof(getgenv().UESP_OBJECTS) == "table" then
 	end
 	table.clear(getgenv().UESP_OBJECTS)
 end
+local ZIndexEnabled = pcall(function()
+	assert(not identifyexecutor():find("ScriptWare"),"")
+	local a = Drawing.new("Square")
+	a.ZIndex = 1
+end)
 
 local players = game:GetService("Players")
 local player = players.LocalPlayer
@@ -146,6 +151,16 @@ local gids = { -- game ids
 	['pfu'] = 1256867479, -- pf unstable branch
 	['bb'] = 1168263273,
 }
+local zindex = {
+	['Box'] = 0,
+	['Tracer'] = 1,
+	['Name'] = 4,
+	['Skeleton'] = 0,
+	['LookTracer'] = 0,
+	['HealthBar'] = 2,
+	['Label'] = 3,
+	['Cham'] = -1
+}
 
 if game.GameId == (gids.pf or gids.pft or gids.pfu) then
 	for _,v in next, getgc(true) do
@@ -171,7 +186,7 @@ function IsAlive(plr)
 			return true
 		end
 	elseif game.GameId == gids.bb then
-		if plr and plr ~= player and ts.Characters:GetCharacter(plr) ~= nil and ts.Characters:GetCharacter(plr):FindFirstChild("Health") and ts.Characters:GetCharacter(plr).Health.Value > 0 then
+		if plr and plr ~= player and ts.Characters:GetCharacter(plr) ~= nil then
 			return true
 		end
 	end
@@ -217,14 +232,24 @@ function GetTeam(plr)
 	end
 	return nil
 end
+function ApplyZIndex(obj,name)
+	if ZIndexEnabled then
+		if typeof(obj) == "table" and obj.__OBJECT_EXISTS == nil then
+			for _,v in next, obj do
+				v.ZIndex = zindex[name]
+			end
+		else
+			obj.ZIndex = zindex[name]
+		end
+	end
+end
 function Box(plr)
 	ss = getgenv().EspSettings
 	local box = Drawing.new("Quad")
 	box.Visible = false
-	box.Transparency = ss.Boxes.Transparency
-	box.Color = ss.Boxes.Color
 	box.Thickness = 1
 	box.Filled = false
+	ApplyZIndex(box,"Box")
 	local a = {Object = box,Type = "Box",Player = plr,Destroyed = false}
 	function a:Remove()
 		box:Remove()
@@ -236,9 +261,7 @@ function Tracer(plr)
 	ss = getgenv().EspSettings
 	local tracer = Drawing.new("Line")
 	tracer.Visible = false
-	tracer.Transparency = ss.Tracers.Transparency
-	tracer.Color = ss.Tracers.Color
-	tracer.Thickness = ss.Tracers.Thickness
+	ApplyZIndex(tracer,"Tracer")
 	local a = {Object = tracer,Type = "Tracer",Player = plr,Destroyed = false}
 	function a:Remove()
 		tracer:Remove()
@@ -254,15 +277,9 @@ function Name(plr)
 	}
 	for _,v in next, objects do
 		v.Visible = false
-		v.Transparency = ss.Names.Transparency
-		v.Color = ss.Names.Color
-		v.Text = plr.Name
-		v.Size = ss.Names.Size
 		v.Center = true
-		v.Outline = ss.Names.Outline
-		v.OutlineColor = ss.Names.OutlineColor
-		v.Font = ss.Names.Font
 	end
+	ApplyZIndex(objects,"Name")
 	local a = {Object = objects,Type = "Name",Player = plr,Destroyed = false}
 	function a:Remove()
 		objects.Name:Remove()
@@ -309,10 +326,8 @@ function Skeleton(plr)
 	}
 	for _,v in next, objects do
 		v.Visible = false
-		v.Transparency = ss.Skeletons.Transparency
-		v.Color = ss.Skeletons.Color
-		v.Thickness = ss.Skeletons.Thickness
 	end
+	ApplyZIndex(objects,"Skeleton")
 	local a = {Object = objects,Type = "Skeleton",Player = plr,Destroyed = false}
 	function a:Remove()
 		for _,v in next, objects do
@@ -326,9 +341,7 @@ function LookTracer(plr)
 	ss = getgenv().EspSettings
 	local tracer = Drawing.new("Line")
 	tracer.Visible = false
-	tracer.Transparency = ss.LookTracers.Transparency
-	tracer.Color = ss.LookTracers.Color
-	tracer.Thickness = ss.LookTracers.Thickness
+	ApplyZIndex(tracer,"LookTracer")
 	local a = {Object = tracer,Type = "LookTracer",Player = plr,Destroyed = false}
 	function a:Remove()
 		tracer:Remove()
@@ -344,12 +357,10 @@ function HealthBar(plr)
 	}
 	for _,v in next, objects do
 		v.Visible = false
-		v.Transparency = ss.HealthBars.Transparency
 		v.Thickness = 1
 	end
-	objects.Bar.Color = ss.HealthBars.Color
+	ApplyZIndex(objects,"HealthBar")
 	objects.Bar.Filled = true
-	objects.Outline.Color = ss.HealthBars.OutlineColor
 	objects.Outline.Filled = false
 	local a = {Object = objects,Type = "HealthBar",Player = plr,Destroyed = false}
 	function a:Remove()
@@ -373,6 +384,7 @@ function Label(part,options)
 	if options.Outline == nil then
 		label.Outline = true
 	end
+	ApplyZIndex(label,"Label")
 	local a = {Object = label,Type = "Label",Part = part,Options = options,Destroyed = false}
 	function a:Remove()
 		label:Remove()
@@ -399,6 +411,7 @@ function Cham(part,options)
 			v.Filled = true
 		end
 	end
+	ApplyZIndex(objects,"Cham")
 	local a = {Object = objects,Type = "Cham",Part = part,Options = options,Destroyed = false}
 	function a:Remove()
 		for _,v in next, objects do
@@ -425,7 +438,6 @@ getgenv().UESP_RS = RunService.RenderStepped:Connect(function()
 		local c1, c2, c3, c4, c5, c6, c7, c8, y1
 		if v.Player then
 			if IsAlive(v.Player) then
-				-- from unnamed esp lololol
 				plr = v.Player
 				cf, size = GetChar(plr):GetBoundingBox()
 				size /= 2
@@ -494,6 +506,9 @@ getgenv().UESP_RS = RunService.RenderStepped:Connect(function()
 					tracer.Thickness = ss.Tracers.Thickness
 					tracer.From = origin
 					tracer.To = Vector2.new(tl.X + (tr.X - tl.X) / 2,tl.Y + (tr.Y - tl.Y) / 2)
+					if ss.Tracers.Origin:lower() == "bottom" then
+						tracer.To = Vector2.new(bl.X + (br.X - bl.X) / 2,bl.Y + (br.Y - bl.Y) / 2)
+					end
 					tracer.Visible = (not ss.TeamCheck or (GetTeam(plr) ~= GetTeam(player) and ss.TeamCheck))
 				else
 					tracer.Visible = false
@@ -525,9 +540,9 @@ getgenv().UESP_RS = RunService.RenderStepped:Connect(function()
 						v2.Font = ss.Names.Font
 					end
 					name.Name.Position = Vector2.new(tl.X + (tr.X - tl.X) / 2,tl.Y - (ss.Names.Size + 2))
-					name.Data.Position = Vector2.new(tl.X + (tr.X - tl.X) / 2,bl.Y + (br.Y - bl.Y) / 2)
+					name.Data.Position = Vector2.new(bl.X + (br.X - bl.X) / 2,bl.Y + (br.Y - bl.Y) / 2)
 					if ss.HealthBars.Enabled then
-						name.Data.Position = Vector2.new(name.Data.Position.X,name.Data.Position.Y + 15)
+						name.Data.Position = Vector2.new(name.Data.Position.X,name.Data.Position.Y + math.clamp(1000 / tl.Z,8,15))
 					end
 					name.Name.Visible = (not ss.TeamCheck or (GetTeam(plr) ~= GetTeam(player) and ss.TeamCheck))
 					name.Data.Visible = (not ss.TeamCheck or (GetTeam(plr) ~= GetTeam(player) and ss.TeamCheck))
@@ -940,5 +955,5 @@ function esp:Destroy()
 		v:Remove()
 	end
 end
-
+getgenv().UESP = esp
 return esp
