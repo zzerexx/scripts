@@ -2,8 +2,8 @@
 my cool scripts  
   
 # Universal Esp  
-Updated October 10, 2021  
-v1.5.10  
+Updated October 21, 2021  
+v1.5.11  
 - Box Esp  
 - Tracers  
 - Name Esp  
@@ -15,10 +15,10 @@ v1.5.10
 https://pastebin.com/raw/5zw0rLH9
 ```  
   
-## Update v1.5.10    
-Updated to work on the latest version of phantom forces  
-Fixed and re-enabled Health Bars!  
-Added some new functions, read `UniversalScriptAPI.md`  
+## Update v1.5.11    
+If tracers origin is set to `Bottom`, the tracer will connect to the bottom of the box instead of the top  
+Changed some ZIndex values  
+Name Esp data (health and distance) is now centered  
   
 # Universal Esp with UI  
 Updated August 10, 2021  
