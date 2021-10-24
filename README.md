@@ -2,8 +2,8 @@
 my cool scripts  
   
 # Universal Esp  
-Updated October 21, 2021  
-v1.5.11  
+Updated October 24, 2021  
+v1.5.12  
 - Box Esp  
 - Tracers  
 - Name Esp  
@@ -15,10 +15,11 @@ v1.5.11
 https://pastebin.com/raw/5zw0rLH9
 ```  
   
-## Update v1.5.11    
+## Update v1.5.12    
 If tracers origin is set to `Bottom`, the tracer will connect to the bottom of the box instead of the top  
 Changed some ZIndex values  
 Name Esp data (health and distance) is now centered  
+New function `esp:SetAll()`  
   
 # Universal Esp with UI  
 Updated August 10, 2021  
