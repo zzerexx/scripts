@@ -26,6 +26,13 @@ local ciphers = {
 	['aes-gcm'] = "GCM"
 	-- no aes-eax, bf-cbc, bf-cfb, bf-ofb
 }
+local f = Drawing.Fonts
+getgenv().Drawing.Fonts = {
+	['UI'] = f.UI,
+	['System'] = f.UI,
+	['Plex'] = f.System,
+	['Monospace'] = f.Plex
+}
 
 local headers = game:GetService("HttpService"):JSONDecode(request({Url = "https://httpbin.org/get"}).Body).headers
 old = hookfunction(request,function(options)
@@ -73,19 +80,6 @@ oldnew = hookmetamethod(game,"__newindex",function(...)
 	end
 	return oldnew(...)
 end)
-
---[[
-	encrypt/decrypt cannot be made accurately because idk what nonce synapse uses for encryption
-	also doesnt work because AES-GCM on sw doesnt work LOL (thats why it uses AES-CBC)
-]]
-function encrypt(data,key)
-	local nonce = crypt.generatekey()
-	local a = crypt.custom_encrypt(data,key,nonce,"CBC")
-	return crypt.base64encode(a.."::"..nonce)
-end
-function decrypt(data,key)
-	return crypt.custom_decrypt(crypt.base64decode(data):split("::")[1],key,crypt.base64decode(data):split("::")[2],"CBC")
-end
 
 local functions = {
 	-- syn_ filesystem
@@ -276,8 +270,8 @@ getgenv().syn = {
 	end,
 	['request'] = request,
 	['crypt'] = {
-		['encrypt'] = encrypt,
-		['decrypt'] = decrypt,
+		['encrypt'] = crypt.encrypt,
+		['decrypt'] = crypt.decrypt,
 		['base64'] =  {
 			['encode'] = crypt.base64encode,
 			['decode'] = crypt.base64decode
