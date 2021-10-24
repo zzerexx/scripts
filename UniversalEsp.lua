@@ -68,15 +68,8 @@ if typeof(getgenv().UESP_RS) == "RBXScriptConnection" then
 end
 if typeof(getgenv().UESP_OBJECTS) == "table" then
 	for _,v in next, getgenv().UESP_OBJECTS do
-		if typeof(v.Object) == "table" then
-			for _,v2 in next, v.Object do
-				v2:Remove()
-			end
-		else
-			v.Object:Remove()
-		end
+		v:Remove()
 	end
-	table.clear(getgenv().UESP_OBJECTS)
 end
 local ZIndexEnabled = pcall(function()
 	assert(not identifyexecutor():find("ScriptWare"),"")
@@ -864,22 +857,22 @@ game:GetService("UserInputService").InputBegan:Connect(function(i,gp)
 end)
 for _,v in next, players:GetPlayers() do
 	if v ~= player then
-		Box(v)
-		Tracer(v)
-		Name(v)
-		Skeleton(v)
 		--LookTracer(v)
+		Box(v)
+		Skeleton(v)
+		Tracer(v)
 		HealthBar(v)
+		Name(v)
 	end
 end
 players.PlayerAdded:Connect(function(v)
 	if v ~= player then
-		Box(v)
-		Tracer(v)
-		Name(v)
-		Skeleton(v)
 		--LookTracer(v)
+		Box(v)
+		Skeleton(v)
+		Tracer(v)
 		HealthBar(v)
+		Name(v)
 	end
 end)
 
@@ -921,6 +914,13 @@ function esp:Set(type,option,value)
 		getgenv().EspSettings[option] = value
 	else
 		getgenv().EspSettings[type][option] = value
+	end
+end
+function esp:SetAll(option,value)
+	assert(ValidOption("Boxes",option),"Universal Esp: bad argument to #1 'SetAll' (Invalid Option)")
+	assert(value ~= nil,"Universal Esp: bad argument to #2 'SetAll'")
+	for _,v in next, {"Boxes","Tracers","Names","Skeletons","LookTracers","HealthBars"} do
+		getgenv().EspSettings[v][option] = value
 	end
 end
 function esp.Label(part,options)
