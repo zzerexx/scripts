@@ -98,7 +98,17 @@ esp.Cham(workspace.Part,{
   Filled = true
 })
 ```  
+  
+## Set All  
+Sets all options to a value.  
+Note that this only works for options that are on all types. (Enabled, Transparency, Color, UseTeamColor)  
+```
+void esp:SetAll(option, value)
 
+Example
+esp:SetAll("Color",Color3.fromRGB(0,255,0)) -- sets all the colors to green
+```  
+  
 ## Get Objects  
 Returns a table of objects for the specified player.  
 ```
