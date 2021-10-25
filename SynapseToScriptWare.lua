@@ -26,27 +26,50 @@ local ciphers = {
 	['aes-gcm'] = "GCM"
 	-- no aes-eax, bf-cbc, bf-cfb, bf-ofb
 }
-local f = Drawing.Fonts
 getgenv().Drawing.Fonts = {
-	['UI'] = f.UI,
-	['System'] = f.UI,
-	['Plex'] = f.System,
-	['Monospace'] = f.Plex
+	['UI'] = 0,
+	['System'] = 0,
+	['Plex'] = 1,
+	['Monospace'] = 2
 }
 
 local headers = game:GetService("HttpService"):JSONDecode(request({Url = "https://httpbin.org/get"}).Body).headers
-old = hookfunction(request,function(options)
+oldr = hookfunction(request,function(options)
 	local h = options.Headers or {}
 	h['Syn-Fingerprint'] = headers['Sw-Fingerprint']
 	h['Syn-User-Identifier'] = headers['Sw-User-Identifier']
 	h['User-Agent'] = headers['User-Agent']
-	return old({
+	return oldr({
 		Url = options.Url,
 		Method = options.Method or "GET",
 		Headers = h,
 		Cookies = options.Cookies or {},
 		Body = options.Body or ""
 	})
+end)
+oldd = hookfunction(Drawing.new,function(class)
+	local obj = oldd(class)
+	local t = {
+		['__OBJECT'] = obj,
+		['__OBJECT_EXISTS'] = true
+	}
+	function t:Remove()
+		obj:Remove()
+		t.__OBJECT_EXISTS = false
+	end
+	setmetatable(t,{
+		__index = function(_,i)
+			if i == ("__OBJECT" or "__OBJECT_EXISTS") then
+				return obj
+			else
+				return obj[i]
+			end
+		end,
+		__newindex = function(_,i,v)
+			obj[i] = v
+		end
+	})
+	return t
 end)
 
 local oldmt = getrawmetatable(game)
@@ -105,8 +128,8 @@ local functions = {
 	['syn_keypress'] = keypress,
 	['syn_keyrelease'] = keyrelease,
 	-- syn_ crypt
-	['syn_crypt_encrypt'] = encrypt,
-	['syn_crypt_decrypt'] = decrypt,
+	['syn_crypt_encrypt'] = crypt.encrypt,
+	['syn_crypt_decrypt'] = crypt.decrypt,
 	['syn_crypt_b64_encode'] = crypt.base64encode,
 	['syn_crypt_b64_decode'] = crypt.base64decode,
 	['syn_crypt_random'] = crypt.generatekey,
