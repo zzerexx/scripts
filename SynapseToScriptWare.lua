@@ -329,10 +329,13 @@ getgenv().syn = {
 	['websocket'] = {
 		['connect'] = WebSocket.connect
 	},
-	--['secure_call'] = function(func,s,...)
-	--	assert(typeof(func) == "function","bad argument to #1 to 'secure_call' (function expected, got "..typeof(func)..")")
-	--	assert(s.ClassName == ("LocalScript" or "ModuleScript"),"bad argument to #2 to 'secure_call' (LocalScript or ModuleScript expected, got "..s.ClassName..")")
-	--end,
+	['secure_call'] = function(func,env,...)
+		assert(typeof(func) == "function","bad argument to #1 to 'secure_call' (function expected, got "..typeof(func)..")")
+		assert(env.ClassName == ("LocalScript" or "ModuleScript"),"bad argument to #2 to 'secure_call' (LocalScript or ModuleScript expected, got "..env.ClassName..")")
+		setfenv(0,getsenv(env))
+		setfenv(2,getsenv(env))
+		return func(...)
+	end,
 	--['create_secure_function'] = nil,
 	--['run_secure_function'] = nil,
 	--['run_secure_lua'] = nil,
