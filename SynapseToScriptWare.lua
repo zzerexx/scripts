@@ -60,7 +60,7 @@ oldd = hookfunction(Drawing.new,function(class)
 	setmetatable(t,{
 		__index = function(_,i)
 			if i == ("__OBJECT" or "__OBJECT_EXISTS") then
-				return obj
+				return t
 			else
 				return obj[i]
 			end
