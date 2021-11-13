@@ -22,7 +22,8 @@ if not getgenv().AimbotSettings then
 			Strength = 55, -- 1% - 100%
 			AlwaysActive = true,
 			SlowSensitivity = true,
-			MaximumDistance = 100,
+			SlowFactor = 1.75, -- 1% - 10%
+			MaximumDistance = 300,
 		},
 		FovCircle = {
 			Enabled = true,
@@ -179,7 +180,7 @@ function InFov(plr,Fov)
 	mouse = UIS:GetMouseLocation()
 	if IsAlive(plr) then
 		local _, inViewport = camera:WorldToViewportPoint(GetChar(plr)[ss.Aimbot.TargetPart].Position)
-		if ss.FovCircle.Enabled and inViewport then
+		if (ss.FovCircle.Enabled or ss.AimAssist.Enabled) and inViewport then
 			for _,v in next, GetChar(plr):GetChildren() do
 				if table.find(bodyparts,v.Name) then
 					local vector2, inViewport2 = camera:WorldToViewportPoint(v.Position)
@@ -341,8 +342,9 @@ getgenv().UAIMBOT_RS = RunService.RenderStepped:Connect(function()
 		end
 	elseif ss.AimAssist.Enabled and not ss.Aimbot.Enabled and (ads or ss.AimAssist.AlwaysActive) and plr ~= nil and (camera.CFrame.Position - GetChar(plr).Head.Position).Magnitude <= ss.AimAssist.MaximumDistance then
 		if ss.AimAssist.SlowSensitivity then
+			ss.AimAssist.SlowFactor = math.clamp(ss.AimAssist.SlowFactor,1,10)
 			if InFov(plr,ss.AimAssist.MaxFov) then
-				UIS.MouseDeltaSensitivity = olddelta / 1.75
+				UIS.MouseDeltaSensitivity = olddelta / ss.AimAssist.SlowFactor
 			else
 				UIS.MouseDeltaSensitivity = olddelta
 			end
@@ -356,7 +358,15 @@ getgenv().UAIMBOT_RS = RunService.RenderStepped:Connect(function()
 				if (mouse - Vector2.new(vec.X,vec.Y)).Magnitude < (mouse - Vector2.new(vector.X,vector.Y)).Magnitude then
 					vector = vec
 				end
-				mousemoverel((vector.X - mouse.X) * (ss.AimAssist.Strength / 1000),(vector.Y - mouse.Y) * (ss.AimAssist.Strength / 1000))
+				local mag,mult = (camera.CFrame.Position - GetChar(plr)[target].Position).Magnitude,1
+				if mag <= 20 then
+					mult = 2
+				elseif mag <= 40 then
+					mult = 1.4
+				elseif mag > 100 then
+					mult = 0.8
+				end
+				mousemoverel((vector.X - mouse.X) * ((ss.AimAssist.Strength * mult) / 1000),(vector.Y - mouse.Y) * ((ss.AimAssist.Strength * mult) / 1000))
 			end
 		end
 	end
