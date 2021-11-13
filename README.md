@@ -42,6 +42,7 @@ Whats different between low-strength aimbot and aim assist?
 - Aim Assist has a minimum and maximum fov circle (when the player is within the minimum fov, it stops assisting)  
 - You can make aim assist weaker than aimbot for more "legit" gameplay  
 - When your mouse hovers over a player, it slows your sensitivity for more precise accuracy (you can disable this of course)  
+might have bugs  
   
 # Universal Aimbot with UI  
 Updated October 10, 2021  
