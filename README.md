@@ -30,17 +30,18 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/
 ```  
   
 # Universal Aimbot  
-Updated October 10, 2021  
-v1.1.8  
+Updated November 12, 2021  
+v1.1.9  
 ```
 https://pastebin.com/raw/nwqE7v07
 ```  
   
-## Update v1.1.8  
-Updated to work on the latest version of phantom forces  
-Added WhitelistFriends; Automatically adds friends to the whitelist  
-Added MaximumDistance; Checks if the player is within the provided distance before aimbotting, recommended if you aren't using visible check  
-Added some new functions, read `UniversalScriptAPI.md`  
+## Update v1.1.9  
+Added Aim Assist  
+Whats different between low-strength aimbot and aim assist?  
+- Aim Assist has a minimum and maximum fov circle (when the player is within the minimum fov, it stops assisting)  
+- You can make aim assist weaker than aimbot for more "legit" gameplay  
+- When your mouse hovers over a player, it slows your sensitivity for more precise accuracy (you can disable this of course)  
   
 # Universal Aimbot with UI  
 Updated October 10, 2021  
