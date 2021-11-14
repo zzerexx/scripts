@@ -16,14 +16,16 @@ if not getgenv().AimbotSettings then
 		AimAssist = {
 			Enabled = false,
 			ToggleKey = Enum.KeyCode.RightShift,
-			MinFov = 20,
+			MinFov = 15,
 			MaxFov = 80,
+			DynamicFov = true,
 			ShowFov = false, -- Shows Min & Max fov
 			Strength = 55, -- 1% - 100%
 			AlwaysActive = true,
 			SlowSensitivity = true,
 			SlowFactor = 1.75, -- 1% - 10%
 			MaximumDistance = 300,
+			RequireMovement = true,
 		},
 		FovCircle = {
 			Enabled = true,
@@ -73,6 +75,7 @@ local bodyparts = {
 }
 local ads = false
 local olddelta = UIS.MouseDeltaSensitivity
+local aaminfov,aamaxfov = ss.AimAssist.MinFov,ss.AimAssist.MaxFov
 local gids = { -- game ids
 	['arsenal'] = 111958650,
 	['pf'] = 113491250,
@@ -303,13 +306,15 @@ getgenv().UAIMBOT_RS = RunService.RenderStepped:Connect(function()
 	else
 		fov.Transparency = 0
 	end
+	
+	aamaxfov = (ss.AimAssist.DynamicFov and not ads and ss.AimAssist.MaxFov) or (ss.AimAssist.DynamicFov and ads and ss.AimAssist.MaxFov / (camera.FieldOfView / 100)) or ss.AimAssist.MaxFov
 	if ss.AimAssist.ShowFov then
 		fov1.Position = mouse
-		fov1.Radius = ss.AimAssist.MinFov
+		fov1.Radius = aaminfov
 		fov1.Visible = true
 
 		fov2.Position = mouse
-		fov2.Radius = ss.AimAssist.MaxFov
+		fov2.Radius = aamaxfov
 		fov2.Visible = true
 
 		label1.Position = Vector2.new(camera.ViewportSize.X / 2,(camera.ViewportSize.Y / 2) + ss.AimAssist.MaxFov + 10)
@@ -319,6 +324,7 @@ getgenv().UAIMBOT_RS = RunService.RenderStepped:Connect(function()
 		fov2.Visible = false
 		label1.Visible = false
 	end
+
 	local plr = ClosestPlayer()
 	if ss.Aimbot.Enabled and ss.AimAssist.Enabled then
 		label2.Visible = true
@@ -343,14 +349,14 @@ getgenv().UAIMBOT_RS = RunService.RenderStepped:Connect(function()
 	elseif ss.AimAssist.Enabled and not ss.Aimbot.Enabled and (ads or ss.AimAssist.AlwaysActive) and plr ~= nil and (camera.CFrame.Position - GetChar(plr).Head.Position).Magnitude <= ss.AimAssist.MaximumDistance then
 		if ss.AimAssist.SlowSensitivity then
 			ss.AimAssist.SlowFactor = math.clamp(ss.AimAssist.SlowFactor,1,10)
-			if InFov(plr,ss.AimAssist.MaxFov) then
+			if InFov(plr,aamaxfov) then
 				UIS.MouseDeltaSensitivity = olddelta / ss.AimAssist.SlowFactor
 			else
 				UIS.MouseDeltaSensitivity = olddelta
 			end
 		end
-		if IsVisible(plr) and not InFov(plr,ss.AimAssist.MinFov) and InFov(plr,ss.AimAssist.MaxFov) and not IsWhitelisted(plr) then
-			if GetChar(player):FindFirstChildOfClass("Humanoid").MoveDirection.Magnitude > 0 then
+		if IsVisible(plr) and not InFov(plr,aaminfov) and InFov(plr,aamaxfov) and not IsWhitelisted(plr) then
+			if (ss.AimAssist.RequireMovement and GetChar(player):FindFirstChildOfClass("Humanoid").MoveDirection.Magnitude > 0) or not ss.AimAssist.RequireMovement then
 				ss.AimAssist.Strength = math.clamp(ss.AimAssist.Strength,1,100)
 				local target = (game.GameId == (gids.pf or gids.pft or gids.pfu) and "Torso") or (game.GameId == gids.bb and "Chest") or "HumanoidRootPart"
 				local vector = camera:WorldToViewportPoint(GetChar(plr)[target].Position)
@@ -365,6 +371,9 @@ getgenv().UAIMBOT_RS = RunService.RenderStepped:Connect(function()
 					mult = 1.4
 				elseif mag > 100 then
 					mult = 0.8
+				end
+				if ads then
+					mult /= 1.8
 				end
 				mousemoverel((vector.X - mouse.X) * ((ss.AimAssist.Strength * mult) / 1000),(vector.Y - mouse.Y) * ((ss.AimAssist.Strength * mult) / 1000))
 			end
