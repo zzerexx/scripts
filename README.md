@@ -30,11 +30,15 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/
 ```  
   
 # Universal Aimbot  
-Updated November 12, 2021  
-v1.1.9  
+Updated November 14, 2021  
+v1.1.10  
 ```
 https://pastebin.com/raw/nwqE7v07
 ```  
+## Update v1.1.10  
+Added DynamicFov for Aim Assist; Only affects MaxFov  
+Added RequireMovement for Aim Assist  
+Aim Assist strength decreases slightly when aiming  
   
 ## Update v1.1.9  
 Added Aim Assist  
