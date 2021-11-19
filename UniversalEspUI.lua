@@ -1,5 +1,3 @@
--- my universal esp script but with a ui
--- ui lib made by twink marie
 getgenv().EspSettings = {
 	TeamCheck = false,
 	ToggleKey = Enum.KeyCode.RightAlt,
@@ -54,6 +52,13 @@ getgenv().EspSettings = {
 		UseTeamColor = true -- this only applies to the outline
 	}
 } -- v1.5.2
+
+if UESP then
+	return
+end
+if OldInstance then
+	getgenv().OldInstance = nil
+end
 
 local esp = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEsp.lua", true))()
 local Material = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kinlei/MaterialLua/master/Module.lua"))()
@@ -376,4 +381,41 @@ Other.TextField({
 		end
 		esp:Set("Other","ToggleKey",Enum.KeyCode[value])
 	end
+})
+Other.Button({
+	Text = "Destroy Esp",
+	Callback = function()
+		esp:Destroy()
+		OldInstance:Destroy()
+	end
+})
+Other.Toggle({
+	Text = "Enabled (All)",
+	Callback = function(value)
+		esp:SetAll("Enabled",value)
+	end,
+	Enabled = true
+})
+Other.Slider({
+	Text = "Transparency (All)",
+	Callback = function(value)
+		esp:SetAll("Transparency",value / 10)
+	end,
+	Min = 0,
+	Max = 10,
+	Def = 10
+})
+Other.ColorPicker({
+	Text = "Color (All)",
+	Default = Color3.fromRGB(255,255,255),
+	Callback = function(value)
+		esp:SetAll("Color",value)
+	end
+})
+Other.Toggle({
+	Text = "Use Team Color (All)",
+	Callback = function(value)
+		esp:SetAll("UseTeamColor",value)
+	end,
+	Enabled = true
 })
