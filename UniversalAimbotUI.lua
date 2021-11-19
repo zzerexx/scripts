@@ -327,3 +327,9 @@ Other.Toggle({
 	end,
 	Enabled = true
 })
+Other.Button({
+	Text = "Destroy Aimbot",
+	Callback = function()
+		aimbot:Destroy()
+	end
+})
