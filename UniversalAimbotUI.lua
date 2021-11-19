@@ -10,7 +10,21 @@ getgenv().AimbotSettings = {
 		AimType = "Hold", -- "Hold" or "Toggle"
 		AlwaysActive = false,
 		ToggleKey = Enum.KeyCode.RightShift,
-		MaximumDistance = 1000,
+		MaximumDistance = 300, -- Set this to something lower if you dont wanna lock on some random person across the map
+	},
+	AimAssist = {
+		Enabled = false,
+		ToggleKey = Enum.KeyCode.RightShift,
+		MinFov = 15,
+		MaxFov = 80,
+		DynamicFov = true,
+		ShowFov = false, -- Shows Min & Max fov
+		Strength = 55, -- 1% - 100%
+		AlwaysActive = true,
+		SlowSensitivity = true,
+		SlowFactor = 1.75, -- 1% - 10%
+		MaximumDistance = 300,
+		RequireMovement = true,
 	},
 	FovCircle = {
 		Enabled = true,
@@ -21,9 +35,9 @@ getgenv().AimbotSettings = {
 		NumSides = 64,
 	},
 	Whitelisted = {}, -- Username or User ID
-	WhitelistFriends = true,
+	WhitelistFriends = true, -- Automatically adds friends to the whitelist
 	Ignore = nil -- Raycast Ignore
-} -- v1.1.5
+} -- v1.1.10
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalAimbot.lua"))()
 
 local HttpService = game:GetService("HttpService")
@@ -42,6 +56,7 @@ function Banner(text)
 end
 
 local Aimbot = UI.New({Title = "Aimbot"})
+local Assist = UI.New({Title = "Aim Assist"})
 local Fov = UI.New({Title = "Fov Circle"})
 local Other = UI.New({Title = "Other"})
 
@@ -53,7 +68,7 @@ Aimbot.Toggle({
 	Enabled = true
 })
 Aimbot.TextField({
-	Text = "Target Part",
+	Text = "Target Part (Head is default)",
 	Type = "Default",
 	Callback = function(value)
 		aimbot:Set("Aimbot","TargetPart",value)
@@ -118,6 +133,105 @@ Aimbot.Slider({
 	Min = 0,
 	Max = 1000,
 	Def = 300,
+})
+
+Assist.Toggle({
+	Text = "Enabled",
+	Callback = function(value)
+		aimbot:Set("AimAssist","Enabled",value)
+	end,
+	Enabled = false
+})
+Assist.Slider({
+	Text = "Minimum Fov",
+	Callback = function(value)
+		aimbot:Set("AimAssist","MinFov",value)
+	end,
+	Min = 0,
+	Max = 30,
+	Def = 15
+})
+Assist.Slider({
+	Text = "Maximum Fov",
+	Callback = function(value)
+		aimbot:Set("AimAssist","MaxFov",value)
+	end,
+	Min = 0,
+	Max = 200,
+	Def = 80
+})
+Assist.Toggle({
+	Text = "Dynamic Fov",
+	Callback = function(value)
+		aimbot:Set("AimAssist","DynamicFov",value)
+	end,
+	Enabled = true
+})
+Assist.Toggle({
+	Text = "Show Fov",
+	Callback = function(value)
+		aimbot:Set("AimAssist","ShowFov",value)
+	end,
+	Enabled = false
+})
+Assist.Slider({
+	Text = "Strength",
+	Callback = function(value)
+		aimbot:Set("AimAssist","Strength",value)
+	end,
+	Min = 1,
+	Max = 100,
+	Def = 55
+})
+Assist.Toggle({
+	Text = "AlwaysActive",
+	Callback = function(value)
+		aimbot:Set("AimAssist","AlwaysActive",value)
+	end,
+	Enabled = true
+})
+Assist.TextField({
+	Text = "Toggle Key (RightShift is default)",
+	Type = "Default",
+	Callback = function(value)
+		aimbot:Set("AimAssist","ToggleKey",Enum.KeyCode[value])
+	end
+})
+Assist.Toggle({
+	Text = "Slow Sensitivity",
+	Callback = function(value)
+		aimbot:Set("AimAssist","SlowSensitivity",value)
+	end,
+	Enabled = true
+})
+Assist.Slider({
+	Text = "Slow Factor",
+	Callback = function(value)
+		aimbot:Set("AimAssist","SlowFactor",value / 10)
+	end,
+	Min = 10,
+	Max = 100,
+	Def = 17
+})
+Assist.Slider({
+	Text = "Maximum Distance",
+	Callback = function(value)
+		if value == 0 then
+			aimbot:Set("AimAssist","MaximumDistance",math.huge)
+		else
+			aimbot:Set("AimAssist","MaximumDistance",value)
+		end
+	end,
+	Min = 0,
+	Max = 1000,
+	Def = 300
+})
+Assist.Toggle({
+	Text = "Require Movement",
+	Callback = function(value)
+		aimbot:Set("AimAssist","RequireMovement",value)
+	end,
+	Enabled = true
 })
 
 Fov.Toggle({
