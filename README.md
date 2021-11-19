@@ -49,7 +49,7 @@ Whats different between low-strength aimbot and aim assist?
 might have bugs  
   
 # Universal Aimbot with UI  
-Updated October 10, 2021  
+Updated November 18, 2021 (v1.1.10)  
 universal aimbot but with a ui  
 ui lib made by twink marie  
 ```
