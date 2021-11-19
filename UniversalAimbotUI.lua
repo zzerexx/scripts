@@ -38,7 +38,13 @@ getgenv().AimbotSettings = {
 	WhitelistFriends = true, -- Automatically adds friends to the whitelist
 	Ignore = nil -- Raycast Ignore
 } -- v1.1.10
-loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalAimbot.lua"))()
+
+if UAIMBOT then
+	return
+end
+if OldInstance then
+	getgenv().OldInstance = nil
+end
 
 local HttpService = game:GetService("HttpService")
 local players = game:GetService("Players")
@@ -331,5 +337,6 @@ Other.Button({
 	Text = "Destroy Aimbot",
 	Callback = function()
 		aimbot:Destroy()
+		OldInstance:Destroy()
 	end
 })
