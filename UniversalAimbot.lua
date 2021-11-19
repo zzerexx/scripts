@@ -306,7 +306,7 @@ getgenv().UAIMBOT_RS = RunService.RenderStepped:Connect(function()
 	else
 		fov.Transparency = 0
 	end
-	
+	aaminfov = ss.AimAssist.MinFov
 	aamaxfov = (ss.AimAssist.DynamicFov and not ads and ss.AimAssist.MaxFov) or (ss.AimAssist.DynamicFov and ads and ss.AimAssist.MaxFov / (camera.FieldOfView / 100)) or ss.AimAssist.MaxFov
 	if ss.AimAssist.ShowFov then
 		fov1.Position = mouse
