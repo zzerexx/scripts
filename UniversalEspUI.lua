@@ -69,7 +69,6 @@ local UI = Material.Load({
 	SizeY = 500,
 	Theme = "Dark"
 })
-local instance = getgenv().OldInstance
 function Banner(text)
 	UI.Banner({Text = text})
 end
@@ -387,7 +386,6 @@ Other.Button({
 	Text = "Destroy Esp",
 	Callback = function()
 		esp:Destroy()
-		instance:Destroy()
 	end
 })
 Other.Toggle({
