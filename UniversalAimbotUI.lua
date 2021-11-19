@@ -57,6 +57,7 @@ local UI = Material.Load({
 	SizeY = 500,
 	Theme = "Dark"
 })
+local instance = getgenv().OldInstance
 function Banner(text)
 	UI.Banner({Text = text})
 end
@@ -337,6 +338,6 @@ Other.Button({
 	Text = "Destroy Aimbot",
 	Callback = function()
 		aimbot:Destroy()
-		OldInstance:Destroy()
+		instance:Destroy()
 	end
 })
