@@ -1,12 +1,8 @@
 if not (identifyexecutor or getexecutorname) or not decompile or not getscripts then
 	return
 end
-if name == nil or name:gsub(" ","") == "" then
-	name = "Scripts for "..game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
-end
-if notify == nil then
-	notify = true
-end
+name = "Scripts for "..game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
+notify = true
 if isfolder(name) then
 	delfolder(name)
 end
