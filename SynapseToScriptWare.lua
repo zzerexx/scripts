@@ -36,8 +36,8 @@ getgenv().Drawing.Fonts = {
 local headers = game:GetService("HttpService"):JSONDecode(request({Url = "https://httpbin.org/get"}).Body).headers
 oldr = hookfunction(request,function(options)
 	local h = options.Headers or {}
-	h['Syn-Fingerprint'] = headers['Sw-Fingerprint']
-	h['Syn-User-Identifier'] = headers['Sw-User-Identifier']
+	h['Syn-Fingerprint'] = SWHWID or headers['Sw-Fingerprint']
+	h['Syn-User-Identifier'] = SWUID or headers['Sw-User-Identifier']
 	h['User-Agent'] = headers['User-Agent']
 	return oldr({
 		Url = options.Url,
@@ -333,7 +333,7 @@ getgenv().syn = {
 		assert(typeof(func) == "function","bad argument to #1 to 'secure_call' (function expected, got "..typeof(func)..")")
 		assert(env.ClassName == ("LocalScript" or "ModuleScript"),"bad argument to #2 to 'secure_call' (LocalScript or ModuleScript expected, got "..env.ClassName..")")
 		setfenv(0,getsenv(env))
-		setfenv(1,getsenv(env))
+		--setfenv(1,getsenv(env))
 		return func(...)
 	end,
 	--['create_secure_function'] = nil,
