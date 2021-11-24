@@ -403,49 +403,51 @@ local function YGNOGB_fake_script() -- Gui.LocalScript
 end
 coroutine.wrap(YGNOGB_fake_script)()
 
-pcall(function()
-	local gui = game:GetService("Players").LocalPlayer.PlayerGui
-	if game.PlaceId == 286090429 or game.PlaceId == 301549746 then -- Arsenal + Counter Blox
-		gui.GUI.Crosshairs.Crosshair.LeftFrame.Visible = false
-		gui.GUI.Crosshairs.Crosshair.RightFrame.Visible = false
-		gui.GUI.Crosshairs.Crosshair.TopFrame.Visible = false
-		gui.GUI.Crosshairs.Crosshair.BottomFrame.Visible = false
-		gui.GUI.Crosshairs.Crosshair.Dot.Visible = false
-	elseif game.PlaceId == 4292776423 then -- Unit: Classified
-		gui.GUI.Crosshair.L.Visible = false
-		gui.GUI.Crosshair.R.Visible = false
-		gui.GUI.Crosshair.U.Visible = false
-		gui.GUI.Crosshair.D.Visible = false
-	elseif game.PlaceId == 292439477 or game.PlaceId == 299659045 then -- Phantom Forces + test place
-		gui.MainGui.GameGui.CrossHud.Visible = false
-	elseif game.PlaceId == 4716045691 then -- Polybattle
-		gui.ScreenGui.Center.ScaleYY.Middle.MouseIcon.Crosshair.Visible = false
-	elseif game.PlaceId == 3233893879 then -- Bad Business
-		gui.MainGui.Reticle.Visible = false
-	elseif game.PlaceId == 2377868063 then -- Strucid, doesnt even work xd
-		gui.MainGui.CrossHairs.Visible = false
-		gui.MainGui.AlternateCrosshair.Visible = false
-		gui.MainGui.ShotgunCrossHairs.Visible = false
-	elseif game.PlaceId == 2555870920 then -- AceOfSpadez
-		gui.Core.Gameplay.Cursor.Aim.Visible = false
-	elseif game.PlaceId == 4651779470 then -- RECOIL
-		gui.WHUD.Crosshair.Visible = false
-	elseif game.PlaceId == 606849621 then -- Jailbreak
-		gui.CrossHairGui.CrossHair.Visible = false
-	elseif game.PlaceId == 2916899287 then -- Blackhawk Rescue Mission 5
-		gui.Screen["#main"]["#hud"]["#cursor"]["#left"].Visible = false
-		gui.Screen["#main"]["#hud"]["#cursor"]["#right"].Visible = false
-		gui.Screen["#main"]["#hud"]["#cursor"]["#top"].Visible = false
-		gui.Screen["#main"]["#hud"]["#cursor"]["#bottom"].Visible = false
-	elseif game.PlaceId == 443406476 then -- Project Lazarus
-		gui.HUD.Reticle.Visible = false
-	elseif game.PlaceId == 1224212277 then -- Mad City
-		gui.CrosshairGUI.Crosshair.Visible = false
-	elseif game.PlaceId == 3527629287 then -- Big Paintball
-		gui.Crosshair.Frame.Visible = false
-	elseif game.Placeid == 388599755 then -- POLYGUNS
-		for i,v in next, gui.ScreenGui.Reticle:GetChildren() do
-			v.Visible = false
+game:GetService("RunService").Heartbeat:Connect(function()
+	pcall(function()
+		local gui = game:GetService("Players").LocalPlayer.PlayerGui
+		if game.PlaceId == 286090429 or game.PlaceId == 301549746 then -- Arsenal + Counter Blox
+			gui.GUI.Crosshairs.Crosshair.LeftFrame.Visible = false
+			gui.GUI.Crosshairs.Crosshair.RightFrame.Visible = false
+			gui.GUI.Crosshairs.Crosshair.TopFrame.Visible = false
+			gui.GUI.Crosshairs.Crosshair.BottomFrame.Visible = false
+			gui.GUI.Crosshairs.Crosshair.Dot.Visible = false
+		elseif game.PlaceId == 4292776423 then -- Unit: Classified
+			gui.GUI.Crosshair.L.Visible = false
+			gui.GUI.Crosshair.R.Visible = false
+			gui.GUI.Crosshair.U.Visible = false
+			gui.GUI.Crosshair.D.Visible = false
+		elseif game.PlaceId == 292439477 or game.PlaceId == 299659045 then -- Phantom Forces + test place
+			gui.MainGui.GameGui.CrossHud.Visible = false
+		elseif game.PlaceId == 4716045691 then -- Polybattle
+			gui.ScreenGui.Center.ScaleYY.Middle.MouseIcon.Crosshair.Visible = false
+		elseif game.PlaceId == 3233893879 then -- Bad Business
+			gui.MainGui.Reticle.Visible = false
+		elseif game.PlaceId == 2377868063 then -- Strucid, doesnt even work xd
+			gui.MainGui.CrossHairs.Visible = false
+			gui.MainGui.AlternateCrosshair.Visible = false
+			gui.MainGui.ShotgunCrossHairs.Visible = false
+		elseif game.PlaceId == 2555870920 then -- AceOfSpadez
+			gui.Core.Gameplay.Cursor.Aim.Visible = false
+		elseif game.PlaceId == 4651779470 then -- RECOIL
+			gui.WHUD.Crosshair.Visible = false
+		elseif game.PlaceId == 606849621 then -- Jailbreak
+			gui.CrossHairGui.CrossHair.Visible = false
+		elseif game.PlaceId == 2916899287 then -- Blackhawk Rescue Mission 5
+			gui.Screen["#main"]["#hud"]["#cursor"]["#left"].Visible = false
+			gui.Screen["#main"]["#hud"]["#cursor"]["#right"].Visible = false
+			gui.Screen["#main"]["#hud"]["#cursor"]["#top"].Visible = false
+			gui.Screen["#main"]["#hud"]["#cursor"]["#bottom"].Visible = false
+		elseif game.PlaceId == 443406476 then -- Project Lazarus
+			gui.HUD.Reticle.Visible = false
+		elseif game.PlaceId == 1224212277 then -- Mad City
+			gui.CrosshairGUI.Crosshair.Visible = false
+		elseif game.PlaceId == 3527629287 then -- Big Paintball
+			gui.Crosshair.Frame.Visible = false
+		elseif game.Placeid == 388599755 then -- POLYGUNS
+			for i,v in next, gui.ScreenGui.Reticle:GetChildren() do
+				v.Visible = false
+			end
 		end
-	end
+	end)
 end)
