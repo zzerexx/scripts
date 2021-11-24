@@ -67,14 +67,20 @@ Updated September 18, 2021
 minecraft keystrokes  
 shows W, A, S, D, LMB, RMB, Space, CPS, and FPS  
   
-# Custom Crosshair  
+# Custom Crosshair v1  
 Updated June 4, 2021  
 v1.2.1  
 Create your own custom crosshair using the Drawing Library  
 ```
 https://pastebin.com/raw/eGiC2jPg
-``` 
-
+```  
+  
+# Custom Crosshair v2  
+Updated November 23, 2021  
+v1.0.0  
+A better version of Custom Crosshair  
+This version does not use the drawing library  
+  
 # Aimblox Gui (PATCHED)
 Updated July 24, 2021  
 v2  
