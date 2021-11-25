@@ -152,20 +152,26 @@ FPS.TextSize = 16.000
 
 -- Scripts:
 
-local function YAZCKSA_fake_script() -- Keystrokes.LocalScript 
+local function SMEJKH_fake_script() -- Keystrokes.LocalScript 
 	local script = Instance.new('LocalScript', Keystrokes)
 
 	local UIS = game:GetService("UserInputService")
 	local TweenService = game:GetService("TweenService")
 	local RunService = game:GetService("RunService")
 	local CPS,FPS = {['MouseButton1'] = 0,['MouseButton2'] = 0},0
+	local CPSLIMIT = 20
 	
 	script.Parent.Main.Draggable = true
 	
 	UIS.InputBegan:Connect(function(i,gp)
 		local input = (i.UserInputType.Name == "Keyboard" and "KeyCode") or (i.KeyCode.Name == "Unknown" and "UserInputType")
 		if not gp and script.Parent.Main:FindFirstChild(i[input].Name) then
-			TweenService:Create(script.Parent.Main[i[input].Name],TweenInfo.new(0.15,Enum.EasingStyle.Sine,Enum.EasingDirection.Out),{BackgroundColor3 = Color3.fromRGB(255,255,255),TextColor3 = Color3.fromRGB(0,0,0)}):Play()
+			if CPS[i.UserInputType.Name] < CPSLIMIT then
+				TweenService:Create(script.Parent.Main[i[input].Name],TweenInfo.new(0.15,Enum.EasingStyle.Sine,Enum.EasingDirection.Out),{BackgroundColor3 = Color3.fromRGB(255,255,255),TextColor3 = Color3.fromRGB(0,0,0)}):Play()
+			else
+				script.Parent.Main[i[input].Name].BackgroundColor3 = Color3.fromRGB(255,255,255)
+				script.Parent.Main[i[input].Name].TextColor3 = Color3.fromRGB(0,0,0)
+			end
 			if i.UserInputType.Name == "MouseButton1" or i.UserInputType.Name == "MouseButton2" then
 				CPS[i.UserInputType.Name] += 1
 				wait(1)
@@ -176,7 +182,12 @@ local function YAZCKSA_fake_script() -- Keystrokes.LocalScript
 	UIS.InputEnded:Connect(function(i,gp)
 		local input = (i.UserInputType.Name == "Keyboard" and "KeyCode") or (i.KeyCode.Name == "Unknown" and "UserInputType")
 		if not gp and script.Parent.Main:FindFirstChild(i[input].Name) then
-			TweenService:Create(script.Parent.Main[i[input].Name],TweenInfo.new(0.15,Enum.EasingStyle.Sine,Enum.EasingDirection.In),{BackgroundColor3 = Color3.fromRGB(0,0,0),TextColor3 = Color3.fromRGB(255,255,255)}):Play()
+			if CPS[i.UserInputType.Name] < CPSLIMIT then
+				TweenService:Create(script.Parent.Main[i[input].Name],TweenInfo.new(0.15,Enum.EasingStyle.Sine,Enum.EasingDirection.In),{BackgroundColor3 = Color3.fromRGB(0,0,0),TextColor3 = Color3.fromRGB(255,255,255)}):Play()
+			else
+				script.Parent.Main[i[input].Name].BackgroundColor3 = Color3.fromRGB(0,0,0)
+				script.Parent.Main[i[input].Name].TextColor3 = Color3.fromRGB(255,255,255)
+			end
 		end
 	end)
 	RunService.RenderStepped:Connect(function()
@@ -189,4 +200,4 @@ local function YAZCKSA_fake_script() -- Keystrokes.LocalScript
 		script.Parent.Main.FPS.Text = FPS.." FPS"
 	end)
 end
-coroutine.wrap(YAZCKSA_fake_script)()
+coroutine.wrap(SMEJKH_fake_script)()
