@@ -47,7 +47,6 @@ end
 CCv2.Name = game:GetService("HttpService"):GenerateGUID(false)
 CCv2.Parent = (gethui and gethui()) or (get_hidden_ui and get_hidden_ui()) or game.CoreGui
 CCv2.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-CCv2.IgnoreGuiInset = true
 
 C.Name = "C"
 C.Parent = CCv2
@@ -415,38 +414,38 @@ local function SNYTP_fake_script() -- Gui.LocalScript
 	local Enabled_1 = Instance.new("BoolValue")
 	local Enabled_2 = Instance.new("BoolValue")
 	local Enabled_3 = Instance.new("BoolValue")
-	
+
 	Enabled_1.Name = "Enabled"
 	Enabled_1.Parent = script.Parent.Dot
 	Enabled_1.Value = true
-	
+
 	Enabled_2.Name = "Enabled"
 	Enabled_2.Parent = script.Parent.Movement
 	Enabled_2.Value = false
-	
+
 	Enabled_3.Name = "Enabled"
 	Enabled_3.Parent = script.Parent.Outline
 	Enabled_3.Value = false
-	
+
 	script.Parent.AutomaticSize = Enum.AutomaticSize.Y
 	script.Parent.Parent.Colors.AutomaticSize = Enum.AutomaticSize.Y
-	
-	
+
+
 	local default = '{"Offset":4,"OutlineColor":{"R":0,"B":0,"G":0},"Color":{"R":255,"B":255,"G":255},"Opacity":0,"Factor":2,"Length":6,"Outline":false,"OutlineThickness":1,"Thickness":2,"CenterDot":true,"MovementError":false}'
-	--[[{
-		Color = {R = 255,G = 255,B = 255},
-		Opacity = 0,
-		Length = 6,
-		Thickness = 2,
-		Offset = 4,
-		MovementError = false,
-		Factor = 2,
-		Outline = false,
-		OutlineColor = {R = 0,G = 0,B = 0},
-		OutlineThickness = 1,
-		CenterDot = true,
-	}]]
-	
+--[[{
+	Color = {R = 255,G = 255,B = 255},
+	Opacity = 0,
+	Length = 6,
+	Thickness = 2,
+	Offset = 4,
+	MovementError = false,
+	Factor = 2,
+	Outline = false,
+	OutlineColor = {R = 0,G = 0,B = 0},
+	OutlineThickness = 1,
+	CenterDot = true,
+}]]
+
 	local cc = script.Parent.Parent.C
 	local colors = {
 		['white'] = Color3.fromRGB(255,255,255),
@@ -458,7 +457,7 @@ local function SNYTP_fake_script() -- Gui.LocalScript
 		['pink'] = Color3.fromRGB(255,0,255),
 		['red'] = Color3.fromRGB(255,0,0),
 	}
-	
+
 	local color = Color3.fromRGB(255,255,255)
 	local opacity = 0
 	local length = 6
@@ -468,13 +467,13 @@ local function SNYTP_fake_script() -- Gui.LocalScript
 	local ocolor = Color3.fromRGB(0,0,0)
 	local othickness = 1
 	local config = nil
-	
+
 	local studio = game:GetService("RunService"):IsStudio()
-	
+
 	if not studio then
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/MoreColor3.lua"))()
 	end
-	
+
 	function change(prop,value)
 		for i,v in next, script.Parent.Parent.C:GetChildren() do
 			if v:IsA("Frame") then
@@ -513,12 +512,12 @@ local function SNYTP_fake_script() -- Gui.LocalScript
 	end
 	function loadconfig(c)
 		c = game:GetService("HttpService"):JSONDecode(c)
-		
+
 		script.Parent.Color.Text = c.Color.R..", "..c.Color.G..", "..c.Color.B
 		change("BackgroundColor3",fromvalue(c.Color))
 		script.Parent.Opacity.Text = 1 - c.Opacity
 		change("BackgroundTransparency",c.Opacity)
-		
+
 		script.Parent.Length.Text = c.Length
 		script.Parent.Thickness.Text = c.Thickness
 		cc.L.Size = UDim2.new(0,c.Length,0,c.Thickness)
@@ -526,30 +525,30 @@ local function SNYTP_fake_script() -- Gui.LocalScript
 		cc.T.Size = UDim2.new(0,c.Thickness,0,c.Length)
 		cc.B.Size = UDim2.new(0,c.Thickness,0,c.Length)
 		cc.D.Size = UDim2.new(0,c.Thickness,0,c.Thickness)
-		
+
 		script.Parent.Offset.Text = c.Offset
 		cc.L.Position = UDim2.new(0.5,-c.Offset,0.5,0)
 		cc.R.Position = UDim2.new(0.5,c.Offset,0.5,0)
 		cc.T.Position = UDim2.new(0.5,0,0.5,-c.Offset)
 		cc.B.Position = UDim2.new(0.5,0,0.5,c.Offset)
-		
+
 		script.Parent.Movement.Enabled.Value = c.MovementError
 		script.Parent.Movement.BackgroundColor3 = (c.MovementError and Color3.fromRGB(0,255,0)) or Color3.fromRGB(255,255,255)
 		script.Parent.Factor.Text = c.Factor
 		factor = c.Factor
-		
+
 		script.Parent.Outline.Enabled.Value = c.Outline
 		script.Parent.Outline.BackgroundColor3 = (c.Outline and Color3.fromRGB(0,255,0)) or Color3.fromRGB(255,255,255)
 		script.Parent.OutlineColor.Text = c.Color.R..", "..c.Color.G..", "..c.Color.B
 		change("BorderColor3",fromvalue(c.OutlineColor))
 		script.Parent.OutlineThickness.Text = c.OutlineThickness
 		change("BorderSizePixel",(c.Outline and c.OutlineThickness) or 0)
-		
+
 		script.Parent.Dot.Enabled.Value = c.CenterDot
 		script.Parent.Dot.BackgroundColor3 = (c.CenterDot and Color3.fromRGB(0,255,0)) or Color3.fromRGB(255,255,255)
 		cc.D.Visible = c.CenterDot
 	end
-	
+
 	script.Parent.Color.FocusLost:Connect(function()
 		if script.Parent.Color.Text:find(",") then
 			local c = script.Parent.Color.Text:gsub(" ",""):split(",")
@@ -657,7 +656,7 @@ local function SNYTP_fake_script() -- Gui.LocalScript
 			script.Parent.Dot.BackgroundColor3 = Color3.fromRGB(255,255,255)
 		end
 	end)
-	game.Players.LocalPlayer.Character:WaitForChild("Humanoid").Running:Connect(function(speed)
+	function move(speed)
 		cc.L.Position = UDim2.new(0.5,
 			math.clamp(-offset * ((enabled("Movement") and (speed / factor)) or 1),-math.huge,-offset),
 			0.5,0)
@@ -668,6 +667,14 @@ local function SNYTP_fake_script() -- Gui.LocalScript
 			math.clamp(-offset * ((enabled("Movement") and (speed / factor)) or 1),-math.huge,-offset))
 		cc.B.Position = UDim2.new(0.5,0,0.5,
 			math.clamp(offset * ((enabled("Movement") and (speed / factor)) or 1),offset,math.huge))
+	end
+	game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid").Running:Connect(function(speed)
+		move(speed)
+	end)
+	game:GetService("Players").LocalPlayer.CharacterAdded:Connect(function(char)
+		char:WaitForChild("Humanoid").Running:Connect(function(speed)
+			move(speed)
+		end)
 	end)
 	script.Parent.Config.FocusLost:Connect(function()
 		config = script.Parent.Config.Text
