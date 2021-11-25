@@ -31,6 +31,7 @@ local CopyConfig = Instance.new("TextButton")
 local Reset = Instance.new("TextButton")
 local Colors = Instance.new("Frame")
 local UIListLayout_2 = Instance.new("UIListLayout")
+local White = Instance.new("TextButton")
 local Green = Instance.new("TextButton")
 local YellowGreen = Instance.new("TextButton")
 local Yellow = Instance.new("TextButton")
@@ -123,7 +124,7 @@ Color.TextSize = 14.000
 Drop.Name = "Drop"
 Drop.Parent = Color
 Drop.AnchorPoint = Vector2.new(1, 0)
-Drop.BackgroundColor3 = Color3.fromRGB(150, 150, 150)
+Drop.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Drop.BorderSizePixel = 0
 Drop.Position = UDim2.new(1, 0, 0, 0)
 Drop.Size = UDim2.new(0, 15, 0, 25)
@@ -320,12 +321,23 @@ Colors.Parent = CCv2
 Colors.AnchorPoint = Vector2.new(1, 0.5)
 Colors.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Colors.BorderSizePixel = 2
-Colors.Position = UDim2.new(0.5, 2, 0.5, -125)
+Colors.Position = UDim2.new(0.5, 2, 0.5, -112)
 Colors.Size = UDim2.new(0, 100, 0, 25)
 Colors.Visible = false
 
 UIListLayout_2.Parent = Colors
 UIListLayout_2.SortOrder = Enum.SortOrder.LayoutOrder
+
+White.Name = "White"
+White.Parent = Colors
+White.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+White.BorderSizePixel = 0
+White.Size = UDim2.new(1, 0, 0, 25)
+White.AutoButtonColor = false
+White.Font = Enum.Font.SourceSans
+White.Text = "White"
+White.TextColor3 = Color3.fromRGB(0, 0, 0)
+White.TextSize = 14.000
 
 Green.Name = "Green"
 Green.Parent = Colors
@@ -395,7 +407,7 @@ Red.TextSize = 14.000
 
 -- Scripts:
 
-local function NYHB_fake_script() -- Gui.LocalScript 
+local function SNYTP_fake_script() -- Gui.LocalScript 
 	local script = Instance.new('LocalScript', Gui)
 
 	-- stuff that doesnt get converted by gui to lua
@@ -675,4 +687,4 @@ local function NYHB_fake_script() -- Gui.LocalScript
 		game:GetService("UserInputService").MouseIconEnabled = not ((game.Players.LocalPlayer.Character.Head.Position - workspace.CurrentCamera.CFrame.Position).Magnitude < 3)
 	end
 end
-coroutine.wrap(NYHB_fake_script)()
+coroutine.wrap(SNYTP_fake_script)()
