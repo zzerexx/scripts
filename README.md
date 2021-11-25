@@ -63,7 +63,7 @@ Read UniversalScriptAPI.md for more info
 ```  
   
 # Keystrokes  
-Updated September 18, 2021  
+Updated November 24, 2021  
 minecraft keystrokes  
 shows W, A, S, D, LMB, RMB, Space, CPS, and FPS  
   
