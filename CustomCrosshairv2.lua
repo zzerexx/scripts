@@ -850,6 +850,8 @@ local function EOLKLP_fake_script() -- Gui.LocalScript
 	game:GetService("UserInputService").InputBegan:Connect(function(i,gp)
 		if not gp and i.KeyCode == Enum.KeyCode.RightControl then
 			script.Parent.Visible = not script.Parent.Visible
+			script.Parent.Parent.Colors.Visible = script.Parent.Visible
+			script.Parent.Parent.Config.Visible = script.Parent.Visible
 		end
 	end)
 	local msgs = {
