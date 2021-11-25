@@ -12,6 +12,7 @@ local B = Instance.new("Frame")
 local L = Instance.new("Frame")
 local Gui = Instance.new("Frame")
 local Color = Instance.new("TextBox")
+local Drop = Instance.new("TextButton")
 local UIListLayout = Instance.new("UIListLayout")
 local Opacity = Instance.new("TextBox")
 local Length = Instance.new("TextBox")
@@ -24,10 +25,18 @@ local Dot = Instance.new("TextButton")
 local Factor = Instance.new("TextBox")
 local OutlineThickness = Instance.new("TextBox")
 local Label = Instance.new("TextLabel")
-local Enabled_1 = Instance.new("BoolValue")
-local Enabled_2 = Instance.new("BoolValue")
-local Enabled_3 = Instance.new("BoolValue")
-
+local Config = Instance.new("TextBox")
+local LoadConfig = Instance.new("TextButton")
+local CopyConfig = Instance.new("TextButton")
+local Reset = Instance.new("TextButton")
+local Colors = Instance.new("Frame")
+local UIListLayout_2 = Instance.new("UIListLayout")
+local Green = Instance.new("TextButton")
+local YellowGreen = Instance.new("TextButton")
+local Yellow = Instance.new("TextButton")
+local Cyan = Instance.new("TextButton")
+local Pink = Instance.new("TextButton")
+local Red = Instance.new("TextButton")
 if syn then
 	syn.protect_gui(CCv2)
 end
@@ -37,7 +46,6 @@ end
 CCv2.Name = game:GetService("HttpService"):GenerateGUID(false)
 CCv2.Parent = (gethui and gethui()) or (get_hidden_ui and get_hidden_ui()) or game.CoreGui
 CCv2.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-CCv2.IgnoreGuiInset = true
 
 C.Name = "C"
 C.Parent = CCv2
@@ -111,6 +119,19 @@ Color.PlaceholderText = "Color (R,G,B)"
 Color.Text = ""
 Color.TextColor3 = Color3.fromRGB(0, 0, 0)
 Color.TextSize = 14.000
+
+Drop.Name = "Drop"
+Drop.Parent = Color
+Drop.AnchorPoint = Vector2.new(1, 0)
+Drop.BackgroundColor3 = Color3.fromRGB(150, 150, 150)
+Drop.BorderSizePixel = 0
+Drop.Position = UDim2.new(1, 0, 0, 0)
+Drop.Size = UDim2.new(0, 15, 0, 25)
+Drop.AutoButtonColor = false
+Drop.Font = Enum.Font.Code
+Drop.Text = ">"
+Drop.TextColor3 = Color3.fromRGB(0, 0, 0)
+Drop.TextSize = 14.000
 
 UIListLayout.Parent = Gui
 UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
@@ -239,44 +260,207 @@ Label.Name = "Label"
 Label.Parent = Gui
 Label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Label.BorderSizePixel = 0
-Label.LayoutOrder = 12
+Label.LayoutOrder = 100
 Label.Size = UDim2.new(1, 0, 0, 25)
 Label.Font = Enum.Font.SourceSans
 Label.Text = "Right Control to show/hide"
 Label.TextColor3 = Color3.fromRGB(0, 0, 0)
 Label.TextSize = 14.000
 
-Enabled_1.Name = "Enabled"
-Enabled_1.Parent = Dot
-Enabled_1.Value = true
+Config.Name = "Config"
+Config.Parent = Gui
+Config.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Config.BorderSizePixel = 0
+Config.LayoutOrder = 12
+Config.Size = UDim2.new(1, 0, 0, 25)
+Config.Font = Enum.Font.SourceSans
+Config.PlaceholderText = "Paste config here"
+Config.Text = ""
+Config.TextColor3 = Color3.fromRGB(0, 0, 0)
+Config.TextSize = 14.000
 
-Enabled_2.Name = "Enabled"
-Enabled_2.Parent = Movement
-Enabled_2.Value = false
+LoadConfig.Name = "LoadConfig"
+LoadConfig.Parent = Gui
+LoadConfig.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+LoadConfig.BorderSizePixel = 0
+LoadConfig.LayoutOrder = 13
+LoadConfig.Size = UDim2.new(1, 0, 0, 25)
+LoadConfig.AutoButtonColor = false
+LoadConfig.Font = Enum.Font.SourceSans
+LoadConfig.Text = "Load Config"
+LoadConfig.TextColor3 = Color3.fromRGB(0, 0, 0)
+LoadConfig.TextSize = 14.000
 
-Enabled_3.Name = "Enabled"
-Enabled_3.Parent = Outline
-Enabled_3.Value = false
+CopyConfig.Name = "CopyConfig"
+CopyConfig.Parent = Gui
+CopyConfig.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+CopyConfig.BorderSizePixel = 0
+CopyConfig.LayoutOrder = 14
+CopyConfig.Size = UDim2.new(1, 0, 0, 25)
+CopyConfig.AutoButtonColor = false
+CopyConfig.Font = Enum.Font.SourceSans
+CopyConfig.Text = "Copy Crosshair Config"
+CopyConfig.TextColor3 = Color3.fromRGB(0, 0, 0)
+CopyConfig.TextSize = 14.000
+
+Reset.Name = "Reset"
+Reset.Parent = Gui
+Reset.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Reset.BorderSizePixel = 0
+Reset.LayoutOrder = 15
+Reset.Size = UDim2.new(1, 0, 0, 25)
+Reset.AutoButtonColor = false
+Reset.Font = Enum.Font.SourceSans
+Reset.Text = "Reset to Default"
+Reset.TextColor3 = Color3.fromRGB(0, 0, 0)
+Reset.TextSize = 14.000
+
+Colors.Name = "Colors"
+Colors.Parent = CCv2
+Colors.AnchorPoint = Vector2.new(1, 0.5)
+Colors.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Colors.BorderSizePixel = 2
+Colors.Position = UDim2.new(0.5, 2, 0.5, -125)
+Colors.Size = UDim2.new(0, 100, 0, 25)
+Colors.Visible = false
+
+UIListLayout_2.Parent = Colors
+UIListLayout_2.SortOrder = Enum.SortOrder.LayoutOrder
+
+Green.Name = "Green"
+Green.Parent = Colors
+Green.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Green.BorderSizePixel = 0
+Green.Size = UDim2.new(1, 0, 0, 25)
+Green.AutoButtonColor = false
+Green.Font = Enum.Font.SourceSans
+Green.Text = "Green"
+Green.TextColor3 = Color3.fromRGB(0, 0, 0)
+Green.TextSize = 14.000
+
+YellowGreen.Name = "YellowGreen"
+YellowGreen.Parent = Colors
+YellowGreen.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+YellowGreen.BorderSizePixel = 0
+YellowGreen.Size = UDim2.new(1, 0, 0, 25)
+YellowGreen.AutoButtonColor = false
+YellowGreen.Font = Enum.Font.SourceSans
+YellowGreen.Text = "Yellow Green"
+YellowGreen.TextColor3 = Color3.fromRGB(0, 0, 0)
+YellowGreen.TextSize = 14.000
+
+Yellow.Name = "Yellow"
+Yellow.Parent = Colors
+Yellow.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Yellow.BorderSizePixel = 0
+Yellow.Size = UDim2.new(1, 0, 0, 25)
+Yellow.AutoButtonColor = false
+Yellow.Font = Enum.Font.SourceSans
+Yellow.Text = "Yellow"
+Yellow.TextColor3 = Color3.fromRGB(0, 0, 0)
+Yellow.TextSize = 14.000
+
+Cyan.Name = "Cyan"
+Cyan.Parent = Colors
+Cyan.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Cyan.BorderSizePixel = 0
+Cyan.Size = UDim2.new(1, 0, 0, 25)
+Cyan.AutoButtonColor = false
+Cyan.Font = Enum.Font.SourceSans
+Cyan.Text = "Cyan"
+Cyan.TextColor3 = Color3.fromRGB(0, 0, 0)
+Cyan.TextSize = 14.000
+
+Pink.Name = "Pink"
+Pink.Parent = Colors
+Pink.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Pink.BorderSizePixel = 0
+Pink.Size = UDim2.new(1, 0, 0, 25)
+Pink.AutoButtonColor = false
+Pink.Font = Enum.Font.SourceSans
+Pink.Text = "Pink"
+Pink.TextColor3 = Color3.fromRGB(0, 0, 0)
+Pink.TextSize = 14.000
+
+Red.Name = "Red"
+Red.Parent = Colors
+Red.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Red.BorderSizePixel = 0
+Red.Size = UDim2.new(1, 0, 0, 25)
+Red.AutoButtonColor = false
+Red.Font = Enum.Font.SourceSans
+Red.Text = "Red"
+Red.TextColor3 = Color3.fromRGB(0, 0, 0)
+Red.TextSize = 14.000
 
 -- Scripts:
 
-local function YGNOGB_fake_script() -- Gui.LocalScript 
+local function NYHB_fake_script() -- Gui.LocalScript 
 	local script = Instance.new('LocalScript', Gui)
 
-	-- set your shits to this for default crosshair
-	local default = {
-		Color = Color3.fromRGB(255,255,255),
-		Opacity = 1,
+	-- stuff that doesnt get converted by gui to lua
+	local Enabled_1 = Instance.new("BoolValue")
+	local Enabled_2 = Instance.new("BoolValue")
+	local Enabled_3 = Instance.new("BoolValue")
+	
+	Enabled_1.Name = "Enabled"
+	Enabled_1.Parent = script.Parent.Dot
+	Enabled_1.Value = true
+	
+	Enabled_2.Name = "Enabled"
+	Enabled_2.Parent = script.Parent.Movement
+	Enabled_2.Value = false
+	
+	Enabled_3.Name = "Enabled"
+	Enabled_3.Parent = script.Parent.Outline
+	Enabled_3.Value = false
+	
+	script.Parent.AutomaticSize = Enum.AutomaticSize.Y
+	script.Parent.Parent.Colors.AutomaticSize = Enum.AutomaticSize.Y
+	
+	
+	local default = '{"Offset":4,"OutlineColor":{"R":0,"B":0,"G":0},"Color":{"R":255,"B":255,"G":255},"Opacity":0,"Factor":2,"Length":6,"Outline":false,"OutlineThickness":1,"Thickness":2,"CenterDot":true,"MovementError":false}'
+	--[[{
+		Color = {R = 255,G = 255,B = 255},
+		Opacity = 0,
 		Length = 6,
 		Thickness = 2,
 		Offset = 4,
 		MovementError = false,
-		ErrorFactor = 2,
+		Factor = 2,
 		Outline = false,
-		OutlineColor = Color3.fromRGB(0,0,0),
+		OutlineColor = {R = 0,G = 0,B = 0},
 		OutlineThickness = 1,
 		CenterDot = true,
+	}]]
+	
+	local cc = script.Parent.Parent.C
+	local colors = {
+		['white'] = Color3.fromRGB(255,255,255),
+		['green'] = Color3.fromRGB(0,255,0),
+		['yellowgreen'] = Color3.fromRGB(150,255,0),
+		['greenyellow'] = Color3.fromRGB(150,255,0),
+		['yellow'] = Color3.fromRGB(255,255,0),
+		['cyan'] = Color3.fromRGB(0,255,255),
+		['pink'] = Color3.fromRGB(255,0,255),
+		['red'] = Color3.fromRGB(255,0,0),
 	}
+	
+	local color = Color3.fromRGB(255,255,255)
+	local opacity = 0
+	local length = 6
+	local thickness = 2
+	local offset = 4
+	local factor = 2
+	local ocolor = Color3.fromRGB(0,0,0)
+	local othickness = 1
+	local config = nil
+	
+	local studio = game:GetService("RunService"):IsStudio()
+	
+	if not studio then
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/MoreColor3.lua"))()
+	end
 	
 	function change(prop,value)
 		for i,v in next, script.Parent.Parent.C:GetChildren() do
@@ -288,21 +472,99 @@ local function YGNOGB_fake_script() -- Gui.LocalScript
 	function enabled(name)
 		return script.Parent[name].Enabled.Value
 	end
-	local cc = script.Parent.Parent.C
-	local length = 6
-	local thickness = 2
-	local offset = 4
-	local factor = 2
+	function fromvalue(c)
+		return Color3.fromRGB(c.R,c.G,c.B)
+	end
+	function tovalue(c)
+		return {R = math.floor(c.R * 255),G = math.floor(c.G * 255),B = math.floor(c.B * 255)}
+	end
+	function copyconfig()
+		local c = {
+			Color = tovalue(color),
+			Opacity = opacity,
+			Length = length,
+			Thickness = thickness,
+			Offset = offset,
+			MovementError = enabled("Movement"),
+			Factor = factor,
+			Outline = enabled("Outline"),
+			OutlineColor = tovalue(ocolor),
+			OutlineThickness = othickness,
+			CenterDot = enabled("Dot")
+		}
+		local str = game:GetService("HttpService"):JSONEncode(c)
+		if studio then
+			return print(str)
+		end
+		setclipboard(str)
+	end
+	function loadconfig(c)
+		c = game:GetService("HttpService"):JSONDecode(c)
+		
+		script.Parent.Color.Text = c.Color.R..", "..c.Color.G..", "..c.Color.B
+		change("BackgroundColor3",fromvalue(c.Color))
+		script.Parent.Opacity.Text = 1 - c.Opacity
+		change("BackgroundTransparency",c.Opacity)
+		
+		script.Parent.Length.Text = c.Length
+		script.Parent.Thickness.Text = c.Thickness
+		cc.L.Size = UDim2.new(0,c.Length,0,c.Thickness)
+		cc.R.Size = UDim2.new(0,c.Length,0,c.Thickness)
+		cc.T.Size = UDim2.new(0,c.Thickness,0,c.Length)
+		cc.B.Size = UDim2.new(0,c.Thickness,0,c.Length)
+		cc.D.Size = UDim2.new(0,c.Thickness,0,c.Thickness)
+		
+		script.Parent.Offset.Text = c.Offset
+		cc.L.Position = UDim2.new(0.5,-c.Offset,0.5,0)
+		cc.R.Position = UDim2.new(0.5,c.Offset,0.5,0)
+		cc.T.Position = UDim2.new(0.5,0,0.5,-c.Offset)
+		cc.B.Position = UDim2.new(0.5,0,0.5,c.Offset)
+		
+		script.Parent.Movement.Enabled.Value = c.MovementError
+		script.Parent.Movement.BackgroundColor3 = (c.MovementError and Color3.fromRGB(0,255,0)) or Color3.fromRGB(255,255,255)
+		script.Parent.Factor.Text = c.Factor
+		factor = c.Factor
+		
+		script.Parent.Outline.Enabled.Value = c.Outline
+		script.Parent.Outline.BackgroundColor3 = (c.Outline and Color3.fromRGB(0,255,0)) or Color3.fromRGB(255,255,255)
+		script.Parent.OutlineColor.Text = c.Color.R..", "..c.Color.G..", "..c.Color.B
+		change("BorderColor3",fromvalue(c.OutlineColor))
+		script.Parent.OutlineThickness.Text = c.OutlineThickness
+		change("BorderSizePixel",(c.Outline and c.OutlineThickness) or 0)
+		
+		script.Parent.Dot.Enabled.Value = c.CenterDot
+		script.Parent.Dot.BackgroundColor3 = (c.CenterDot and Color3.fromRGB(0,255,0)) or Color3.fromRGB(255,255,255)
+		cc.D.Visible = c.CenterDot
+	end
+	
 	script.Parent.Color.FocusLost:Connect(function()
 		if script.Parent.Color.Text:find(",") then
 			local c = script.Parent.Color.Text:gsub(" ",""):split(",")
+			color = Color3.fromRGB(tonumber(c[1]),tonumber(c[2]),tonumber(c[3]))
 			change("BackgroundColor3",Color3.fromRGB(tonumber(c[1]),tonumber(c[2]),tonumber(c[3])))
 		end
 	end)
+	script.Parent.Color.Drop.Activated:Connect(function()
+		script.Parent.Parent.Colors.Visible = not script.Parent.Parent.Colors.Visible
+		if script.Parent.Parent.Colors.Visible then
+			script.Parent.Color.Drop.Text = "<"
+		else
+			script.Parent.Color.Drop.Text = ">"
+		end
+	end)
+	for _,v in next, script.Parent.Parent.Colors:GetChildren() do
+		if v:IsA("TextButton") then
+			v.Activated:Connect(function()
+				color = colors[v.Name:lower()]
+				change("BackgroundColor3",colors[v.Name:lower()])
+			end)
+		end
+	end
 	script.Parent.Opacity.FocusLost:Connect(function()
 		if tonumber(script.Parent.Opacity.Text) ~= nil then
 			local num = tonumber(script.Parent.Opacity.Text)
 			num = 1 - num
+			opacity = num
 			change("BackgroundTransparency",num)
 		end
 	end)
@@ -363,11 +625,13 @@ local function YGNOGB_fake_script() -- Gui.LocalScript
 	script.Parent.OutlineColor.FocusLost:Connect(function()
 		if script.Parent.OutlineColor.Text:find(",") then
 			local c = script.Parent.OutlineColor.Text:gsub(" ",""):split(",")
+			ocolor = Color3.fromRGB(tonumber(c[1]),tonumber(c[2]),tonumber(c[3]))
 			change("BorderColor3",Color3.fromRGB(tonumber(c[1]),tonumber(c[2]),tonumber(c[3])))
 		end
 	end)
 	script.Parent.OutlineThickness.FocusLost:Connect(function()
 		if tonumber(script.Parent.OutlineThickness.Text) ~= nil then
+			othickness = tonumber(script.Parent.OutlineThickness.Text)
 			change("BorderSizePixel",tonumber(script.Parent.OutlineThickness.Text))
 		end
 	end)
@@ -392,6 +656,16 @@ local function YGNOGB_fake_script() -- Gui.LocalScript
 		cc.B.Position = UDim2.new(0.5,0,0.5,
 			math.clamp(offset * ((enabled("Movement") and (speed / factor)) or 1),offset,math.huge))
 	end)
+	script.Parent.Config.FocusLost:Connect(function()
+		config = script.Parent.Config.Text
+	end)
+	script.Parent.LoadConfig.Activated:Connect(function()
+		loadconfig(script.Parent.Config.Text)
+	end)
+	script.Parent.CopyConfig.Activated:Connect(copyconfig)
+	script.Parent.Reset.Activated:Connect(function()
+		loadconfig(default)
+	end)
 	game:GetService("UserInputService").InputBegan:Connect(function(i,gp)
 		if not gp and i.KeyCode == Enum.KeyCode.RightControl then
 			script.Parent.Visible = not script.Parent.Visible
@@ -401,53 +675,4 @@ local function YGNOGB_fake_script() -- Gui.LocalScript
 		game:GetService("UserInputService").MouseIconEnabled = not ((game.Players.LocalPlayer.Character.Head.Position - workspace.CurrentCamera.CFrame.Position).Magnitude < 3)
 	end
 end
-coroutine.wrap(YGNOGB_fake_script)()
-
-game:GetService("RunService").Heartbeat:Connect(function()
-	pcall(function()
-		local gui = game:GetService("Players").LocalPlayer.PlayerGui
-		if game.PlaceId == 286090429 or game.PlaceId == 301549746 then -- Arsenal + Counter Blox
-			gui.GUI.Crosshairs.Crosshair.LeftFrame.Visible = false
-			gui.GUI.Crosshairs.Crosshair.RightFrame.Visible = false
-			gui.GUI.Crosshairs.Crosshair.TopFrame.Visible = false
-			gui.GUI.Crosshairs.Crosshair.BottomFrame.Visible = false
-			gui.GUI.Crosshairs.Crosshair.Dot.Visible = false
-		elseif game.PlaceId == 4292776423 then -- Unit: Classified
-			gui.GUI.Crosshair.L.Visible = false
-			gui.GUI.Crosshair.R.Visible = false
-			gui.GUI.Crosshair.U.Visible = false
-			gui.GUI.Crosshair.D.Visible = false
-		elseif game.PlaceId == 292439477 or game.PlaceId == 299659045 then -- Phantom Forces + test place
-			gui.MainGui.GameGui.CrossHud.Visible = false
-		elseif game.PlaceId == 4716045691 then -- Polybattle
-			gui.ScreenGui.Center.ScaleYY.Middle.MouseIcon.Crosshair.Visible = false
-		elseif game.PlaceId == 3233893879 then -- Bad Business
-			gui.MainGui.Reticle.Visible = false
-		elseif game.PlaceId == 2377868063 then -- Strucid, doesnt even work xd
-			gui.MainGui.CrossHairs.Visible = false
-			gui.MainGui.AlternateCrosshair.Visible = false
-			gui.MainGui.ShotgunCrossHairs.Visible = false
-		elseif game.PlaceId == 2555870920 then -- AceOfSpadez
-			gui.Core.Gameplay.Cursor.Aim.Visible = false
-		elseif game.PlaceId == 4651779470 then -- RECOIL
-			gui.WHUD.Crosshair.Visible = false
-		elseif game.PlaceId == 606849621 then -- Jailbreak
-			gui.CrossHairGui.CrossHair.Visible = false
-		elseif game.PlaceId == 2916899287 then -- Blackhawk Rescue Mission 5
-			gui.Screen["#main"]["#hud"]["#cursor"]["#left"].Visible = false
-			gui.Screen["#main"]["#hud"]["#cursor"]["#right"].Visible = false
-			gui.Screen["#main"]["#hud"]["#cursor"]["#top"].Visible = false
-			gui.Screen["#main"]["#hud"]["#cursor"]["#bottom"].Visible = false
-		elseif game.PlaceId == 443406476 then -- Project Lazarus
-			gui.HUD.Reticle.Visible = false
-		elseif game.PlaceId == 1224212277 then -- Mad City
-			gui.CrosshairGUI.Crosshair.Visible = false
-		elseif game.PlaceId == 3527629287 then -- Big Paintball
-			gui.Crosshair.Frame.Visible = false
-		elseif game.Placeid == 388599755 then -- POLYGUNS
-			for i,v in next, gui.ScreenGui.Reticle:GetChildren() do
-				v.Visible = false
-			end
-		end
-	end)
-end)
+coroutine.wrap(NYHB_fake_script)()
