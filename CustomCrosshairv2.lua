@@ -25,10 +25,7 @@ local Dot = Instance.new("TextButton")
 local Factor = Instance.new("TextBox")
 local OutlineThickness = Instance.new("TextBox")
 local Label = Instance.new("TextLabel")
-local Config = Instance.new("TextBox")
-local LoadConfig = Instance.new("TextButton")
-local CopyConfig = Instance.new("TextButton")
-local Reset = Instance.new("TextButton")
+local Menu = Instance.new("TextButton")
 local Colors = Instance.new("Frame")
 local UIListLayout_2 = Instance.new("UIListLayout")
 local White = Instance.new("TextButton")
@@ -38,6 +35,20 @@ local Yellow = Instance.new("TextButton")
 local Cyan = Instance.new("TextButton")
 local Pink = Instance.new("TextButton")
 local Red = Instance.new("TextButton")
+local Config = Instance.new("Frame")
+local UIListLayout_3 = Instance.new("UIListLayout")
+local Load = Instance.new("TextButton")
+local Exit = Instance.new("TextButton")
+local Config_2 = Instance.new("TextBox")
+local Copy = Instance.new("TextButton")
+local Set = Instance.new("TextButton")
+local Label_2 = Instance.new("TextLabel")
+local Placeholder = Instance.new("TextButton")
+local Create = Instance.new("TextButton")
+local Delete = Instance.new("TextButton")
+local Message = Instance.new("Frame")
+local Label_3 = Instance.new("TextLabel")
+local Title = Instance.new("TextLabel")
 if syn then
 	syn.protect_gui(CCv2)
 end
@@ -106,8 +117,8 @@ Gui.AnchorPoint = Vector2.new(1, 0.5)
 Gui.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Gui.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Gui.BorderSizePixel = 2
-Gui.Position = UDim2.new(0.5, -100, 0.5, 0)
-Gui.Size = UDim2.new(0, 150, 0, 300)
+Gui.Position = UDim2.new(0.5, -120, 0.5, 0)
+Gui.Size = UDim2.new(0, 150, 0, 25)
 
 Color.Name = "Color"
 Color.Parent = Gui
@@ -116,7 +127,7 @@ Color.BorderSizePixel = 0
 Color.LayoutOrder = 1
 Color.Size = UDim2.new(1, 0, 0, 25)
 Color.Font = Enum.Font.SourceSans
-Color.PlaceholderText = "Color (R,G,B)"
+Color.PlaceholderText = "Color"
 Color.Text = ""
 Color.TextColor3 = Color3.fromRGB(0, 0, 0)
 Color.TextSize = 14.000
@@ -216,7 +227,7 @@ OutlineColor.BorderSizePixel = 0
 OutlineColor.LayoutOrder = 9
 OutlineColor.Size = UDim2.new(1, 0, 0, 25)
 OutlineColor.Font = Enum.Font.SourceSans
-OutlineColor.PlaceholderText = "Outline Color (R,G,B)"
+OutlineColor.PlaceholderText = "Outline Color"
 OutlineColor.Text = ""
 OutlineColor.TextColor3 = Color3.fromRGB(0, 0, 0)
 OutlineColor.TextSize = 14.000
@@ -268,60 +279,24 @@ Label.Text = "Right Control to show/hide"
 Label.TextColor3 = Color3.fromRGB(0, 0, 0)
 Label.TextSize = 14.000
 
-Config.Name = "Config"
-Config.Parent = Gui
-Config.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Config.BorderSizePixel = 0
-Config.LayoutOrder = 12
-Config.Size = UDim2.new(1, 0, 0, 25)
-Config.Font = Enum.Font.SourceSans
-Config.PlaceholderText = "Paste config here"
-Config.Text = ""
-Config.TextColor3 = Color3.fromRGB(0, 0, 0)
-Config.TextSize = 14.000
-
-LoadConfig.Name = "LoadConfig"
-LoadConfig.Parent = Gui
-LoadConfig.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-LoadConfig.BorderSizePixel = 0
-LoadConfig.LayoutOrder = 13
-LoadConfig.Size = UDim2.new(1, 0, 0, 25)
-LoadConfig.AutoButtonColor = false
-LoadConfig.Font = Enum.Font.SourceSans
-LoadConfig.Text = "Load Config"
-LoadConfig.TextColor3 = Color3.fromRGB(0, 0, 0)
-LoadConfig.TextSize = 14.000
-
-CopyConfig.Name = "CopyConfig"
-CopyConfig.Parent = Gui
-CopyConfig.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-CopyConfig.BorderSizePixel = 0
-CopyConfig.LayoutOrder = 14
-CopyConfig.Size = UDim2.new(1, 0, 0, 25)
-CopyConfig.AutoButtonColor = false
-CopyConfig.Font = Enum.Font.SourceSans
-CopyConfig.Text = "Copy Crosshair Config"
-CopyConfig.TextColor3 = Color3.fromRGB(0, 0, 0)
-CopyConfig.TextSize = 14.000
-
-Reset.Name = "Reset"
-Reset.Parent = Gui
-Reset.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Reset.BorderSizePixel = 0
-Reset.LayoutOrder = 15
-Reset.Size = UDim2.new(1, 0, 0, 25)
-Reset.AutoButtonColor = false
-Reset.Font = Enum.Font.SourceSans
-Reset.Text = "Reset to Default"
-Reset.TextColor3 = Color3.fromRGB(0, 0, 0)
-Reset.TextSize = 14.000
+Menu.Name = "Menu"
+Menu.Parent = Gui
+Menu.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Menu.BorderSizePixel = 0
+Menu.LayoutOrder = 12
+Menu.Size = UDim2.new(1, 0, 0, 25)
+Menu.AutoButtonColor = false
+Menu.Font = Enum.Font.SourceSans
+Menu.Text = "Config Menu"
+Menu.TextColor3 = Color3.fromRGB(0, 0, 0)
+Menu.TextSize = 14.000
 
 Colors.Name = "Colors"
 Colors.Parent = CCv2
-Colors.AnchorPoint = Vector2.new(1, 0.5)
+Colors.AnchorPoint = Vector2.new(0, 0.5)
 Colors.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Colors.BorderSizePixel = 2
-Colors.Position = UDim2.new(0.5, 2, 0.5, -112)
+Colors.Position = UDim2.new(0.5, -118, 0.5, -75)
 Colors.Size = UDim2.new(0, 100, 0, 25)
 Colors.Visible = false
 
@@ -405,47 +380,214 @@ Red.Text = "Red"
 Red.TextColor3 = Color3.fromRGB(0, 0, 0)
 Red.TextSize = 14.000
 
+Config.Name = "Config"
+Config.Parent = CCv2
+Config.AnchorPoint = Vector2.new(0, 0.5)
+Config.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Config.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Config.BorderSizePixel = 2
+Config.Position = UDim2.new(0.5, 120, 0.5, 0)
+Config.Size = UDim2.new(0, 150, 0, 25)
+Config.Visible = false
+
+UIListLayout_3.Parent = Config
+UIListLayout_3.SortOrder = Enum.SortOrder.LayoutOrder
+
+Load.Name = "Load"
+Load.Parent = Config
+Load.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Load.BorderSizePixel = 0
+Load.LayoutOrder = 2
+Load.Size = UDim2.new(1, 0, 0, 25)
+Load.AutoButtonColor = false
+Load.Font = Enum.Font.SourceSans
+Load.Text = "Load Config"
+Load.TextColor3 = Color3.fromRGB(0, 0, 0)
+Load.TextSize = 14.000
+
+Exit.Name = "Exit"
+Exit.Parent = Config
+Exit.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Exit.BorderSizePixel = 0
+Exit.LayoutOrder = 100
+Exit.Size = UDim2.new(1, 0, 0, 25)
+Exit.AutoButtonColor = false
+Exit.Font = Enum.Font.SourceSans
+Exit.Text = "Exit"
+Exit.TextColor3 = Color3.fromRGB(0, 0, 0)
+Exit.TextSize = 14.000
+
+Config_2.Name = "Config"
+Config_2.Parent = Config
+Config_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Config_2.BorderSizePixel = 0
+Config_2.LayoutOrder = 1
+Config_2.Size = UDim2.new(1, 0, 0, 25)
+Config_2.Font = Enum.Font.SourceSans
+Config_2.PlaceholderText = "Paste config here"
+Config_2.Text = ""
+Config_2.TextColor3 = Color3.fromRGB(0, 0, 0)
+Config_2.TextSize = 14.000
+
+Copy.Name = "Copy"
+Copy.Parent = Config
+Copy.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Copy.BorderSizePixel = 0
+Copy.LayoutOrder = 5
+Copy.Size = UDim2.new(1, 0, 0, 25)
+Copy.AutoButtonColor = false
+Copy.Font = Enum.Font.SourceSans
+Copy.Text = "Copy Crosshair Config"
+Copy.TextColor3 = Color3.fromRGB(0, 0, 0)
+Copy.TextSize = 14.000
+
+Set.Name = "Set"
+Set.Parent = Config
+Set.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Set.BorderSizePixel = 0
+Set.LayoutOrder = 6
+Set.Size = UDim2.new(1, 0, 0, 25)
+Set.AutoButtonColor = false
+Set.Font = Enum.Font.SourceSans
+Set.Text = "Set to Default"
+Set.TextColor3 = Color3.fromRGB(0, 0, 0)
+Set.TextSize = 14.000
+
+Label_2.Name = "Label"
+Label_2.Parent = Config
+Label_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Label_2.BorderSizePixel = 0
+Label_2.LayoutOrder = 7
+Label_2.Size = UDim2.new(1, 0, 0, 25)
+Label_2.Font = Enum.Font.SourceSans
+Label_2.Text = "Your configs are below"
+Label_2.TextColor3 = Color3.fromRGB(0, 0, 0)
+Label_2.TextSize = 14.000
+
+Placeholder.Name = "Placeholder"
+Placeholder.Parent = Config
+Placeholder.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Placeholder.BorderSizePixel = 0
+Placeholder.LayoutOrder = 8
+Placeholder.Size = UDim2.new(1, 0, 0, 25)
+Placeholder.Visible = false
+Placeholder.AutoButtonColor = false
+Placeholder.Font = Enum.Font.SourceSans
+Placeholder.Text = "Config Name"
+Placeholder.TextColor3 = Color3.fromRGB(0, 0, 0)
+Placeholder.TextSize = 14.000
+
+Create.Name = "Create"
+Create.Parent = Config
+Create.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Create.BorderSizePixel = 0
+Create.LayoutOrder = 3
+Create.Size = UDim2.new(1, 0, 0, 25)
+Create.AutoButtonColor = false
+Create.Font = Enum.Font.SourceSans
+Create.Text = "Create New Config"
+Create.TextColor3 = Color3.fromRGB(0, 0, 0)
+Create.TextSize = 14.000
+
+Delete.Name = "Delete"
+Delete.Parent = Config
+Delete.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Delete.BorderSizePixel = 0
+Delete.LayoutOrder = 3
+Delete.Size = UDim2.new(1, 0, 0, 25)
+Delete.AutoButtonColor = false
+Delete.Font = Enum.Font.SourceSans
+Delete.Text = "Delete Config"
+Delete.TextColor3 = Color3.fromRGB(0, 0, 0)
+Delete.TextSize = 14.000
+
+Message.Name = "Message"
+Message.Parent = CCv2
+Message.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Message.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Message.BorderSizePixel = 2
+Message.Position = UDim2.new(0, 50, 0, 50)
+Message.Size = UDim2.new(0, 180, 0, 90)
+Message.Visible = false
+Message.ZIndex = 2
+
+Label_3.Name = "Label"
+Label_3.Parent = Message
+Label_3.AnchorPoint = Vector2.new(0.5, 0)
+Label_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Label_3.BorderSizePixel = 0
+Label_3.Position = UDim2.new(0.5, 0, 0, 24)
+Label_3.Size = UDim2.new(1, -10, 1, -30)
+Label_3.ZIndex = 2
+Label_3.Font = Enum.Font.SourceSans
+Label_3.Text = "Message"
+Label_3.TextColor3 = Color3.fromRGB(0, 0, 0)
+Label_3.TextSize = 14.000
+Label_3.TextWrapped = true
+Label_3.TextXAlignment = Enum.TextXAlignment.Left
+Label_3.TextYAlignment = Enum.TextYAlignment.Top
+
+Title.Name = "Title"
+Title.Parent = Message
+Title.AnchorPoint = Vector2.new(0.5, 0)
+Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Title.BorderSizePixel = 0
+Title.Position = UDim2.new(0.5, 0, 0, 5)
+Title.Size = UDim2.new(1, -10, 0, 18)
+Title.ZIndex = 2
+Title.Font = Enum.Font.SourceSans
+Title.Text = "Title"
+Title.TextColor3 = Color3.fromRGB(0, 0, 0)
+Title.TextSize = 16.000
+Title.TextWrapped = true
+Title.TextXAlignment = Enum.TextXAlignment.Left
+Title.TextYAlignment = Enum.TextYAlignment.Top
+
 -- Scripts:
 
-local function SNYTP_fake_script() -- Gui.LocalScript 
+local function EOLKLP_fake_script() -- Gui.LocalScript 
 	local script = Instance.new('LocalScript', Gui)
 
 	-- stuff that doesnt get converted by gui to lua
 	local Enabled_1 = Instance.new("BoolValue")
 	local Enabled_2 = Instance.new("BoolValue")
 	local Enabled_3 = Instance.new("BoolValue")
-
+	
 	Enabled_1.Name = "Enabled"
 	Enabled_1.Parent = script.Parent.Dot
 	Enabled_1.Value = true
-
+	
 	Enabled_2.Name = "Enabled"
 	Enabled_2.Parent = script.Parent.Movement
 	Enabled_2.Value = false
-
+	
 	Enabled_3.Name = "Enabled"
 	Enabled_3.Parent = script.Parent.Outline
 	Enabled_3.Value = false
-
+	
 	script.Parent.AutomaticSize = Enum.AutomaticSize.Y
 	script.Parent.Parent.Colors.AutomaticSize = Enum.AutomaticSize.Y
-
-
+	script.Parent.Parent.IgnoreGuiInset = true
+	script.Parent.Parent.Message.Label.TextTruncate = Enum.TextTruncate.AtEnd
+	script.Parent.Parent.Message.Label.TextWrapped = true
+	script.Parent.Parent.Config.AutomaticSize = Enum.AutomaticSize.Y
+	script.Parent.Parent.Config.Config.TextTruncate = Enum.TextTruncate.AtEnd
+	
 	local default = '{"Offset":4,"OutlineColor":{"R":0,"B":0,"G":0},"Color":{"R":255,"B":255,"G":255},"Opacity":0,"Factor":2,"Length":6,"Outline":false,"OutlineThickness":1,"Thickness":2,"CenterDot":true,"MovementError":false}'
---[[{
-	Color = {R = 255,G = 255,B = 255},
-	Opacity = 0,
-	Length = 6,
-	Thickness = 2,
-	Offset = 4,
-	MovementError = false,
-	Factor = 2,
-	Outline = false,
-	OutlineColor = {R = 0,G = 0,B = 0},
-	OutlineThickness = 1,
-	CenterDot = true,
-}]]
-
+	--[[{
+		Color = {R = 255,G = 255,B = 255},
+		Opacity = 0,
+		Length = 6,
+		Thickness = 2,
+		Offset = 4,
+		MovementError = false,
+		Factor = 2,
+		Outline = false,
+		OutlineColor = {R = 0,G = 0,B = 0},
+		OutlineThickness = 1,
+		CenterDot = true,
+	}]]
+	
 	local cc = script.Parent.Parent.C
 	local colors = {
 		['white'] = Color3.fromRGB(255,255,255),
@@ -457,7 +599,9 @@ local function SNYTP_fake_script() -- Gui.LocalScript
 		['pink'] = Color3.fromRGB(255,0,255),
 		['red'] = Color3.fromRGB(255,0,0),
 	}
-
+	local studio = game:GetService("RunService"):IsStudio()
+	local rs = true
+	
 	local color = Color3.fromRGB(255,255,255)
 	local opacity = 0
 	local length = 6
@@ -467,13 +611,7 @@ local function SNYTP_fake_script() -- Gui.LocalScript
 	local ocolor = Color3.fromRGB(0,0,0)
 	local othickness = 1
 	local config = nil
-
-	local studio = game:GetService("RunService"):IsStudio()
-
-	if not studio then
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/MoreColor3.lua"))()
-	end
-
+	
 	function change(prop,value)
 		for i,v in next, script.Parent.Parent.C:GetChildren() do
 			if v:IsA("Frame") then
@@ -490,7 +628,7 @@ local function SNYTP_fake_script() -- Gui.LocalScript
 	function tovalue(c)
 		return {R = math.floor(c.R * 255),G = math.floor(c.G * 255),B = math.floor(c.B * 255)}
 	end
-	function copyconfig()
+	function getconfig()
 		local c = {
 			Color = tovalue(color),
 			Opacity = opacity,
@@ -504,20 +642,16 @@ local function SNYTP_fake_script() -- Gui.LocalScript
 			OutlineThickness = othickness,
 			CenterDot = enabled("Dot")
 		}
-		local str = game:GetService("HttpService"):JSONEncode(c)
-		if studio then
-			return print(str)
-		end
-		setclipboard(str)
+		return game:GetService("HttpService"):JSONEncode(c)
 	end
 	function loadconfig(c)
 		c = game:GetService("HttpService"):JSONDecode(c)
-
+		
 		script.Parent.Color.Text = c.Color.R..", "..c.Color.G..", "..c.Color.B
 		change("BackgroundColor3",fromvalue(c.Color))
 		script.Parent.Opacity.Text = 1 - c.Opacity
 		change("BackgroundTransparency",c.Opacity)
-
+		
 		script.Parent.Length.Text = c.Length
 		script.Parent.Thickness.Text = c.Thickness
 		cc.L.Size = UDim2.new(0,c.Length,0,c.Thickness)
@@ -525,30 +659,62 @@ local function SNYTP_fake_script() -- Gui.LocalScript
 		cc.T.Size = UDim2.new(0,c.Thickness,0,c.Length)
 		cc.B.Size = UDim2.new(0,c.Thickness,0,c.Length)
 		cc.D.Size = UDim2.new(0,c.Thickness,0,c.Thickness)
-
+		
 		script.Parent.Offset.Text = c.Offset
 		cc.L.Position = UDim2.new(0.5,-c.Offset,0.5,0)
 		cc.R.Position = UDim2.new(0.5,c.Offset,0.5,0)
 		cc.T.Position = UDim2.new(0.5,0,0.5,-c.Offset)
 		cc.B.Position = UDim2.new(0.5,0,0.5,c.Offset)
-
+		
 		script.Parent.Movement.Enabled.Value = c.MovementError
 		script.Parent.Movement.BackgroundColor3 = (c.MovementError and Color3.fromRGB(0,255,0)) or Color3.fromRGB(255,255,255)
 		script.Parent.Factor.Text = c.Factor
 		factor = c.Factor
-
+		
 		script.Parent.Outline.Enabled.Value = c.Outline
 		script.Parent.Outline.BackgroundColor3 = (c.Outline and Color3.fromRGB(0,255,0)) or Color3.fromRGB(255,255,255)
-		script.Parent.OutlineColor.Text = c.Color.R..", "..c.Color.G..", "..c.Color.B
+		script.Parent.OutlineColor.Text = c.OutlineColor.R..", "..c.OutlineColor.G..", "..c.OutlineColor.B
 		change("BorderColor3",fromvalue(c.OutlineColor))
 		script.Parent.OutlineThickness.Text = c.OutlineThickness
 		change("BorderSizePixel",(c.Outline and c.OutlineThickness) or 0)
-
+		
 		script.Parent.Dot.Enabled.Value = c.CenterDot
 		script.Parent.Dot.BackgroundColor3 = (c.CenterDot and Color3.fromRGB(0,255,0)) or Color3.fromRGB(255,255,255)
 		cc.D.Visible = c.CenterDot
 	end
-
+	local showingmessageboxthingorsomethinglikethatidk = false
+	function message(msg,duration)
+		if showingmessageboxthingorsomethinglikethatidk then
+			return
+		end
+		rs = false
+		showingmessageboxthingorsomethinglikethatidk = true
+		spawn(function()
+			repeat
+				script.Parent.Parent.Message.AnchorPoint = Vector2.new(0.5,0)
+				script.Parent.Parent.Message.Position = UDim2.new(0.5,0,0.5,50)
+				script.Parent.Parent.Message.Visible = true
+				script.Parent.Parent.Message.Title.Text = "Message"
+				script.Parent.Parent.Message.Label.Text = msg 
+				game:GetService("RunService").RenderStepped:Wait()
+			until rs
+		end)
+		wait(duration)
+		rs = true
+		showingmessageboxthingorsomethinglikethatidk = false
+		script.Parent.Parent.Message.AnchorPoint = Vector2.new(0,0)
+		script.Parent.Parent.Message.Visible = false
+	end
+	
+	if not studio and isfolder("CCv2") then
+		default = readfile("CCv2\\\Default.json")
+		loadconfig(default)
+	end
+	if not studio and not isfolder("CCv2") then
+		makefolder("CCv2")
+		writefile("CCv2\\Default.json",default)
+	end
+	
 	script.Parent.Color.FocusLost:Connect(function()
 		if script.Parent.Color.Text:find(",") then
 			local c = script.Parent.Color.Text:gsub(" ",""):split(",")
@@ -657,16 +823,18 @@ local function SNYTP_fake_script() -- Gui.LocalScript
 		end
 	end)
 	function move(speed)
-		cc.L.Position = UDim2.new(0.5,
-			math.clamp(-offset * ((enabled("Movement") and (speed / factor)) or 1),-math.huge,-offset),
-			0.5,0)
-		cc.R.Position = UDim2.new(0.5,
-			math.clamp(offset * ((enabled("Movement") and (speed / factor)) or 1),offset,math.huge),
-			0.5,0)
-		cc.T.Position = UDim2.new(0.5,0,0.5,
-			math.clamp(-offset * ((enabled("Movement") and (speed / factor)) or 1),-math.huge,-offset))
-		cc.B.Position = UDim2.new(0.5,0,0.5,
-			math.clamp(offset * ((enabled("Movement") and (speed / factor)) or 1),offset,math.huge))
+		if script.Parent.Movement.Enabled.Value then
+			cc.L.Position = UDim2.new(0.5,
+				math.clamp(-offset * ((enabled("Movement") and (speed / factor)) or 1),-math.huge,-offset),
+				0.5,0)
+			cc.R.Position = UDim2.new(0.5,
+				math.clamp(offset * ((enabled("Movement") and (speed / factor)) or 1),offset,math.huge),
+				0.5,0)
+			cc.T.Position = UDim2.new(0.5,0,0.5,
+				math.clamp(-offset * ((enabled("Movement") and (speed / factor)) or 1),-math.huge,-offset))
+			cc.B.Position = UDim2.new(0.5,0,0.5,
+				math.clamp(offset * ((enabled("Movement") and (speed / factor)) or 1),offset,math.huge))
+		end
 	end
 	game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid").Running:Connect(function(speed)
 		move(speed)
@@ -676,23 +844,146 @@ local function SNYTP_fake_script() -- Gui.LocalScript
 			move(speed)
 		end)
 	end)
-	script.Parent.Config.FocusLost:Connect(function()
-		config = script.Parent.Config.Text
-	end)
-	script.Parent.LoadConfig.Activated:Connect(function()
-		loadconfig(script.Parent.Config.Text)
-	end)
-	script.Parent.CopyConfig.Activated:Connect(copyconfig)
-	script.Parent.Reset.Activated:Connect(function()
-		loadconfig(default)
+	script.Parent.Menu.Activated:Connect(function()
+		script.Parent.Parent.Config.Visible = not script.Parent.Parent.Config.Visible
 	end)
 	game:GetService("UserInputService").InputBegan:Connect(function(i,gp)
 		if not gp and i.KeyCode == Enum.KeyCode.RightControl then
 			script.Parent.Visible = not script.Parent.Visible
 		end
 	end)
+	local msgs = {
+		['Color'] = "The color of your crosshair\nExample: 0,170,255",
+		['Opacity'] = "The opacity of your crosshair\nMust be a number between 0 and 1",
+		['Length'] = "The length of each line",
+		['Thickness'] = "The thickness of each line",
+		['Offset'] = "How far away the lines are from the center",
+		['Movement'] = "If enabled, character movement will affect the size of the crosshair",
+		['Factor'] = "hard to explain, just set it to something greater than 0",
+		['Outline'] = "If enabled, your crosshair will have an outline",
+		['OutlineColor'] = "The color of the outline",
+		['OutlineThickness'] = "The thickness of the outline",
+		['Dot'] = "If enabled, a dot in the center of your crosshair will be visible",
+		['Reset'] = "Resets your crosshair to the default config. If you have set a config to default, it will set it to that config instead.",
+		['Menu'] = "Opens the config menu",
+		
+		['Config'] = "Paste your config here and click Load Config",
+		['Load'] = "Paste your config in the text box above and click Load Config",
+		['Create'] = "Enter your desired config name in the text box at the top and click Create New Config",
+		['Delete'] = "Enter the name of the config you want to delete in the text box at the top (CASE SENSITIVE!)",
+		['Copy'] = "Copies the current crosshair's config to your clipboard",
+		['Set'] = "Sets the default config to the current crosshair",
+	}
+	local t = script.Parent:GetChildren()
+	for _,v in next, script.Parent.Parent.Config:GetChildren() do
+		table.insert(t,v)
+	end
+	for _,v in next, t do
+		if not v:IsA("LocalScript") and not v:IsA("UIListLayout") then
+			local ishovering = false
+			v.MouseEnter:Connect(function()
+				if not rs then
+					return
+				end
+				if msgs[v.Name] then
+					script.Parent.Parent.Message.Title.Text = (v.ClassName == "TextBox" and v.PlaceholderText) or v.Text
+					script.Parent.Parent.Message.Label.Text = msgs[v.Name]
+					ishovering = true
+					wait(1)
+					if ishovering then
+						script.Parent.Parent.Message.Visible = true
+						v.MouseLeave:Wait()
+						script.Parent.Parent.Message.Visible = false
+					end
+					ishovering = false
+				end
+			end)
+			v.MouseLeave:Connect(function()
+				ishovering = false
+			end)
+		end
+	end
+	game:GetService("RunService").RenderStepped:Connect(function()
+		if rs then
+			local m = game:GetService("UserInputService"):GetMouseLocation()
+			script.Parent.Parent.Message.Position = UDim2.new(0,m.X + 16,0,m.Y + 22)
+		end
+	end)
+	
+	-- config shits
+	local x = script.Parent.Parent.Config
+	local z = nil
+	local fake = { -- this is for testing in studio
+		['Default.json'] = '{"Offset":4,"OutlineColor":{"R":0,"B":0,"G":0},"Color":{"R":255,"B":255,"G":255},"Opacity":0,"Factor":2,"Length":6,"Outline":false,"OutlineThickness":1,"Thickness":2,"CenterDot":true,"MovementError":false}',
+		['MyConfig.json'] = '{"Offset":2,"OutlineColor":{"R":0,"B":0,"G":0},"Color":{"R":0,"B":255,"G":255},"Opacity":0,"Factor":2,"Thickness":2,"Length":4,"OutlineThickness":1,"CenterDot":false,"MovementError":false,"Outline":false}'
+	}
+	
+	x.Config.FocusLost:Connect(function()
+		z = x.Config.Text
+	end)
+	x.Load.Activated:Connect(function()
+		if not z then
+			return
+		end
+		loadconfig(z)
+		message("Successfully loaded your config!",1.5)
+	end)
+	x.Create.Activated:Connect(function()
+		if z ~= nil and not z:find("{") then
+			local c = getconfig()
+			if not studio then
+				writefile("CCv2\\"..z..".json",c)
+			end
+			local new = x.Placeholder:Clone()
+			new.Parent = x
+			new.Visible = true
+			new.Text = z
+			new.Name = z
+			message("Created a new config: "..z,1.5)
+			new.Activated:Connect(function()
+				loadconfig(c)
+				message("Successfully loaded config: "..z,1.5)
+			end)
+		end
+	end)
+	x.Delete.Activated:Connect(function()
+		if z ~= nil and not z:find("{") and isfile("CCv2\\"..z..".json") and script.Parent.Parent.Config:FindFirstChild(z) then
+			if not studio then
+				delfile("CCv2\\"..z..".json")
+			end
+			script.Parent.Parent.Config[z]:Destroy()
+			message("Deleted config: "..z,2)
+		elseif not isfile(z..".json") then
+			message(z.." does not exist",2)
+		end
+	end)
+	x.Copy.Activated:Connect(function()
+		setclipboard(getconfig())
+		message("Copied to your clipboard!",1.5)
+	end)
+	x.Set.Activated:Connect(function()
+		default = getconfig()
+		writefile("CCv2\\Default.json",default)
+		message("Your current crosshair has been set to default.",1.5)
+	end)
+	x.Exit.Activated:Connect(function()
+		x.Visible = false
+	end)
+	for i,v in next, (not studio and listfiles("CCv2")) or {"Default.json","MyConfig.json"} do
+		local new = x.Placeholder:Clone()
+		local name = v:split(".")[1]
+		new.Parent = x
+		new.Visible = true
+		new.Text = name
+		new.Name = name
+		new.Activated:Connect(function()
+			loadconfig((not studio and readfile("CCv2\\"..v)) or fake[v])
+			message("Successfully loaded config: "..name,1.5)
+		end)
+	end
+	
 	while wait() do
 		game:GetService("UserInputService").MouseIconEnabled = not ((game.Players.LocalPlayer.Character.Head.Position - workspace.CurrentCamera.CFrame.Position).Magnitude < 3)
 	end
 end
-coroutine.wrap(SNYTP_fake_script)()
+coroutine.wrap(EOLKLP_fake_script)()
