@@ -47,6 +47,7 @@ end
 CCv2.Name = game:GetService("HttpService"):GenerateGUID(false)
 CCv2.Parent = (gethui and gethui()) or (get_hidden_ui and get_hidden_ui()) or game.CoreGui
 CCv2.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+CCv2.IgnoreGuiInset = true
 
 C.Name = "C"
 C.Parent = CCv2
