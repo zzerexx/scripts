@@ -567,7 +567,7 @@ local function AAHILWJ_fake_script() -- Gui.LocalScript
 	script.Parent.Outline:SetAttribute("Enabled",false)
 	script.Parent.Rainbow:SetAttribute("Enabled",false)
 	script.Parent.Menu:SetAttribute("IsVisible",false)
-	
+
 	script.Parent.AutomaticSize = Enum.AutomaticSize.Y
 	script.Parent.Parent.Colors.AutomaticSize = Enum.AutomaticSize.Y
 	script.Parent.Parent.IgnoreGuiInset = true
@@ -575,21 +575,21 @@ local function AAHILWJ_fake_script() -- Gui.LocalScript
 	script.Parent.Parent.Message.Label.TextWrapped = true
 	script.Parent.Parent.Config.AutomaticSize = Enum.AutomaticSize.Y
 	script.Parent.Parent.Config.Config.TextTruncate = Enum.TextTruncate.AtEnd
-	
+
 	local default = '{"Offset":4,"OutlineColor":{"R":0,"B":0,"G":0},"Color":{"R":255,"B":255,"G":255},"Opacity":0,"Factor":2,"Length":6,"Outline":false,"OutlineThickness":1,"Thickness":2,"CenterDot":true,"MovementError":false}'
-	--[[{
-		Color = {R = 255,G = 255,B = 255},
-		Opacity = 0,
-		Length = 6,
-		Thickness = 2,
-		Offset = 4,
-		MovementError = false,
-		Factor = 2,
-		Outline = false,
-		OutlineColor = {R = 0,G = 0,B = 0},
-		OutlineThickness = 1,
-		CenterDot = true,
-	}]]
+--[[{
+	Color = {R = 255,G = 255,B = 255},
+	Opacity = 0,
+	Length = 6,
+	Thickness = 2,
+	Offset = 4,
+	MovementError = false,
+	Factor = 2,
+	Outline = false,
+	OutlineColor = {R = 0,G = 0,B = 0},
+	OutlineThickness = 1,
+	CenterDot = true,
+}]]
 	-- warning: shitty code !
 	local cc = script.Parent.Parent.C
 	local colors = {
@@ -604,7 +604,7 @@ local function AAHILWJ_fake_script() -- Gui.LocalScript
 	}
 	local studio = game:GetService("RunService"):IsStudio()
 	local rs = true
-	
+
 	local color = Color3.fromRGB(255,255,255)
 	local opacity = 0
 	local length = 6
@@ -614,7 +614,7 @@ local function AAHILWJ_fake_script() -- Gui.LocalScript
 	local ocolor = Color3.fromRGB(0,0,0)
 	local othickness = 1
 	local config = nil
-	
+
 	function change(prop,value)
 		for i,v in next, script.Parent.Parent.C:GetChildren() do
 			if v:IsA("Frame") then
@@ -643,20 +643,21 @@ local function AAHILWJ_fake_script() -- Gui.LocalScript
 			Outline = enabled("Outline"),
 			OutlineColor = tovalue(ocolor),
 			OutlineThickness = othickness,
-			CenterDot = enabled("Dot")
+			CenterDot = enabled("Dot"),
+			Rainbow = enabled("Rainbow")
 		}
 		return game:GetService("HttpService"):JSONEncode(c)
 	end
 	function loadconfig(c)
 		c = game:GetService("HttpService"):JSONDecode(c)
-		
+
 		color = fromvalue(c.Color)
 		script.Parent.Color.Text = c.Color.R..", "..c.Color.G..", "..c.Color.B
 		change("BackgroundColor3",fromvalue(c.Color))
 		opacity = c.Opacity
 		script.Parent.Opacity.Text = 1 - c.Opacity
 		change("BackgroundTransparency",c.Opacity)
-		
+
 		length = c.Length
 		thickness = c.Thickness
 		script.Parent.Length.Text = c.Length
@@ -666,19 +667,19 @@ local function AAHILWJ_fake_script() -- Gui.LocalScript
 		cc.T.Size = UDim2.new(0,c.Thickness,0,c.Length)
 		cc.B.Size = UDim2.new(0,c.Thickness,0,c.Length)
 		cc.D.Size = UDim2.new(0,c.Thickness,0,c.Thickness)
-		
+
 		offset = c.Offset
 		script.Parent.Offset.Text = c.Offset
 		cc.L.Position = UDim2.new(0.5,-c.Offset,0.5,0)
 		cc.R.Position = UDim2.new(0.5,c.Offset,0.5,0)
 		cc.T.Position = UDim2.new(0.5,0,0.5,-c.Offset)
 		cc.B.Position = UDim2.new(0.5,0,0.5,c.Offset)
-		
+
 		script.Parent.Movement:SetAttribute("Enabled",c.MovementError)
 		script.Parent.Movement.BackgroundColor3 = (c.MovementError and Color3.fromRGB(0,255,0)) or Color3.fromRGB(255,255,255)
 		factor = c.Factor
 		script.Parent.Factor.Text = c.Factor
-		
+
 		script.Parent.Outline:SetAttribute("Enabled",c.Outline)
 		script.Parent.Outline.BackgroundColor3 = (c.Outline and Color3.fromRGB(0,255,0)) or Color3.fromRGB(255,255,255)
 		script.Parent.OutlineColor.Text = c.OutlineColor.R..", "..c.OutlineColor.G..", "..c.OutlineColor.B
@@ -686,10 +687,13 @@ local function AAHILWJ_fake_script() -- Gui.LocalScript
 		othickness = (c.Outline and c.OutlineThickness) or 0
 		script.Parent.OutlineThickness.Text = c.OutlineThickness
 		change("BorderSizePixel",(c.Outline and c.OutlineThickness) or 0)
-		
+
 		script.Parent.Dot:SetAttribute("Enabled",c.CenterDot)
 		script.Parent.Dot.BackgroundColor3 = (c.CenterDot and Color3.fromRGB(0,255,0)) or Color3.fromRGB(255,255,255)
 		cc.D.Visible = c.CenterDot
+
+		script.Parent.Rainbow:SetAttribute("Enabled",c.Rainbow)
+		script.Parent.Rainbow.BackgroundColor3 = (c.Rainbow and Color3.fromRGB(0,255,0)) or Color3.fromRGB(255,255,255)
 	end
 	local showingmessageboxthingorsomethinglikethatidk = false
 	function message(msg,duration)
@@ -714,7 +718,7 @@ local function AAHILWJ_fake_script() -- Gui.LocalScript
 		script.Parent.Parent.Message.AnchorPoint = Vector2.new(0,0)
 		script.Parent.Parent.Message.Visible = false
 	end
-	
+
 	if not studio and isfolder("CCv2") then
 		default = readfile("CCv2\\\Default.json")
 		loadconfig(default)
@@ -723,7 +727,7 @@ local function AAHILWJ_fake_script() -- Gui.LocalScript
 		makefolder("CCv2")
 		writefile("CCv2\\Default.json",default)
 	end
-	
+
 	script.Parent.Color.FocusLost:Connect(function()
 		if script.Parent.Color.Text:find(",") then
 			local c = script.Parent.Color.Text:gsub(" ",""):split(",")
@@ -899,7 +903,7 @@ local function AAHILWJ_fake_script() -- Gui.LocalScript
 		['Rainbow'] = "If enabled, your crosshair will cycle through colors",
 		['Reset'] = "Resets your crosshair to the default config. If you have set a config to default, it will set it to that config instead.",
 		['Menu'] = "Opens the config menu",
-		
+
 		['Config'] = "Paste your config here and click Load Config",
 		['Load'] = "Paste your config in the text box above and click Load Config",
 		['Create'] = "Enter your desired config name in the text box at the top and click Create New Config",
@@ -945,7 +949,7 @@ local function AAHILWJ_fake_script() -- Gui.LocalScript
 			change("BackgroundColor3",Color3.fromHSV(tick()%5/5,1,1))
 		end
 	end)
-	
+
 	-- config shits
 	local x = script.Parent.Parent.Config
 	local z = nil
@@ -953,7 +957,7 @@ local function AAHILWJ_fake_script() -- Gui.LocalScript
 		['Default.json'] = '{"Offset":4,"OutlineColor":{"R":0,"B":0,"G":0},"Color":{"R":255,"B":255,"G":255},"Opacity":0,"Factor":2,"Length":6,"Outline":false,"OutlineThickness":1,"Thickness":2,"CenterDot":true,"MovementError":false}',
 		['MyConfig.json'] = '{"Offset":2,"OutlineColor":{"R":0,"B":0,"G":0},"Color":{"R":0,"B":255,"G":255},"Opacity":0,"Factor":2,"Thickness":2,"Length":4,"OutlineThickness":1,"CenterDot":false,"MovementError":false,"Outline":false}'
 	}
-	
+
 	x.Config.FocusLost:Connect(function()
 		z = x.Config.Text
 	end)
@@ -1017,7 +1021,7 @@ local function AAHILWJ_fake_script() -- Gui.LocalScript
 			message("Successfully loaded config: "..name,1.5)
 		end)
 	end
-	
+
 	while wait() do
 		game:GetService("UserInputService").MouseIconEnabled = not ((game.Players.LocalPlayer.Character.Head.Position - workspace.CurrentCamera.CFrame.Position).Magnitude < 3)
 	end
