@@ -26,6 +26,7 @@ local Factor = Instance.new("TextBox")
 local OutlineThickness = Instance.new("TextBox")
 local Label = Instance.new("TextLabel")
 local Menu = Instance.new("TextButton")
+local Rainbow = Instance.new("TextButton")
 local Colors = Instance.new("Frame")
 local UIListLayout_2 = Instance.new("UIListLayout")
 local White = Instance.new("TextButton")
@@ -283,7 +284,7 @@ Menu.Name = "Menu"
 Menu.Parent = Gui
 Menu.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Menu.BorderSizePixel = 0
-Menu.LayoutOrder = 12
+Menu.LayoutOrder = 13
 Menu.Size = UDim2.new(1, 0, 0, 25)
 Menu.AutoButtonColor = false
 Menu.Font = Enum.Font.SourceSans
@@ -291,12 +292,24 @@ Menu.Text = "Config Menu"
 Menu.TextColor3 = Color3.fromRGB(0, 0, 0)
 Menu.TextSize = 14.000
 
+Rainbow.Name = "Rainbow"
+Rainbow.Parent = Gui
+Rainbow.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Rainbow.BorderSizePixel = 0
+Rainbow.LayoutOrder = 12
+Rainbow.Size = UDim2.new(1, 0, 0, 25)
+Rainbow.AutoButtonColor = false
+Rainbow.Font = Enum.Font.SourceSans
+Rainbow.Text = "Rainbow Color"
+Rainbow.TextColor3 = Color3.fromRGB(0, 0, 0)
+Rainbow.TextSize = 14.000
+
 Colors.Name = "Colors"
 Colors.Parent = CCv2
 Colors.AnchorPoint = Vector2.new(0, 0.5)
 Colors.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Colors.BorderSizePixel = 2
-Colors.Position = UDim2.new(0.5, -118, 0.5, -75)
+Colors.Position = UDim2.new(0.5, -118, 0.5, -87)
 Colors.Size = UDim2.new(0, 100, 0, 25)
 Colors.Visible = false
 
@@ -545,25 +558,15 @@ Title.TextYAlignment = Enum.TextYAlignment.Top
 
 -- Scripts:
 
-local function EOLKLP_fake_script() -- Gui.LocalScript 
+local function AAHILWJ_fake_script() -- Gui.LocalScript 
 	local script = Instance.new('LocalScript', Gui)
 
 	-- stuff that doesnt get converted by gui to lua
-	local Enabled_1 = Instance.new("BoolValue")
-	local Enabled_2 = Instance.new("BoolValue")
-	local Enabled_3 = Instance.new("BoolValue")
-	
-	Enabled_1.Name = "Enabled"
-	Enabled_1.Parent = script.Parent.Dot
-	Enabled_1.Value = true
-	
-	Enabled_2.Name = "Enabled"
-	Enabled_2.Parent = script.Parent.Movement
-	Enabled_2.Value = false
-	
-	Enabled_3.Name = "Enabled"
-	Enabled_3.Parent = script.Parent.Outline
-	Enabled_3.Value = false
+	script.Parent.Dot:SetAttribute("Enabled",true)
+	script.Parent.Movement:SetAttribute("Enabled",false)
+	script.Parent.Outline:SetAttribute("Enabled",false)
+	script.Parent.Rainbow:SetAttribute("Enabled",false)
+	script.Parent.Menu:SetAttribute("IsVisible",false)
 	
 	script.Parent.AutomaticSize = Enum.AutomaticSize.Y
 	script.Parent.Parent.Colors.AutomaticSize = Enum.AutomaticSize.Y
@@ -587,7 +590,7 @@ local function EOLKLP_fake_script() -- Gui.LocalScript
 		OutlineThickness = 1,
 		CenterDot = true,
 	}]]
-	
+	-- warning: shitty code !
 	local cc = script.Parent.Parent.C
 	local colors = {
 		['white'] = Color3.fromRGB(255,255,255),
@@ -620,7 +623,7 @@ local function EOLKLP_fake_script() -- Gui.LocalScript
 		end
 	end
 	function enabled(name)
-		return script.Parent[name].Enabled.Value
+		return script.Parent[name]:GetAttribute("Enabled")
 	end
 	function fromvalue(c)
 		return Color3.fromRGB(c.R,c.G,c.B)
@@ -647,11 +650,15 @@ local function EOLKLP_fake_script() -- Gui.LocalScript
 	function loadconfig(c)
 		c = game:GetService("HttpService"):JSONDecode(c)
 		
+		color = fromvalue(c.Color)
 		script.Parent.Color.Text = c.Color.R..", "..c.Color.G..", "..c.Color.B
 		change("BackgroundColor3",fromvalue(c.Color))
+		opacity = c.Opacity
 		script.Parent.Opacity.Text = 1 - c.Opacity
 		change("BackgroundTransparency",c.Opacity)
 		
+		length = c.Length
+		thickness = c.Thickness
 		script.Parent.Length.Text = c.Length
 		script.Parent.Thickness.Text = c.Thickness
 		cc.L.Size = UDim2.new(0,c.Length,0,c.Thickness)
@@ -660,25 +667,27 @@ local function EOLKLP_fake_script() -- Gui.LocalScript
 		cc.B.Size = UDim2.new(0,c.Thickness,0,c.Length)
 		cc.D.Size = UDim2.new(0,c.Thickness,0,c.Thickness)
 		
+		offset = c.Offset
 		script.Parent.Offset.Text = c.Offset
 		cc.L.Position = UDim2.new(0.5,-c.Offset,0.5,0)
 		cc.R.Position = UDim2.new(0.5,c.Offset,0.5,0)
 		cc.T.Position = UDim2.new(0.5,0,0.5,-c.Offset)
 		cc.B.Position = UDim2.new(0.5,0,0.5,c.Offset)
 		
-		script.Parent.Movement.Enabled.Value = c.MovementError
+		script.Parent.Movement:SetAttribute("Enabled",c.MovementError)
 		script.Parent.Movement.BackgroundColor3 = (c.MovementError and Color3.fromRGB(0,255,0)) or Color3.fromRGB(255,255,255)
-		script.Parent.Factor.Text = c.Factor
 		factor = c.Factor
+		script.Parent.Factor.Text = c.Factor
 		
-		script.Parent.Outline.Enabled.Value = c.Outline
+		script.Parent.Outline:SetAttribute("Enabled",c.Outline)
 		script.Parent.Outline.BackgroundColor3 = (c.Outline and Color3.fromRGB(0,255,0)) or Color3.fromRGB(255,255,255)
 		script.Parent.OutlineColor.Text = c.OutlineColor.R..", "..c.OutlineColor.G..", "..c.OutlineColor.B
 		change("BorderColor3",fromvalue(c.OutlineColor))
+		othickness = (c.Outline and c.OutlineThickness) or 0
 		script.Parent.OutlineThickness.Text = c.OutlineThickness
 		change("BorderSizePixel",(c.Outline and c.OutlineThickness) or 0)
 		
-		script.Parent.Dot.Enabled.Value = c.CenterDot
+		script.Parent.Dot:SetAttribute("Enabled",c.CenterDot)
 		script.Parent.Dot.BackgroundColor3 = (c.CenterDot and Color3.fromRGB(0,255,0)) or Color3.fromRGB(255,255,255)
 		cc.D.Visible = c.CenterDot
 	end
@@ -778,7 +787,7 @@ local function EOLKLP_fake_script() -- Gui.LocalScript
 		end
 	end)
 	script.Parent.Movement.Activated:Connect(function()
-		script.Parent.Movement.Enabled.Value = not script.Parent.Movement.Enabled.Value
+		script.Parent.Movement:SetAttribute("Enabled",not script.Parent.Movement:GetAttribute("Enabled"))
 		if enabled("Movement") then
 			script.Parent.Movement.BackgroundColor3 = Color3.fromRGB(0,255,0)
 		else
@@ -791,7 +800,7 @@ local function EOLKLP_fake_script() -- Gui.LocalScript
 		end
 	end)
 	script.Parent.Outline.Activated:Connect(function()
-		script.Parent.Outline.Enabled.Value = not script.Parent.Outline.Enabled.Value
+		script.Parent.Outline:SetAttribute("Enabled",not script.Parent.Outline:GetAttribute("Enabled"))
 		if enabled("Outline") then
 			script.Parent.Outline.BackgroundColor3 = Color3.fromRGB(0,255,0)
 			change("BorderSizePixel",1)
@@ -814,7 +823,7 @@ local function EOLKLP_fake_script() -- Gui.LocalScript
 		end
 	end)
 	script.Parent.Dot.Activated:Connect(function()
-		script.Parent.Dot.Enabled.Value = not script.Parent.Dot.Enabled.Value
+		script.Parent.Dot:SetAttribute("Enabled",not script.Parent.Dot:GetAttribute("Enabled"))
 		cc.D.Visible = enabled("Dot")
 		if enabled("Dot") then
 			script.Parent.Dot.BackgroundColor3 = Color3.fromRGB(0,255,0)
@@ -822,8 +831,17 @@ local function EOLKLP_fake_script() -- Gui.LocalScript
 			script.Parent.Dot.BackgroundColor3 = Color3.fromRGB(255,255,255)
 		end
 	end)
+	script.Parent.Rainbow.Activated:Connect(function()
+		script.Parent.Rainbow:SetAttribute("Enabled",not script.Parent.Rainbow:GetAttribute("Enabled"))
+		if enabled("Rainbow") then
+			script.Parent.Rainbow.BackgroundColor3 = Color3.fromRGB(0,255,0)
+		else
+			script.Parent.Rainbow.BackgroundColor3 = Color3.fromRGB(255,255,255)
+		end
+	end)
 	function move(speed)
-		if script.Parent.Movement.Enabled.Value then
+		speed = math.abs(speed)
+		if script.Parent.Movement:GetAttribute("Enabled") then
 			cc.L.Position = UDim2.new(0.5,
 				math.clamp(-offset * ((enabled("Movement") and (speed / factor)) or 1),-math.huge,-offset),
 				0.5,0)
@@ -836,22 +854,34 @@ local function EOLKLP_fake_script() -- Gui.LocalScript
 				math.clamp(offset * ((enabled("Movement") and (speed / factor)) or 1),offset,math.huge))
 		end
 	end
-	game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid").Running:Connect(function(speed)
-		move(speed)
-	end)
+	function events()
+		local h = game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid")
+		h.Running:Connect(move)
+		h.Climbing:Connect(move)
+		h.Swimming:Connect(move)
+	end
+	events()
 	game:GetService("Players").LocalPlayer.CharacterAdded:Connect(function(char)
-		char:WaitForChild("Humanoid").Running:Connect(function(speed)
-			move(speed)
-		end)
+		events()
 	end)
 	script.Parent.Menu.Activated:Connect(function()
 		script.Parent.Parent.Config.Visible = not script.Parent.Parent.Config.Visible
+		script.Parent.Menu:SetAttribute("IsVisible",script.Parent.Parent.Config.Visible)
 	end)
+	local old1,old2 = false,false
 	game:GetService("UserInputService").InputBegan:Connect(function(i,gp)
 		if not gp and i.KeyCode == Enum.KeyCode.RightControl then
 			script.Parent.Visible = not script.Parent.Visible
-			script.Parent.Parent.Colors.Visible = script.Parent.Visible
-			script.Parent.Parent.Config.Visible = script.Parent.Visible
+			script.Parent.Parent.Colors.Visible = false
+			script.Parent.Parent.Config.Visible = false
+			if script.Parent.Visible then
+				if script.Parent.Color.Drop.Text == "<" then
+					script.Parent.Parent.Colors.Visible = true
+				end
+				if script.Parent.Menu:GetAttribute("IsVisible") then
+					script.Parent.Parent.Config.Visible = true
+				end
+			end
 		end
 	end)
 	local msgs = {
@@ -866,6 +896,7 @@ local function EOLKLP_fake_script() -- Gui.LocalScript
 		['OutlineColor'] = "The color of the outline",
 		['OutlineThickness'] = "The thickness of the outline",
 		['Dot'] = "If enabled, a dot in the center of your crosshair will be visible",
+		['Rainbow'] = "If enabled, your crosshair will cycle through colors",
 		['Reset'] = "Resets your crosshair to the default config. If you have set a config to default, it will set it to that config instead.",
 		['Menu'] = "Opens the config menu",
 		
@@ -909,6 +940,9 @@ local function EOLKLP_fake_script() -- Gui.LocalScript
 		if rs then
 			local m = game:GetService("UserInputService"):GetMouseLocation()
 			script.Parent.Parent.Message.Position = UDim2.new(0,m.X + 16,0,m.Y + 22)
+		end
+		if enabled("Rainbow") then
+			change("BackgroundColor3",Color3.fromHSV(tick()%5/5,1,1))
 		end
 	end)
 	
@@ -960,7 +994,7 @@ local function EOLKLP_fake_script() -- Gui.LocalScript
 		end
 	end)
 	x.Copy.Activated:Connect(function()
-		setclipboard(getconfig())
+		((not studio and setclipboard) or print)(getconfig())
 		message("Copied to your clipboard!",1.5)
 	end)
 	x.Set.Activated:Connect(function()
@@ -988,4 +1022,4 @@ local function EOLKLP_fake_script() -- Gui.LocalScript
 		game:GetService("UserInputService").MouseIconEnabled = not ((game.Players.LocalPlayer.Character.Head.Position - workspace.CurrentCamera.CFrame.Position).Magnitude < 3)
 	end
 end
-coroutine.wrap(EOLKLP_fake_script)()
+coroutine.wrap(AAHILWJ_fake_script)()
