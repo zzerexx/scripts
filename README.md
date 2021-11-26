@@ -82,9 +82,6 @@ A better version of Custom Crosshair v1
 This version does not use the drawing library  
   
 ## Update v1.0.2  
-Added Configs! You can now load and manage your configs within the UI!  
-Added preset colors. You can find this by clicking the arrow on the Color text box.  
-Added a message box that appears when hovering over certain buttons/text boxes for a bit. The message box can have extra information about what the function does.  
 Added Rainbow Color.  
 Movement Error now supports Climbing and Swimming.  
 Fixed some issues with configs.  
