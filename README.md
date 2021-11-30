@@ -234,6 +234,13 @@ owo-ifier
 # prison life  
 work in progress  
   
+# encrypt  
+custom encrypter  
+```lua
+zz.encrypt(data,key,accesskey)
+zz.decrypt(data,key)
+```  
+  
 # Synapse XI  
 Updated March 12, 2021  
 v1.0.0   
