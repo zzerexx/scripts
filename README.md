@@ -236,6 +236,8 @@ work in progress
   
 # encrypt  
 custom encrypter  
+Updated December 17, 2021  
+- optimized encryption/decryption (slightly faster)  
 ```lua
 zz.encrypt(data,key,accesskey)
 zz.decrypt(data,key)
