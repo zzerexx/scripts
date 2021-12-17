@@ -118,7 +118,7 @@ basically just the developer console
 F9 to toggle  
 
 # Synapse to Script-Ware  
-Updated October 3, 2021  
+Updated December 17, 2021  
 Allows you to use Synapse functions on Script-Ware!  
   
 **Loader**  
@@ -132,7 +132,7 @@ https://pastebin.com/raw/WeFREykX
 ```  
   
 # Synapse to Krnl
-Updated August 25, 2021  
+Updated December 17, 2021  
 Allows you to use Synapse functions on Krnl!  
   
 **Loader**  
@@ -142,69 +142,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/
   
 **Supported Functions**  
 ```
-syn.get_thread_identity
-syn.set_thread_identity
-syn.write_clipboard
-syn.queue_on_teleport
-syn.protect_gui
-syn.unprotect_gui
-syn.is_beta
-syn.request
-syn.crypt.base64.encode
-syn.crypt.base64.decode
-syn.crypt.hash
-syn.websocket.connect
-
-syn_websocket_connect
-syn_websocket_send
-syn_websocket_close
-syn_io_read
-syn_io_write
-syn_io_append
-syn_io_makefolder
-syn_io_listdir
-syn_io_isfile
-syn_io_isfolder
-syn_io_delfile
-syn_io_delfolder
-syn_mouse1click
-syn_mouse1press
-syn_mouse1release
-syn_mouse2click
-syn_mouse2press
-syn_mouse2release
-syn_mousescroll
-syn_mousemoverel
-syn_mousemoveabs
-syn_keypress
-syn_keyrelease
-syn_crypt_b64_encode
-syn_crypt_b64_decode
-syn_crypt_hash
-syn_getgenv
-syn_getrenv
-syn_getsenv
-syn_getreg
-syn_getgc
-syn_getinstances
-getsynasset
-syn_context_set
-syn_context_get
-syn_setfflag
-syn_dumpstring
-syn_islclosure
-syn_checkcaller
-syn_clipboard_set
-syn_newcclosure
-syn_decompile
-syn_getloadedmodules
-syn_getcallingscript
-syn_isactive
-is_synapse_function
-iswindowactive
-gethiddenprop
-sethiddenprop
-get_calling_script
+https://pastebin.com/raw/T78hpe3S
 ```  
   
 # Counter Blox Spectator Viewer  
