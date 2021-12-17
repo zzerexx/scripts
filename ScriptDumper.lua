@@ -9,7 +9,7 @@ end
 if not isfolder(name) then
 	makefolder(name)
 end
-local ignore = load("CoreScripts.lua")
+local ignore = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/CoreScripts.lua"))()
 function round(num, numDecimalPlaces)
 	return tonumber(string.format("%." .. (numDecimalPlaces or 0) .. "f", num))
 end
