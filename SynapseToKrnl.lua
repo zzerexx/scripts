@@ -315,9 +315,12 @@ getgenv().syn = {
 	['secure_call'] = function(func,env,...)
 		assert(typeof(func) == "function","bad argument to #1 to 'secure_call' (function expected, got "..typeof(func)..")")
 		assert(env.ClassName == ("LocalScript" or "ModuleScript"),"bad argument to #2 to 'secure_call' (LocalScript or ModuleScript expected, got "..env.ClassName..")")
-		setfenv(0,getsenv(env))
-		--setfenv(1,getsenv(env))
-		return func(...)
+		local args = {...}
+		return coroutine.wrap(function()
+			setfenv(0,getsenv(env))
+			setfenv(1,getsenv(env))
+			return func(unpack(args))
+		end)()
 	end,
 	--['create_secure_function'] = nil,
 	--['run_secure_function'] = nil,
