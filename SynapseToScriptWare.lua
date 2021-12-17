@@ -38,7 +38,7 @@ oldr = hookfunction(request,function(options)
 	local h = options.Headers or {}
 	h['Syn-Fingerprint'] = SWHWID or headers['Sw-Fingerprint']
 	h['Syn-User-Identifier'] = SWUID or headers['Sw-User-Identifier']
-	h['User-Agent'] = headers['User-Agent']
+	h['User-Agent'] = "synx/v2.14.0b"
 	return oldr({
 		Url = options.Url,
 		Method = options.Method or "GET",
@@ -181,7 +181,7 @@ local functions = {
 	['setscriptable'] = sethidden,
 	['getpropvalue'] = function(obj,prop)
 		table.insert(temp,obj:GetFullName())
-		delay(0,function() table.remove(temp,table.find(temp,obj:GetFullName())) end)
+		task.delay(0.1,function() table.remove(temp,table.find(temp,obj:GetFullName())) end)
 		return obj[prop]
 	end,
 	['setpropvalue'] = function(obj,prop,value)
@@ -229,7 +229,7 @@ local functions = {
 		consolesettitle(title)
 	end,
 	['rconsoleinputasync'] = function()
-		return spawn(consoleinput)
+		return task.spawn(consoleinput)
 	end,
 	['printconsole'] = output,
 	['rconsoleclose'] = consoledestroy,
