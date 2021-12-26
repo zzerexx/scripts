@@ -8,11 +8,15 @@ v1.5.12
 - Tracers  
 - Name Esp  
 - Skeleton Esp  
-- Look Tracers (disabled)  
 - Health Bars  
   
 ```
 https://pastebin.com/raw/5zw0rLH9
+```  
+**UI Version**  
+Updated August 10, 2021  
+```
+loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua"))()
 ```  
   
 ## Update v1.5.12    
@@ -21,19 +25,16 @@ Changed some ZIndex values
 Name Esp data (health and distance) is now centered  
 New function `esp:SetAll()`  
   
-# Universal Esp with UI  
-Updated August 10, 2021  
-universal esp but with a ui  
-ui lib made by twink marie  
-```
-loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua"))()
-```  
-  
 # Universal Aimbot  
 Updated November 14, 2021  
 v1.1.10  
 ```
 https://pastebin.com/raw/nwqE7v07
+```  
+**UI Version**  
+Updated November 18, 2021  
+```
+loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalAimbotUI.lua"))()
 ```  
 ## Update v1.1.10  
 Added DynamicFov for Aim Assist; Only affects MaxFov  
@@ -42,19 +43,11 @@ Aim Assist strength decreases slightly when aiming
   
 ## Update v1.1.9  
 Added Aim Assist  
-Whats different between low-strength aimbot and aim assist?  
+Whats the difference between low-strength aimbot and aim assist?  
 - Aim Assist has a minimum and maximum fov circle (when the player is within the minimum fov, it stops assisting)  
-- You can make aim assist weaker than aimbot for more "legit" gameplay  
+- You can make aim assist weaker than aimbot for more *legit* gameplay  
 - When your mouse hovers over a player, it slows your sensitivity for more precise accuracy (you can disable this of course)  
 might have bugs  
-  
-# Universal Aimbot with UI  
-Updated November 18, 2021 (v1.1.10)  
-universal aimbot but with a ui  
-ui lib made by twink marie  
-```
-loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalAimbotUI.lua"))()
-```  
   
 ## NOTICE  
 ```
