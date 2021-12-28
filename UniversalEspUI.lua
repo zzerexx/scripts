@@ -1,51 +1,51 @@
 getgenv().EspSettings = {
-    TeamCheck = false,
-    ToggleKey = Enum.KeyCode.RightAlt,
-    AntiDetection = true,
-    RefreshRate = 10, -- how fast the esp updates (milliseconds)
-    Boxes = {
-        Enabled = true,
-        Transparency = 1,
-        Color = Color3.fromRGB(255,255,255),
-        UseTeamColor = true,
-    },
-    Tracers = {
-        Enabled = true,
-        Transparency = 1,
-        Color = Color3.fromRGB(255,255,255),
-        UseTeamColor = true,
-        Origin = "Top", -- "Top" or "Center" or "Bottom" or "Mouse"
-        Thickness = 1
-    },
-    Names = {
-        Enabled = true,
-        Transparency = 1,
-        Color = Color3.fromRGB(255,255,255),
-        UseTeamColor = true,
-        Font = Drawing.Fonts.UI, -- UI or System or Plex or Monospace
-        Size = 18,
-        Outline = true,
-        OutlineColor = Color3.fromRGB(0,0,0),
-        ShowDistance = false,
-        ShowHealth = true,
-        UseDisplayName = false,
-        DistanceDataType = "m", -- what it says after the distance (ex. 100m)
-        HealthDataType = "Percentage" -- "Percentage" or "Value"
-    },
-    Skeletons = {
-        Enabled = true,
-        Transparency = 1,
-        Color = Color3.fromRGB(255,255,255),
-        UseTeamColor = true,
-        Thickness = 1
-    },
-    HealthBars = {
-        Enabled = true,
-        Transparency = 1,
-        Color = Color3.fromRGB(0,255,0),
-        OutlineColor = Color3.fromRGB(255,255,255),
-        UseTeamColor = true -- this only applies to the outline
-    }
+	TeamCheck = false,
+	ToggleKey = Enum.KeyCode.RightAlt,
+	AntiDetection = true,
+	RefreshRate = 10, -- how fast the esp updates (milliseconds)
+	Boxes = {
+		Enabled = true,
+		Transparency = 1,
+		Color = Color3.fromRGB(255,255,255),
+		UseTeamColor = true,
+	},
+	Tracers = {
+		Enabled = true,
+		Transparency = 1,
+		Color = Color3.fromRGB(255,255,255),
+		UseTeamColor = true,
+		Origin = "Top", -- "Top" or "Center" or "Bottom" or "Mouse"
+		Thickness = 1
+	},
+	Names = {
+		Enabled = true,
+		Transparency = 1,
+		Color = Color3.fromRGB(255,255,255),
+		UseTeamColor = true,
+		Font = Drawing.Fonts.UI, -- UI or System or Plex or Monospace
+		Size = 18,
+		Outline = true,
+		OutlineColor = Color3.fromRGB(0,0,0),
+		ShowDistance = false,
+		ShowHealth = true,
+		UseDisplayName = false,
+		DistanceDataType = "m", -- what it says after the distance (ex. 100m)
+		HealthDataType = "Percentage" -- "Percentage" or "Value"
+	},
+	Skeletons = {
+		Enabled = true,
+		Transparency = 1,
+		Color = Color3.fromRGB(255,255,255),
+		UseTeamColor = true,
+		Thickness = 1
+	},
+	HealthBars = {
+		Enabled = true,
+		Transparency = 1,
+		Color = Color3.fromRGB(0,255,0),
+		OutlineColor = Color3.fromRGB(255,255,255),
+		UseTeamColor = true -- this only applies to the outline
+	}
 } -- v1.6.0
 
 if UESP then
@@ -60,7 +60,7 @@ local Material = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kinl
 local UI = Material.Load({
 	Title = "Universal Esp",
 	Style = 2,
-	SizeX = 514,
+	SizeX = 413,
 	SizeY = 500,
 	Theme = "Dark"
 })
@@ -72,7 +72,7 @@ local Boxes = UI.New({Title = "Boxes"})
 local Tracers = UI.New({Title = "Tracers"})
 local Names = UI.New({Title = "Names"})
 local Skeletons = UI.New({Title = "Skeletons"})
-local LookTracers = UI.New({Title = "Look Tracers"})
+--local LookTracers = UI.New({Title = "Look Tracers"})
 local HealthBars = UI.New({Title = "Health Bars"})
 local Other = UI.New({Title = "Other"})
 
@@ -235,6 +235,33 @@ Names.Toggle({
 	end,
 	Enabled = false
 })
+Names.TextField({
+	Text = "Distance Data Type",
+	Type = "Default",
+	Callback = function(value)
+		esp:Set("Names","DistanceDataType",value)
+	end,
+	Menu = {
+		Info = function()
+			Banner("This is the Distance measurement. For example, if this is 'studs' then it will show '100studs'")
+		end
+	}
+})
+Names.Dropdown({
+	Text = "Health Data Type",
+	Callback = function(value)
+		esp:Set("Names","HealthDataType",value)
+	end,
+	Options = {
+		"Percentage",
+		"Value"
+	},
+	Menu = {
+		Info = function()
+			Banner("This changes what the health shows.\nPercentage: [ 100% ] | Value: [ 100/100 ]")
+		end
+	}
+})
 
 Skeletons.Toggle({
 	Text = "Enabled",
@@ -270,53 +297,6 @@ Skeletons.Slider({
 	Text = "Thickness",
 	Callback = function(value)
 		esp:Set("Skeletons","Thickness",value)
-	end,
-	Min = 1,
-	Max = 5,
-	Def = 1
-})
-
-LookTracers.Toggle({
-	Text = "Enabled",
-	Callback = function(value)
-		esp:Set("LookTracers","Enabled",value)
-	end,
-	Enabled = true
-})
-LookTracers.Slider({
-	Text = "Transparency",
-	Callback = function(value)
-		esp:Set("LookTracers","Transparency",value / 10)
-	end,
-	Min = 0,
-	Max = 10,
-	Def = 7
-})
-LookTracers.ColorPicker({
-	Text = "Color",
-	Default = Color3.fromHSV(0,0,1),
-	Callback = function(value)
-		esp:Set("LookTracers","Color",value)
-	end
-})
-LookTracers.Toggle({
-	Text = "Use Team Color",
-	Callback = function(value)
-		esp:Set("LookTracers","UseTeamColor",value)
-	end,
-	Enabled = true
-})
-LookTracers.Toggle({
-	Text = "Ignore Water",
-	Callback = function(value)
-		esp:Set("LookTracers","IgnoreWater",value)
-	end,
-	Enabled = true
-})
-LookTracers.Slider({
-	Text = "Thickness",
-	Callback = function(value)
-		esp:Set("LookTracers","Thickness",value)
 	end,
 	Min = 1,
 	Max = 5,
@@ -377,18 +357,42 @@ Other.TextField({
 		esp:Set("Other","ToggleKey",Enum.KeyCode[value])
 	end
 })
+Other.Slider({
+	Text = "Refresh Rate (ms)",
+	Callback = function(value)
+		esp:Set("Other","RefreshRate",value)
+	end,
+	Def = 10,
+	Min = 0,
+	Max = 50,
+	Menu = {
+		Info = function()
+			Banner("How fast the esp updates. This is in milliseconds.")
+		end
+	}
+})
 Other.Button({
 	Text = "Destroy Esp",
 	Callback = function()
 		esp:Destroy()
-	end
+	end,
+	Menu = {
+		Info = function()
+			Banner("This button will completely remove Universal Esp, including the UI.")
+		end
+	}
 })
 Other.Toggle({
 	Text = "Enabled (All)",
 	Callback = function(value)
 		esp:SetAll("Enabled",value)
 	end,
-	Enabled = true
+	Enabled = true,
+	Menu = {
+		Info = function()
+			Banner("Changes the 'Enabled' setting for all types.")
+		end
+	}
 })
 Other.Slider({
 	Text = "Transparency (All)",
@@ -397,19 +401,45 @@ Other.Slider({
 	end,
 	Min = 0,
 	Max = 10,
-	Def = 10
+	Def = 10,
+	Menu = {
+		Info = function()
+			Banner("Changes the 'Transparency' setting for all types.")
+		end
+	}
 })
 Other.ColorPicker({
 	Text = "Color (All)",
 	Default = Color3.fromRGB(255,255,255),
 	Callback = function(value)
 		esp:SetAll("Color",value)
-	end
+	end,
+	Menu = {
+		Info = function()
+			Banner("Changes the 'Color' setting for all types.")
+		end
+	}
 })
 Other.Toggle({
 	Text = "Use Team Color (All)",
 	Callback = function(value)
 		esp:SetAll("UseTeamColor",value)
 	end,
-	Enabled = true
+	Enabled = true,
+	Menu = {
+		Info = function()
+			Banner("Changes the 'Use Team Color' setting for all types.")
+		end
+	}
+})
+Other.Button({
+	Text = "Credits",
+	Callback = function()
+		Banner("Material UI Library created by twink marie\nUniversal Esp created by zzerexx#3970")
+	end,
+	Menu = {
+		Version = function()
+			Banner("v1.6.0")
+		end
+	}
 })
