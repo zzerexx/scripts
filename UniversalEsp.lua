@@ -542,7 +542,7 @@ function update()
 						
 						obj.Name.Position = Vector2new(tlx + (trx - tlx) / 2, tly - (s.Size + 2))
 						obj.Data.Position = Vector2new(blx + (brx - blx) / 2, bly + (bry - bly) / 2)
-						if s.Enabled then
+						if ss.HealthBars.Enabled then
 							obj.Data.Position = Vector2new(obj.Data.Position.X, obj.Data.Position.Y + mathclamp(1000 / tlz,8,15))
 						end
 						local mag
