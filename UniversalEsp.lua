@@ -1,4 +1,3 @@
--- bad business stuff https://raw.githubusercontent.com/coastss/releases/main/bad_business_silent_aim.lua
 if not EspSettings then
 	getgenv().EspSettings = {
 		TeamCheck = false,
@@ -474,7 +473,7 @@ function update()
 			local team, myteam, teamcolor								   -- team shit
 			local ccf, char, health, maxhealth							  -- other shit
 			local s = ss[type] or v.Options								 -- settings shit
-			if plr and IsAlive(plr) then
+			if plr and IsAlive(plr) and s and s.Enabled then
 				ccf, char, health, maxhealth = camera.CFrame.Position, GetChar(plr), GetHealth(plr)[1], GetHealth(plr)[2]
 				cf, size = char:GetBoundingBox()
 				team, myteam, teamcolor = GetTeam(plr), GetTeam(player), plr.TeamColor.Color
@@ -514,7 +513,8 @@ function update()
 			end
 	
 			if UESP_VISIBLE and not v.Destroyed then
-				if plr and IsAlive(plr) then
+				if plr and IsAlive(plr) and s and s.Enabled then
+					printconsole("applying")
 					local color = (ts and team == "Omega" and omega or team == "Beta" and beta) or (s.UseTeamColor and teamcolor) or s.Color
 					SetProp(obj, "Visible", not ss.TeamCheck or (ss.TeamCheck and team ~= myteam))
 					if type == "Boxes" and s.Enabled and inViewport then
@@ -777,7 +777,7 @@ function esp:GetTotalObjects()
 		Chams = 0,
 	}
 	for _,v in next, UESP_OBJECTS do
-		if typeof(v.Object) == "table" then
+		if typeof(v.Object) == "table" and v.Object.__OBJECT_EXISTS == nil then
 			for _,v2 in next, v.Object do
 				data.DrawingObjects += 1
 				if v2.Visible then
