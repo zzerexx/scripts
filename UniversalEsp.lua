@@ -514,7 +514,6 @@ function update()
 	
 			if UESP_VISIBLE and not v.Destroyed then
 				if plr and IsAlive(plr) and s and s.Enabled then
-					printconsole("applying")
 					local color = (ts and team == "Omega" and omega or team == "Beta" and beta) or (s.UseTeamColor and teamcolor) or s.Color
 					SetProp(obj, "Visible", not ss.TeamCheck or (ss.TeamCheck and team ~= myteam))
 					if type == "Boxes" and s.Enabled and inViewport then
