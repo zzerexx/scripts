@@ -1,4 +1,4 @@
-assert(KRNL_LOADED,"you are not using script ware")
+assert(KRNL_LOADED,"you are not using krnl")
 getgenv().protected = protected or {}
 getgenv().temp = temp or {}
 
