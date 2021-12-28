@@ -1,3 +1,4 @@
+-- bad business stuff https://raw.githubusercontent.com/coastss/releases/main/bad_business_silent_aim.lua
 if not EspSettings then
 	getgenv().EspSettings = {
 		TeamCheck = false,
@@ -730,8 +731,10 @@ end
 function esp:SetAll(option,value)
 	assert(ValidOption("Boxes",option),"Universal Esp: bad argument to #1 'SetAll' (Invalid Option)")
 	assert(value ~= nil,"Universal Esp: bad argument to #2 'SetAll'")
-	for _,v in next, {"Boxes","Tracers","Names","Skeletons","HealthBars"} do
-		getgenv().EspSettings[v][option] = value
+	for _,v in next, EspSettings do
+		if typeof(v) == "table" and v.Enabled ~= nil then
+			v[option] = value
+		end
 	end
 end
 function esp.Label(part,options)
