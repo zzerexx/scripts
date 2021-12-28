@@ -730,7 +730,7 @@ end
 function esp:SetAll(option,value)
 	assert(ValidOption("Boxes",option),"Universal Esp: bad argument to #1 'SetAll' (Invalid Option)")
 	assert(value ~= nil,"Universal Esp: bad argument to #2 'SetAll'")
-	for _,v in next, {"Boxes","Tracers","Names","Skeletons","LookTracers","HealthBars"} do
+	for _,v in next, {"Boxes","Tracers","Names","Skeletons","HealthBars"} do
 		getgenv().EspSettings[v][option] = value
 	end
 end
