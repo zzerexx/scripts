@@ -2,8 +2,8 @@
 my cool scripts  
   
 # Universal Esp  
-Updated October 24, 2021  
-v1.5.12  
+Updated December 27, 2021  
+v1.6.0  
 - Box Esp  
 - Tracers  
 - Name Esp  
@@ -19,11 +19,14 @@ Updated August 10, 2021
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua"))()
 ```  
   
-## Update v1.5.12    
-If tracers origin is set to `Bottom`, the tracer will connect to the bottom of the box instead of the top  
-Changed some ZIndex values  
-Name Esp data (health and distance) is now centered  
-New function `esp:SetAll()`  
+## Update v1.6.0    
+- Lots of optimizations  
+- Added `RefreshRate`; allows you to control how fast the esp updates, which can save on performance  
+- Added two new settings for Name Esp  
+  - `DistanceDataType`; This is the Distance measurement. For example, if this is `studs` then it will show `100studs`  
+  - `HealthDataType`; You can set this to `Percentage` (100%) or `Value` (100/100)  
+- Fixed some settings not applying correctly for `Labels` and `Chams`  
+- Completely removed Look Tracers  
   
 # Universal Aimbot  
 Updated November 14, 2021  
