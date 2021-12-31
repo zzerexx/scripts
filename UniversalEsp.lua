@@ -119,7 +119,7 @@ local zindex = {
 	['Cham'] = -1
 }
 local origins = {}
-local omega, beta = Color3fromRGB(38,125,255), Color3fromRGB(255,116,38)
+local omega, beta = Color3fromRGB(38,125,255), Color3fromRGB(255,116,38) -- they are opposite cuz thats how it works
 local white, black = Color3fromRGB(255,255,255), Color3fromRGB(0,0,0)
 local getchar, gethealth, ts
 if GameId == (gids.pf or gids.pft or gids.pfu) then
@@ -195,7 +195,7 @@ function GetChar(plr)
 	if getchar then
 		return getchar(plr).torso.Parent
 	elseif ts then
-		return ts.Characters:GetCharacter(plr).Body
+		return ts.Characters:GetCharacter(plr)
 	elseif plr.Character ~= nil then
 		return plr.Character
 	end
@@ -218,11 +218,7 @@ function GetHealth(plr)
 end
 function GetTeam(plr)
 	if ts then
-		for _,v in next, game:GetService("Teams"):GetChildren() do
-			if not v.Players:FindFirstChild(plr.Name) then
-				return v.Name
-			end
-		end
+		return ts.Teams:GetPlayerTeam(plr)
 	end
 	return plr.Team
 end
@@ -458,6 +454,7 @@ function update()
 		return
 	end
 	lastupdate = osclock()
+	origins.mouse = UIS:GetMouseLocation()
 	for _,v in next, UESP_OBJECTS do
 		if not v.Destroyed then
 			if v.Player == nil and not v.Options then
@@ -474,7 +471,8 @@ function update()
 			local ccf, char, health, maxhealth							  -- other shit
 			local s = ss[type] or v.Options								 -- settings shit
 			if plr and IsAlive(plr) and s and s.Enabled then
-				ccf, char, health, maxhealth = camera.CFrame.Position, GetChar(plr), GetHealth(plr)[1], GetHealth(plr)[2]
+				local hp = GetHealth(plr)
+				ccf, char, health, maxhealth = camera.CFrame.Position, GetChar(plr), hp[1], hp[2]
 				cf, size = char:GetBoundingBox()
 				team, myteam, teamcolor = GetTeam(plr), GetTeam(player), plr.TeamColor.Color
 				size /= 2
@@ -516,101 +514,95 @@ function update()
 				if plr and IsAlive(plr) and s and s.Enabled then
 					local color = (ts and team == "Omega" and omega or team == "Beta" and beta) or (s.UseTeamColor and teamcolor) or s.Color
 					SetProp(obj, "Visible", not ss.TeamCheck or (ss.TeamCheck and team ~= myteam))
-					if type == "Boxes" and s.Enabled and inViewport then
-						obj.Transparency = s.Transparency
-						obj.Color = color
-						obj.PointA = Vector2new(trx, try)
-						obj.PointB = Vector2new(tlx, tly)
-						obj.PointC = Vector2new(blx, bly)
-						obj.PointD = Vector2new(brx, bry)
-					elseif type == "Tracers" and s.Enabled and inViewport then
-						obj.Transparency = s.Transparency
-						obj.Color = color
-						obj.Thickness = s.Thickness 
-						obj.From = origins[s.Origin:lower() or "top"]
-						obj.To = Vector2new(tlx + (trx - tlx) / 2, tly + (try - tly) / 2)
-						if ss.Tracers.Origin:lower() == "bottom" then
-							obj.To = Vector2new(blx + (brx - blx) / 2, bly + (bry - bly) / 2)
-						end
-					elseif type == "Names" and s.Enabled and inViewport then
+					if s.Enabled and inViewport then
 						SetProp(obj, "Transparency", s.Transparency)
 						SetProp(obj, "Color", color)
-						SetProp(obj, "Size", s.Size)
-						SetProp(obj, "Outline", s.Outline)
-						SetProp(obj, "OutlineColor", s.OutlineColor)
-						SetProp(obj, "Font", s.Font)
-						
-						obj.Name.Position = Vector2new(tlx + (trx - tlx) / 2, tly - (s.Size + 2))
-						obj.Data.Position = Vector2new(blx + (brx - blx) / 2, bly + (bry - bly) / 2)
-						if ss.HealthBars.Enabled then
-							obj.Data.Position = Vector2new(obj.Data.Position.X, obj.Data.Position.Y + mathclamp(1000 / tlz,8,15))
-						end
-						local mag
-						if ts then
-							mag = mathfloor((ccf - char.Parent.Root.Position).Magnitude)
-						elseif getchar then
-							mag = mathfloor((ccf - char.Torso.Position).Magnitude)
-						else
-							mag = mathfloor((ccf - char.HumanoidRootPart.Position).Magnitude)
-						end
-						obj.Name.Text = (s.UseDisplayName and plr.DisplayName) or plr.Name
-						obj.Data.Text = ""
-						if s.ShowDistance then
-							obj.Data.Text = "[ "..mag..s.DistanceDataType.." ]"
-						end
-						if s.ShowHealth then
-							local a = s.HealthDataType:lower()
-							if a == "percentage" then
-								obj.Data.Text = obj.Data.Text.." [ "..mathfloor((health / maxhealth) * 100).."% ]"
-							elseif a == "value" then
-								obj.Data.Text = obj.Data.Text.." [ "..health.."/"..maxhealth.." ]"
+						if type == "Boxes" then
+							obj.PointA = Vector2new(trx, try)
+							obj.PointB = Vector2new(tlx, tly)
+							obj.PointC = Vector2new(blx, bly)
+							obj.PointD = Vector2new(brx, bry)
+						elseif type == "Tracers" then
+							obj.Thickness = s.Thickness 
+							obj.From = origins[s.Origin:lower() or "top"]
+							obj.To = Vector2new(tlx + (trx - tlx) / 2, tly + (try - tly) / 2)
+							if s.Origin:lower() == "bottom" then
+								obj.To = Vector2new(blx + (brx - blx) / 2, bly + (bry - bly) / 2)
 							end
-						end
-					elseif type == "Skeletons" and s.Enabled and inViewport then
-						SetProp(obj, "Transparency", s.Transparency)
-						SetProp(obj, "Color", color)
-						SetProp(obj, "Thickness", s.Thickness)
-
-						for i2,v2 in next, obj do
-							if char:FindFirstChild(i2) then
-								local pos1 = WorldToViewportPoint(camera, char:FindFirstChild(From[i2]).Position)
-								local pos2 = WorldToViewportPoint(camera, char[i2].Position)
-								v2.From = Vector2new(pos1.X, pos1.Y)
-								v2.To = Vector2new(pos2.X, pos2.Y)
+						elseif type == "Names" then
+							SetProp(obj, "Size", s.Size)
+							SetProp(obj, "Outline", s.Outline)
+							SetProp(obj, "OutlineColor", s.OutlineColor)
+							SetProp(obj, "Font", s.Font)
+							
+							obj.Name.Position = Vector2new(tlx + (trx - tlx) / 2, tly - (s.Size + 2))
+							obj.Data.Position = Vector2new(blx + (brx - blx) / 2, bly + (bry - bly) / 2)
+							if ss.HealthBars.Enabled then
+								obj.Data.Position = Vector2new(obj.Data.Position.X, obj.Data.Position.Y + mathclamp(1000 / tlz,8,15))
 							end
+							local mag
+							if ts then
+								mag = mathfloor((ccf - char.Root.Position).Magnitude)
+							elseif getchar then
+								mag = mathfloor((ccf - char.Torso.Position).Magnitude)
+							else
+								mag = mathfloor((ccf - char.HumanoidRootPart.Position).Magnitude)
+							end
+							obj.Name.Text = (s.UseDisplayName and plr.DisplayName) or plr.Name
+							obj.Data.Text = ""
+							if s.ShowDistance then
+								obj.Data.Text = "[ "..mag..s.DistanceDataType.." ]"
+							end
+							if s.ShowHealth then
+								local a = s.HealthDataType:lower()
+								if a == "percentage" then
+									obj.Data.Text = obj.Data.Text.." [ "..mathfloor((health / maxhealth) * 100).."% ]"
+								elseif a == "value" then
+									obj.Data.Text = obj.Data.Text.." [ "..mathfloor(health).."/"..mathfloor(maxhealth).." ]"
+								end
+							end
+						elseif type == "Skeletons" then
+							SetProp(obj, "Thickness", s.Thickness)
+	
+							for i2,v2 in next, obj do
+								if char[i2] then
+									local pos1 = WorldToViewportPoint(camera, char[From[i2]].Position)
+									local pos2 = WorldToViewportPoint(camera, char[i2].Position)
+									v2.From = Vector2new(pos1.X, pos1.Y)
+									v2.To = Vector2new(pos2.X, pos2.Y)
+								end
+							end
+						elseif type == "HealthBars" then
+							local bar, out, z = obj.Bar, obj.Outline, mathclamp(1000 / tlz, 8, 12)
+							health = health / maxhealth
+							bar.PointA = Vector2new(
+								blx + (brx - blx) * health,
+								(bly + (bry - bly) * health) + 5
+							)
+							bar.PointB = Vector2new(
+								blx,
+								bly + 5
+							)
+							bar.PointC = Vector2new(
+								blx,
+								bly + z
+							)
+							bar.PointD = Vector2new(
+								blx + (brx - blx) * health,
+								(bly + (bry - bly) * health) + z
+							)
+	
+							out.PointA = Vector2new(brx, bry + 5)
+							out.PointB = Vector2new(blx, bly + 5)
+							out.PointC = Vector2new(blx, bly + z)
+							out.PointD = Vector2new(brx, bry + z)
 						end
-					elseif type == "HealthBars" and s.Enabled and inViewport then
-						local bar, out, z = obj.Bar, obj.Outline, mathclamp(1000 / tlz, 8, 12)
-						SetProp(obj, "Transparency", s.Transparency)
-						SetProp(obj, "Color", color)
-						health = health / maxhealth
-						bar.PointA = Vector2new(
-							blx + (brx - blx) * health,
-							(bly + (bry - bly) * health) + 5
-						)
-						bar.PointB = Vector2new(
-							blx,
-							bly + 5
-						)
-						bar.PointC = Vector2new(
-							blx,
-							bly + z
-						)
-						bar.PointD = Vector2new(
-							blx + (brx - blx) * health,
-							(bly + (bry - bly) * health) + z
-						)
-
-						out.PointA = Vector2new(brx, bry + 5)
-						out.PointB = Vector2new(blx, bly + 5)
-						out.PointC = Vector2new(blx, bly + z)
-						out.PointD = Vector2new(brx, bry + z)
 					end
 				elseif part and part.Parent ~= nil then
 					SetProp(obj, "Visible", inViewport)
+					SetProp(obj, "Transparency", s.Transparency)
+					SetProp(obj, "Color", s.Color)
 					if type == "Labels" and inViewport then
-						obj.Transparency = s.Transparency
-						obj.Color = s.Color
 						obj.Text = s.Text
 						obj.Size = s.Size
 						obj.Outline = s.Outline
@@ -620,8 +612,6 @@ function update()
 						obj.Position = Vector2new(c0.X, c0.Y - (s.Size) / 2)
 					elseif type == "Chams" and inViewport then
 						local t, b, l, r, f, bb = obj.Top, obj.Bottom, obj.Left, obj.Right, obj.Front, obj.Back
-						SetProp(obj, "Transparency", s.Transparency)
-						SetProp(obj, "Color", s.Color)
 						SetProp(obj, "Filled", s.Filled)
 						SetProp(obj, "Thickness", s.Thickness)
 
