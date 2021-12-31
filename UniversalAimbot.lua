@@ -39,6 +39,23 @@ if not getgenv().AimbotSettings then
 	}
 end
 
+task.delay(3,function()
+	local bind = Instance.new("BindableFunction")
+	bind.OnInvoke = function(a)
+		if a == "Get Script" then
+			setclipboard("https://pastebin.com/raw/nwqE7v07")
+		end
+	end
+	game:GetService("StarterGui"):SetCore("SendNotification",{
+		Title = "Universal Aimbot",
+		Text = "Script not working? Make sure you have the latest version!",
+		Duration = 5,
+		Button1 = "OK",
+		Button2 = "Get Script",
+		Callback = bind
+	})
+end)
+
 if game.GameId == (111958650 or 115797356 or 147332621) then -- arsenal, counter blox, typical colors 2
 	AimbotSettings.Ignore = workspace.Ray_Ignore
 elseif game.GameId == 833423526 then -- strucid
