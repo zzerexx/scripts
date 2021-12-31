@@ -57,6 +57,24 @@ if not EspSettings then
 		}
 	}
 end
+
+task.delay(3,function()
+	local bind = Instance.new("BindableFunction")
+	bind.OnInvoke = function(a)
+		if a == "Get Script" then
+			setclipboard("https://pastebin.com/raw/5zw0rLH9")
+		end
+	end
+	game:GetService("StarterGui"):SetCore("SendNotification",{
+		Title = "Universal Esp",
+		Text = "Script not working? Make sure you have the latest version!",
+		Duration = 5,
+		Button1 = "OK",
+		Button2 = "Get Script",
+		Callback = bind
+	})
+end)
+
 if EspSettings.AntiDetection and getconnections then
 	for _,v in next, getconnections(game:GetService("ScriptContext").Error) do
 		v:Disable()
