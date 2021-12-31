@@ -32,8 +32,8 @@ fixed for bad business
 - Completely removed Look Tracers  
   
 # Universal Aimbot  
-Updated November 14, 2021  
-v1.1.10  
+Updated December 31, 2021  
+v1.1.11  
 ```
 https://pastebin.com/raw/nwqE7v07
 ```  
@@ -42,18 +42,17 @@ Updated November 18, 2021
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalAimbotUI.lua"))()
 ```  
-## Update v1.1.10  
-Added DynamicFov for Aim Assist; Only affects MaxFov  
-Added RequireMovement for Aim Assist  
-Aim Assist strength decreases slightly when aiming  
-  
-## Update v1.1.9  
-Added Aim Assist  
-Whats the difference between low-strength aimbot and aim assist?  
-- Aim Assist has a minimum and maximum fov circle (when the player is within the minimum fov, it stops assisting)  
-- You can make aim assist weaker than aimbot for more *legit* gameplay  
-- When your mouse hovers over a player, it slows your sensitivity for more precise accuracy (you can disable this of course)  
-might have bugs  
+## Update v1.1.11  
+- Optimizations  
+- Added `RefreshRate`; allows you to control how fast the aimbot updates, which can save on performance   
+- Moved the following settings to the AimbotSettings table:  
+  - TeamCheck  
+  - VisibleCheck  
+  - Keybind  
+  - ToggleKey  
+  - MaximumDistance  
+  - AlwaysActive  
+These have been moved since they are shared between Aimbot and Aim Assist  
   
 ## NOTICE  
 ```
