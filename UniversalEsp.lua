@@ -193,7 +193,10 @@ function IsAlive(plr)
 end
 function GetChar(plr)
 	if getchar then
-		return getchar(plr).torso.Parent
+		local a = getchar(plr)
+		if a ~= nil then
+			return a.torso.Parent
+		end
 	elseif ts then
 		return ts.Characters:GetCharacter(plr)
 	elseif plr.Character ~= nil then
