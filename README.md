@@ -2,8 +2,8 @@
 my cool scripts  
   
 # Universal Esp  
-Updated December 27, 2021  
-v1.6.0  
+Updated December 30, 2021  
+v1.6.1  
 - Box Esp  
 - Tracers  
 - Name Esp  
@@ -19,6 +19,9 @@ Updated August 10, 2021
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua"))()
 ```  
   
+## Update v1.6.1  
+fixed for bad business  
+
 ## Update v1.6.0    
 - Lots of optimizations  
 - Added `RefreshRate`; allows you to control how fast the esp updates, which can save on performance  
