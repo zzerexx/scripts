@@ -14,7 +14,7 @@ v1.6.1
 https://pastebin.com/raw/5zw0rLH9
 ```  
 **UI Version**  
-Updated August 10, 2021  
+Updated January 2, 2022  
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua"))()
 ```  
