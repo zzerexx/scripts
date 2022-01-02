@@ -38,7 +38,7 @@ v1.1.11
 https://pastebin.com/raw/nwqE7v07
 ```  
 **UI Version**  
-Updated November 18, 2021  
+Updated January 2, 2022  
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalAimbotUI.lua"))()
 ```  
