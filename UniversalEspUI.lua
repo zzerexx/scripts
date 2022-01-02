@@ -75,6 +75,7 @@ local Skeletons = UI.New({Title = "Skeletons"})
 --local LookTracers = UI.New({Title = "Look Tracers"})
 local HealthBars = UI.New({Title = "Health Bars"})
 local Other = UI.New({Title = "Other"})
+local ui = OldInstance
 
 Boxes.Toggle({
 	Text = "Enabled",
@@ -375,6 +376,7 @@ Other.Button({
 	Text = "Destroy Esp",
 	Callback = function()
 		esp:Destroy()
+		ui:Destroy()
 	end,
 	Menu = {
 		Info = function()
@@ -439,7 +441,7 @@ Other.Button({
 	end,
 	Menu = {
 		Version = function()
-			Banner("v1.6.0")
+			Banner("v1.6.1")
 		end
 	}
 })
