@@ -116,7 +116,7 @@ basically just the developer console
 F9 to toggle  
 
 # Synapse to Script-Ware  
-Updated December 17, 2021  
+Updated January 3, 2022  
 Allows you to use Synapse functions on Script-Ware!  
   
 **Loader**  
@@ -130,7 +130,7 @@ https://pastebin.com/raw/WeFREykX
 ```  
   
 # Synapse to Krnl
-Updated December 17, 2021  
+Updated January 3, 2022  
 Allows you to use Synapse functions on Krnl!  
   
 **Loader**  
