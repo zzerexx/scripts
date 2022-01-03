@@ -145,7 +145,7 @@ function GetChar(plr)
 			return a.torso.Parent
 		end
 	elseif ts then
-		return ts.Characters:GetCharacter(plr)
+		return ts.Characters:GetCharacter(plr).Body
 	elseif plr.Character ~= nil then
 		return plr.Character
 	end
