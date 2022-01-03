@@ -265,7 +265,7 @@ do -- HashLib
 
     --]=]---------------------------------------------------------------------------
 
-    local Base64 = require(script.Base64)
+    local Base64 = BASE64
 
     --------------------------------------------------------------------------------
     -- LOCALIZATION FOR VM OPTIMIZATIONS
@@ -1564,7 +1564,7 @@ do -- HashLib["HashLib.spec"]
     local function expect(value) end
 
     HASHSPEC = function()
-        local HashLib = require(script.Parent)
+        local HashLib = HASH
         local sha256 = HashLib.sha256
 
         describe("HashLib.sha256", function()
