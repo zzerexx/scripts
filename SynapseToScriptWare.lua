@@ -1,6 +1,9 @@
 assert(identifyexecutor():find("ScriptWare"),"you are not using script ware")
 getgenv().protected = protected or {}
 getgenv().temp = temp or {}
+local hash = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/HashLib.lua"))()
+local hashalgs = {"md5","sha1","sha224","sha256","sha384","sha3-256","sha3-384","sha3-512"}
+
 local consolecolor, colors = "white", {
 	['black'] = "black",
 	['blue'] = "blue",
@@ -318,8 +321,11 @@ getgenv().syn = {
 				return crypt.custom_decrypt(data,key,nonce,ciphers[cipher:gsub("_","-")])
 			end,
 			['hash'] = function(alg,data)
-				assert(alg ~= ("sha224" or "sha3-384"),alg.." is not supported")
-				return crypt.hash(data,alg)
+                assert(not hashalgs[alg],"bad argument #1 to 'hash' (non-existant hash algorithm)")
+                if alg == ("sha224" or "sha3-384") then
+                    return hash[alg:gsub("-","_")](data)
+                end
+				return crypt.hash(data,alg):lower()
 			end
 		},
 		['lz4'] = {
@@ -331,13 +337,13 @@ getgenv().syn = {
 	},
 	['secure_call'] = function(func,env,...)
 		assert(typeof(func) == "function","bad argument to #1 to 'secure_call' (function expected, got "..typeof(func)..")")
+		assert(typeof(env) == "Instance","bad argument to #2 to 'secure_call' (Instance expected, got"..typeof(env)..")")
 		assert(env.ClassName == ("LocalScript" or "ModuleScript"),"bad argument to #2 to 'secure_call' (LocalScript or ModuleScript expected, got "..env.ClassName..")")
-		local args = {...}
-		return coroutine.wrap(function()
+		return coroutine.wrap(function(...)
 			setfenv(0,getsenv(env))
 			setfenv(1,getsenv(env))
-			return func(unpack(args))
-		end)()
+			return func(...)
+		end)(...)
 	end,
 	--['create_secure_function'] = nil,
 	--['run_secure_function'] = nil,
