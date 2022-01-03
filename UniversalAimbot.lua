@@ -39,7 +39,7 @@ if not getgenv().AimbotSettings then
 	}
 end
 
-task.delay(3,function()
+task.delay(5,function()
 	local bind = Instance.new("BindableFunction")
 	bind.OnInvoke = function(a)
 		if a == "Get Script" then
@@ -56,25 +56,12 @@ task.delay(3,function()
 	})
 end)
 
-if game.GameId == (111958650 or 115797356 or 147332621) then -- arsenal, counter blox, typical colors 2
-	AimbotSettings.Ignore = workspace.Ray_Ignore
-elseif game.GameId == 833423526 then -- strucid
-	AimbotSettings.Ignore = workspace.IgnoreThese
-elseif game.GameId == 1168263273 then -- bad business
-	do end
-elseif workspace:FindFirstChild("Ignore") then
-	AimbotSettings.Ignore = workspace.Ignore
-end
-
-if UAIM then
-	UAIM:Destroy()
-end
-
 local players = game:GetService("Players")
 local player = players.LocalPlayer
 local camera = workspace.CurrentCamera
 local UIS = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
+local mousemoverel = mousemoverel
 local Drawingnew = Drawing.new 
 local Fonts = Drawing.Fonts
 local tableinsert = table.insert
@@ -91,6 +78,23 @@ local ss = getgenv().AimbotSettings
 local Aimbot = ss.Aimbot
 local AimAssist = ss.AimAssist
 local FovCircle = ss.FovCircle
+
+if game.GameId == (111958650 or 115797356 or 147332621) then -- arsenal, counter blox, typical colors 2
+	ss.Ignore = {workspace.Ray_Ignore}
+elseif game.GameId == 833423526 then -- strucid
+	ss.Ignore = {workspace.IgnoreThese}
+elseif game.GameId == 1168263273 then -- bad business
+	do end
+elseif game.GameId == 2162282815 then -- rush point
+	ss.Ignore = {camera, player.Character, workspace.RaycastIgnore, workspace.DroppedWeapons, workspace.MapFolder.Map.Ramps, workspace.MapFolder.Map.Walls.MapWalls}
+elseif workspace:FindFirstChild("Ignore") then
+	ss.Ignore = {workspace.Ignore}
+end
+
+if UAIM then
+	UAIM:Destroy()
+end
+
 local bodyparts = {
 	"Head","UpperTorso","LowerTorso","LeftUpperArm","LeftLowerArm","LeftHand","RightUpperArm","RightLowerArm","RightHand","LeftUpperLeg","LeftLowerLeg","LeftFoot","RightUpperLeg","RightLowerLeg","RightFoot",
 	"Torso","Left Arm","Right Arm","Left Leg","Right Leg",
@@ -105,32 +109,32 @@ local gids = { -- game ids
 	['pfu'] = 1256867479, -- pf unstable branch
 	['bb'] = 1168263273,
 }
-local getchar, ts
+local getchar, getvis, ts
 if GameId == (gids.pf or gids.pft or gids.pfu) then
 	for _,v in next, getgc(true) do
-		if typeof(v) == "table" and rawget(v,"getbodyparts") then
-			getchar = rawget(v,"getbodyparts")
+		if typeof(v) == "table" then
+			if rawget(v, "getbodyparts") then
+				getchar = rawget(v, "getbodyparts")
+			elseif rawget(v, "getplayervisible") then
+				getvis = rawget(v, "getplayervisible") -- it was that easy smh
+			end
 		end
 	end
 elseif GameId == gids.bb then
 	for _,v in next, getgc(true) do
-		if typeof(v) == "table" and rawget(v,"InitProjectile") and v.TS then
+		if typeof(v) == "table" and rawget(v, "InitProjectile") and v.TS then
 			ts = v.TS
 		end
 	end
 end
 
 function IsAlive(plr)
-	if plr.Character and plr.Character.Humanoid.Health > 0 then
+	if plr.Character and plr.Character.Humanoid and plr.Character.Humanoid.Health > 0 then
 		return true
 	elseif getchar then
-		if getchar(plr) ~= nil then
-			return true
-		end
+		return getchar(plr) ~= nil
 	elseif ts then
-		if ts.Characters:GetCharacter(plr) ~= nil then
-			return true
-		end
+		return ts.Characters:GetCharacter(plr) ~= nil
 	end
 	return false
 end
@@ -160,7 +164,7 @@ function ClosestPlayer()
 	local myteam = GetTeam(player)
 	for _,v in next, players:GetPlayers() do
 		if v ~= player and IsAlive(v) then
-			local cf = GetChar(v):GetBoundingBox()
+			local cf = GetChar(v):GetPivot()
 			local vector, inViewport = WorldToViewportPoint(camera, cf.Position)
 			if inViewport then
 				local mag = (Vector2new(mouse.X, mouse.Y) - Vector2new(vector.X, vector.Y)).Magnitude
@@ -175,19 +179,24 @@ function ClosestPlayer()
 	return plr
 end
 function IsVisible(plr)
-	if ss.VisibleCheck and IsAlive(plr) and GetChar(plr):FindFirstChild(Aimbot.TargetPart) then
-		local char = GetChar(plr)
-		local mychar = GetChar(player)
-		local params = RaycastParams.new()
-		params.FilterDescendantsInstances = {camera, mychar}
-		params.FilterType = Enum.RaycastFilterType.Blacklist
-		params.IgnoreWater = true
-		if ss.Ignore ~= nil and typeof(ss.Ignore) == "Instance" then
-			params.FilterDescendantsInstances = {camera, mychar, ss.Ignore}
-		end
-		local result = workspace:Raycast(camera.CFrame.Position,(char[Aimbot.TargetPart].Position - camera.CFrame.Position).Unit * 500,params)
-		if result and result.Instance:IsDescendantOf(char) then
-			return true
+	local char = GetChar(plr)
+	if ss.VisibleCheck and IsAlive(plr) and char:FindFirstChild(Aimbot.TargetPart) then
+		if getvis then
+			return getvis(player,plr)
+		else
+			local mychar = GetChar(player)
+			local ignore = {camera, mychar}
+			for _,v in next, ss.Ignore do
+				tableinsert(ignore, v)
+			end
+			local params = RaycastParams.new()
+			params.FilterDescendantsInstances = ignore
+			params.FilterType = Enum.RaycastFilterType.Blacklist
+			params.IgnoreWater = true
+			local result = workspace:Raycast(camera.CFrame.Position, (char[Aimbot.TargetPart].Position - camera.CFrame.Position).Unit * 500,params)
+			if result and result.Instance:IsDescendantOf(char) then
+				return true
+			end
 		end
 	elseif not ss.VisibleCheck and IsAlive(plr) then
 		return true
@@ -222,7 +231,7 @@ function IsWhitelisted(plr)
 	return false
 end
 
-UIS.InputBegan:Connect(function(i,gp)
+local conn1 = UIS.InputBegan:Connect(function(i,gp)
 	if gp then
 		return
 	end
@@ -238,7 +247,7 @@ UIS.InputBegan:Connect(function(i,gp)
 		AimAssist.Enabled = not AimAssist.Enabled
 	end
 end)
-UIS.InputEnded:Connect(function(i,gp)
+local conn2 = UIS.InputEnded:Connect(function(i,gp)
 	if gp then
 		return
 	end
@@ -266,7 +275,7 @@ for _,v in next, {fov1,fov2} do
 	v.Filled = false
 end
 fov1.Color = Color3fromRGB(255,0,0)
-fov2.Color = Color3fromRGB(0,0,255)
+fov2.Color = Color3fromRGB(0, 0, 255)
 
 for _,v in next, {label1,label2} do
 	v.Visible = false
@@ -282,8 +291,7 @@ label1.Text = "Aim Assist only works when the player is outside the Red circle a
 label2.Color = Color3.fromRGB(255,0,0)
 label2.Text = "You cannot use Aimbot and Aim Assist at the same time!"
 
-local FOV = {fov,fov1,fov2,label1,label2}
-function FOV:Remove()
+function removefov()
 	fov:Remove()
 	fov1:Remove()
 	fov2:Remove()
@@ -301,7 +309,7 @@ function update()
 	mouse = UIS:GetMouseLocation()
 	local min, max, dyn, size = AimAssist.MinFov, AimAssist.MaxFov, AimAssist.DynamicFov, camera.ViewportSize
 	local bot, assist = Aimbot.Enabled, AimAssist.Enabled
-	if getchar or ts then
+	if ts then
 		ss.VisibleCheck = false
 	end
 	if FovCircle.Enabled then
@@ -387,10 +395,8 @@ function update()
 		end
 	end
 end
-getgenv().UAIM_FOV = FOV
-getgenv().UAIM_RS = RunService.RenderStepped:Connect(update)
-
-players.PlayerAdded:Connect(function(plr)
+local conn3 = RunService.RenderStepped:Connect(update)
+local conn4 = players.PlayerAdded:Connect(function(plr)
 	if ss.WhitelistFriends and player:IsFriendsWith(plr.UserId) then
 		tableinsert(ss.Whitelisted,plr.UserId)
 	end
@@ -399,40 +405,43 @@ end)
 local aimbot = {}
 
 function ValidType(type)
-	return type == "Other" or getgenv().AimbotSettings[type] ~= nil
+	return type == "Other" or ss[type] ~= nil
 end
 function ValidOption(type,option)
-	return (type == "Other" and AimbotSettings[option] ~= nil) or AimbotSettings[type][option] ~= nil
+	return (type == "Other" and ss[option] ~= nil) or ss[type][option] ~= nil
 end
 function aimbot:Toggle(type)
 	assert(ValidType(type),"Universal Aimbot: bad argument to #1 'Toggle' (Invalid Type)")
 	if type == ("Whitelisted" or "Ignore") then
-		AimbotSettings[type] = not AimbotSettings[type]
+		ss[type] = not ss[type]
 	else
-		AimbotSettings[type].Enabled = not AimbotSettings[type].Enabled
+		ss[type].Enabled = not ss[type].Enabled
 	end
 end
 function aimbot:Get(type,option)
 	assert(ValidType(type),"Universal Aimbot: bad argument to #1 'Get' (Invalid Type)")
 	assert(ValidOption(type,option),"Universal Aimbot: bad argument to #2 'Get' (Invalid Option)")
 	if type == "Other" then
-		return AimbotSettings[option]
+		return ss[option]
 	end
-	return AimbotSettings[type][option]
+	return ss[type][option]
 end
 function aimbot:Set(type,option,value)
 	assert(ValidType(type),"Universal Aimbot: bad argument to #1 'Set' (Invalid Type)")
 	assert(ValidOption(type,option),"Universal Aimbot: bad argument to #2 'Set' (Invalid Option)")
 	assert(value ~= nil,"Universal Aimbot: bad argument to #3 'Set'")
 	if type == "Other" then
-		AimbotSettings[option] = value
+		ss[option] = value
 	else
-		AimbotSettings[type][option] = value
+		ss[type][option] = value
 	end
 end
 function aimbot:Destroy()
-	UAIM_RS:Disconnect()
-	fov:Remove()
+	conn1:Disconnect()
+	conn2:Disconnect()
+	conn3:Disconnect()
+	conn4:Disconnect()
+	removefov()
 end
 getgenv().UAIM = aimbot
 return aimbot
