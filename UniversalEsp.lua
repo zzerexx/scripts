@@ -58,7 +58,7 @@ if not EspSettings then
 	}
 end
 
-task.delay(3,function()
+task.delay(5,function()
 	local bind = Instance.new("BindableFunction")
 	bind.OnInvoke = function(a)
 		if a == "Get Script" then
@@ -112,8 +112,8 @@ local osclock = os.clock
 local GameId = game.GameId
 local ID = 0
 local ss = getgenv().EspSettings
-getgenv().UESP_OBJECTS = {}
-getgenv().UESP_VISIBLE = true
+local OBJECTS = {}
+local VISIBLE = true
 --[[local bodyparts = {
 	"Head","UpperTorso","LowerTorso","LeftUpperArm","LeftLowerArm","LeftHand","RightUpperArm","RightLowerArm","RightHand","LeftUpperLeg","LeftLowerLeg","LeftFoot","RightUpperLeg","RightLowerLeg","RightFoot",
 	"Torso","Left Arm","Right Arm","Left Leg","Right Leg",
@@ -137,7 +137,7 @@ local zindex = {
 	['Cham'] = -1
 }
 local origins = {}
-local omega, beta = Color3fromRGB(38,125,255), Color3fromRGB(255,116,38) -- they are opposite cuz thats how it works
+local omega, beta = Color3fromRGB(255,116,38), Color3fromRGB(38,125,255)
 local white, black = Color3fromRGB(255,255,255), Color3fromRGB(0,0,0)
 local getchar, gethealth, ts
 if GameId == (gids.pf or gids.pft or gids.pfu) then
@@ -196,16 +196,12 @@ if ts then
 end
 
 function IsAlive(plr)
-	if plr.Character and plr.Character.Humanoid.Health > 0 then
+	if plr.Character and plr.Character.Humanoid and plr.Character.Humanoid.Health > 0 then
 		return true
 	elseif getchar then
-		if getchar(plr,plr) ~= nil then
-			return true
-		end
+		return getchar(plr) ~= nil
 	elseif ts then
-		if ts.Characters:GetCharacter(plr) ~= nil then
-			return true
-		end
+		return ts.Characters:GetCharacter(plr) ~= nil
 	end
 	return false
 end
@@ -227,8 +223,10 @@ function GetHealth(plr)
 	if gethealth then
 		return {mathfloor(gethealth(plr,plr)),100}
 	elseif ts then 
-		a = ts.Characters:GetCharacter(plr).Health
-		return {mathfloor(a.Value),mathfloor(a.MaxHealth.Value)}
+		a = ts.Characters:GetCharacter(plr)
+		if a:FindFirstChild("Health") then
+			return {mathfloor(a.Health.Value),mathfloor(a.Health.MaxHealth.Value)}
+		end
 	elseif GameId == gids.arsenal then
 		a = plr.NRPBS
 		return {mathfloor(a.Health.Value),mathfloor(a.MaxHealth.Value)}
@@ -282,7 +280,7 @@ function Box(plr)
 		box:Remove()
 		a.Destroyed = true
 	end
-	tableinsert(UESP_OBJECTS,a)
+	tableinsert(OBJECTS,a)
 end
 function Tracer(plr)
 	ID += 1
@@ -295,7 +293,7 @@ function Tracer(plr)
 		tracer:Remove()
 		a.Destroyed = true
 	end
-	tableinsert(UESP_OBJECTS,a)
+	tableinsert(OBJECTS,a)
 end
 function Name(plr)
 	ID += 1
@@ -313,7 +311,7 @@ function Name(plr)
 		objects.Data:Remove()
 		a.Destroyed = true
 	end
-	tableinsert(UESP_OBJECTS,a)
+	tableinsert(OBJECTS,a)
 end
 function Skeleton(plr)
 	ID += 1
@@ -365,20 +363,7 @@ function Skeleton(plr)
 		end
 		a.Destroyed = true
 	end
-	tableinsert(UESP_OBJECTS,a)
-end
-function LookTracer(plr)
-	ID += 1
-
-	local tracer = Drawingnew("Line")
-	tracer.Visible = false
-	ApplyZIndex(tracer,"LookTracer")
-	local a = {Object = tracer, Type = "LookTracers", Player = plr, Destroyed = false, Id = ID}
-	function a:Remove()
-		tracer:Remove()
-		a.Destroyed = true
-	end
-	tableinsert(UESP_OBJECTS,a)
+	tableinsert(OBJECTS,a)
 end
 function HealthBar(plr)
 	ID += 1
@@ -398,7 +383,7 @@ function HealthBar(plr)
 		objects.Outline:Remove()
 		a.Destroyed = true
 	end
-	tableinsert(UESP_OBJECTS,a)
+	tableinsert(OBJECTS,a)
 end
 
 function Label(part,options)
@@ -424,7 +409,7 @@ function Label(part,options)
 		label:Remove()
 		a.Destroyed = true
 	end
-	tableinsert(UESP_OBJECTS,a)
+	tableinsert(OBJECTS,a)
 	return a
 end
 function Cham(part,options)
@@ -452,7 +437,7 @@ function Cham(part,options)
 		end
 		a.Destroyed = true
 	end
-	tableinsert(UESP_OBJECTS,a)
+	tableinsert(OBJECTS,a)
 	return a
 end
 
@@ -466,7 +451,7 @@ function updateorigins()
 	}
 end
 updateorigins()
-camera:GetPropertyChangedSignal("ViewportSize"):Connect(updateorigins)
+local conn1 = camera:GetPropertyChangedSignal("ViewportSize"):Connect(updateorigins)
 
 local lastupdate = osclock()
 function update()
@@ -476,7 +461,7 @@ function update()
 	end
 	lastupdate = osclock()
 	origins.mouse = UIS:GetMouseLocation()
-	for _,v in next, UESP_OBJECTS do
+	for _,v in next, OBJECTS do
 		if not v.Destroyed then
 			if v.Player == nil and not v.Options then
 				v:Remove()
@@ -531,7 +516,7 @@ function update()
 				c8 = Vector2new(c8.X, c8.Y)
 			end
 	
-			if UESP_VISIBLE and not v.Destroyed then
+			if VISIBLE and not v.Destroyed then
 				if plr and IsAlive(plr) and s and s.Enabled then
 					local color = (ts and team == "Omega" and omega or team == "Beta" and beta) or (s.UseTeamColor and teamcolor) or s.Color
 					SetProp(obj, "Visible", not ss.TeamCheck or (ss.TeamCheck and team ~= myteam))
@@ -561,14 +546,7 @@ function update()
 							if ss.HealthBars.Enabled then
 								obj.Data.Position = Vector2new(obj.Data.Position.X, obj.Data.Position.Y + mathclamp(1000 / tlz,8,15))
 							end
-							local mag
-							if ts then
-								mag = mathfloor((ccf - char.Root.Position).Magnitude)
-							elseif getchar then
-								mag = mathfloor((ccf - char.Torso.Position).Magnitude)
-							else
-								mag = mathfloor((ccf - char.HumanoidRootPart.Position).Magnitude)
-							end
+							local mag = mathfloor((ccf - cf.Position).Magnitude)
 							obj.Name.Text = (s.UseDisplayName and plr.DisplayName) or plr.Name
 							obj.Data.Text = ""
 							if s.ShowDistance then
@@ -586,9 +564,9 @@ function update()
 							SetProp(obj, "Thickness", s.Thickness)
 	
 							for i2,v2 in next, obj do
-								if char[i2] then
-									local pos1 = WorldToViewportPoint(camera, char[From[i2]].Position)
-									local pos2 = WorldToViewportPoint(camera, char[i2].Position)
+								if char.Body:FindFirstChild(From[i2]) and char.Body:FindFirstChild(i2) then
+									local pos1 = WorldToViewportPoint(camera, char.Body:FindFirstChild(From[i2]).Position)
+									local pos2 = WorldToViewportPoint(camera, char.Body:FindFirstChild(i2).Position)
 									v2.From = Vector2new(pos1.X, pos1.Y)
 									v2.To = Vector2new(pos2.X, pos2.Y)
 								end
@@ -670,22 +648,21 @@ function update()
 				if not inViewport or not ss[type].Enabled then
 					SetProp(obj, "Visible", false)
 				end
-			elseif not UESP_VISIBLE and not v.Destroyed then
+			elseif not VISIBLE and not v.Destroyed then
 				SetProp(obj, "Visible", false)
 			end
 		end
 	end
 end
 
-getgenv().UESP_RS = RunService.RenderStepped:Connect(update)
-UIS.InputBegan:Connect(function(i,gp)
+local conn2 = RunService.RenderStepped:Connect(update)
+local conn3 = UIS.InputBegan:Connect(function(i,gp)
 	if not gp and i.KeyCode == (ss.ToggleKey or Enum.KeyCode[ss.ToggleKey]) then
-		getgenv().UESP_VISIBLE = not UESP_VISIBLE
+		getgenv().VISIBLE = not VISIBLE
 	end
 end)
 for _,v in next, players:GetPlayers() do
 	if v ~= player then
-		--LookTracer(v)
 		Box(v)
 		Skeleton(v)
 		Tracer(v)
@@ -693,9 +670,8 @@ for _,v in next, players:GetPlayers() do
 		Name(v)
 	end
 end
-players.PlayerAdded:Connect(function(v)
+local conn4 = players.PlayerAdded:Connect(function(v)
 	if v ~= player then
-		--LookTracer(v)
 		Box(v)
 		Skeleton(v)
 		Tracer(v)
@@ -707,41 +683,41 @@ end)
 local esp = {}
 
 function ValidType(type)
-	return type == "Other" or getgenv().EspSettings[type] ~= nil
+	return type == "Other" or ss[type] ~= nil
 end
 function ValidOption(type,option)
-	return type == "Other" or getgenv().EspSettings[type][option] ~= nil
+	return (type == "Other" and ss[option] ~= nil) or ss[type][option] ~= nil
 end
 function esp:Toggle(type)
 	assert(ValidType(type),"Universal Esp: bad argument to #1 'Toggle' (Invalid Type)")
 	if type == ("TeamCheck" or "AntiDetection") then
-		getgenv().EspSettings[type] = not getgenv().EspSettings[type]
+		ss[type] = not ss[type]
 	else
-		getgenv().EspSettings[type].Enabled = not getgenv().EspSettings[type].Enabled
+		ss[type].Enabled = not ss[type].Enabled
 	end
 end
 function esp:Get(type,option)
 	assert(ValidType(type),"Universal Esp: bad argument to #1 'Get' (Invalid Type)")
 	assert(ValidOption(type,option),"Universal Esp: bad argument to #2 'Get' (Invalid Option)")
 	if type == "Other" then
-		return getgenv().EspSettings[option]
+		return ss[option]
 	end
-	return getgenv().EspSettings[type][option]
+	return ss[type][option]
 end
 function esp:Set(type,option,value)
 	assert(ValidType(type),"Universal Esp: bad argument to #1 'Set' (Invalid Type)")
 	assert(ValidOption(type,option),"Universal Esp: bad argument to #2 'Set' (Invalid Option)")
 	assert(value ~= nil,"Universal Esp: bad argument to #3 'Set'")
 	if type == "Other" then
-		getgenv().EspSettings[option] = value
+		ss[option] = value
 	else
-		getgenv().EspSettings[type][option] = value
+		ss[type][option] = value
 	end
 end
 function esp:SetAll(option,value)
 	assert(ValidOption("Boxes",option),"Universal Esp: bad argument to #1 'SetAll' (Invalid Option)")
 	assert(value ~= nil,"Universal Esp: bad argument to #2 'SetAll'")
-	for _,v in next, EspSettings do
+	for _,v in next, ss do
 		if typeof(v) == "table" and v.Enabled ~= nil then
 			v[option] = value
 		end
@@ -766,7 +742,7 @@ function esp:GetObjects(plr)
 		['LookTracers'] = nil,
 		['HealthBars'] = nil
 	}
-	for _,v in next, UESP_OBJECTS do
+	for _,v in next, OBJECTS do
 		if v.Player == plr then
 			objects[v.Type] = v
 		end
@@ -786,7 +762,7 @@ function esp:GetTotalObjects()
 		Labels = 0,
 		Chams = 0,
 	}
-	for _,v in next, UESP_OBJECTS do
+	for _,v in next, OBJECTS do
 		if typeof(v.Object) == "table" and v.Object.__OBJECT_EXISTS == nil then
 			for _,v2 in next, v.Object do
 				data.DrawingObjects += 1
@@ -806,8 +782,11 @@ function esp:GetTotalObjects()
 	return data
 end
 function esp:Destroy()
-	UESP_RS:Disconnect()
-	for _,v in next, UESP_OBJECTS do
+	conn1:Disconnect()
+	conn2:Disconnect()
+	conn3:Disconnect()
+	conn4:Disconnect()
+	for _,v in next, OBJECTS do
 		v:Remove()
 	end
 end
