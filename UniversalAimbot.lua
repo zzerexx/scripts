@@ -122,8 +122,8 @@ if GameId == (gids.pf or gids.pft or gids.pfu) then
 	end
 elseif GameId == gids.bb then
 	for _,v in next, getgc(true) do
-		if typeof(v) == "table" and rawget(v, "InitProjectile") and v.TS then
-			ts = v.TS
+		if typeof(v) == "table" and rawget(v, "InitProjectile") and rawget(v, "TS") then
+			ts = rawget(v, "TS")
 		end
 	end
 end
