@@ -1,6 +1,8 @@
-assert(KRNL_LOADED,"you are not using krnl")
+assert(KRNL_LOADED,"you are not using script ware")
 getgenv().protected = protected or {}
 getgenv().temp = temp or {}
+local hash = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/HashLib.lua"))()
+local hashalgs = {"md5","sha1","sha224","sha256","sha384","sha3-256","sha3-384","sha3-512"}
 
 local headers = game:GetService("HttpService"):JSONDecode(request({Url = "https://httpbin.org/get"}).Body).headers
 oldr = hookfunction(request,function(options)
@@ -285,42 +287,42 @@ getgenv().syn = {
 		['hash'] = function(data)
 			return Krnl.crypt.hash(data)
 		end,
-		--[[['derive'] = function(_,len)
-			return crypt.generatebytes(len)
-		end,
-		['random'] = crypt.generatekey,
+		--['derive'] = function(_,len)
+		--	return crypt.generatebytes(len)
+		--end,
+		--['random'] = crypt.generatekey,
 		['custom'] = {
-			['encrypt'] = function(cipher,data,key,nonce)
+			--[[['encrypt'] = function(cipher,data,key,nonce)
 				assert(cipher:find("eax"),"aes-eax is not supported")
 				assert(cipher:find("bf"),"Blowfish ciphers are not supported")
 				return crypt.custom_encrypt(data,key,nonce,ciphers[cipher:gsub("_","-")])
 			end,
-			--[[['decrypt'] = function(cipher,data,key,nonce)
+			['decrypt'] = function(cipher,data,key,nonce)
 				assert(cipher:find("eax"),"aes-eax is not supported")
 				assert(cipher:find("bf"),"Blowfish ciphers are not supported")
 				return crypt.custom_decrypt(data,key,nonce,ciphers[cipher:gsub("_","-")])
-			end,
+			end,]]
 			['hash'] = function(alg,data)
-				assert(alg ~= ("sha224" or "sha3-384"),alg.." is not supported")
-				return Krnl.crypt.hash(data,alg)
+                assert(not hashalgs[alg],"bad argument #1 to 'hash' (non-existant hash algorithm)")
+				return hash[alg:gsub("-","_")](data)
 			end
 		},
-		['lz4'] = {
-			['compress'] = lz4compress
-		}]]
+		--['lz4'] = {
+		--	['compress'] = lz4compress
+		--}
 	},
 	['websocket'] = {
 		['connect'] = Krnl.WebSocket.connect
 	},
 	['secure_call'] = function(func,env,...)
 		assert(typeof(func) == "function","bad argument to #1 to 'secure_call' (function expected, got "..typeof(func)..")")
+		assert(typeof(env) == "Instance","bad argument to #2 to 'secure_call' (Instance expected, got"..typeof(env)..")")
 		assert(env.ClassName == ("LocalScript" or "ModuleScript"),"bad argument to #2 to 'secure_call' (LocalScript or ModuleScript expected, got "..env.ClassName..")")
-		local args = {...}
-		return coroutine.wrap(function()
+		return coroutine.wrap(function(...)
 			setfenv(0,getsenv(env))
 			setfenv(1,getsenv(env))
-			return func(unpack(args))
-		end)()
+			return func(...)
+		end)(...)
 	end,
 	--['create_secure_function'] = nil,
 	--['run_secure_function'] = nil,
