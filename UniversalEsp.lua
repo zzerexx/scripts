@@ -89,7 +89,7 @@ if UESP then
 end
 local ZIndexEnabled = pcall(function()
 	assert(not identifyexecutor():find("ScriptWare"),"")
-	local a = Drawingnew("Square")
+	local a = Drawing.new("Square")
 	a.ZIndex = 1
 end)
 
@@ -127,14 +127,14 @@ local gids = { -- game ids
 	['bb'] = 1168263273,
 }
 local zindex = {
-	['Box'] = 0,
-	['Tracer'] = 1,
-	['Name'] = 4,
-	['Skeleton'] = 0,
-	['LookTracer'] = 0,
-	['HealthBar'] = 2,
-	['Label'] = 3,
-	['Cham'] = -1
+	['Boxes'] = 0,
+	['Tracers'] = 1,
+	['Names'] = 4,
+	['Skeletons'] = 0,
+	['LookTracers'] = 0,
+	['HealthBars'] = 2,
+	['Labels'] = 3,
+	['Chams'] = -1
 }
 local origins = {}
 local omega, beta = Color3fromRGB(255,116,38), Color3fromRGB(38,125,255)
@@ -142,15 +142,15 @@ local white, black = Color3fromRGB(255,255,255), Color3fromRGB(0,0,0)
 local getchar, gethealth, ts
 if GameId == (gids.pf or gids.pft or gids.pfu) then
 	for _,v in next, getgc(true) do
-		if typeof(v) == "table" and rawget(v,"getbodyparts") then
-			getchar = rawget(v,"getbodyparts")
-		elseif typeof(v) == "table" and rawget(v,"getplayerhealth") then
-			gethealth = rawget(v,"getplayerhealth")
+		if typeof(v) == "table" and rawget(v, "getbodyparts") then
+			getchar = rawget(v, "getbodyparts")
+		elseif typeof(v) == "table" and rawget(v, "getplayerhealth") then
+			gethealth = rawget(v, "getplayerhealth")
 		end
 	end
 elseif GameId == gids.bb then
 	for _,v in next, getgc(true) do
-		if typeof(v) == "table" and rawget(v,"InitProjectile") and rawget(v, "TS") then
+		if typeof(v) == "table" and rawget(v, "InitProjectile") and rawget(v, "TS") then
 			ts = rawget(v, "TS")
 		end
 	end
@@ -243,12 +243,13 @@ function GetTeam(plr)
 end
 function ApplyZIndex(obj,name)
 	if ZIndexEnabled then
+		local idx = zindex[name]
 		if typeof(obj) == "table" and obj.__OBJECT_EXISTS == nil then
 			for _,v in next, obj do
-				v.ZIndex = zindex[name]
+				v.ZIndex = idx
 			end
 		else
-			obj.ZIndex = zindex[name]
+			obj.ZIndex = idx
 		end
 	end
 end
@@ -270,12 +271,13 @@ end
 function Box(plr)
 	ID += 1
 
+	local type = "Boxes"
 	local box = Drawingnew("Quad")
 	box.Visible = false
 	box.Thickness = 1
 	box.Filled = false
-	ApplyZIndex(box,"Box")
-	local a = {Object = box, Type = "Boxes", Player = plr, Destroyed = false, Id = ID}
+	ApplyZIndex(box, type)
+	local a = {Object = box, Type = type, Player = plr, Destroyed = false, Id = ID}
 	function a:Remove()
 		box:Remove()
 		a.Destroyed = true
@@ -285,10 +287,11 @@ end
 function Tracer(plr)
 	ID += 1
 
+	local type = "Tracers"
 	local tracer = Drawingnew("Line")
 	tracer.Visible = false
-	ApplyZIndex(tracer,"Tracer")
-	local a = {Object = tracer, Type = "Tracers", Player = plr, Destroyed = false, Id = ID}
+	ApplyZIndex(tracer, type)
+	local a = {Object = tracer, Type = type, Player = plr, Destroyed = false, Id = ID}
 	function a:Remove()
 		tracer:Remove()
 		a.Destroyed = true
@@ -298,14 +301,15 @@ end
 function Name(plr)
 	ID += 1
 
+	local type = "Names"
 	local objects = {
 		Name = Drawingnew("Text"),
 		Data = Drawingnew("Text")
 	}
 	SetProp(objects, "Visible", false)
 	SetProp(objects, "Center", true)
-	ApplyZIndex(objects,"Name")
-	local a = {Object = objects, Type = "Names", Player = plr, Destroyed = false, Id = ID}
+	ApplyZIndex(objects, type)
+	local a = {Object = objects, Type = type, Player = plr, Destroyed = false, Id = ID}
 	function a:Remove()
 		objects.Name:Remove()
 		objects.Data:Remove()
@@ -316,6 +320,7 @@ end
 function Skeleton(plr)
 	ID += 1
 
+	local type = "Skeletons"
 	local objects = (ts and {
 		Chest = Drawingnew("Line"),
 		Hips = Drawingnew("Line"),
@@ -355,8 +360,8 @@ function Skeleton(plr)
 		["Right Leg"] = Drawingnew("Line")
 	}
 	SetProp(objects, "Visible", false)
-	ApplyZIndex(objects,"Skeleton")
-	local a = {Object = objects, Type = "Skeletons", Player = plr, Destroyed = false, Id = ID}
+	ApplyZIndex(objects, type)
+	local a = {Object = objects, Type = type, Player = plr, Destroyed = false, Id = ID}
 	function a:Remove()
 		for _,v in next, objects do
 			v:Remove()
@@ -368,6 +373,7 @@ end
 function HealthBar(plr)
 	ID += 1
 
+	local type = "HealthBars"
 	local objects = {
 		Bar = Drawingnew("Quad"),
 		Outline = Drawingnew("Quad")
@@ -376,8 +382,8 @@ function HealthBar(plr)
 	SetProp(objects, "Thickness", 1)
 	objects.Bar.Filled = true
 	objects.Outline.Filled = false
-	ApplyZIndex(objects, "HealthBar")
-	local a = {Object = objects, Type = "HealthBars", Player = plr, Destroyed = false, Id = ID}
+	ApplyZIndex(objects, type)
+	local a = {Object = objects, Type = type, Player = plr, Destroyed = false, Id = ID}
 	function a:Remove()
 		objects.Bar:Remove()
 		objects.Outline:Remove()
@@ -389,22 +395,30 @@ end
 function Label(part,options)
 	ID += 1
 
+	local type = "Labels"
 	local label = Drawingnew("Text")
 	label.Visible = false
+	label.Center = true
 
 	local o = {
 		Text = options.Text or part.Name,
 		Transparency = options.Transparency or 0.7,
 		Color = options.Color or white,
 		Size = options.Size or 18,
-		Center = ternary(options.Center ~= nil, options.Center, true),
 		Outline = ternary(options.Outline ~= nil, options.Outline, true),
 		OutlineColor = options.OutlineColor or black,
 		Font = options.Font or Fonts.UI
 	}
 	
-	ApplyZIndex(label,"Labels")
-	local a = {Object = label, Type = "Label", Part = part, Options = o, Destroyed = false, Id = ID}
+	ApplyZIndex(label, type)
+	local a = {Object = label, Type = type, Part = part, Options = o, Destroyed = false, Id = ID}
+	function a:SetPart(p)
+		assert(typeof(p) == "Instance","Universal Esp: bad argument #1 to 'SetPart' (Instance expected, got "..typeof(p)..")")
+		assert(p.ClassName:find("Part"),"Universal Esp: bad argument #1 to 'SetPart' (Part expected, got "..p.ClassName..")")
+		table.remove(OBJECTS, table.find(OBJECTS, a))
+		a.Part = p 
+		tableinsert(OBJECTS, a)
+	end
 	function a:Remove()
 		label:Remove()
 		a.Destroyed = true
@@ -415,6 +429,7 @@ end
 function Cham(part,options)
 	ID += 1
 
+	local type = "Chams"
 	local objects = {
 		Top = Drawingnew("Quad"),
 		Bottom = Drawingnew("Quad"),
@@ -429,8 +444,15 @@ function Cham(part,options)
 		Thickness = options.Thickness or 3,
 		Filled = ternary(options.Filled ~= nil, options.Filled, true)
 	}
-	ApplyZIndex(objects,"Chams")
-	local a = {Object = objects, Type = "Cham", Part = part, Options = o, Destroyed = false, Id = ID}
+	ApplyZIndex(objects, type)
+	local a = {Object = objects, Type = type, Part = part, Options = o, Destroyed = false, Id = ID}
+	function a:SetPart(p)
+		assert(typeof(p) == "Instance","Universal Esp: bad argument #1 to 'SetPart' (Instance expected, got "..typeof(p)..")")
+		assert(p.ClassName:find("Part"),"Universal Esp: bad argument #1 to 'SetPart' (Part expected, got "..p.ClassName..")")
+		table.remove(OBJECTS, table.find(OBJECTS, a))
+		a.Part = p 
+		tableinsert(OBJECTS, a)
+	end
 	function a:Remove()
 		for _,v in next, objects do
 			v:Remove()
@@ -455,8 +477,9 @@ local conn1 = camera:GetPropertyChangedSignal("ViewportSize"):Connect(updateorig
 
 local lastupdate = osclock()
 function update()
-	ss.RefreshRate = mathclamp(ss.RefreshRate, 0, mathhuge)
-	if osclock() - lastupdate < (ss.RefreshRate / 1000) then
+	local refresh = ss.RefreshRate
+	refresh = mathclamp(refresh, 0, mathhuge)
+	if osclock() - lastupdate < (refresh / 1000) then
 		return
 	end
 	lastupdate = osclock()
@@ -483,11 +506,11 @@ function update()
 				team, myteam, teamcolor = GetTeam(plr), GetTeam(player), plr.TeamColor.Color
 				size /= 2
 				local x, y = size.X, size.Y
-				_, inViewport = WorldToViewportPoint(camera,cf.Position)
-				tl = WorldToViewportPoint(camera,(cf * CFramenew(-x,y,0)).Position)
-				tr = WorldToViewportPoint(camera,(cf * CFramenew(x,y,0)).Position)
-				bl = WorldToViewportPoint(camera,(cf * CFramenew(-x,-y,0)).Position)
-				br = WorldToViewportPoint(camera,(cf * CFramenew(x,-y,0)).Position)
+				_, inViewport = WorldToViewportPoint(camera, cf.Position)
+				tl = WorldToViewportPoint(camera, (cf * CFramenew(-x,  y, 0)).Position)
+				tr = WorldToViewportPoint(camera, (cf * CFramenew( x,  y, 0)).Position)
+				bl = WorldToViewportPoint(camera, (cf * CFramenew(-x, -y, 0)).Position)
+				br = WorldToViewportPoint(camera, (cf * CFramenew( x, -y, 0)).Position)
 
 				tlx, tly, tlz = tl.X, tl.Y, tl.Z
 				trx, try = tr.X, tr.Y
@@ -497,14 +520,14 @@ function update()
 				cf, size = part.CFrame, part.Size / 2
 				local x, y, z = size.X, size.Y, size.Z
 				c0, inViewport = WorldToViewportPoint(camera,cf.Position)
-				c1 = WorldToViewportPoint(camera,(cf * CFramenew(x,y,z)).Position)
-				c2 = WorldToViewportPoint(camera,(cf * CFramenew(-x,y,z)).Position)
-				c3 = WorldToViewportPoint(camera,(cf * CFramenew(-x,-y,z)).Position)
-				c4 = WorldToViewportPoint(camera,(cf * CFramenew(x,-y,z)).Position)
-				c5 = WorldToViewportPoint(camera,(cf * CFramenew(x,y,-z)).Position)
-				c6 = WorldToViewportPoint(camera,(cf * CFramenew(-x,y,-z)).Position)
-				c7 = WorldToViewportPoint(camera,(cf * CFramenew(-x,-y,-z)).Position)
-				c8 = WorldToViewportPoint(camera,(cf * CFramenew(x,-y,-z)).Position)
+				c1 = WorldToViewportPoint(camera, (cf * CFramenew( x,  y,  z)).Position)
+				c2 = WorldToViewportPoint(camera, (cf * CFramenew(-x,  y,  z)).Position)
+				c3 = WorldToViewportPoint(camera, (cf * CFramenew(-x, -y,  z)).Position)
+				c4 = WorldToViewportPoint(camera, (cf * CFramenew( x, -y,  z)).Position)
+				c5 = WorldToViewportPoint(camera, (cf * CFramenew( x,  y, -z)).Position)
+				c6 = WorldToViewportPoint(camera, (cf * CFramenew(-x,  y, -z)).Position)
+				c7 = WorldToViewportPoint(camera, (cf * CFramenew(-x, -y, -z)).Position)
+				c8 = WorldToViewportPoint(camera, (cf * CFramenew( x, -y, -z)).Position)
 
 				c1 = Vector2new(c1.X, c1.Y)
 				c2 = Vector2new(c2.X, c2.Y)
@@ -597,55 +620,57 @@ function update()
 							out.PointD = Vector2new(brx, bry + z)
 						end
 					end
-				elseif part and part.Parent ~= nil then
+				elseif part then
 					SetProp(obj, "Visible", inViewport)
 					SetProp(obj, "Transparency", s.Transparency)
 					SetProp(obj, "Color", s.Color)
-					if type == "Labels" and inViewport then
-						obj.Text = s.Text
-						obj.Size = s.Size
-						obj.Outline = s.Outline
-						obj.OutlineColor = s.OutlineColor
-						obj.Font = s.Font
-
-						obj.Position = Vector2new(c0.X, c0.Y - (s.Size) / 2)
-					elseif type == "Chams" and inViewport then
-						local t, b, l, r, f, bb = obj.Top, obj.Bottom, obj.Left, obj.Right, obj.Front, obj.Back
-						SetProp(obj, "Filled", s.Filled)
-						SetProp(obj, "Thickness", s.Thickness)
-
-						t.PointA = c5
-						t.PointB = c6
-						t.PointC = c2
-						t.PointD = c1
-
-						b.PointA = c4
-						b.PointB = c3
-						b.PointC = c7
-						b.PointD = c8
-
-						l.PointA = c2
-						l.PointB = c6
-						l.PointC = c7
-						l.PointD = c3
-
-						r.PointA = c5
-						r.PointB = c1
-						r.PointC = c4
-						r.PointD = c8
-
-						f.PointA = c1
-						f.PointB = c2
-						f.PointC = c3
-						f.PointD = c4
-
-						bb.PointA = c5
-						bb.PointB = c6
-						bb.PointC = c7
-						bb.PointD = c8
+					if inViewport then
+						if type == "Labels" then
+							obj.Text = s.Text
+							obj.Size = s.Size
+							obj.Outline = s.Outline
+							obj.OutlineColor = s.OutlineColor
+							obj.Font = s.Font
+	
+							obj.Position = Vector2new(c0.X, c0.Y - (s.Size) / 2)
+						elseif type == "Chams" then
+							local t, b, l, r, f, bb = obj.Top, obj.Bottom, obj.Left, obj.Right, obj.Front, obj.Back
+							SetProp(obj, "Filled", s.Filled)
+							SetProp(obj, "Thickness", s.Thickness)
+	
+							t.PointA = c5
+							t.PointB = c6
+							t.PointC = c2
+							t.PointD = c1
+	
+							b.PointA = c4
+							b.PointB = c3
+							b.PointC = c7
+							b.PointD = c8
+	
+							l.PointA = c2
+							l.PointB = c6
+							l.PointC = c7
+							l.PointD = c3
+	
+							r.PointA = c5
+							r.PointB = c1
+							r.PointC = c4
+							r.PointD = c8
+	
+							f.PointA = c1
+							f.PointB = c2
+							f.PointC = c3
+							f.PointD = c4
+	
+							bb.PointA = c5
+							bb.PointB = c6
+							bb.PointC = c7
+							bb.PointD = c8
+						end
 					end
 				end
-				if not inViewport or not ss[type].Enabled then
+				if not inViewport or (v.Options == nil and not ss[type].Enabled) then
 					SetProp(obj, "Visible", false)
 				end
 			elseif not VISIBLE and not v.Destroyed then
@@ -658,7 +683,7 @@ end
 local conn2 = RunService.RenderStepped:Connect(update)
 local conn3 = UIS.InputBegan:Connect(function(i,gp)
 	if not gp and i.KeyCode == (ss.ToggleKey or Enum.KeyCode[ss.ToggleKey]) then
-		getgenv().VISIBLE = not VISIBLE
+		VISIBLE = not VISIBLE
 	end
 end)
 for _,v in next, players:GetPlayers() do
@@ -681,6 +706,7 @@ local conn4 = players.PlayerAdded:Connect(function(v)
 end)
 
 local esp = {}
+local destroyed = false
 
 function ValidType(type)
 	return type == "Other" or ss[type] ~= nil
@@ -732,7 +758,7 @@ function esp.Cham(part,options)
 	return Cham(part,options or {})
 end
 function esp:GetObjects(plr)
-	assert(typeof(plr) == "Instance","Universal Esp: bad argument to #1 'GetObjects' (Instance expected, got nil)")
+	assert(typeof(plr) == "Instance","Universal Esp: bad argument to #1 'GetObjects' (Instance expected, got "..typeof(plr)..")")
 	assert(plr.ClassName == "Player","Universal Esp: bad argument to #1 'GetObjects' (Player expected, got "..plr.ClassName..")")
 	local objects = {
 		['Boxes'] = nil,
@@ -782,6 +808,7 @@ function esp:GetTotalObjects()
 	return data
 end
 function esp:Destroy()
+	if destroyed then return end
 	conn1:Disconnect()
 	conn2:Disconnect()
 	conn3:Disconnect()
@@ -789,6 +816,7 @@ function esp:Destroy()
 	for _,v in next, OBJECTS do
 		v:Remove()
 	end
+	destroyed = true
 end
 getgenv().UESP = esp
 return esp
