@@ -72,6 +72,7 @@ These are only available on Universal Esp!
   
 ## Add Label  
 Adds a Label on the specified part.  
+Note: You don't need to set all of the options. If they aren't provided, they will be set to the default option.  
 ```
 esp.Label(part, options)
 
@@ -88,6 +89,7 @@ esp.Label(workspace.Part,{
   
 ## Add Cham  
 Adds Chams on the specified part.  
+Note: You don't need to set all of the options. If they aren't provided, they will be set to the default option.  
 ```
 esp.Cham(part, options)
 
