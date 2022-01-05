@@ -20,7 +20,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/
 ```  
   
 ## Update v1.6.2  
-fixed labels and chams lol  
+fixed labels and chams lol + new function for them  
 
 ## Update v1.6.0    
 - Lots of optimizations  
