@@ -2,8 +2,8 @@
 my cool scripts  
   
 # Universal Esp  
-Updated December 30, 2021  
-v1.6.1  
+Updated January 5, 2022  
+v1.6.2  
 - Box Esp  
 - Tracers  
 - Name Esp  
@@ -19,8 +19,8 @@ Updated January 2, 2022
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua"))()
 ```  
   
-## Update v1.6.1  
-fixed for bad business  
+## Update v1.6.2  
+fixed labels and chams lol  
 
 ## Update v1.6.0    
 - Lots of optimizations  
