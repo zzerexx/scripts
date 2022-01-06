@@ -585,11 +585,13 @@ function update()
 							end
 						elseif type == "Skeletons" then
 							SetProp(obj, "Thickness", s.Thickness)
-	
+							if ts then
+								char = char.Body
+							end
 							for i2,v2 in next, obj do
-								if char.Body:FindFirstChild(From[i2]) and char.Body:FindFirstChild(i2) then
-									local pos1 = WorldToViewportPoint(camera, char.Body:FindFirstChild(From[i2]).Position)
-									local pos2 = WorldToViewportPoint(camera, char.Body:FindFirstChild(i2).Position)
+								if char:FindFirstChild(From[i2]) and char:FindFirstChild(i2) then
+									local pos1 = WorldToViewportPoint(camera, char:FindFirstChild(From[i2]).Position)
+									local pos2 = WorldToViewportPoint(camera, char:FindFirstChild(i2).Position)
 									v2.From = Vector2new(pos1.X, pos1.Y)
 									v2.To = Vector2new(pos2.X, pos2.Y)
 								end
