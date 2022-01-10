@@ -4,11 +4,17 @@ if not EspSettings then
 		ToggleKey = Enum.KeyCode.RightAlt,
 		AntiDetection = true,
 		RefreshRate = 10, -- how fast the esp updates (milliseconds)
+		MaximumDistance = 500, -- only renders players within this distance
+		MouseVisiblity = {
+			Enabled = true, -- makes any drawing objects transparent when they are near your mouse
+			Radius = 60,
+			Transparency = 0.3
+		},
 		Boxes = {
 			Enabled = true,
 			Transparency = 1,
 			Color = Color3.fromRGB(255,255,255),
-			UseTeamColor = true,
+			UseTeamColor = true
 		},
 		Tracers = {
 			Enabled = true,
@@ -40,40 +46,34 @@ if not EspSettings then
 			UseTeamColor = true,
 			Thickness = 1
 		},
-		LookTracers = {
-			Enabled = false,
-			Transparency = 1,
-			Color = Color3.fromRGB(255,255,255),
-			UseTeamColor = true,
-			IgnoreWater = true,
-			Thickness = 1,
-		},
 		HealthBars = {
 			Enabled = true,
 			Transparency = 1,
 			Color = Color3.fromRGB(0,255,0),
 			OutlineColor = Color3.fromRGB(255,255,255),
-			UseTeamColor = true -- this only applies to the outline
+			UseTeamColor = true
 		}
 	}
 end
 
-task.delay(5,function()
-	local bind = Instance.new("BindableFunction")
-	bind.OnInvoke = function(a)
-		if a == "Get Script" then
-			setclipboard("https://pastebin.com/raw/5zw0rLH9")
+if not UESP then
+	task.delay(5,function()
+		local bind = Instance.new("BindableFunction")
+		bind.OnInvoke = function(a)
+			if a == "Get Script" then
+				setclipboard("https://pastebin.com/raw/5zw0rLH9")
+			end
 		end
-	end
-	game:GetService("StarterGui"):SetCore("SendNotification",{
-		Title = "Universal Esp",
-		Text = "Script not working? Make sure you have the latest version!",
-		Duration = 5,
-		Button1 = "OK",
-		Button2 = "Get Script",
-		Callback = bind
-	})
-end)
+		game:GetService("StarterGui"):SetCore("SendNotification",{
+			Title = "Universal Esp",
+			Text = "Script not working? Make sure you have the latest version!",
+			Duration = 5,
+			Button1 = "OK",
+			Button2 = "Get Script",
+			Callback = bind
+		})
+	end)
+end
 
 if EspSettings.AntiDetection and getconnections then
 	for _,v in next, getconnections(game:GetService("ScriptContext").Error) do
@@ -88,7 +88,6 @@ if UESP then
 	UESP:Destroy()
 end
 local ZIndexEnabled = pcall(function()
-	assert(not identifyexecutor():find("ScriptWare"),"")
 	local a = Drawing.new("Square")
 	a.ZIndex = 1
 end)
@@ -101,6 +100,7 @@ local RunService = game:GetService("RunService")
 local Drawingnew = Drawing.new 
 local Fonts = Drawing.Fonts
 local tableinsert = table.insert
+local tablesort = table.sort
 local WorldToViewportPoint = camera.WorldToViewportPoint
 local CFramenew = CFrame.new
 local Vector2new = Vector2.new 
@@ -110,10 +110,7 @@ local mathclamp = math.clamp
 local mathhuge = math.huge
 local osclock = os.clock
 local GameId = game.GameId
-local ID = 0
-local ss = getgenv().EspSettings
-local OBJECTS = {}
-local VISIBLE = true
+local ss, mousevis, OBJECTS, VISIBLE, ID = getgenv().EspSettings, getgenv().EspSettings.MouseVisiblity, {}, true, 0
 --[[local bodyparts = {
 	"Head","UpperTorso","LowerTorso","LeftUpperArm","LeftLowerArm","LeftHand","RightUpperArm","RightLowerArm","RightHand","LeftUpperLeg","LeftLowerLeg","LeftFoot","RightUpperLeg","RightLowerLeg","RightFoot",
 	"Torso","Left Arm","Right Arm","Left Leg","Right Leg",
@@ -139,7 +136,7 @@ local zindex = {
 local origins = {}
 local omega, beta = Color3fromRGB(255,116,38), Color3fromRGB(38,125,255)
 local white, black = Color3fromRGB(255,255,255), Color3fromRGB(0,0,0)
-local getchar, gethealth, ts
+local getchar, gethealth, ts, characters
 if GameId == (gids.pf or gids.pft or gids.pfu) then
 	for _,v in next, getgc(true) do
 		if typeof(v) == "table" and rawget(v, "getbodyparts") then
@@ -152,6 +149,7 @@ elseif GameId == gids.bb then
 	for _,v in next, getgc(true) do
 		if typeof(v) == "table" and rawget(v, "InitProjectile") and rawget(v, "TS") then
 			ts = rawget(v, "TS")
+			characters = ts.Characters
 		end
 	end
 end
@@ -196,12 +194,12 @@ if ts then
 end
 
 function IsAlive(plr)
-	if plr.Character and plr.Character.Humanoid and plr.Character.Humanoid.Health > 0 then
+	if plr.Character and plr.Character:FindFirstChild("Humanoid") and plr.Character.Humanoid.Health > 0 then
 		return true
 	elseif getchar then
 		return getchar(plr) ~= nil
 	elseif ts then
-		return ts.Characters:GetCharacter(plr) ~= nil
+		return characters:GetCharacter(plr) ~= nil
 	end
 	return false
 end
@@ -212,7 +210,7 @@ function GetChar(plr)
 			return a.torso.Parent
 		end
 	elseif ts then
-		return ts.Characters:GetCharacter(plr)
+		return characters:GetCharacter(plr)
 	elseif plr.Character ~= nil then
 		return plr.Character
 	end
@@ -223,7 +221,7 @@ function GetHealth(plr)
 	if gethealth then
 		return {mathfloor(gethealth(plr,plr)),100}
 	elseif ts then 
-		a = ts.Characters:GetCharacter(plr)
+		a = characters:GetCharacter(plr)
 		if a:FindFirstChild("Health") then
 			return {mathfloor(a.Health.Value),mathfloor(a.Health.MaxHealth.Value)}
 		end
@@ -244,7 +242,7 @@ end
 function ApplyZIndex(obj,name)
 	if ZIndexEnabled then
 		local idx = zindex[name]
-		if typeof(obj) == "table" and obj.__OBJECT_EXISTS == nil then
+		if typeof(obj) == "table" and obj.__OBJECT_EXISTS == nil then -- checks if table has __OBJECT_EXISTS cuz synapse dumb
 			for _,v in next, obj do
 				v.ZIndex = idx
 			end
@@ -493,11 +491,11 @@ function update()
 			end
 	
 			local plr, part, obj, type = v.Player, v.Part, v.Object, v.Type -- objects shit
-			local cf, size, _, inViewport, tl, tr, bl, br				   -- boxes shit
-			local tlx, tly, tlz, trx, try, blx, bly, brx, bry			   -- boxes corner axes shit
+			local cf, size, mid, inViewport, tl, tr, bl, br				 -- boxes shit
+			local tlx, tly, tlz, trx, try, blx, bly, brx, bry, z			-- boxes corner axes shit
 			local c0, c1, c2, c3, c4, c5, c6, c7, c8						-- part corner positions shit
 			local team, myteam, teamcolor								   -- team shit
-			local ccf, char, health, maxhealth							  -- other shit
+			local ccf, char, health, maxhealth, mag, mousemag			   -- other shit
 			local s = ss[type] or v.Options								 -- settings shit
 			if plr and IsAlive(plr) and s and s.Enabled then
 				local hp = GetHealth(plr)
@@ -506,7 +504,7 @@ function update()
 				team, myteam, teamcolor = GetTeam(plr), GetTeam(player), plr.TeamColor.Color
 				size /= 2
 				local x, y = size.X, size.Y
-				_, inViewport = WorldToViewportPoint(camera, cf.Position)
+				mid, inViewport = WorldToViewportPoint(camera, cf.Position)
 				tl = WorldToViewportPoint(camera, (cf * CFramenew(-x,  y, 0)).Position)
 				tr = WorldToViewportPoint(camera, (cf * CFramenew( x,  y, 0)).Position)
 				bl = WorldToViewportPoint(camera, (cf * CFramenew(-x, -y, 0)).Position)
@@ -516,35 +514,56 @@ function update()
 				trx, try = tr.X, tr.Y
 				blx, bly = bl.X, bl.Y
 				brx, bry = br.X, br.Y
+				z = mathclamp(1000 / tlz, 8, 12)
+
+				mag = (ccf - cf.Position).Magnitude
+				if mousevis.Enabled then
+					local m = UIS:GetMouseLocation()
+					local mags = {}
+					tableinsert(mags, (m - Vector2new(mid.X, mid.Y)).Magnitude)
+					tableinsert(mags, (m - Vector2new(tlx, tly)).Magnitude)
+					tableinsert(mags, (m - Vector2new(trx, try)).Magnitude)
+					tableinsert(mags, (m - Vector2new(blx, bly)).Magnitude)
+					tableinsert(mags, (m - Vector2new(brx, bry)).Magnitude)
+					
+					tablesort(mags, function(a,b)
+						return a < b
+					end)
+
+					mousemag = mags[1]
+				end
 			elseif v.Part then
 				cf, size = part.CFrame, part.Size / 2
 				local x, y, z = size.X, size.Y, size.Z
 				c0, inViewport = WorldToViewportPoint(camera,cf.Position)
-				c1 = WorldToViewportPoint(camera, (cf * CFramenew( x,  y,  z)).Position)
-				c2 = WorldToViewportPoint(camera, (cf * CFramenew(-x,  y,  z)).Position)
-				c3 = WorldToViewportPoint(camera, (cf * CFramenew(-x, -y,  z)).Position)
-				c4 = WorldToViewportPoint(camera, (cf * CFramenew( x, -y,  z)).Position)
-				c5 = WorldToViewportPoint(camera, (cf * CFramenew( x,  y, -z)).Position)
-				c6 = WorldToViewportPoint(camera, (cf * CFramenew(-x,  y, -z)).Position)
-				c7 = WorldToViewportPoint(camera, (cf * CFramenew(-x, -y, -z)).Position)
-				c8 = WorldToViewportPoint(camera, (cf * CFramenew( x, -y, -z)).Position)
+				if type == "Chams" then
+					c1 = WorldToViewportPoint(camera, (cf * CFramenew( x,  y,  z)).Position)
+					c2 = WorldToViewportPoint(camera, (cf * CFramenew(-x,  y,  z)).Position)
+					c3 = WorldToViewportPoint(camera, (cf * CFramenew(-x, -y,  z)).Position)
+					c4 = WorldToViewportPoint(camera, (cf * CFramenew( x, -y,  z)).Position)
+					c5 = WorldToViewportPoint(camera, (cf * CFramenew( x,  y, -z)).Position)
+					c6 = WorldToViewportPoint(camera, (cf * CFramenew(-x,  y, -z)).Position)
+					c7 = WorldToViewportPoint(camera, (cf * CFramenew(-x, -y, -z)).Position)
+					c8 = WorldToViewportPoint(camera, (cf * CFramenew( x, -y, -z)).Position)
 
-				c1 = Vector2new(c1.X, c1.Y)
-				c2 = Vector2new(c2.X, c2.Y)
-				c3 = Vector2new(c3.X, c3.Y)
-				c4 = Vector2new(c4.X, c4.Y)
-				c5 = Vector2new(c5.X, c5.Y)
-				c6 = Vector2new(c6.X, c6.Y)
-				c7 = Vector2new(c7.X, c7.Y)
-				c8 = Vector2new(c8.X, c8.Y)
+					c1 = Vector2new(c1.X, c1.Y)
+					c2 = Vector2new(c2.X, c2.Y)
+					c3 = Vector2new(c3.X, c3.Y)
+					c4 = Vector2new(c4.X, c4.Y)
+					c5 = Vector2new(c5.X, c5.Y)
+					c6 = Vector2new(c6.X, c6.Y)
+					c7 = Vector2new(c7.X, c7.Y)
+					c8 = Vector2new(c8.X, c8.Y)
+				end
 			end
 	
 			if VISIBLE and not v.Destroyed then
 				if plr and IsAlive(plr) and s and s.Enabled then
 					local color = (ts and team == "Omega" and omega or team == "Beta" and beta) or (s.UseTeamColor and teamcolor) or s.Color
-					SetProp(obj, "Visible", not ss.TeamCheck or (ss.TeamCheck and team ~= myteam))
-					if s.Enabled and inViewport then
-						SetProp(obj, "Transparency", s.Transparency)
+					local transparency = (mousevis.Enabled and mousemag <= mousevis.Radius and mousevis.Transparency) or s.Transparency
+					SetProp(obj, "Visible", (not ss.TeamCheck or (ss.TeamCheck and team ~= myteam)) and mag <= ss.MaximumDistance)
+					if s.Enabled and inViewport and mag <= ss.MaximumDistance then
+						SetProp(obj, "Transparency", transparency)
 						SetProp(obj, "Color", color)
 						if type == "Boxes" then
 							obj.PointA = Vector2new(trx, try)
@@ -563,32 +582,33 @@ function update()
 							SetProp(obj, "Outline", s.Outline)
 							SetProp(obj, "OutlineColor", s.OutlineColor)
 							SetProp(obj, "Font", s.Font)
+							local name, data = obj.Name, obj.Data
 							
-							obj.Name.Position = Vector2new(tlx + (trx - tlx) / 2, tly - (s.Size + 2))
-							obj.Data.Position = Vector2new(blx + (brx - blx) / 2, bly + (bry - bly) / 2)
+							name.Position = Vector2new(tlx + (trx - tlx) / 2, tly - (s.Size + 2))
+							data.Position = Vector2new(blx + (brx - blx) / 2, bly + (bry - bly) / 2)
 							if ss.HealthBars.Enabled then
-								obj.Data.Position = Vector2new(obj.Data.Position.X, obj.Data.Position.Y + mathclamp(1000 / tlz,8,15))
+								data.Position = Vector2new(data.Position.X, data.Position.Y + z)
 							end
-							local mag = mathfloor((ccf - cf.Position).Magnitude)
-							obj.Name.Text = (s.UseDisplayName and plr.DisplayName) or plr.Name
-							obj.Data.Text = ""
+							name.Text = (s.UseDisplayName and plr.DisplayName) or plr.Name
+							data.Text = ""
 							if s.ShowDistance then
-								obj.Data.Text = "[ "..mag..s.DistanceDataType.." ]"
+								data.Text = "[ "..mathfloor(mag)..s.DistanceDataType.." ]"
 							end
 							if s.ShowHealth then
 								local a = s.HealthDataType:lower()
 								if a == "percentage" then
-									obj.Data.Text = obj.Data.Text.." [ "..mathfloor((health / maxhealth) * 100).."% ]"
+									data.Text = obj.Data.Text.." [ "..mathfloor((health / maxhealth) * 100).."% ]"
 								elseif a == "value" then
-									obj.Data.Text = obj.Data.Text.." [ "..mathfloor(health).."/"..mathfloor(maxhealth).." ]"
+									data.Text = obj.Data.Text.." [ "..mathfloor(health).."/"..mathfloor(maxhealth).." ]"
 								end
 							end
 						elseif type == "Skeletons" then
 							SetProp(obj, "Thickness", s.Thickness)
-							if ts then
-								char = char.Body
-							end
+	
 							for i2,v2 in next, obj do
+								if ts then
+									char = char.Body
+								end
 								if char:FindFirstChild(From[i2]) and char:FindFirstChild(i2) then
 									local pos1 = WorldToViewportPoint(camera, char:FindFirstChild(From[i2]).Position)
 									local pos2 = WorldToViewportPoint(camera, char:FindFirstChild(i2).Position)
@@ -597,7 +617,7 @@ function update()
 								end
 							end
 						elseif type == "HealthBars" then
-							local bar, out, z = obj.Bar, obj.Outline, mathclamp(1000 / tlz, 8, 12)
+							local bar, out = obj.Bar, obj.Outline
 							health = health / maxhealth
 							bar.PointA = Vector2new(
 								blx + (brx - blx) * health,
@@ -718,7 +738,7 @@ function ValidOption(type,option)
 end
 function esp:Toggle(type)
 	assert(ValidType(type),"Universal Esp: bad argument to #1 'Toggle' (Invalid Type)")
-	if type == ("TeamCheck" or "AntiDetection") then
+	if type == ("TeamCheck" or "AntiDetection" or "MouseVisibility") then
 		ss[type] = not ss[type]
 	else
 		ss[type].Enabled = not ss[type].Enabled
