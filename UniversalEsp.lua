@@ -5,7 +5,7 @@ if not EspSettings then
 		AntiDetection = true,
 		RefreshRate = 10, -- how fast the esp updates (milliseconds)
 		MaximumDistance = 500, -- only renders players within this distance
-		MouseVisiblity = {
+		MouseVisibility = {
 			Enabled = true, -- makes any drawing objects transparent when they are near your mouse
 			Radius = 60,
 			Transparency = 0.3
@@ -110,7 +110,7 @@ local mathclamp = math.clamp
 local mathhuge = math.huge
 local osclock = os.clock
 local GameId = game.GameId
-local ss, mousevis, OBJECTS, VISIBLE, ID = getgenv().EspSettings, getgenv().EspSettings.MouseVisiblity, {}, true, 0
+local ss, mousevis, OBJECTS, VISIBLE, ID = getgenv().EspSettings, getgenv().EspSettings.MouseVisibility, {}, true, 0
 --[[local bodyparts = {
 	"Head","UpperTorso","LowerTorso","LeftUpperArm","LeftLowerArm","LeftHand","RightUpperArm","RightLowerArm","RightHand","LeftUpperLeg","LeftLowerLeg","LeftFoot","RightUpperLeg","RightLowerLeg","RightFoot",
 	"Torso","Left Arm","Right Arm","Left Leg","Right Leg",
