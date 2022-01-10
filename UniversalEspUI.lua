@@ -3,11 +3,17 @@ getgenv().EspSettings = {
 	ToggleKey = Enum.KeyCode.RightAlt,
 	AntiDetection = true,
 	RefreshRate = 10, -- how fast the esp updates (milliseconds)
+	MaximumDistance = 500, -- only renders players within this distance
+	MouseVisiblity = {
+		Enabled = true, -- makes any drawing objects transparent when they are near your mouse
+		Radius = 60,
+		Transparency = 0.2
+	},
 	Boxes = {
 		Enabled = true,
 		Transparency = 1,
 		Color = Color3.fromRGB(255,255,255),
-		UseTeamColor = true,
+		UseTeamColor = true
 	},
 	Tracers = {
 		Enabled = true,
@@ -44,9 +50,9 @@ getgenv().EspSettings = {
 		Transparency = 1,
 		Color = Color3.fromRGB(0,255,0),
 		OutlineColor = Color3.fromRGB(255,255,255),
-		UseTeamColor = true -- this only applies to the outline
+		UseTeamColor = true
 	}
-} -- v1.6.0
+} -- v1.6.3
 
 if UESP then
 	return
@@ -372,18 +378,46 @@ Other.Slider({
 		end
 	}
 })
-Other.Button({
-	Text = "Destroy Esp",
-	Callback = function()
-		esp:Destroy()
-		ui:Destroy()
+Other.Slider({
+	Text = "Maximum Distance",
+	Callback = function(value)
+		esp:Set("Other","MaximumDistance",value)
 	end,
+	Min = 50,
+	Max = 1000,
+	Def = 500
+})
+Other.Toggle({
+	Text = "Mouse Visibility",
+	Callback = function(value)
+		esp:Set("MouseVisiblity","Enabled",value)
+	end,
+	Enabled = true,
 	Menu = {
 		Info = function()
-			Banner("This button will completely remove Universal Esp, including the UI.")
+			Banner("Makes any drawing objects transparent when they are near your mouse.")
 		end
 	}
 })
+Other.Slider({
+	Text = "Mouse Visibility Radius",
+	Callback = function(value)
+		esp:Set("MouseVisibility","Radius",value)
+	end,
+	Min = 10,
+	Max = 150,
+	Def = 60
+})
+Other.Slider({
+	Text = "Mouse Visibility Transparency",
+	Callback = function(value)
+		esp:Set("MouseVisibility","Transparency",value / 10)
+	end,
+	Min = 1,
+	Max = 10,
+	Def = 3
+})
+
 Other.Toggle({
 	Text = "Enabled (All)",
 	Callback = function(value)
@@ -431,6 +465,18 @@ Other.Toggle({
 	Menu = {
 		Info = function()
 			Banner("Changes the 'Use Team Color' setting for all types.")
+		end
+	}
+})
+Other.Button({
+	Text = "Destroy Esp",
+	Callback = function()
+		esp:Destroy()
+		ui:Destroy()
+	end,
+	Menu = {
+		Info = function()
+			Banner("This button will completely remove Universal Esp, including the UI.")
 		end
 	}
 })
