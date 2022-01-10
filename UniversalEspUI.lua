@@ -4,7 +4,7 @@ getgenv().EspSettings = {
 	AntiDetection = true,
 	RefreshRate = 10, -- how fast the esp updates (milliseconds)
 	MaximumDistance = 500, -- only renders players within this distance
-	MouseVisiblity = {
+	MouseVisibility = {
 		Enabled = true, -- makes any drawing objects transparent when they are near your mouse
 		Radius = 60,
 		Transparency = 0.2
@@ -390,7 +390,7 @@ Other.Slider({
 Other.Toggle({
 	Text = "Mouse Visibility",
 	Callback = function(value)
-		esp:Set("MouseVisiblity","Enabled",value)
+		esp:Set("MouseVisibility","Enabled",value)
 	end,
 	Enabled = true,
 	Menu = {
