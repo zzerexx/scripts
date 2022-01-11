@@ -99,6 +99,17 @@ https://pastebin.com/raw/eGiC2jPg
   
 ---
   
+# Synapse Functions  
+synapse functions for everyone  
+cannot guarantee that protect gui is fully secure (works against recursive ffc tho)  
+```
+secure_call
+protect_gui
+clonefunction
+```  
+  
+---
+  
 # Custom Crosshair v2  
 Updated November 25, 2021  
 v1.0.2  
