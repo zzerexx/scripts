@@ -432,7 +432,7 @@ do -- HeadDots
 	HeadDots.Slider({
 		Text = "Transparency",
 		Callback = function(value)
-			esp:Set("HeadDots","Enabled",value / 10)
+			esp:Set("HeadDots","Transparency",value / 10)
 		end,
 		Min = 0,
 		Max = 10,
