@@ -4,8 +4,8 @@ my cool scripts
 ---
   
 # Universal Esp  
-Updated January 9, 2022  
-v1.6.3  
+Updated January 16, 2022  
+v1.6.4  
 - Box Esp  
 - Tracers  
 - Name Esp  
@@ -16,16 +16,15 @@ v1.6.3
 https://pastebin.com/raw/5zw0rLH9
 ```  
 **UI Version**  
-Updated January 9, 2022  
+Updated January 16, 2022  
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua"))()
 ```  
   
-## Update v1.6.3  
-- Added `MaximumDistance`; esp will only render players that are within this distance  
-- Added `MouseVisibility`; makes any drawing objects transparent when they are near your mouse  
-- more optimizations
-- if ur using scriptware, there will be a random square on ur screen i have no idea why  
+## Update v1.6.4  
+- Added `HeadDots`  
+- Added `RainbowColor` to all types
+- Added `Thickness` property to `Boxes`
   
 ## Update v1.6.0    
 - Lots of optimizations  
