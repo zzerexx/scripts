@@ -11,6 +11,7 @@ v1.6.4
 - Name Esp  
 - Skeleton Esp  
 - Health Bars  
+- Head Dots  
   
 ```
 https://pastebin.com/raw/5zw0rLH9
