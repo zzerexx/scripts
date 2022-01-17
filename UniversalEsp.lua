@@ -14,13 +14,16 @@ if not EspSettings then
 			Enabled = true,
 			Transparency = 1,
 			Color = Color3.fromRGB(255,255,255),
-			UseTeamColor = true
+			UseTeamColor = true,
+			RainbowColor = false,
+			Thickness = 1
 		},
 		Tracers = {
 			Enabled = true,
 			Transparency = 1,
 			Color = Color3.fromRGB(255,255,255),
 			UseTeamColor = true,
+			RainbowColor = false,
 			Origin = "Top", -- "Top" or "Center" or "Bottom" or "Mouse"
 			Thickness = 1
 		},
@@ -29,6 +32,7 @@ if not EspSettings then
 			Transparency = 1,
 			Color = Color3.fromRGB(255,255,255),
 			UseTeamColor = true,
+			RainbowColor = false,
 			Font = Drawing.Fonts.UI, -- UI or System or Plex or Monospace
 			Size = 18,
 			Outline = true,
@@ -44,35 +48,44 @@ if not EspSettings then
 			Transparency = 1,
 			Color = Color3.fromRGB(255,255,255),
 			UseTeamColor = true,
+			RainbowColor = false,
 			Thickness = 1
 		},
 		HealthBars = {
 			Enabled = true,
 			Transparency = 1,
 			Color = Color3.fromRGB(0,255,0),
-			OutlineColor = Color3.fromRGB(255,255,255),
-			UseTeamColor = true
+			UseTeamColor = true,
+			RainbowColor = false,
+			OutlineColor = Color3.fromRGB(255,255,255)
+		},
+		HeadDots = {
+			Enabled = true,
+			Transparency = 1,
+			Color = Color3.fromRGB(255,255,255),
+			UseTeamColor = true,
+			RainbowColor = false,
+			Thickness = 2,
+			Filled = false
 		}
 	}
 end
 
-if not UESP then
-	task.delay(5,function()
-		local bind = Instance.new("BindableFunction")
-		bind.OnInvoke = function(a)
-			if a == "Get Script" then
-				setclipboard("https://pastebin.com/raw/5zw0rLH9")
-			end
+if not EspSettings.HeadDots then
+	local bind = Instance.new("BindableFunction")
+	bind.OnInvoke = function(a)
+		if a == "Get Script" then
+			setclipboard("https://pastebin.com/raw/5zw0rLH9")
 		end
-		game:GetService("StarterGui"):SetCore("SendNotification",{
-			Title = "Universal Esp",
-			Text = "Script not working? Make sure you have the latest version!",
-			Duration = 5,
-			Button1 = "OK",
-			Button2 = "Get Script",
-			Callback = bind
-		})
-	end)
+	end
+	game:GetService("StarterGui"):SetCore("SendNotification",{
+		Title = "Universal Esp",
+		Text = "Please update your script!",
+		Duration = 5,
+		Button1 = "Get Latest Script",
+		Callback = bind
+	})
+	return
 end
 
 if EspSettings.AntiDetection and getconnections then
@@ -95,20 +108,25 @@ end)
 local players = game:GetService("Players")
 local player = players.LocalPlayer
 local camera = workspace.CurrentCamera
-local UIS = game:GetService("UserInputService")
+local uis = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
+
 local Drawingnew = Drawing.new 
 local Fonts = Drawing.Fonts
 local tableinsert = table.insert
 local tablesort = table.sort
+local tablefind = table.find
 local WorldToViewportPoint = camera.WorldToViewportPoint
 local CFramenew = CFrame.new
 local Vector2new = Vector2.new 
-local Color3fromRGB = Color3.fromRGB
+local fromRGB = Color3.fromRGB
+local fromHSV = Color3.fromHSV
 local mathfloor = math.floor
 local mathclamp = math.clamp
 local mathhuge = math.huge
 local osclock = os.clock
+local next = next
+
 local GameId = game.GameId
 local ss, mousevis, OBJECTS, VISIBLE, ID = getgenv().EspSettings, getgenv().EspSettings.MouseVisibility, {}, true, 0
 --[[local bodyparts = {
@@ -124,18 +142,26 @@ local gids = { -- game ids
 	['bb'] = 1168263273,
 }
 local zindex = {
-	['Boxes'] = 0,
-	['Tracers'] = 1,
-	['Names'] = 4,
-	['Skeletons'] = 0,
-	['LookTracers'] = 0,
-	['HealthBars'] = 2,
-	['Labels'] = 3,
-	['Chams'] = -1
+	['Boxes'] = 1,
+	['Tracers'] = 2,
+	['Names'] = 5,
+	['Skeletons'] = 1,
+	['LookTracers'] = 1,
+	['HealthBars'] = 3,
+	['HeadDots'] = 2,
+	['Labels'] = 4,
+	['Chams'] = 0
+}
+local Base = {
+	"Enabled",
+	"Transparency",
+	"Color",
+	"UseTeamColor",
+	"RainbowColor"
 }
 local origins = {}
-local omega, beta = Color3fromRGB(255,116,38), Color3fromRGB(38,125,255)
-local white, black = Color3fromRGB(255,255,255), Color3fromRGB(0,0,0)
+local omega, beta = fromRGB(255,116,38), fromRGB(38,125,255)
+local white, black = fromRGB(255,255,255), fromRGB(0,0,0)
 local getchar, gethealth, ts, characters
 if GameId == (gids.pf or gids.pft or gids.pfu) then
 	for _,v in next, getgc(true) do
@@ -272,11 +298,11 @@ function Box(plr)
 	local type = "Boxes"
 	local box = Drawingnew("Quad")
 	box.Visible = false
-	box.Thickness = 1
 	box.Filled = false
 	ApplyZIndex(box, type)
 	local a = {Object = box, Type = type, Player = plr, Destroyed = false, Id = ID}
 	function a:Remove()
+		if a.Destroyed then return end
 		box:Remove()
 		a.Destroyed = true
 	end
@@ -291,6 +317,7 @@ function Tracer(plr)
 	ApplyZIndex(tracer, type)
 	local a = {Object = tracer, Type = type, Player = plr, Destroyed = false, Id = ID}
 	function a:Remove()
+		if a.Destroyed then return end
 		tracer:Remove()
 		a.Destroyed = true
 	end
@@ -309,6 +336,7 @@ function Name(plr)
 	ApplyZIndex(objects, type)
 	local a = {Object = objects, Type = type, Player = plr, Destroyed = false, Id = ID}
 	function a:Remove()
+		if a.Destroyed then return end
 		objects.Name:Remove()
 		objects.Data:Remove()
 		a.Destroyed = true
@@ -361,6 +389,7 @@ function Skeleton(plr)
 	ApplyZIndex(objects, type)
 	local a = {Object = objects, Type = type, Player = plr, Destroyed = false, Id = ID}
 	function a:Remove()
+		if a.Destroyed then return end
 		for _,v in next, objects do
 			v:Remove()
 		end
@@ -377,14 +406,30 @@ function HealthBar(plr)
 		Outline = Drawingnew("Quad")
 	}
 	SetProp(objects, "Visible", false)
-	SetProp(objects, "Thickness", 1)
+	SetProp(objects, "Thickness", 2)
 	objects.Bar.Filled = true
 	objects.Outline.Filled = false
 	ApplyZIndex(objects, type)
 	local a = {Object = objects, Type = type, Player = plr, Destroyed = false, Id = ID}
 	function a:Remove()
+		if a.Destroyed then return end
 		objects.Bar:Remove()
 		objects.Outline:Remove()
+		a.Destroyed = true
+	end
+	tableinsert(OBJECTS,a)
+end
+function HeadDot(plr)
+	ID += 1
+
+	local type = "HeadDots"
+	local dot = Drawingnew("Circle")
+	dot.Visible = false
+	ApplyZIndex(dot, type)
+	local a = {Object = dot, Type = type, Player = plr, Destroyed = false, Id = ID}
+	function a:Remove()
+		if a.Destroyed then return end
+		dot:Remove()
 		a.Destroyed = true
 	end
 	tableinsert(OBJECTS,a)
@@ -400,7 +445,7 @@ function Label(part,options)
 
 	local o = {
 		Text = options.Text or part.Name,
-		Transparency = options.Transparency or 0.7,
+		Transparency = options.Transparency or 1,
 		Color = options.Color or white,
 		Size = options.Size or 18,
 		Outline = ternary(options.Outline ~= nil, options.Outline, true),
@@ -409,19 +454,30 @@ function Label(part,options)
 	}
 	
 	ApplyZIndex(label, type)
-	local a = {Object = label, Type = type, Part = part, Options = o, Destroyed = false, Id = ID}
+	local a,c = {Object = label, Type = type, Part = part, Options = o, Destroyed = false, Id = ID}
 	function a:SetPart(p)
 		assert(typeof(p) == "Instance","Universal Esp: bad argument #1 to 'SetPart' (Instance expected, got "..typeof(p)..")")
 		assert(p.ClassName:find("Part"),"Universal Esp: bad argument #1 to 'SetPart' (Part expected, got "..p.ClassName..")")
-		table.remove(OBJECTS, table.find(OBJECTS, a))
-		a.Part = p 
-		tableinsert(OBJECTS, a)
+		OBJECTS[tablefind(OBJECTS, a)].Options.Part = p
+	end
+	function a:SetProp(prop,value)
+		if not o[prop] then return end
+		OBJECTS[tablefind(OBJECTS, a)].Options[prop] = value
 	end
 	function a:Remove()
+		if a.Destroyed then return end
 		label:Remove()
+		c:Disconnect()
 		a.Destroyed = true
 	end
-	tableinsert(OBJECTS,a)
+	c = part.AncestryChanged:Connect(function(_,p)
+		if p == nil then
+			a:Remove()
+			return
+		end
+		a:SetPart(p:FindFirstChild(part.Name))
+	end)
+	tableinsert(OBJECTS, a)
 	return a
 end
 function Cham(part,options)
@@ -443,21 +499,33 @@ function Cham(part,options)
 		Filled = ternary(options.Filled ~= nil, options.Filled, true)
 	}
 	ApplyZIndex(objects, type)
-	local a = {Object = objects, Type = type, Part = part, Options = o, Destroyed = false, Id = ID}
+	local a,c = {Object = objects, Type = type, Part = part, Options = o, Destroyed = false, Id = ID}
 	function a:SetPart(p)
 		assert(typeof(p) == "Instance","Universal Esp: bad argument #1 to 'SetPart' (Instance expected, got "..typeof(p)..")")
 		assert(p.ClassName:find("Part"),"Universal Esp: bad argument #1 to 'SetPart' (Part expected, got "..p.ClassName..")")
-		table.remove(OBJECTS, table.find(OBJECTS, a))
-		a.Part = p 
-		tableinsert(OBJECTS, a)
+		OBJECTS[tablefind(OBJECTS, a)].Options.Part = p
+	end
+	function a:SetProp(prop,value)
+		if not o[prop] then return end
+		o[prop] = value
+		OBJECTS[tablefind(OBJECTS, a)].Options[prop] = value
 	end
 	function a:Remove()
+		if a.Destroyed then return end
 		for _,v in next, objects do
 			v:Remove()
 		end
+		c:Disconnect()
 		a.Destroyed = true
 	end
-	tableinsert(OBJECTS,a)
+	c = part.AncestryChanged:Connect(function(_,p)
+		if p == nil then
+			a:Remove()
+			return
+		end
+		a:SetPart(p:FindFirstChild(part.Name))
+	end)
+	tableinsert(OBJECTS, a)
 	return a
 end
 
@@ -467,7 +535,7 @@ function updateorigins()
 		top = Vector2new(x / 2, 0),
 		center = Vector2new(x / 2, y / 2),
 		bottom = Vector2new(x / 2, y),
-		mouse = UIS:GetMouseLocation()
+		mouse = uis:GetMouseLocation()
 	}
 end
 updateorigins()
@@ -481,7 +549,7 @@ function update()
 		return
 	end
 	lastupdate = osclock()
-	origins.mouse = UIS:GetMouseLocation()
+	origins.mouse = uis:GetMouseLocation()
 	for _,v in next, OBJECTS do
 		if not v.Destroyed then
 			if v.Player == nil and not v.Options then
@@ -494,8 +562,9 @@ function update()
 			local cf, size, mid, inViewport, tl, tr, bl, br				 -- boxes shit
 			local tlx, tly, tlz, trx, try, blx, bly, brx, bry, z			-- boxes corner axes shit
 			local c0, c1, c2, c3, c4, c5, c6, c7, c8						-- part corner positions shit
+			local head													  -- head dots shit
 			local team, myteam, teamcolor								   -- team shit
-			local ccf, char, health, maxhealth, mag, mousemag			   -- other shit
+			local ccf, char, health, maxhealth, mag, mousemag, camfov	   -- other shit
 			local s = ss[type] or v.Options								 -- settings shit
 			if plr and IsAlive(plr) and s and s.Enabled then
 				local hp = GetHealth(plr)
@@ -516,9 +585,13 @@ function update()
 				brx, bry = br.X, br.Y
 				z = mathclamp(1000 / tlz, 8, 12)
 
+				if type == "HeadDots" and char:FindFirstChild("Head") then
+					head = WorldToViewportPoint(camera, char.Head.Position)
+				end
+
 				mag = (ccf - cf.Position).Magnitude
 				if mousevis.Enabled then
-					local m = UIS:GetMouseLocation()
+					local m = uis:GetMouseLocation()
 					local mags = {}
 					tableinsert(mags, (m - Vector2new(mid.X, mid.Y)).Magnitude)
 					tableinsert(mags, (m - Vector2new(tlx, tly)).Magnitude)
@@ -532,6 +605,8 @@ function update()
 
 					mousemag = mags[1]
 				end
+
+				camfov = camera.FieldOfView
 			elseif v.Part then
 				cf, size = part.CFrame, part.Size / 2
 				local x, y, z = size.X, size.Y, size.Z
@@ -559,19 +634,22 @@ function update()
 	
 			if VISIBLE and not v.Destroyed then
 				if plr and IsAlive(plr) and s and s.Enabled then
-					local color = (ts and team == "Omega" and omega or team == "Beta" and beta) or (s.UseTeamColor and teamcolor) or s.Color
-					local transparency = (mousevis.Enabled and mousemag <= mousevis.Radius and mousevis.Transparency) or s.Transparency
 					SetProp(obj, "Visible", (not ss.TeamCheck or (ss.TeamCheck and team ~= myteam)) and mag <= ss.MaximumDistance)
 					if s.Enabled and inViewport and mag <= ss.MaximumDistance then
+						local color = (ts and team == "Omega" and omega or team == "Beta" and beta) or (s.UseTeamColor and teamcolor) or s.Color
+						local transparency = (mousevis.Enabled and mousemag <= mousevis.Radius and mousevis.Transparency) or s.Transparency
 						SetProp(obj, "Transparency", transparency)
-						SetProp(obj, "Color", color)
+						SetProp(obj, "Color", (s.RainbowColor and fromHSV(tick() % 5 / 5, 1, 1)) or color)
 						if type == "Boxes" then
+							obj.Thickness = s.Thickness
+
 							obj.PointA = Vector2new(trx, try)
 							obj.PointB = Vector2new(tlx, tly)
 							obj.PointC = Vector2new(blx, bly)
 							obj.PointD = Vector2new(brx, bry)
 						elseif type == "Tracers" then
 							obj.Thickness = s.Thickness 
+
 							obj.From = origins[s.Origin:lower() or "top"]
 							obj.To = Vector2new(tlx + (trx - tlx) / 2, tly + (try - tly) / 2)
 							if s.Origin:lower() == "bottom" then
@@ -619,6 +697,7 @@ function update()
 						elseif type == "HealthBars" then
 							local bar, out = obj.Bar, obj.Outline
 							health = health / maxhealth
+
 							bar.PointA = Vector2new(
 								blx + (brx - blx) * health,
 								(bly + (bry - bly) * health) + 5
@@ -640,13 +719,20 @@ function update()
 							out.PointB = Vector2new(blx, bly + 5)
 							out.PointC = Vector2new(blx, bly + z)
 							out.PointD = Vector2new(brx, bry + z)
+							out.Color = (s.UseTeamColor and teamcolor) or s.OutlineColor
+						elseif type == "HeadDots" then
+							obj.Thickness = s.Thickness 
+							obj.Filled = s.Filled
+
+							obj.Position = Vector2new(head.X, head.Y)
+							obj.Radius = z / ((mag / 60) * (camfov / 70))
 						end
 					end
 				elseif part then
 					SetProp(obj, "Visible", inViewport)
-					SetProp(obj, "Transparency", s.Transparency)
-					SetProp(obj, "Color", s.Color)
 					if inViewport then
+						SetProp(obj, "Transparency", s.Transparency)
+						SetProp(obj, "Color", s.Color)
 						if type == "Labels" then
 							obj.Text = s.Text
 							obj.Size = s.Size
@@ -703,7 +789,7 @@ function update()
 end
 
 local conn2 = RunService.RenderStepped:Connect(update)
-local conn3 = UIS.InputBegan:Connect(function(i,gp)
+local conn3 = uis.InputBegan:Connect(function(i,gp)
 	if not gp and i.KeyCode == (ss.ToggleKey or Enum.KeyCode[ss.ToggleKey]) then
 		VISIBLE = not VISIBLE
 	end
@@ -713,18 +799,18 @@ for _,v in next, players:GetPlayers() do
 		Box(v)
 		Skeleton(v)
 		Tracer(v)
+		HeadDot(v)
 		HealthBar(v)
 		Name(v)
 	end
 end
 local conn4 = players.PlayerAdded:Connect(function(v)
-	if v ~= player then
-		Box(v)
-		Skeleton(v)
-		Tracer(v)
-		HealthBar(v)
-		Name(v)
-	end
+	Box(v)
+	Skeleton(v)
+	Tracer(v)
+	HeadDot(v)
+	HealthBar(v)
+	Name(v)
 end)
 
 local esp = {}
@@ -763,7 +849,7 @@ function esp:Set(type,option,value)
 	end
 end
 function esp:SetAll(option,value)
-	assert(ValidOption("Boxes",option),"Universal Esp: bad argument to #1 'SetAll' (Invalid Option)")
+	assert(Base[option] == nil,"Universal Esp: bad argument to #1 'SetAll' (Invalid Option)")
 	assert(value ~= nil,"Universal Esp: bad argument to #2 'SetAll'")
 	for _,v in next, ss do
 		if typeof(v) == "table" and v.Enabled ~= nil then
@@ -779,23 +865,38 @@ function esp.Cham(part,options)
 	assert(typeof(part) == "Instance","Universal Esp: bad argument to #1 'Cham' (Instance expected, got "..typeof(part)..")")
 	return Cham(part,options or {})
 end
-function esp:GetObjects(plr)
-	assert(typeof(plr) == "Instance","Universal Esp: bad argument to #1 'GetObjects' (Instance expected, got "..typeof(plr)..")")
-	assert(plr.ClassName == "Player","Universal Esp: bad argument to #1 'GetObjects' (Player expected, got "..plr.ClassName..")")
-	local objects = {
-		['Boxes'] = nil,
-		['Tracers'] = nil,
-		['Names'] = nil,
-		['Skeletons'] = nil,
-		['LookTracers'] = nil,
-		['HealthBars'] = nil
-	}
-	for _,v in next, OBJECTS do
-		if v.Player == plr then
-			objects[v.Type] = v
+function esp:GetObjects(a)
+	a = a or ""
+	if (typeof(a) == "Instance" and a.ClassName == "Player") or players:FindFirstChild(a)  then
+		local plr = (typeof(a) == "string" and players[a]) or a
+		local objects = {
+			['Boxes'] = nil,
+			['Tracers'] = nil,
+			['Names'] = nil,
+			['Skeletons'] = nil,
+			['LookTracers'] = nil,
+			['HealthBars'] = nil
+		}
+		for _,v in next, OBJECTS do
+			if v.Player == plr then
+				objects[v.Type] = v
+			end
+		end
+		return objects
+	elseif typeof(a) == "string" then
+		if zindex[a] ~= nil then
+			local objects = {}
+			for _,v in next, OBJECTS do
+				if v.Type == a then
+					tableinsert(objects, v)
+				end
+			end
+			return objects
+		elseif a == "All" then
+			return OBJECTS
 		end
 	end
-	return objects
+	return {}
 end
 function esp:GetTotalObjects()
 	local data = {
