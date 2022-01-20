@@ -89,6 +89,12 @@ A gui that can assist in generating advanced message boxes
   
 ---
   
+# Krnl mousemoverel Fix  
+an attempt to fix krnl's broken mousemoverel  
+doesnt work with aimbots for some reason idk  
+  
+---
+  
 # Custom Crosshair v1  
 Updated June 4, 2021  
 v1.2.1  
