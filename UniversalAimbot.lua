@@ -129,7 +129,7 @@ elseif GameId == gids.bb then
 end
 
 function IsAlive(plr)
-	if plr.Character and plr.Character.Humanoid and plr.Character.Humanoid.Health > 0 then
+	if plr.Character and plr.Character:FindFirstChild("Humanoid") and plr.Character:FindFirstChild("Humanoid").Health > 0 then
 		return true
 	elseif getchar then
 		return getchar(plr) ~= nil
