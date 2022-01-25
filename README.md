@@ -4,37 +4,52 @@ my cool scripts
 ---
   
 # Universal Esp  
-Updated January 16, 2022  
-v1.6.4  
+Updated January 25, 2022  
+v1.6.5  
 - Box Esp  
 - Tracers  
 - Name Esp  
 - Skeleton Esp  
 - Health Bars  
 - Head Dots  
+- Look Tracers  
   
 ```
 https://pastebin.com/raw/5zw0rLH9
 ```  
 **UI Version**  
-Updated January 16, 2022  
+Updated January 25, 2022  
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua"))()
 ```  
   
-## Update v1.6.4  
-- Added `HeadDots`  
-- Added `RainbowColor` to all types
-- Added `Thickness` property to `Boxes`
+## Update v1.6.5  
+Main Changes  
+- Re-added Look Tracers; no longer uses raycasts, instead uses a preset length
+- Added `Outline` option for all types
+- Added `OutlineColor` option for all types
+- Added `OutlineThickness` option for all types (except for Names)
+- Fixed the random square on ScriptWare
+- Removed `AntiDetection`, it will now apply by default
+- Toggling esp off should allow higher fps  
   
-## Update v1.6.0    
-- Lots of optimizations  
-- Added `RefreshRate`; allows you to control how fast the esp updates, which can save on performance  
-- Added two new settings for Name Esp  
-  - `DistanceDataType`; This is the Distance measurement. For example, if this is `studs` then it will show `100studs`  
-  - `HealthDataType`; You can set this to `Percentage` (100%) or `Value` (100/100)  
-- Fixed some settings not applying correctly for `Labels` and `Chams`  
-- Completely removed Look Tracers  
+Misc Changes  
+- Added `Offset` option for Labels (Vector2)
+- Added `RainbowColor` option for Labels and Chams
+- Labels and Chams now support Model objects
+  
+Function Changes
+- Added `Add(<string, Instance> Player)`; adds esp to the specified Player
+- Added `Remove(<string, Instance> Player)`; remoevs esp from the specified Player
+- Added `SetFunction(<string> Function, <function> New)`; replaces Function with New, this can allow custom compatibility for unsupported games
+- Added `ResetFunction(<string> Function)`; sets the specified Function to its original function
+- Fixed `GetObjects`
+- Calling `GetObjects` without arguments returns all objects
+- Fixed `GetTotalObjects`  
+  
+UI Changes  
+- Added configs, currently only supports 1 config at a time
+- If you execute your setting before executing the UI, it will load your settings instead of overwriting it  
   
 ---
   
