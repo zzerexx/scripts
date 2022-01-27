@@ -123,6 +123,14 @@ if not EspSettings then
 	}
 end
 
+if game.GameId == 1168263273 then
+	game:GetService("StarterGui"):SetCore("SendNotification",{
+		Title = "Universal Esp",
+		Text = "Universal Esp is detected on Bad Business! Please use a different script to prevent getting banned.",
+		Duration = 5
+	})
+	return
+end
 if not EspSettings.HeadDots and not EspSettings.LookTracers then
 	local bind = Instance.new("BindableFunction")
 	bind.OnInvoke = function(a)
