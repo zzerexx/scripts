@@ -38,7 +38,14 @@ if not getgenv().AimbotSettings then
 		Ignore = nil -- Raycast Ignore
 	}
 end
-
+if game.GameId == 1168263273 then
+	game:GetService("StarterGui"):SetCore("SendNotification",{
+		Title = "Universal Aimbot",
+		Text = "Universal Aimbot is detected on Bad Business! Please use a different script to prevent getting banned.",
+		Duration = 5
+	})
+	return
+end
 task.delay(5,function()
 	local bind = Instance.new("BindableFunction")
 	bind.OnInvoke = function(a)
