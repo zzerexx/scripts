@@ -17,10 +17,17 @@ v1.6.5
 ```
 https://pastebin.com/raw/5zw0rLH9
 ```  
-**UI Version**  
+### UI Version  
 Updated January 25, 2022  
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua"))()
+```  
+### Performance Version  
+Updated January 26, 2022  
+Boxes, Names, zero customizability, optimized asf  
+Supports `SetFunction` and `ResetFunction` for compatibility!  
+```
+loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspPerformance.lua"))()
 ```  
   
 ## Update v1.6.5  
