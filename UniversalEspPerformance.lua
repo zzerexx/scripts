@@ -1,3 +1,11 @@
+if game.GameId == 1168263273 then
+	game:GetService("StarterGui"):SetCore("SendNotification",{
+		Title = "Universal Esp",
+		Text = "Universal Esp is detected on Bad Business! Please use a different script to prevent getting banned.",
+		Duration = 5
+	})
+	return
+end
 for _,v in next, getconnections(game:GetService("ScriptContext").Error) do
 	v:Disable()
 end
