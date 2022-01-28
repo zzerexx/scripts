@@ -114,6 +114,8 @@ A gui that can assist in generating advanced message boxes
 # Krnl mousemoverel Fix  
 an attempt to fix krnl's broken mousemoverel  
 doesnt work with aimbots for some reason idk  
+`#1` works like normal mousemoverel, but does not work with aimbot scripts  
+`#2` is similar to mousemoverel (slowly moves to destination), but works with aimbot scripts  
   
 ---
   
