@@ -1,6 +1,4 @@
 assert(identifyexecutor():find("ScriptWare"),"you are not using script ware")
-getgenv().protected = protected or {}
-getgenv().temp = temp or {}
 local hash = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/HashLib.lua"))()
 local hashalgs = {"md5","sha1","sha224","sha256","sha384","sha3-256","sha3-384","sha3-512"}
 
@@ -37,11 +35,13 @@ getgenv().Drawing.Fonts = {
 }
 
 local headers = game:GetService("HttpService"):JSONDecode(request({Url = "https://httpbin.org/get"}).Body).headers
+local bs = Bitstream.new()
+local oldr, oldd, olds
 oldr = hookfunction(request,function(options)
 	local h = options.Headers or {}
 	h['Syn-Fingerprint'] = SWHWID or headers['Sw-Fingerprint']
 	h['Syn-User-Identifier'] = SWUID or headers['Sw-User-Identifier']
-	h['User-Agent'] = "synx/v2.14.0b"
+	h['User-Agent'] = "synx/v2.14.6b"
 	return oldr({
 		Url = options.Url,
 		Method = options.Method or "GET",
@@ -74,38 +74,52 @@ oldd = hookfunction(Drawing.new,function(class)
 	})
 	return t
 end)
+olds = hookfunction(saveinstance,function(t)
+	local s = {
+		Decompile = false,
+		NilInstances = false,
+		RemovePlayerCharacters = true,
+		SavePlayers = false,
+		DecompileTimeout = 10,
+	}
+	if typeof(t) == "table" then
+		local mode, noscripts, timeout = t.mode, t.noscripts, t.timeout
+		if mode ~= nil then
+			if mode == "optimized" then
+				s.Decompile = true
+				s.NilInstances = true
+				s.SavePlayers = false
+			elseif mode == "full" then
+				s.Decompile = true
+				s.NilInstances = true
+				s.RemovePlayerCharacters = false
+				s.SavePlayers = true
+			elseif mode == "scripts" then
+				s.Decompile = true
+			end
+			if noscripts then
+				s.Decompile = false
+			end
+			if timeout then
+				s.DecompileTimeout = timeout
+			end
+		end
+	end
+	local name = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
+	return olds(game, s, name)
+end)
 
 local oldmt = getrawmetatable(game)
 
-oldnc = hookmetamethod(game,"__namecall",function(...)
-    local args = {...}
-    if args[1] == game and getnamecallmethod() == "FindFirstChild" and args[3] == true then
-		for _,v in next, protected do
-			if v.Name == args[2] then
-				return nil
-			end
-		end
-    end
-    return oldnc(...)
-end)
-oldidx = hookmetamethod(game,"__index",function(...)
-	local self = ({...})[1]
-	for _,v in next, temp do
-		if self:GetFullName() == v then
-			return nil
+function connection(conn,enabled)
+	for _,v in next, getconnections(conn) do
+		if enabled then
+			v:Enable()
+		else
+			v:Disable()
 		end
 	end
-	return oldidx(...)
-end)
-oldnew = hookmetamethod(game,"__newindex",function(...)
-	local self = ({...})[1]
-	for _,v in next, temp do
-		if self:GetFullName() == v then
-			return nil
-		end
-	end
-	return oldnew(...)
-end)
+end
 
 local functions = {
 	-- syn_ filesystem
@@ -183,14 +197,39 @@ local functions = {
 	end,
 	['setscriptable'] = sethidden,
 	['getpropvalue'] = function(obj,prop)
-		table.insert(temp,obj:GetFullName())
-		task.delay(0.1,function() table.remove(temp,table.find(temp,obj:GetFullName())) end)
 		return obj[prop]
 	end,
 	['setpropvalue'] = function(obj,prop,value)
-		table.insert(temp,obj:GetFullName())
+		local conn1 = obj:GetPropertyChangedSignal(prop)
+		local conn2 = obj.Changed
+		connection(conn1,false)
+		connection(conn2,false)
 		obj[prop] = value
-		table.remove(temp,table.find(temp,obj:GetFullName()))
+		connection(conn1,true)
+		connection(conn2,true)
+	end,
+	['getstates'] = function()
+		local t = {}
+		for i,v in next, getreg() do
+			if typeof(v) == "thread" then
+				t[i] = v
+			end
+		end
+		return t
+	end,
+	['getstateenv'] = gettenv,
+	['getinstancefromstate'] = function(state)
+		local a = gettenv(state).script
+		if a ~= nil then
+			return a
+		end
+	end,
+	['is_redirection_enabled'] = function()
+		return false -- idk what it actually does but whatever
+	end,
+	['readbinarystring'] = function(obj,prop)
+		-- i think this is what it does
+		return bs:ReadString(gethiddenproperty(obj, prop))
 	end,
 	-- get_
 	['get_calling_script'] = getcallingscript,
@@ -232,29 +271,28 @@ local functions = {
 		consolesettitle(title)
 	end,
 	['rconsoleinputasync'] = function()
-		return task.spawn(consoleinput)
+		task.spawn(function()
+			return consoleinput()
+		end)
 	end,
-	['printconsole'] = output,
+	['printconsole'] = function(data)
+		output(data)
+	end,
 	['rconsoleclose'] = consoledestroy,
 	-- unavailable
 	--['getlocal'] = nil,
 	--['getlocals'] = nil,
-	--['getstates'] = nil,
-	--['readbinarystring'] = nil,
 	--['isuntouched'] = nil,
 	--['setuntouched'] = nil,
 	--['setupvaluename'] = nil,
 	--['XPROTECT'] = nil,
 	--['is_redirection_enabled'] = nil,
 	--['getpointerfromstate'] = nil,
-	--['getinstancefromstate'] = nil,
-	--['getstates'] = nil,
-	--['getstateenv'] = nil,
 	--['setnonreplicatedproperty'] = nil,
 }
 
 for i,v in next, functions do
-    getgenv()[i] = v
+	getgenv()[i] = v
 end
 
 getgenv().syn = {
@@ -267,29 +305,16 @@ getgenv().syn = {
 	['queue_on_teleport'] = queue_on_teleport,
 	['protect_gui'] = function(obj)
 		assert(typeof(obj) == "Instance","bad argument #1 to 'protect_gui' (Instance expected, got "..typeof(obj)..")")
-		assert(table.find(protected,obj) == nil,tostring(obj.Name).." is already protected")
-		table.insert(protected,obj)
-    	for i,v in next, obj:GetDescendants() do
-        	table.insert(protected,v)
-    	end
-		local c
-		c = obj.DescendantAdded:Connect(function(d)
-			if table.find(protected,obj) then
-				table.insert(protected,d)
-			else
-				c:Disconnect()
-			end
+		obj.Parent = gethui()
+		local conn = obj.AncestryChanged:Connect(function()
+			-- most scripts parent it to coregui right after protecting (cuz thats how ur supposed to use it)
+			obj.Parent = gethui()
 		end)
+		task.wait(2)
+		conn:Disconnect()
 	end,
-	['unprotect_gui'] = function(obj)
-		assert(typeof(obj) == "Instance","bad argument #1 to 'unprotect_gui' (Instance expected, got "..typeof(obj)..")")
-		assert(table.find(protected,obj) ~= nil,obj.Name.." is not protected")
-		table.remove(protected,table.find(protected,obj))
-		for _,v in next, obj:GetDescendants() do
-			if table.find(protected,v) then
-				table.remove(protected,table.find(protected,v))
-			end
-		end
+	['unprotect_gui'] = function()
+		do end
 	end,
 	['is_beta'] = function()
 		return false
@@ -321,10 +346,10 @@ getgenv().syn = {
 				return crypt.custom_decrypt(data,key,nonce,ciphers[cipher:gsub("_","-")])
 			end,
 			['hash'] = function(alg,data)
-                assert(not hashalgs[alg],"bad argument #1 to 'hash' (non-existant hash algorithm)")
-                if alg == ("sha224" or "sha3-384") then
-                    return hash[alg:gsub("-","_")](data)
-                end
+				assert(not hashalgs[alg],"bad argument #1 to 'hash' (non-existant hash algorithm)")
+				if alg == ("sha224" or "sha3-384") then
+					return hash[alg:gsub("-","_")](data)
+				end
 				return crypt.hash(data,alg):lower()
 			end
 		},
@@ -338,7 +363,7 @@ getgenv().syn = {
 	['secure_call'] = function(func,env,...)
 		assert(typeof(func) == "function","bad argument to #1 to 'secure_call' (function expected, got "..typeof(func)..")")
 		assert(typeof(env) == "Instance","bad argument to #2 to 'secure_call' (Instance expected, got"..typeof(env)..")")
-		assert(env.ClassName == ("LocalScript" or "ModuleScript"),"bad argument to #2 to 'secure_call' (LocalScript or ModuleScript expected, got "..env.ClassName..")")
+		assert(env.ClassName == "LocalScript" or env.ClassName == "ModuleScript","bad argument to #2 to 'secure_call' (LocalScript or ModuleScript expected, got "..env.ClassName..")")
 		return coroutine.wrap(function(...)
 			setfenv(0,getsenv(env))
 			setfenv(1,getsenv(env))
