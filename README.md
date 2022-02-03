@@ -98,6 +98,13 @@ shows W, A, S, D, LMB, RMB, Space, CPS, and FPS
   
 ---
   
+# Waypoint Manager  
+Updated February 2, 2022  
+unfinished  
+todo: configs, creation dates, ability to close/minimize ui (forgot to add lol)  
+  
+---
+  
 # Draw Stuff  
 Updated January 7, 2022  
 draw stuff with the drawing library  
