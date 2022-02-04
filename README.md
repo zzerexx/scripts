@@ -99,9 +99,13 @@ shows W, A, S, D, LMB, RMB, Space, CPS, and FPS
 ---
   
 # Waypoint Manager  
-Updated February 2, 2022  
-unfinished  
-todo: configs, creation dates, ability to close/minimize ui (forgot to add lol)  
+Updated February 3, 2022  
+unfinished (v0.2)  
+todo: 
+- [x] configs  
+- [x] creation dates  
+- [x] ability to close/minimize ui (forgot to add lol)  
+- [ ] keybinds  
   
 ---
   
