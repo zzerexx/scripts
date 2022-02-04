@@ -47,8 +47,29 @@ local Set = Instance.new("TextButton")
 local Color = Instance.new("Frame")
 local Box_2 = Instance.new("TextBox")
 local Preview = Instance.new("Frame")
+local Keybind = Instance.new("TextButton")
 local Close_2 = Instance.new("TextButton")
 local LineEffect = Instance.new("Frame")
+local Configs = Instance.new("TextButton")
+local UICorner_10 = Instance.new("UICorner")
+local ImageLabel = Instance.new("ImageLabel")
+local ConfigMenu = Instance.new("Frame")
+local Title_4 = Instance.new("TextLabel")
+local Content_2 = Instance.new("Frame")
+local UIPadding_4 = Instance.new("UIPadding")
+local ConfigName = Instance.new("TextBox")
+local UIListLayout_4 = Instance.new("UIListLayout")
+local Save = Instance.new("TextButton")
+local Configs_2 = Instance.new("Frame")
+local Toggle = Instance.new("TextButton")
+local Label = Instance.new("TextLabel")
+local UIPadding_5 = Instance.new("UIPadding")
+local Items = Instance.new("Frame")
+local Example_2 = Instance.new("TextButton")
+local UIListLayout_5 = Instance.new("UIListLayout")
+local Load = Instance.new("TextButton")
+local Delete_2 = Instance.new("TextButton")
+local Close_3 = Instance.new("TextButton")
 
 if syn then
 	syn.protect_gui(Waypoints)
@@ -64,7 +85,6 @@ Main.Parent = Waypoints
 Main.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 Main.BorderColor3 = Color3.fromRGB(27, 42, 53)
 Main.BorderSizePixel = 0
-Main.ClipsDescendants = true
 Main.Position = UDim2.new(0, 350, 0, 180)
 Main.Size = UDim2.new(0, 400, 0, 300)
 Main.ZIndex = 0
@@ -110,7 +130,7 @@ Title_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Title_2.BackgroundTransparency = 1.000
 Title_2.BorderSizePixel = 0
 Title_2.ClipsDescendants = true
-Title_2.Size = UDim2.new(0.699999988, 0, 0, 20)
+Title_2.Size = UDim2.new(1, 0, 0, 20)
 Title_2.Font = Enum.Font.Gotham
 Title_2.Text = "Placeholder"
 Title_2.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -130,12 +150,11 @@ UICorner.Parent = Example
 Created.Name = "Created"
 Created.Parent = Example
 Created.AnchorPoint = Vector2.new(1, 0)
-Created.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Created.BackgroundTransparency = 1.000
+Created.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
 Created.BorderSizePixel = 0
 Created.ClipsDescendants = true
 Created.Position = UDim2.new(1, 0, 0, 0)
-Created.Size = UDim2.new(0.300000012, 0, 0, 12)
+Created.Size = UDim2.new(0, 120, 0, 20)
 Created.Font = Enum.Font.Gotham
 Created.Text = "Jan 1, 2022 | 12:00"
 Created.TextColor3 = Color3.fromRGB(100, 100, 100)
@@ -316,7 +335,7 @@ Modify_2.AnchorPoint = Vector2.new(0.5, 0.5)
 Modify_2.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 Modify_2.BorderColor3 = Color3.fromRGB(100, 100, 100)
 Modify_2.Position = UDim2.new(0.5, 0, 0.5, 0)
-Modify_2.Size = UDim2.new(0, 250, 0, 190)
+Modify_2.Size = UDim2.new(0, 250, 0, 230)
 Modify_2.Visible = false
 Modify_2.ZIndex = 5
 
@@ -443,6 +462,21 @@ Preview.Position = UDim2.new(1, 0, 0, 0)
 Preview.Size = UDim2.new(0, 30, 0, 30)
 Preview.ZIndex = 6
 
+Keybind.Name = "Keybind"
+Keybind.Parent = Content
+Keybind.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+Keybind.BorderColor3 = Color3.fromRGB(100, 100, 100)
+Keybind.ClipsDescendants = true
+Keybind.LayoutOrder = 5
+Keybind.Size = UDim2.new(1, 0, 0, 30)
+Keybind.ZIndex = 6
+Keybind.AutoButtonColor = false
+Keybind.Font = Enum.Font.Gotham
+Keybind.Text = "Keybind: N/A"
+Keybind.TextColor3 = Color3.fromRGB(255, 255, 255)
+Keybind.TextSize = 14.000
+Keybind.TextStrokeColor3 = Color3.fromRGB(255, 255, 255)
+
 Close_2.Name = "Close"
 Close_2.Parent = Modify_2
 Close_2.AnchorPoint = Vector2.new(1, 0)
@@ -468,9 +502,207 @@ LineEffect.Size = UDim2.new(0, 0, 0, 1)
 LineEffect.Visible = false
 LineEffect.ZIndex = 10
 
+Configs.Name = "Configs"
+Configs.Parent = Main
+Configs.AnchorPoint = Vector2.new(1, 0)
+Configs.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+Configs.BorderSizePixel = 0
+Configs.ClipsDescendants = true
+Configs.Position = UDim2.new(1, -90, 0, 0)
+Configs.Size = UDim2.new(0, 25, 0, 25)
+Configs.AutoButtonColor = false
+Configs.Font = Enum.Font.Gotham
+Configs.Text = ""
+Configs.TextColor3 = Color3.fromRGB(255, 255, 255)
+Configs.TextSize = 25.000
+
+UICorner_10.CornerRadius = UDim.new(0, 4)
+UICorner_10.Parent = Configs
+
+ImageLabel.Parent = Configs
+ImageLabel.AnchorPoint = Vector2.new(0.5, 0.5)
+ImageLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+ImageLabel.BackgroundTransparency = 1.000
+ImageLabel.BorderSizePixel = 0
+ImageLabel.Position = UDim2.new(0.5, 0, 0.5, 0)
+ImageLabel.Size = UDim2.new(1, -4, 1, -4)
+ImageLabel.Image = "rbxassetid://8723242071"
+
+ConfigMenu.Name = "ConfigMenu"
+ConfigMenu.Parent = Main
+ConfigMenu.AnchorPoint = Vector2.new(0.5, 0.5)
+ConfigMenu.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+ConfigMenu.BorderColor3 = Color3.fromRGB(100, 100, 100)
+ConfigMenu.Position = UDim2.new(0.5, 0, 0.5, 0)
+ConfigMenu.Size = UDim2.new(0, 250, 0, 230)
+ConfigMenu.Visible = false
+ConfigMenu.ZIndex = 10
+
+Title_4.Name = "Title"
+Title_4.Parent = ConfigMenu
+Title_4.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+Title_4.BorderColor3 = Color3.fromRGB(100, 100, 100)
+Title_4.Size = UDim2.new(1, 0, 0, 20)
+Title_4.ZIndex = 11
+Title_4.Font = Enum.Font.Gotham
+Title_4.Text = "Config Menu"
+Title_4.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title_4.TextSize = 14.000
+
+Content_2.Name = "Content"
+Content_2.Parent = ConfigMenu
+Content_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Content_2.BackgroundTransparency = 1.000
+Content_2.BorderSizePixel = 0
+Content_2.Position = UDim2.new(0, 0, 0, 20)
+Content_2.Size = UDim2.new(1, 0, 1, -20)
+
+UIPadding_4.Parent = Content_2
+UIPadding_4.PaddingBottom = UDim.new(0, 10)
+UIPadding_4.PaddingLeft = UDim.new(0, 10)
+UIPadding_4.PaddingRight = UDim.new(0, 10)
+UIPadding_4.PaddingTop = UDim.new(0, 10)
+
+ConfigName.Name = "ConfigName"
+ConfigName.Parent = Content_2
+ConfigName.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+ConfigName.BorderColor3 = Color3.fromRGB(100, 100, 100)
+ConfigName.LayoutOrder = 1
+ConfigName.Size = UDim2.new(1, 0, 0, 30)
+ConfigName.ZIndex = 11
+ConfigName.ClearTextOnFocus = false
+ConfigName.Font = Enum.Font.Gotham
+ConfigName.PlaceholderText = "Name"
+ConfigName.Text = ""
+ConfigName.TextColor3 = Color3.fromRGB(255, 255, 255)
+ConfigName.TextSize = 14.000
+
+UIListLayout_4.Parent = Content_2
+UIListLayout_4.SortOrder = Enum.SortOrder.LayoutOrder
+UIListLayout_4.Padding = UDim.new(0, 10)
+
+Save.Name = "Save"
+Save.Parent = Content_2
+Save.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+Save.BorderColor3 = Color3.fromRGB(100, 100, 100)
+Save.ClipsDescendants = true
+Save.LayoutOrder = 2
+Save.Size = UDim2.new(1, 0, 0, 30)
+Save.ZIndex = 11
+Save.AutoButtonColor = false
+Save.Font = Enum.Font.Gotham
+Save.Text = "Save Config"
+Save.TextColor3 = Color3.fromRGB(255, 255, 255)
+Save.TextSize = 14.000
+
+Configs_2.Name = "Configs"
+Configs_2.Parent = Content_2
+Configs_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Configs_2.BackgroundTransparency = 1.000
+Configs_2.LayoutOrder = 3
+Configs_2.Size = UDim2.new(1, 0, 0, 30)
+Configs_2.ZIndex = 13
+
+Toggle.Name = "Toggle"
+Toggle.Parent = Configs_2
+Toggle.AnchorPoint = Vector2.new(1, 0)
+Toggle.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+Toggle.BorderColor3 = Color3.fromRGB(100, 100, 100)
+Toggle.ClipsDescendants = true
+Toggle.Position = UDim2.new(1, 0, 0, 0)
+Toggle.Size = UDim2.new(0, 30, 0, 30)
+Toggle.ZIndex = 13
+Toggle.AutoButtonColor = false
+Toggle.Font = Enum.Font.Gotham
+Toggle.Text = ">"
+Toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
+Toggle.TextSize = 18.000
+
+Label.Name = "Label"
+Label.Parent = Configs_2
+Label.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+Label.BorderColor3 = Color3.fromRGB(100, 100, 100)
+Label.Size = UDim2.new(1, -30, 0, 30)
+Label.ZIndex = 13
+Label.Font = Enum.Font.Gotham
+Label.Text = "Your Configs"
+Label.TextColor3 = Color3.fromRGB(255, 255, 255)
+Label.TextSize = 14.000
+Label.TextXAlignment = Enum.TextXAlignment.Left
+
+UIPadding_5.Parent = Label
+UIPadding_5.PaddingLeft = UDim.new(0, 8)
+
+Items.Name = "Items"
+Items.Parent = Configs_2
+Items.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+Items.BorderColor3 = Color3.fromRGB(100, 100, 100)
+Items.ClipsDescendants = true
+Items.Position = UDim2.new(0, 0, 0, 30)
+Items.Size = UDim2.new(1, 0, 0, 0)
+Items.ZIndex = 12
+
+Example_2.Name = "Example"
+Example_2.Parent = Items
+Example_2.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+Example_2.BorderColor3 = Color3.fromRGB(100, 100, 100)
+Example_2.Size = UDim2.new(1, 0, 0, 30)
+Example_2.Visible = false
+Example_2.ZIndex = 12
+Example_2.Font = Enum.Font.Gotham
+Example_2.Text = "Config"
+Example_2.TextColor3 = Color3.fromRGB(255, 255, 255)
+Example_2.TextSize = 14.000
+
+UIListLayout_5.Parent = Items
+UIListLayout_5.SortOrder = Enum.SortOrder.LayoutOrder
+
+Load.Name = "Load"
+Load.Parent = Content_2
+Load.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+Load.BorderColor3 = Color3.fromRGB(100, 100, 100)
+Load.ClipsDescendants = true
+Load.LayoutOrder = 4
+Load.Size = UDim2.new(1, 0, 0, 30)
+Load.ZIndex = 11
+Load.AutoButtonColor = false
+Load.Font = Enum.Font.Gotham
+Load.Text = "Load Selected Config"
+Load.TextColor3 = Color3.fromRGB(255, 255, 255)
+Load.TextSize = 14.000
+
+Delete_2.Name = "Delete"
+Delete_2.Parent = Content_2
+Delete_2.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+Delete_2.BorderColor3 = Color3.fromRGB(100, 100, 100)
+Delete_2.ClipsDescendants = true
+Delete_2.LayoutOrder = 5
+Delete_2.Size = UDim2.new(1, 0, 0, 30)
+Delete_2.ZIndex = 11
+Delete_2.AutoButtonColor = false
+Delete_2.Font = Enum.Font.Gotham
+Delete_2.Text = "Delete Selected Config"
+Delete_2.TextColor3 = Color3.fromRGB(255, 255, 255)
+Delete_2.TextSize = 14.000
+
+Close_3.Name = "Close"
+Close_3.Parent = ConfigMenu
+Close_3.AnchorPoint = Vector2.new(1, 0)
+Close_3.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+Close_3.BorderColor3 = Color3.fromRGB(100, 100, 100)
+Close_3.ClipsDescendants = true
+Close_3.Position = UDim2.new(1, 0, 0, 0)
+Close_3.Size = UDim2.new(0, 20, 0, 20)
+Close_3.ZIndex = 11
+Close_3.AutoButtonColor = false
+Close_3.Font = Enum.Font.GothamBold
+Close_3.Text = "X"
+Close_3.TextColor3 = Color3.fromRGB(255, 255, 255)
+Close_3.TextSize = 14.000
+
 -- Scripts:
 
-local function FRHQMD_fake_script() -- Buttons.ButtonsScript 
+local function AIWAOUZ_fake_script() -- Buttons.ButtonsScript 
 	local script = Instance.new('LocalScript', Buttons)
 
 	local player = game:GetService("Players").LocalPlayer
@@ -484,10 +716,22 @@ local function FRHQMD_fake_script() -- Buttons.ButtonsScript
 	
 	end)
 end
-coroutine.wrap(FRHQMD_fake_script)()
-local function MIWIMIK_fake_script() -- Main.Init 
+coroutine.wrap(AIWAOUZ_fake_script)()
+local function FIJJJSN_fake_script() -- Main.Init 
 	local script = Instance.new('LocalScript', Main)
 
+	local months = {"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"}
+	function getdate()
+		local a = os.date("*t")
+		local month = months[a.month]
+		local day = a.day
+		local year = a.year
+		local time = a.hour..":"..(#tostring(a.min) == 1 and 0 or "")..a.min
+		
+		return string.format("%s %s, %s | %s", month, day, year, time)
+	end
+	shared.WP_GETDATE = getdate
+	
 	-- apply properties that gui to lua doesnt convert
 	
 	local main = script.Parent
@@ -501,6 +745,8 @@ local function MIWIMIK_fake_script() -- Main.Init
 	scroll.Example:SetAttribute("Position", Vector3.new())
 	scroll.Example:SetAttribute("Color", Color3.fromRGB(255,255,255))
 	scroll.Example:SetAttribute("BeamWidth", 3)
+	scroll.Example:SetAttribute("Created", getdate())
+	scroll.Example:SetAttribute("Keybind", "")
 	--scroll.Example:SetAttribute("Object", nil)
 	
 	script.Parent.Modify:SetAttribute("Listener", "")
@@ -536,6 +782,7 @@ local function MIWIMIK_fake_script() -- Main.Init
 	--------------------
 	
 	local _mouse = game:GetService("Players").LocalPlayer:GetMouse()
+	local ts = game:GetService("TweenService")
 	local uis = game:GetService("UserInputService")
 	local down = false
 	
@@ -555,9 +802,80 @@ local function MIWIMIK_fake_script() -- Main.Init
 			task.wait()
 		until not down
 	end)
+	
+	shared.WP_UIOPENED = true
+	local tweening = false
+	local args = {"Out", "Sine", 0.3, true}
+	local oldsize = UDim2.new(0, 400, 0, 300)
+	main.Minimize.Activated:Connect(function()
+		if not tweening then
+			shared.WP_UIOPENED = not shared.WP_UIOPENED
+			if shared.WP_UIOPENED then
+				tweening = true
+				main:TweenSize(oldsize, unpack(args))
+				task.wait(0.3)
+				main.ResizeX.Visible = true
+				main.ResizeY.Visible = true
+				main.Resize.Visible = true
+				tweening = false
+			else
+				tweening = true
+				oldsize = main.Size
+				main:TweenSize(UDim2.new(0, main.Size.X.Offset, 0, 44), unpack(args))
+				main.ResizeX.Visible = false
+				main.ResizeY.Visible = false
+				main.Resize.Visible = false
+				main.Modify.Visible = false
+				main.ConfigMenu.Visible = false
+				task.wait(0.3)
+				tweening = false
+			end
+		end
+	end)
+	
+	main.Configs.Activated:Connect(function()
+		if shared.WP_UIOPENED then
+			main.ConfigMenu.Visible = not main.ConfigMenu.Visible
+		end
+	end)
+	
+	function additem(data)
+		local new = scroll.Example:Clone()
+		new.Parent = scroll
+		new.Visible = true
+		new.Name = data.Name
+		new.Title.Text = data.Name
+		new:SetAttribute("Name", data.Name)
+		new:SetAttribute("Position", data.Position)
+		new:SetAttribute("Color", data.Color)
+		new:SetAttribute("BeamWidth", data.BeamWidth)
+		new:SetAttribute("Keybind", data.Keybind)
+		shared.WP_ADDCONNS(new)
+	end
+	function clearitems()
+		for i,v in next, scroll:GetChildren() do
+			if v.Name ~= "UIListLayout" and v.Name ~= "Example" then
+				v:Destroy()
+			end
+		end
+	end
+	function clearwaypoints()
+		for i,v in next, shared.WP_FOLDER:GetChildren() do
+			v:Destroy()
+		end
+	end
+	
+	shared.WP_ADD = additem
+	shared.WP_CLEAR = clearitems
+	shared.WP_CLEARWP = clearwaypoints
+	
+	main.Close.Activated:Connect(function()
+		main.Parent:Destroy()
+		shared.WP_FOLDER:Destroy()
+	end)
 end
-coroutine.wrap(MIWIMIK_fake_script)()
-local function MTWZT_fake_script() -- Main.RippleEffect 
+coroutine.wrap(FIJJJSN_fake_script)()
+local function UEZMLVH_fake_script() -- Main.RippleEffect 
 	local script = Instance.new('LocalScript', Main)
 
 	local ts = game:GetService("TweenService")
@@ -602,51 +920,51 @@ local function MTWZT_fake_script() -- Main.RippleEffect
 		end
 	end)
 end
-coroutine.wrap(MTWZT_fake_script)()
-local function ZWBHD_fake_script() -- Main.Dragify 
+coroutine.wrap(UEZMLVH_fake_script)()
+local function KXWMNS_fake_script() -- Main.Dragify 
 	local script = Instance.new('LocalScript', Main)
 
 	local UIS = game:GetService("UserInputService")
 	function dragify(Frame)
-		local dragToggle = nil
-		local dragSpeed = 0
-		local dragInput = nil
-		local dragStart = nil
+	    local dragToggle = nil
+	    local dragSpeed = 0
+	    local dragInput = nil
+	    local dragStart = nil
 		local dragPos = nil
 		local startPos = nil
-		local function updateInput(input)
-			local Delta = input.Position - dragStart
-			local Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + Delta.X, startPos.Y.Scale, startPos.Y.Offset + Delta.Y)
-			game:GetService("TweenService"):Create(Frame, TweenInfo.new(0.1), {Position = Position}):Play()
-		end
-		Frame.InputBegan:Connect(function(input)
-			if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and UIS:GetFocusedTextBox() == nil then
-				dragToggle = true
-				dragStart = input.Position
-				startPos = Frame.Position
-				input.Changed:Connect(function()
-					if input.UserInputState == Enum.UserInputState.End then
-						dragToggle = false
-					end
-				end)
-			end
-		end)
-		Frame.InputChanged:Connect(function(input)
-			if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-				dragInput = input
-			end
-		end)
-		game:GetService("UserInputService").InputChanged:Connect(function(input)
-			if input == dragInput and dragToggle then
-				updateInput(input)
-			end
-		end)
+	    local function updateInput(input)
+	        local Delta = input.Position - dragStart
+	        local Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + Delta.X, startPos.Y.Scale, startPos.Y.Offset + Delta.Y)
+	        game:GetService("TweenService"):Create(Frame, TweenInfo.new(0.075), {Position = Position}):Play()
+	    end
+	    Frame.InputBegan:Connect(function(input)
+	        if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and UIS:GetFocusedTextBox() == nil then
+	            dragToggle = true
+	            dragStart = input.Position
+	            startPos = Frame.Position
+	            input.Changed:Connect(function()
+	                if input.UserInputState == Enum.UserInputState.End then
+	                    dragToggle = false
+	                end
+	            end)
+	        end
+	    end)
+	    Frame.InputChanged:Connect(function(input)
+	        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+	            dragInput = input
+	        end
+	    end)
+	    game:GetService("UserInputService").InputChanged:Connect(function(input)
+	        if input == dragInput and dragToggle then
+	            updateInput(input)
+	        end
+	    end)
 	end
 	
 	dragify(script.Parent)
 end
-coroutine.wrap(ZWBHD_fake_script)()
-local function UTBMBXX_fake_script() -- Main.Waypoints 
+coroutine.wrap(KXWMNS_fake_script)()
+local function XWAYZZQ_fake_script() -- Main.Waypoints 
 	local script = Instance.new('LocalScript', Main)
 
 	local folder = Instance.new("Folder", workspace)
@@ -655,6 +973,7 @@ local function UTBMBXX_fake_script() -- Main.Waypoints
 		folder.Name = folder.Name..string.char(math.random(97, 122))
 	end
 	script.Parent:SetAttribute("Folder", folder.Name)
+	shared.WP_FOLDER = folder
 	
 	function ApplyPartProps(p)
 		p.Transparency = 1
@@ -693,9 +1012,9 @@ local function UTBMBXX_fake_script() -- Main.Waypoints
 		Beam.LightEmission = 0
 		Beam.LightInfluence = 0
 		Beam.Transparency = NumberSequence.new({
-			NumberSequenceKeypoint.new(0,	0  ),
+			NumberSequenceKeypoint.new(0,    0  ),
 			NumberSequenceKeypoint.new(0.85, 0.5),
-			NumberSequenceKeypoint.new(1,	1  )
+			NumberSequenceKeypoint.new(1,    1  )
 		})
 		Beam.Attachment0 = BeamAtt0
 		Beam.Attachment1 = BeamAtt1
@@ -749,16 +1068,42 @@ local function UTBMBXX_fake_script() -- Main.Waypoints
 		
 		return Model
 	end
+	shared.WP_NEW = NewWaypoint
 	
 	local mod = script.Parent.Modify
 	local player = game:GetService("Players").LocalPlayer
 	local id = 1
+	
+	function addconnections(a)
+		local function teleport()
+			if player.Character ~= nil then
+				player.Character:MoveTo(a:GetAttribute("Position"))
+			end
+		end
+		a.Buttons.Teleport.Activated:Connect(teleport)
+		a.Buttons.Modify.Activated:Connect(function()
+			mod.Visible = true
+			mod.Title.Text = a:GetAttribute("Name")
+			mod.Content._Name.Text = a:GetAttribute("Name")
+			mod.Content._Position.Box.Text = a:GetAttribute("Position")
+			mod.Content.Color.Box.Text = tostring(a:GetAttribute("Color"))
+			mod.Content.Width.Text = a:GetAttribute("Width")
+			mod:SetAttribute("Listener", a.Name)
+		end)
+		a.Buttons.Delete.Activated:Connect(function()
+			folder[a.Name]:Destroy()
+			a:Destroy()
+		end)
+	end
+	shared.WP_ADDCONNS = addconnections
+	
 	script.Parent.Create.Activated:Connect(function()
 		if player.Character == nil then return end
 		local name = "Waypoint "..id
 		local pos = player.Character:GetPivot().Position
 		local color = Color3.fromRGB(255,255,255)
 		local width = 3
+		local date = shared.WP_GETDATE()
 		local m = NewWaypoint({
 			Name = name,
 			Position = pos,
@@ -770,34 +1115,23 @@ local function UTBMBXX_fake_script() -- Main.Waypoints
 		new.Visible = true
 		new.Name = name
 		new.Title.Text = name
+		new.Created.Text = date
 		
 		new:SetAttribute("Name", name)
 		new:SetAttribute("Position", pos)
 		new:SetAttribute("Color", color)
 		new:SetAttribute("BeamWidth", width)
+		new:SetAttribute("Created", date)
+		new:SetAttribute("Keybind", "")
 		--new:SetAttribute("Object", m)
 		
-		new.Buttons.Teleport.Activated:Connect(function()
-			if player.Character ~= nil then
-				player.Character:MoveTo(new:GetAttribute("Position"))
-			end
-		end)
-		new.Buttons.Modify.Activated:Connect(function()
-			mod.Visible = true
-			mod.Title.Text = new:GetAttribute("Name")
-			mod:SetAttribute("Listener", new.Name)
-			-- do shit
-		end)
-		new.Buttons.Delete.Activated:Connect(function()
-			folder[new.Name]:Destroy()
-			new:Destroy()
-		end)
+		addconnections(new)
 		
 		id += 1
 	end)
 end
-coroutine.wrap(UTBMBXX_fake_script)()
-local function XFYDBC_fake_script() -- Content.Modifier 
+coroutine.wrap(XWAYZZQ_fake_script)()
+local function HMAZ_fake_script() -- Content.Modifier 
 	local script = Instance.new('LocalScript', Content)
 
 	function focuslost(obj,func)
@@ -830,6 +1164,7 @@ local function XFYDBC_fake_script() -- Content.Modifier
 	end
 	
 	local player = game:GetService("Players").LocalPlayer
+	local uis = game:GetService("UserInputService")
 	local mod = script.Parent.Parent
 	local ui = script.Parent.Parent.Parent.Scroll
 	local folder = workspace[script.Parent.Parent.Parent:GetAttribute("Folder")]
@@ -914,9 +1249,24 @@ local function XFYDBC_fake_script() -- Content.Modifier
 			setwaypointwidth(folder[name], width)
 		end
 	end)
+	
+	local checking = false
+	script.Parent.Keybind.Activated:Connect(function()
+		checking = true
+		script.Parent.Keybind.Text = "Keybind: ..."
+	end)
+	
+	uis.InputBegan:Connect(function(i)
+		if checking and i.KeyCode ~= nil then
+			local key = i.KeyCode.Name
+			script.Parent.Keybind.Text = "Keybind: "..key
+			ui[mod:GetAttribute("Listener")]:SetAttribute("Keybind", key)
+			checking = false
+		end
+	end)
 end
-coroutine.wrap(XFYDBC_fake_script)()
-local function RVGFBQP_fake_script() -- Main.TextBoxEffect 
+coroutine.wrap(HMAZ_fake_script)()
+local function YJMNRR_fake_script() -- Main.TextBoxEffect 
 	local script = Instance.new('LocalScript', Main)
 
 	local ts = game:GetService("TweenService")
@@ -926,28 +1276,177 @@ local function RVGFBQP_fake_script() -- Main.TextBoxEffect
 	local sine = Enum.EasingStyle.Sine
 	local out = Enum.EasingDirection.Out
 	local info = TweenInfo.new(duration, sine, out)
+	local studio = game:GetService("RunService"):IsStudio()
 	
 	function addeffect(a)
-		local targetsize = UDim2.new(1, 2, 0, 1)
-		
-		local new = line:Clone()
-		new.Parent = a
-		new.Visible = true
-		
-		ts:Create(new, info, {Size = targetsize}):Play()
+		if studio or checkcaller() then
+			local targetsize = UDim2.new(1, 2, 0, 1)
+	
+			local new = line:Clone()
+			new.Parent = a
+			new.Visible = true
+			new.ZIndex = 20
+	
+			ts:Create(new, info, {Size = targetsize}):Play()
+		end
 	end
 	function removeeffect(a)
-		local obj = a.LineEffect
-		local targetsize = UDim2.new(0, 0, 0, 1)
-		
-		ts:Create(obj, info, {Size = targetsize, Transparency = 1}):Play()
-		
-		task.wait(duration)
-		
-		obj:Destroy()
+		if studio or checkcaller() then
+			local obj = a.LineEffect
+			local targetsize = UDim2.new(0, 0, 0, 1)
+	
+			ts:Create(obj, info, {Size = targetsize, Transparency = 1}):Play()
+	
+			task.wait(duration)
+	
+			obj:Destroy()
+		end
 	end
 	
 	uis.TextBoxFocused:Connect(addeffect)
 	uis.TextBoxFocusReleased:Connect(removeeffect)
 end
-coroutine.wrap(RVGFBQP_fake_script)()
+coroutine.wrap(YJMNRR_fake_script)()
+local function HCJXR_fake_script() -- Content_2.ConfigUI 
+	local script = Instance.new('LocalScript', Content_2)
+
+	function focuslost(obj,func)
+		local a = (script.Parent[obj].ClassName == "Frame" and script.Parent[obj].Box) or script.Parent[obj]
+		a.FocusLost:Connect(function(ep)
+			if ep then
+				func(a)
+			end
+		end)
+	end
+	function isempty(s)
+		return s:gsub(" ","") == ""
+	end
+	
+	local player = game:GetService("Players").LocalPlayer
+	local set = script.Parent.Parent
+	local ui = script.Parent.Parent.Parent.Scroll
+	local folder = workspace[script.Parent.Parent.Parent:GetAttribute("Folder")]
+	
+	local cfgs = script.Parent.Configs
+	local args = {"Out", "Sine", 0.2, true}
+	local isopen = false
+	
+	function opendropdown(a)
+		local abs = a.Items.UIListLayout.AbsoluteContentSize
+		a.Toggle.Text = "v"
+		a.Items:TweenSize(UDim2.new(1, 0, 0, abs.Y), unpack(args))
+	end
+	function closedropdown(a)
+		a.Toggle.Text = ">"
+		a.Items:TweenSize(UDim2.new(1, 0, 0, 0), unpack(args))
+	end
+	function updatedropdown(a)
+		if isopen then
+			opendropdown(a)
+		end
+	end
+	
+	set.Close.Activated:Connect(function()
+		set.Visible = false
+	end)
+	
+	cfgs.Toggle.Activated:Connect(function()
+		isopen = not isopen
+		if isopen then
+			opendropdown(cfgs)
+		else
+			closedropdown(cfgs)
+		end
+	end)
+	cfgs.Items.ChildAdded:Connect(function()
+		updatedropdown(cfgs)
+	end)
+	cfgs.Items.ChildRemoved:Connect(function()
+		updatedropdown(cfgs)
+	end)
+	
+	if isfolder("WaypointManager") then
+		for i,v in next, listfiles("WaypointManager") do
+			local name = v:sub(17, -1)
+			local new = cfgs.Items.Example:Clone()
+			new.Visible = true
+			new.Parent = cfgs.Items
+			new.Name = name
+			new.Text = name
+			new.Activated:Connect(function()
+				script.Parent:SetAttribute("Selected", name)
+			end)
+		end
+	end
+end
+coroutine.wrap(HCJXR_fake_script)()
+local function FMXMASZ_fake_script() -- Content_2.ConfigManager 
+	local script = Instance.new('LocalScript', Content_2)
+
+	local scroll = script.Parent.Parent.Parent.Scroll
+	local http = game:GetService("HttpService")
+	script.Parent:SetAttribute("Selected", "")
+	function isempty(s)
+		return s:gsub(" ","") == ""
+	end
+	function encode(s)
+		return http:JSONEncode(s)
+	end
+	function decode(s)
+		local a = http:JSONDecode(s)
+		a.Position = Vector3.new(unpack(a.Position))
+		a.Color = Color3.new(unpack(a.Color))
+		return a
+	end
+	function totable(a)
+		if typeof(a) == "Vector3" then
+			return {a.X, a.Y, a.Z}
+		elseif typeof(a) == "Color3" then
+			return {a.R, a.G, a.B}
+		end
+	end
+	function save()
+		local t = script.Parent.ConfigName.Text
+		local s = script.Parent:GetAttribute("Selected")
+		if not isempty(t) then
+			if not isfolder("WaypointManager") then
+				makefolder("WaypointManager")
+			end
+			
+			local path = "WaypointManager\\"..t
+			makefolder(path)
+			
+			for i,v in next, scroll:GetChildren() do
+				if v.Name ~= "UIListLayout" and v.Name ~= "Example" then
+					local name = v:GetAttribute("Name")
+					local data = {
+						Name = name,
+						Position = totable(v:GetAttribute("Position")),
+						Color = totable(v:GetAttribute("Color")),
+						BeamWidth = v:GetAttribute("BeamWidth"),
+						Created = v:GetAttribute("Created"),
+						Keybind = ""
+					}
+					writefile(path.."\\"..name..".json", encode(data))
+				end
+			end
+		end
+	end
+	function load()
+		local s = script.Parent:GetAttribute("Selected")
+		local path = "WaypointManager\\"..s
+		if isfolder(path) and s ~= "" then
+			shared.WP_CLEAR()
+			shared.WP_CLEARWP()
+			for i,v in next, listfiles(path) do
+				local data = decode(readfile(v))
+				shared.WP_NEW(data)
+				shared.WP_ADD(data)
+			end
+		end
+	end
+	
+	script.Parent.Save.Activated:Connect(save)
+	script.Parent.Load.Activated:Connect(load)
+end
+coroutine.wrap(FMXMASZ_fake_script)()
