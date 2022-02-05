@@ -67,9 +67,14 @@ local UIPadding_5 = Instance.new("UIPadding")
 local Items = Instance.new("Frame")
 local Example_2 = Instance.new("TextButton")
 local UIListLayout_5 = Instance.new("UIListLayout")
+local lol = Instance.new("TextButton")
 local Load = Instance.new("TextButton")
 local Delete_2 = Instance.new("TextButton")
 local Close_3 = Instance.new("TextButton")
+local Version = Instance.new("TextLabel")
+local UIPadding_6 = Instance.new("UIPadding")
+local Outline = Instance.new("Frame")
+local UICorner_11 = Instance.new("UICorner")
 
 if syn then
 	syn.protect_gui(Waypoints)
@@ -240,7 +245,7 @@ Ripple.AnchorPoint = Vector2.new(0.5, 0.5)
 Ripple.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Ripple.BackgroundTransparency = 0.800
 Ripple.BorderSizePixel = 0
-Ripple.ZIndex = 10
+Ripple.ZIndex = 20
 
 UICorner_5.CornerRadius = UDim.new(1, 0)
 UICorner_5.Parent = Ripple
@@ -346,7 +351,7 @@ Title_3.BorderColor3 = Color3.fromRGB(100, 100, 100)
 Title_3.Size = UDim2.new(1, 0, 0, 20)
 Title_3.ZIndex = 6
 Title_3.Font = Enum.Font.Gotham
-Title_3.Text = "Title"
+Title_3.Text = "Waypoint Modifier"
 Title_3.TextColor3 = Color3.fromRGB(255, 255, 255)
 Title_3.TextSize = 14.000
 
@@ -657,6 +662,17 @@ Example_2.TextSize = 14.000
 UIListLayout_5.Parent = Items
 UIListLayout_5.SortOrder = Enum.SortOrder.LayoutOrder
 
+lol.Name = "lol"
+lol.Parent = Items
+lol.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+lol.BorderColor3 = Color3.fromRGB(100, 100, 100)
+lol.Size = UDim2.new(1, 0, 0, 30)
+lol.ZIndex = 12
+lol.Font = Enum.Font.Gotham
+lol.Text = "Config"
+lol.TextColor3 = Color3.fromRGB(255, 255, 255)
+lol.TextSize = 14.000
+
 Load.Name = "Load"
 Load.Parent = Content_2
 Load.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
@@ -700,9 +716,38 @@ Close_3.Text = "X"
 Close_3.TextColor3 = Color3.fromRGB(255, 255, 255)
 Close_3.TextSize = 14.000
 
+Version.Name = "Version"
+Version.Parent = Main
+Version.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Version.BackgroundTransparency = 1.000
+Version.BorderSizePixel = 0
+Version.Position = UDim2.new(0, 212, 0, 0)
+Version.Size = UDim2.new(0, 40, 0, 25)
+Version.Font = Enum.Font.Gotham
+Version.Text = "v0.3.0"
+Version.TextColor3 = Color3.fromRGB(50, 50, 50)
+Version.TextSize = 12.000
+Version.TextXAlignment = Enum.TextXAlignment.Left
+Version.TextYAlignment = Enum.TextYAlignment.Bottom
+
+UIPadding_6.Parent = Version
+UIPadding_6.PaddingBottom = UDim.new(0, 3)
+
+Outline.Name = "Outline"
+Outline.Parent = Main
+Outline.AnchorPoint = Vector2.new(0.5, 0.5)
+Outline.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+Outline.BorderSizePixel = 0
+Outline.Position = UDim2.new(0.5, 0, 0.5, 0)
+Outline.Size = UDim2.new(1, 22, 1, 22)
+Outline.ZIndex = -1
+
+UICorner_11.CornerRadius = UDim.new(0, 4)
+UICorner_11.Parent = Outline
+
 -- Scripts:
 
-local function AIWAOUZ_fake_script() -- Buttons.ButtonsScript 
+local function KKQRAO_fake_script() -- Buttons.ButtonsScript 
 	local script = Instance.new('LocalScript', Buttons)
 
 	local player = game:GetService("Players").LocalPlayer
@@ -716,10 +761,24 @@ local function AIWAOUZ_fake_script() -- Buttons.ButtonsScript
 	
 	end)
 end
-coroutine.wrap(AIWAOUZ_fake_script)()
-local function FIJJJSN_fake_script() -- Main.Init 
+coroutine.wrap(KKQRAO_fake_script)()
+local function SETYU_fake_script() -- Main.Init 
 	local script = Instance.new('LocalScript', Main)
 
+	--[[
+		defined globals
+		WP_GETDATE = Init
+		WP_ADDATT = Init
+		WP_UIOPENED = Init
+		WP_ADD = Init
+		WP_CLEAR = Init
+		WP_CLEARWP = Init
+		WP_FOLDER = Waypoints
+		WP_NEW = Waypoints
+		WP_ADDCONNS = Waypoints
+		WP_LOADCFGS = ConfigUI
+	]]
+	
 	local months = {"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"}
 	function getdate()
 		local a = os.date("*t")
@@ -737,17 +796,24 @@ local function FIJJJSN_fake_script() -- Main.Init
 	local main = script.Parent
 	local scroll = main.Scroll
 	local atend = Enum.TextTruncate.AtEnd
+	local vp = workspace.CurrentCamera.ViewportSize
+	main.Position = UDim2.new(0, vp.X / 2 - 200, 0, vp.Y / 2 - 150)
+	main.Parent.IgnoreGuiInset = true
 	
 	scroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
 	scroll.Example.Title.TextTruncate = atend
 	scroll.Example.Created.TextTruncate = atend
-	scroll.Example:SetAttribute("Name", "Placeholder")
-	scroll.Example:SetAttribute("Position", Vector3.new())
-	scroll.Example:SetAttribute("Color", Color3.fromRGB(255,255,255))
-	scroll.Example:SetAttribute("BeamWidth", 3)
-	scroll.Example:SetAttribute("Created", getdate())
-	scroll.Example:SetAttribute("Keybind", "")
-	--scroll.Example:SetAttribute("Object", nil)
+	function addattributes(a,t)
+		local b = t ~= nil
+		a:SetAttribute("Name", (b and t.Name) or "Placeholder")
+		a:SetAttribute("Position", (b and t.Position) or Vector3.new())
+		a:SetAttribute("Color", (b and t.Color) or Color3.fromRGB(255,255,255))
+		a:SetAttribute("BeamWidth", (b and t.BeamWidth) or 3)
+		a:SetAttribute("Created", (b and t.Created) or getdate())
+		a:SetAttribute("Keybind", (b and t.Keybind) or "Unknown")
+	end
+	addattributes(scroll.Example)
+	shared.WP_ADDATT = addattributes
 	
 	script.Parent.Modify:SetAttribute("Listener", "")
 	
@@ -825,6 +891,7 @@ local function FIJJJSN_fake_script() -- Main.Init
 				main.ResizeX.Visible = false
 				main.ResizeY.Visible = false
 				main.Resize.Visible = false
+				
 				main.Modify.Visible = false
 				main.ConfigMenu.Visible = false
 				task.wait(0.3)
@@ -845,11 +912,8 @@ local function FIJJJSN_fake_script() -- Main.Init
 		new.Visible = true
 		new.Name = data.Name
 		new.Title.Text = data.Name
-		new:SetAttribute("Name", data.Name)
-		new:SetAttribute("Position", data.Position)
-		new:SetAttribute("Color", data.Color)
-		new:SetAttribute("BeamWidth", data.BeamWidth)
-		new:SetAttribute("Keybind", data.Keybind)
+		new.Created.Text = data.Created
+		shared.WP_ADDATT(new, data)
 		shared.WP_ADDCONNS(new)
 	end
 	function clearitems()
@@ -874,8 +938,8 @@ local function FIJJJSN_fake_script() -- Main.Init
 		shared.WP_FOLDER:Destroy()
 	end)
 end
-coroutine.wrap(FIJJJSN_fake_script)()
-local function UEZMLVH_fake_script() -- Main.RippleEffect 
+coroutine.wrap(SETYU_fake_script)()
+local function DIWX_fake_script() -- Main.RippleEffect 
 	local script = Instance.new('LocalScript', Main)
 
 	local ts = game:GetService("TweenService")
@@ -920,51 +984,51 @@ local function UEZMLVH_fake_script() -- Main.RippleEffect
 		end
 	end)
 end
-coroutine.wrap(UEZMLVH_fake_script)()
-local function KXWMNS_fake_script() -- Main.Dragify 
+coroutine.wrap(DIWX_fake_script)()
+local function YRBS_fake_script() -- Main.Dragify 
 	local script = Instance.new('LocalScript', Main)
 
 	local UIS = game:GetService("UserInputService")
 	function dragify(Frame)
-	    local dragToggle = nil
-	    local dragSpeed = 0
-	    local dragInput = nil
-	    local dragStart = nil
+		local dragToggle = nil
+		local dragSpeed = 0
+		local dragInput = nil
+		local dragStart = nil
 		local dragPos = nil
 		local startPos = nil
-	    local function updateInput(input)
-	        local Delta = input.Position - dragStart
-	        local Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + Delta.X, startPos.Y.Scale, startPos.Y.Offset + Delta.Y)
-	        game:GetService("TweenService"):Create(Frame, TweenInfo.new(0.075), {Position = Position}):Play()
-	    end
-	    Frame.InputBegan:Connect(function(input)
-	        if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and UIS:GetFocusedTextBox() == nil then
-	            dragToggle = true
-	            dragStart = input.Position
-	            startPos = Frame.Position
-	            input.Changed:Connect(function()
-	                if input.UserInputState == Enum.UserInputState.End then
-	                    dragToggle = false
-	                end
-	            end)
-	        end
-	    end)
-	    Frame.InputChanged:Connect(function(input)
-	        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-	            dragInput = input
-	        end
-	    end)
-	    game:GetService("UserInputService").InputChanged:Connect(function(input)
-	        if input == dragInput and dragToggle then
-	            updateInput(input)
-	        end
-	    end)
+		local function updateInput(input)
+			local Delta = input.Position - dragStart
+			local Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + Delta.X, startPos.Y.Scale, startPos.Y.Offset + Delta.Y)
+			game:GetService("TweenService"):Create(Frame, TweenInfo.new(0.075), {Position = Position}):Play()
+		end
+		Frame.InputBegan:Connect(function(input)
+			if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and UIS:GetFocusedTextBox() == nil then
+				dragToggle = true
+				dragStart = input.Position
+				startPos = Frame.Position
+				input.Changed:Connect(function()
+					if input.UserInputState == Enum.UserInputState.End then
+						dragToggle = false
+					end
+				end)
+			end
+		end)
+		Frame.InputChanged:Connect(function(input)
+			if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+				dragInput = input
+			end
+		end)
+		game:GetService("UserInputService").InputChanged:Connect(function(input)
+			if input == dragInput and dragToggle then
+				updateInput(input)
+			end
+		end)
 	end
 	
 	dragify(script.Parent)
 end
-coroutine.wrap(KXWMNS_fake_script)()
-local function XWAYZZQ_fake_script() -- Main.Waypoints 
+coroutine.wrap(YRBS_fake_script)()
+local function MFKVEE_fake_script() -- Main.Waypoints 
 	local script = Instance.new('LocalScript', Main)
 
 	local folder = Instance.new("Folder", workspace)
@@ -1012,9 +1076,9 @@ local function XWAYZZQ_fake_script() -- Main.Waypoints
 		Beam.LightEmission = 0
 		Beam.LightInfluence = 0
 		Beam.Transparency = NumberSequence.new({
-			NumberSequenceKeypoint.new(0,    0  ),
+			NumberSequenceKeypoint.new(0,	0  ),
 			NumberSequenceKeypoint.new(0.85, 0.5),
-			NumberSequenceKeypoint.new(1,    1  )
+			NumberSequenceKeypoint.new(1,	1  )
 		})
 		Beam.Attachment0 = BeamAtt0
 		Beam.Attachment1 = BeamAtt1
@@ -1062,7 +1126,7 @@ local function XWAYZZQ_fake_script() -- Main.Waypoints
 		Label.Size = UDim2.new(1, 0, 1, 0)
 		Label.Font = Enum.Font.Gotham
 		Label.Text = cfg.Name 
-		Label.TextColor3 = Color3.fromRGB(255, 255, 255)
+		Label.TextColor3 = cfg.Color
 		Label.TextSize = 18 
 		Label.TextStrokeTransparency = 0 
 		
@@ -1071,6 +1135,7 @@ local function XWAYZZQ_fake_script() -- Main.Waypoints
 	shared.WP_NEW = NewWaypoint
 	
 	local mod = script.Parent.Modify
+	local content = mod.Content
 	local player = game:GetService("Players").LocalPlayer
 	local id = 1
 	
@@ -1082,13 +1147,17 @@ local function XWAYZZQ_fake_script() -- Main.Waypoints
 		end
 		a.Buttons.Teleport.Activated:Connect(teleport)
 		a.Buttons.Modify.Activated:Connect(function()
+			local name = a:GetAttribute("Name")
+			local color = a:GetAttribute("Color")
+			local bind = a:GetAttribute("Keybind")
 			mod.Visible = true
-			mod.Title.Text = a:GetAttribute("Name")
-			mod.Content._Name.Text = a:GetAttribute("Name")
-			mod.Content._Position.Box.Text = a:GetAttribute("Position")
-			mod.Content.Color.Box.Text = tostring(a:GetAttribute("Color"))
-			mod.Content.Width.Text = a:GetAttribute("Width")
-			mod:SetAttribute("Listener", a.Name)
+			content._Name.Text = name
+			content._Position.Box.Text = tostring(a:GetAttribute("Position"))
+			content.Color.Box.Text = string.format("%s, %s, %s", math.floor(color.R * 255), math.floor(color.G * 255), math.floor(color.B * 255))
+			content.Color.Preview.BackgroundColor3 = color
+			content.Width.Text = a:GetAttribute("BeamWidth")
+			content.Keybind.Text = "Keybind: "..(bind ~= nil and bind or "Unknown")
+			mod:SetAttribute("Listener", name)
 		end)
 		a.Buttons.Delete.Activated:Connect(function()
 			folder[a.Name]:Destroy()
@@ -1117,12 +1186,14 @@ local function XWAYZZQ_fake_script() -- Main.Waypoints
 		new.Title.Text = name
 		new.Created.Text = date
 		
-		new:SetAttribute("Name", name)
-		new:SetAttribute("Position", pos)
-		new:SetAttribute("Color", color)
-		new:SetAttribute("BeamWidth", width)
-		new:SetAttribute("Created", date)
-		new:SetAttribute("Keybind", "")
+		shared.WP_ADDATT(new, {
+			Name = name,
+			Position = pos,
+			Color = color,
+			BeamWidth = width,
+			Created = date,
+			Keybind = "Unknown"
+		})
 		--new:SetAttribute("Object", m)
 		
 		addconnections(new)
@@ -1130,8 +1201,8 @@ local function XWAYZZQ_fake_script() -- Main.Waypoints
 		id += 1
 	end)
 end
-coroutine.wrap(XWAYZZQ_fake_script)()
-local function HMAZ_fake_script() -- Content.Modifier 
+coroutine.wrap(MFKVEE_fake_script)()
+local function BLIFI_fake_script() -- Content.Modifier 
 	local script = Instance.new('LocalScript', Content)
 
 	function focuslost(obj,func)
@@ -1191,7 +1262,6 @@ local function HMAZ_fake_script() -- Content.Modifier
 			obj.BillboardGui.TextLabel.Text = t
 			
 			mod:SetAttribute("Listener", t)
-			mod.Title.Text = t
 		end
 	end)
 	
@@ -1265,8 +1335,8 @@ local function HMAZ_fake_script() -- Content.Modifier
 		end
 	end)
 end
-coroutine.wrap(HMAZ_fake_script)()
-local function YJMNRR_fake_script() -- Main.TextBoxEffect 
+coroutine.wrap(BLIFI_fake_script)()
+local function CEDMA_fake_script() -- Main.TextBoxEffect 
 	local script = Instance.new('LocalScript', Main)
 
 	local ts = game:GetService("TweenService")
@@ -1276,10 +1346,9 @@ local function YJMNRR_fake_script() -- Main.TextBoxEffect
 	local sine = Enum.EasingStyle.Sine
 	local out = Enum.EasingDirection.Out
 	local info = TweenInfo.new(duration, sine, out)
-	local studio = game:GetService("RunService"):IsStudio()
 	
 	function addeffect(a)
-		if studio or checkcaller() then
+		if a:FindFirstAncestor("Waypoints") then
 			local targetsize = UDim2.new(1, 2, 0, 1)
 	
 			local new = line:Clone()
@@ -1291,7 +1360,7 @@ local function YJMNRR_fake_script() -- Main.TextBoxEffect
 		end
 	end
 	function removeeffect(a)
-		if studio or checkcaller() then
+		if a:FindFirstAncestor("Waypoints") then
 			local obj = a.LineEffect
 			local targetsize = UDim2.new(0, 0, 0, 1)
 	
@@ -1306,8 +1375,8 @@ local function YJMNRR_fake_script() -- Main.TextBoxEffect
 	uis.TextBoxFocused:Connect(addeffect)
 	uis.TextBoxFocusReleased:Connect(removeeffect)
 end
-coroutine.wrap(YJMNRR_fake_script)()
-local function HCJXR_fake_script() -- Content_2.ConfigUI 
+coroutine.wrap(CEDMA_fake_script)()
+local function CKKHMT_fake_script() -- Content_2.ConfigUI 
 	local script = Instance.new('LocalScript', Content_2)
 
 	function focuslost(obj,func)
@@ -1365,8 +1434,13 @@ local function HCJXR_fake_script() -- Content_2.ConfigUI
 		updatedropdown(cfgs)
 	end)
 	
-	if isfolder("WaypointManager") then
-		for i,v in next, listfiles("WaypointManager") do
+	function loadconfigs()
+		for _,v in next, cfgs.Items:GetChildren() do
+			if v.Name ~= "UIListLayout" and v.Name ~= "Example" then
+				v:Destroy()
+			end
+		end
+		for _,v in next, listfiles("WaypointManager") do
 			local name = v:sub(17, -1)
 			local new = cfgs.Items.Example:Clone()
 			new.Visible = true
@@ -1378,9 +1452,13 @@ local function HCJXR_fake_script() -- Content_2.ConfigUI
 			end)
 		end
 	end
+	shared.WP_LOADCFGS = loadconfigs
+	if not game:GetService("RunService"):IsStudio() and isfolder("WaypointManager") then
+		loadconfigs()
+	end
 end
-coroutine.wrap(HCJXR_fake_script)()
-local function FMXMASZ_fake_script() -- Content_2.ConfigManager 
+coroutine.wrap(CKKHMT_fake_script)()
+local function VEURQFF_fake_script() -- Content_2.ConfigManager 
 	local script = Instance.new('LocalScript', Content_2)
 
 	local scroll = script.Parent.Parent.Parent.Scroll
@@ -1425,11 +1503,12 @@ local function FMXMASZ_fake_script() -- Content_2.ConfigManager
 						Color = totable(v:GetAttribute("Color")),
 						BeamWidth = v:GetAttribute("BeamWidth"),
 						Created = v:GetAttribute("Created"),
-						Keybind = ""
+						Keybind = v:GetAttribute("Keybind")
 					}
 					writefile(path.."\\"..name..".json", encode(data))
 				end
 			end
+			shared.WP_LOADCFGS()
 		end
 	end
 	function load()
@@ -1445,8 +1524,17 @@ local function FMXMASZ_fake_script() -- Content_2.ConfigManager
 			end
 		end
 	end
+	function delete()
+		local s = script.Parent:GetAttribute("Selected")
+		local path = "WaypointManager\\"..s
+		if isfolder(path) and s ~= "" then
+			delfolder(path)
+			script.Parent.Configs.Items[s]:Destroy()
+		end
+	end
 	
 	script.Parent.Save.Activated:Connect(save)
 	script.Parent.Load.Activated:Connect(load)
+	script.Parent.Delete.Activated:Connect(delete)
 end
-coroutine.wrap(FMXMASZ_fake_script)()
+coroutine.wrap(VEURQFF_fake_script)()
