@@ -99,8 +99,8 @@ shows W, A, S, D, LMB, RMB, Space, CPS, and FPS
 ---
   
 # Waypoint Manager  
-Updated February 3, 2022  
-unfinished (v0.2)  
+Updated February 5, 2022  
+v0.3.0 (unfinished)  
 todo: 
 - [x] configs  
 - [x] creation dates  
