@@ -4,8 +4,8 @@ my cool scripts
 ---
   
 # Universal Esp  
-Updated January 25, 2022  
-v1.6.5  
+Updated February 5, 2022  
+v1.6.6  
 - Box Esp  
 - Tracers  
 - Name Esp  
@@ -18,7 +18,7 @@ v1.6.5
 https://pastebin.com/raw/5zw0rLH9
 ```  
 ### UI Version  
-Updated January 25, 2022  
+Updated February 5, 2022  
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua"))()
 ```  
@@ -30,33 +30,13 @@ Supports `SetFunction` and `ResetFunction` for compatibility!
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspPerformance.lua"))()
 ```  
   
-## Update v1.6.5  
+## Update v1.6.6  
 Main Changes  
-- Re-added Look Tracers; no longer uses raycasts, instead uses a preset length
-- Added `Outline` option for all types
-- Added `OutlineColor` option for all types
-- Added `OutlineThickness` option for all types (except for Names)
-- Fixed the random square on ScriptWare
-- Removed `AntiDetection`, it will now apply by default
-- Toggling esp off should allow higher fps  
-  
-Misc Changes  
-- Added `Offset` option for Labels (Vector2)
-- Added `RainbowColor` option for Labels and Chams
-- Labels and Chams now support Model objects
-  
-Function Changes
-- Added `Add(<string, Instance> Player)`; adds esp to the specified Player
-- Added `Remove(<string, Instance> Player)`; remoevs esp from the specified Player
-- Added `SetFunction(<string> Function, <function> New)`; replaces Function with New, this can allow custom compatibility for unsupported games
-- Added `ResetFunction(<string> Function)`; sets the specified Function to its original function
-- Fixed `GetObjects`
-- Calling `GetObjects` without arguments returns all objects
-- Fixed `GetTotalObjects`  
-  
-UI Changes  
-- Added configs, currently only supports 1 config at a time
-- If you execute your setting before executing the UI, it will load your settings instead of overwriting it  
+- Universal Esp no longer supports Bad Business due to detections
+- Added selections to Mouse Visibility
+- Added `Origin` option for Health Bars
+- Added `OutlineBarOnly` option for Health Bars
+- Added `Scale` option for Head Dots
   
 ---
   
