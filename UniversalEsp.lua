@@ -1,29 +1,19 @@
 --[[
-v1.6.5 Changes  
-- Re-added Look Tracers; no longer uses raycast, instead uses a preset length
-- Added Outline setting for all types
-- Added OutlineColor setting for all types
-- Added OutlineThickness setting for all types (except for Names)
-- Fixed the random square on ScriptWare
-- Removed AntiDetection, it will now apply by default
-- Toggling esp off should allow higher fps
-
-- Added Offset option for Labels (Vector2)
-- Added RainbowColor option for Labels and Chams
-- Labels and Chams now support Models objects
-
-- Added Add(<string, Instance> Player); adds esp to the specified Player
-` Added Remove(<string, Instance> Player); removes esp from the specified Player
-- Added SetFunction(<string> Function, <function> New); replaces Function with New, this can allow custom compatibility for unsupported games
-- Added ResetFunction(<string> Function); sets the specified Function to its original function
-- Fixed GetObjects
-- Calling GetObjects without arguments returns all objects
-- Fixed GetTotalObjects
-
-UI Changes  
-- Added configs; currently only supports 1 config at a time
-- If you execute your settings before executing the UI, it will load your settings instead of overwriting it
+v1.6.6 Changes
+- Added selections to Mouse Visibility
+- Added `Origin` option for Health Bars
+- Added `OutlineBarOnly` option for Health Bars
+- Added `Scale` option for Head Dots
 ]]
+
+if game.GameId == 1168263273 then
+	game:GetService("StarterGui"):SetCore("SendNotification",{
+		Title = "Universal Esp",
+		Text = "Universal Esp is detected on Bad Business! Please use a different script to prevent getting banned.",
+		Duration = 5
+	})
+	return
+end
 
 if not EspSettings then
 	getgenv().EspSettings = {
@@ -35,6 +25,15 @@ if not EspSettings then
 			Enabled = true, -- makes any drawing objects transparent when they are near your mouse
 			Radius = 60,
 			Transparency = 0.3,
+			Selected = { -- set any of these to false to ignore them
+				Boxes = true,
+				Tracers = true,
+				Names = true,
+				Skeletons = true,
+				HealthBars = true,
+				HeadDots = true,
+				LookTracers = true
+			}
 		},
 		Boxes = {
 			Enabled = true,
@@ -94,7 +93,9 @@ if not EspSettings then
 			RainbowColor = false,
 			Outline = true,
 			OutlineColor = Color3.fromRGB(0,0,0),
-			OutlineThickness = 3
+			OutlineThickness = 3,
+			Origin = "None", -- "None" or "Left" or "Right"
+			OutlineBarOnly = true
 		},
 		HeadDots = {
 			Enabled = true,
@@ -106,7 +107,8 @@ if not EspSettings then
 			OutlineColor = Color3.fromRGB(0,0,0),
 			OutlineThickness = 3,
 			Thickness = 1,
-			Filled = false
+			Filled = false,
+			Scale = 1
 		},
 		LookTracers = {
 			Enabled = true,
@@ -123,14 +125,6 @@ if not EspSettings then
 	}
 end
 
-if game.GameId == 1168263273 then
-	game:GetService("StarterGui"):SetCore("SendNotification",{
-		Title = "Universal Esp",
-		Text = "Universal Esp is detected on Bad Business! Please use a different script to prevent getting banned.",
-		Duration = 5
-	})
-	return
-end
 if not EspSettings.HeadDots and not EspSettings.LookTracers then
 	local bind = Instance.new("BindableFunction")
 	bind.OnInvoke = function(a)
@@ -246,8 +240,8 @@ elseif GameId == gids.bb then
 	for _,v in next, getgc(true) do
 		if typeof(v) == "table" and rawget(v, "InitProjectile") and rawget(v, "TS") then
 			ts = rawget(v, "TS")
-			characters = ts.Characters
-			teams = ts.Teams
+			characters = rawget(ts, "Character")
+			teams = rawget(ts, "Teams")
 		end
 	end
 end
@@ -293,7 +287,8 @@ end
 local oldfuncs = {}
 
 function IsAlive(plr)
-	if plr.Character and FindFirstChild(plr.Character, "Humanoid") and FindFirstChild(plr.Character, "Humanoid").Health > 0 then
+	local humanoid = FindFirstChild(plr.Character or game, "Humanoid")
+	if plr.Character and humanoid and humanoid.Health > 0 then
 		return true
 	elseif getchar then
 		return getchar(plr) ~= nil
@@ -319,6 +314,7 @@ end
 oldfuncs.character = GetChar
 function GetHealth(plr)
 	local a = plr.Character
+	local humanoid = FindFirstChild(a or game, "Humanoid")
 	if gethealth then
 		return {mathfloor(gethealth(plr,plr)),100}
 	elseif ts then 
@@ -329,8 +325,8 @@ function GetHealth(plr)
 	elseif GameId == gids.arsenal then
 		a = plr.NRPBS
 		return {mathfloor(a.Health.Value), mathfloor(a.MaxHealth.Value)}
-	elseif a ~= nil and FindFirstChild(a, "Humanoid") then
-		return {mathfloor(a.Humanoid.Health), mathfloor(a.Humanoid.MaxHealth)}
+	elseif a ~= nil and humanoid then
+		return {mathfloor(humanoid.Health), mathfloor(humanoid.MaxHealth)}
 	end
 	return {100,100}
 end
@@ -342,6 +338,19 @@ function GetTeam(plr)
 	return plr.Team
 end
 oldfuncs.team = GetTeam
+function IsFFA()
+	local t = {}
+	for _,v in next, players:GetPlayers() do
+		local team = GetTeam(v)
+		if team == nil then return true end
+		team = team.Name or team
+		if not t[team] then
+			tableinsert(t, team)
+		end
+	end
+	return #t == 1
+end
+oldfuncs.ffa = IsFFA
 function ApplyZIndex(obj,name)
 	if ZIndexEnabled then
 		local idx = zindex[name]
@@ -717,15 +726,16 @@ end
 updateorigins()
 local conn1 = camera:GetPropertyChangedSignal("ViewportSize"):Connect(updateorigins)
 
-local lastupdate = osclock()
+local lastupdate, refresh = osclock(), ss.RefreshRate
 function update()
-	local refresh = ss.RefreshRate
+	refresh = ss.RefreshRate
 	refresh = mathclamp(refresh, 0, mathhuge)
 	if osclock() - lastupdate < (refresh / 1000) then
 		return
 	end
 	lastupdate = osclock()
 	origins.mouse = GetMouseLocation(uis)
+	local ffa, myteam, ccf, camfov = IsFFA(), GetTeam(player), camera.CFrame.Position, camera.FieldOfView
 	for _,v in next, OBJECTS do
 		if not v.Destroyed then
 			if v.Player == nil and not v.Options then
@@ -739,17 +749,16 @@ function update()
 			local tlx, tly, tlz, trx, try, blx, bly, brx, bry, z				 -- boxes corner axes shit
 			local c0, c1, c2, c3, c4, c5, c6, c7, c8							 -- part corner positions shit
 			local head, ltracerto												-- head dots and look tracers shit
-			local team, myteam, teamcolor										-- team shit
-			local ccf, char, health, maxhealth, mag, mousemag, camfov, render	-- other shit
+			local team, teamcolor												-- team shit
+			local char, health, maxhealth, mag, mousemag, render				 -- other shit
 			local s = ss[type] or v.Options									  -- settings shit
 			if VISIBLE and plr and IsAlive(plr) and s and s.Enabled then
 				local hp = GetHealth(plr)
-				ccf, char, health, maxhealth = camera.CFrame.Position, GetChar(plr), hp[1], hp[2]
+				char, health, maxhealth = GetChar(plr), hp[1], hp[2]
 				cf, size = char:GetBoundingBox()
-				team, myteam, teamcolor = GetTeam(plr), GetTeam(player), plr.TeamColor.Color
+				team, teamcolor = GetTeam(plr), plr.TeamColor.Color
 				mag = (ccf - cf.Position).Magnitude
-				camfov = camera.FieldOfView
-				render = (not ss.TeamCheck or (ss.TeamCheck and team ~= myteam)) and mag <= ss.MaximumDistance
+				render = ffa or (not ss.TeamCheck or (not ffa and ss.TeamCheck and team ~= myteam)) and mag <= ss.MaximumDistance
 				if render then
 					size /= 2
 					local x, y = size.X, size.Y
@@ -826,8 +835,8 @@ function update()
 											 (ts and team == "Omega" and omega or team == "Beta" and beta) or
 											 (s.UseTeamColor and teamcolor) or
 											 s.Color
-						local transparency = (mousevis.Enabled and mousemag <= mousevis.Radius and mousevis.Transparency) or
-											 s.Transparency
+						local transparency = (mousevis.Enabled and mousemag <= mousevis.Radius and mousevis.Selected[type] and mousevis.Transparency) or s.Transparency
+						
 						SetProp(obj, "Transparency", transparency)
 						SetProp(obj, "Color", color)
 						if type == "Boxes" then
@@ -929,35 +938,51 @@ function update()
 								end
 							end
 						elseif type == "HealthBars" then
-							local outline = s.Outline
+							local outline, origin, baronly = s.Outline, s.Origin:lower(), s.OutlineBarOnly
 							local bar, out = obj.Bar, obj.Outline
-							health = health / maxhealth
+							health = mathclamp(health, 0, maxhealth) / maxhealth
+							local left, right = blx, brx
+							local lefty, righty = bly, bry
+
+							if origin == "left" then
+								left = (blx < brx and blx) or brx
+								right = (blx > brx and blx) or brx
+
+								lefty = (blx < brx and bly) or bry
+								righty = (blx > brx and bly) or bry
+							elseif origin == "right" then
+								left = (blx < brx and brx) or blx
+								right = (blx > brx and brx) or blx
+
+								lefty = (blx < brx and bry) or bly
+								righty = (blx > brx and bry) or bly
+							end
 
 							bar.PointA = Vector2new(
-								blx + (brx - blx) * health,
-								(bly + (bry - bly) * health) + 5
+								left + (right - left) * health,
+								(lefty + (righty - lefty) * health) + 5
 							)
 							bar.PointB = Vector2new(
-								blx,
-								bly + 5
+								left,
+								lefty + 5
 							)
 							bar.PointC = Vector2new(
-								blx,
-								bly + z
+								left,
+								lefty + z
 							)
 							bar.PointD = Vector2new(
-								blx + (brx - blx) * health,
-								(bly + (bry - bly) * health) + z
+								left + (right - left) * health,
+								(lefty + (righty - lefty) * health) + z
 							)
 	
 							out.Visible = outline and bar.Visible
 							if outline then
 								out.Color = s.OutlineColor
 								out.Thickness = s.OutlineThickness
-								out.PointA = Vector2new(brx, bry + 5)
-								out.PointB = Vector2new(blx, bly + 5)
-								out.PointC = Vector2new(blx, bly + z)
-								out.PointD = Vector2new(brx, bry + z)
+								out.PointA = (baronly and bar.PointA) or Vector2new(brx, bry + 5)
+								out.PointB = (baronly and bar.PointB) or Vector2new(blx, bly + 5)
+								out.PointC = (baronly and bar.PointC) or Vector2new(blx, bly + z)
+								out.PointD = (baronly and bar.PointD) or Vector2new(brx, bry + z)
 							end
 						elseif type == "HeadDots" then
 							local thickness, outline, filled = s.Thickness, s.Outline, s.Filled
@@ -966,7 +991,7 @@ function update()
 							dot.Filled = filled
 
 							local pos = Vector2new(head.X, head.Y)
-							local radius = z / ((mag / 60) * (camfov / 70))
+							local radius = z / ((mag / 60) * (camfov / 70)) * s.Scale
 							dot.Position = pos
 							dot.Radius = radius
 
@@ -978,21 +1003,25 @@ function update()
 								out.Radius = (filled and radius + 1) or radius
 							end
 						elseif type == "LookTracers" then
-							local thickness, outline = s.Thickness, s.Outline
-							local tracer, out = obj.Tracer, obj.Outline
-							tracer.Thickness = thickness
+							if FindFirstChild(char, "Head") then
+								local thickness, outline = s.Thickness, s.Outline
+								local tracer, out = obj.Tracer, obj.Outline
+								tracer.Thickness = thickness
 
-							local from = Vector2new(head.X, head.Y)
-							local to = Vector2new(ltracerto.X, ltracerto.Y)
-							tracer.From = from
-							tracer.To = to
+								local from = Vector2new(head.X, head.Y)
+								local to = Vector2new(ltracerto.X, ltracerto.Y)
+								tracer.From = from
+								tracer.To = to
 
-							out.Visible = outline and tracer.Visible
-							if outline then
-								out.Color = s.OutlineColor
-								out.Thickness = thickness + s.OutlineThickness
-								out.From = from
-								out.To = to
+								out.Visible = outline and tracer.Visible
+								if outline then
+									out.Color = s.OutlineColor
+									out.Thickness = thickness + s.OutlineThickness
+									out.From = from
+									out.To = to
+								end
+							else
+								SetProp(obj, "Visible", false)
 							end
 						end
 					end
@@ -1200,8 +1229,6 @@ function esp:GetTotalObjects()
 				else
 					data[v.Type] += 1
 				end
-			else
-				data.DestroyedObjects += 1
 			end
 		end
 	end
@@ -1252,6 +1279,8 @@ function esp:SetFunction(a,f)
 		GetHealth = f
 	elseif a == "team" then
 		GetTeam = f
+	elseif a == "ffa" then
+		IsFFA = f
 	end
 	
 end
