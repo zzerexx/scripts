@@ -1,3 +1,11 @@
+if game.GameId == 1168263273 then
+	game:GetService("StarterGui"):SetCore("SendNotification",{
+		Title = "Universal Esp",
+		Text = "Universal Esp is detected on Bad Business! Please use a different script to prevent getting banned.",
+		Duration = 5
+	})
+	return
+end
 if not EspSettings then
 	getgenv().EspSettings = {
 		TeamCheck = false,
@@ -8,6 +16,15 @@ if not EspSettings then
 			Enabled = true, -- makes any drawing objects transparent when they are near your mouse
 			Radius = 60,
 			Transparency = 0.3,
+			Selected = { -- set any of these to false to ignore them
+				Boxes = true,
+				Tracers = true,
+				Names = true,
+				Skeletons = true,
+				HealthBars = true,
+				HeadDots = true,
+				LookTracers = true
+			}
 		},
 		Boxes = {
 			Enabled = true,
@@ -67,7 +84,9 @@ if not EspSettings then
 			RainbowColor = false,
 			Outline = true,
 			OutlineColor = Color3.fromRGB(0,0,0),
-			OutlineThickness = 3
+			OutlineThickness = 3,
+			Origin = "None", -- "None" or "Left" or "Right"
+			OutlineBarOnly = true
 		},
 		HeadDots = {
 			Enabled = true,
@@ -79,7 +98,8 @@ if not EspSettings then
 			OutlineColor = Color3.fromRGB(0,0,0),
 			OutlineThickness = 3,
 			Thickness = 1,
-			Filled = false
+			Filled = false,
+			Scale = 1
 		},
 		LookTracers = {
 			Enabled = true,
@@ -103,7 +123,7 @@ if OldInstance then
 	getgenv().OldInstance = nil
 end
 
-local version = "v1.6.5"
+local version = "v1.6.6"
 local esp = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEsp.lua", true))()
 local Material = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kinlei/MaterialLua/master/Module.lua"))()
 local UI = Material.Load({
@@ -124,14 +144,14 @@ function tocolor(a)
 	return Color3.fromRGB(a.R * 255, a.G * 255, a.B * 255)
 end
 function clonetable(a)
-	local b = {}
+	local t = {}
 	for i,v in next, a do
 		if typeof(v) == "table" then
 			v = clonetable(v)
 		end
-		b[i] = v
+		t[i] = v
 	end
-	return b
+	return t
 end
 
 if isfile("UESP.json") then
@@ -169,253 +189,259 @@ local Stats = UI.New({Title = "Statistics"})
 local ui = OldInstance
 local ss = getgenv().EspSettings
 local loaded = false
-local conn1,conn2 = nil,nil
+local conn1,conn2,conn3 = nil,nil,nil
 
 do -- Boxes
+	local type = "Boxes"
+	local s = ss[type]
 	Boxes.Toggle({
 		Text = "Enabled",
 		Callback = function(value)
-			esp:Set("Boxes","Enabled",value)
+			esp:Set(type,"Enabled",value)
 		end,
-		Enabled = ss.Boxes.Enabled
+		Enabled = s.Enabled
 	})
 	Boxes.Slider({
 		Text = "Transparency",
 		Callback = function(value)
-			esp:Set("Boxes","Transparency",value / 10)
+			esp:Set(type,"Transparency",value / 10)
 		end,
 		Min = 0,
 		Max = 10,
-		Def = ss.Boxes.Transparency * 10
+		Def = s.Transparency * 10
 	})
 	Boxes.ColorPicker({
 		Text = "Color",
-		Default = ss.Boxes.Color,
+		Default = s.Color,
 		Callback = function(value)
-			esp:Set("Boxes","Color",value)
+			esp:Set(type,"Color",value)
 		end
 	})
 	Boxes.Toggle({
 		Text = "Use Team Color",
 		Callback = function(value)
-			esp:Set("Boxes","UseTeamColor",value)
+			esp:Set(type,"UseTeamColor",value)
 		end,
-		Enabled = ss.Boxes.UseTeamColor
+		Enabled = s.UseTeamColor
 	})
 	Boxes.Toggle({
 		Text = "Rainbow Color",
 		Callback = function(value)
-			esp:Set("Boxes","RainbowColor",value)
+			esp:Set(type,"RainbowColor",value)
 		end,
-		Enabled = ss.Boxes.RainbowColor
+		Enabled = s.RainbowColor
 	})
 	Boxes.Toggle({
 		Text = "Outline",
 		Callback = function(value)
-			esp:Set("Boxes","Outline",value)
+			esp:Set(type,"Outline",value)
 		end,
-		Enabled = ss.Boxes.Outline
+		Enabled = s.Outline
 	})
 	Boxes.ColorPicker({
 		Text = "Outline Color",
-		Default = ss.Boxes.OutlineColor,
+		Default = s.OutlineColor,
 		Callback = function(value)
-			esp:Set("Boxes","OutlineColor",value)
+			esp:Set(type,"OutlineColor",value)
 		end
 	})
 	Boxes.Slider({
 		Text = "Outline Thickness",
 		Callback = function(value)
-			esp:Set("Boxes","OutlineThickness",value)
+			esp:Set(type,"OutlineThickness",value)
 		end,
 		Min = 1,
 		Max = 5,
-		Def = ss.Boxes.OutlineThickness
+		Def = s.OutlineThickness
 	})
 	Boxes.Slider({
 		Text = "Thickness",
 		Callback = function(value)
-			esp:Set("Boxes","Thickness",value)
+			esp:Set(type,"Thickness",value)
 		end,
 		Min = 1,
 		Max = 5,
-		Def = ss.Boxes.Thickness
+		Def = s.Thickness
 	})
 end
 
 do -- Tracers
+	local type = "Tracers"
+	local s = ss[type]
 	Tracers.Toggle({
 		Text = "Enabled",
 		Callback = function(value)
-			esp:Set("Tracers","Enabled",value)
+			esp:Set(type,"Enabled",value)
 		end,
-		Enabled = ss.Tracers.Enabled
+		Enabled = s.Enabled
 	})
 	Tracers.Slider({
 		Text = "Transparency",
 		Callback = function(value)
-			esp:Set("Tracers","Transparency",value / 10)
+			esp:Set(type,"Transparency",value / 10)
 		end,
 		Min = 0,
 		Max = 10,
-		Def = ss.Tracers.Transparency * 10
+		Def = s.Transparency * 10
 	})
 	Tracers.ColorPicker({
 		Text = "Color",
-		Default = ss.Tracers.Color,
+		Default = s.Color,
 		Callback = function(value)
-			esp:Set("Tracers","Color",value)
+			esp:Set(type,"Color",value)
 		end
 	})
 	Tracers.Toggle({
 		Text = "Use Team Color",
 		Callback = function(value)
-			esp:Set("Tracers","UseTeamColor",value)
+			esp:Set(type,"UseTeamColor",value)
 		end,
-		Enabled = ss.Tracers.UseTeamColor
+		Enabled = s.UseTeamColor
 	})
 	Tracers.Toggle({
 		Text = "Rainbow Color",
 		Callback = function(value)
-			esp:Set("Tracers","RainbowColor",value)
+			esp:Set(type,"RainbowColor",value)
 		end,
-		Enabled = ss.Tracers.RainbowColor
+		Enabled = s.RainbowColor
 	})
 	Tracers.Toggle({
 		Text = "Outline",
 		Callback = function(value)
-			esp:Set("Tracers","Outline",value)
+			esp:Set(type,"Outline",value)
 		end,
-		Enabled = ss.Tracers.Outline
+		Enabled = s.Outline
 	})
 	Tracers.ColorPicker({
 		Text = "Outline Color",
-		Default = ss.Tracers.OutlineColor,
+		Default = s.OutlineColor,
 		Callback = function(value)
-			esp:Set("Tracers","OutlineColor",value)
+			esp:Set(type,"OutlineColor",value)
 		end
 	})
 	Tracers.Slider({
 		Text = "Outline Thickness",
 		Callback = function(value)
-			esp:Set("Tracers","OutlineThickness",value)
+			esp:Set(type,"OutlineThickness",value)
 		end,
 		Min = 1,
 		Max = 5,
-		Def = ss.Tracers.OutlineThickness
+		Def = s.OutlineThickness
 	})
 	Tracers.Dropdown({
 		Text = "Origin",
 		Callback = function(value)
-			esp:Set("Tracers","Origin",value)
+			esp:Set(type,"Origin",value)
 		end,
 		Options = {"Top","Center","Bottom","Mouse"}
 	})
 	Tracers.Slider({
 		Text = "Thickness",
 		Callback = function(value)
-			esp:Set("Tracers","Thickness",value)
+			esp:Set(type,"Thickness",value)
 		end,
 		Min = 1,
 		Max = 5,
-		Def = ss.Tracers.Thickness
+		Def = s.Thickness
 	})
 end
 
 do -- Names
+	local type = "Names"
+	local s = ss[type]
 	Names.Toggle({
 		Text = "Enabled",
 		Callback = function(value)
-			esp:Set("Names","Enabled",value)
+			esp:Set(type,"Enabled",value)
 		end,
-		Enabled = ss.Names.Enabled
+		Enabled = s.Enabled
 	})
 	Names.Slider({
 		Text = "Transparency",
 		Callback = function(value)
-			esp:Set("Names","Transparency",value / 10)
+			esp:Set(type,"Transparency",value / 10)
 		end,
 		Min = 0,
 		Max = 10,
-		Def = ss.Names.Transparency * 10
+		Def = s.Transparency * 10
 	})
 	Names.ColorPicker({
 		Text = "Color",
-		Default = ss.Names.Color,
+		Default = s.Color,
 		Callback = function(value)
-			esp:Set("Names","Color",value)
+			esp:Set(type,"Color",value)
 		end
 	})
 	Names.Toggle({
 		Text = "Use Team Color",
 		Callback = function(value)
-			esp:Set("Names","UseTeamColor",value)
+			esp:Set(type,"UseTeamColor",value)
 		end,
-		Enabled = ss.Names.UseTeamColor
+		Enabled = s.UseTeamColor
 	})
 	Names.Toggle({
 		Text = "Rainbow Color",
 		Callback = function(value)
-			esp:Set("Names","RainbowColor",value)
+			esp:Set(type,"RainbowColor",value)
 		end,
-		Enabled = ss.Names.RainbowColor
+		Enabled = s.RainbowColor
 	})
 	Names.Toggle({
 		Text = "Outline",
 		Callback = function(value)
-			esp:Set("Names","Outline",value)
+			esp:Set(type,"Outline",value)
 		end,
-		Enabled = ss.Names.Outline
+		Enabled = s.Outline
 	})
 	Names.ColorPicker({
 		Text = "Outline Color",
-		Default = ss.Names.OutlineColor,
+		Default = s.OutlineColor,
 		Callback = function(value)
-			esp:Set("Names","OutlineColor",value)
+			esp:Set(type,"OutlineColor",value)
 		end
 	})
 	Names.Dropdown({
 		Text = "Font",
 		Callback = function(value)
-			esp:Set("Names","Font",Drawing.Fonts[value])
+			esp:Set(type,"Font",Drawing.Fonts[value])
 		end,
 		Options = {"UI","System","Plex","Monospace"}
 	})
 	Names.Slider({
 		Text = "Text Size",
 		Callback = function(value)
-			esp:Set("Names","Size",value)
+			esp:Set(type,"Size",value)
 		end,
 		Min = 1,
 		Max = 32,
-		Def = ss.Names.Size
+		Def = s.Size
 	})
 	Names.Toggle({
 		Text = "Show Distance",
 		Callback = function(value)
-			esp:Set("Names","ShowDistance",value)
+			esp:Set(type,"ShowDistance",value)
 		end,
-		Enabled = ss.Names.ShowDistance
+		Enabled = s.ShowDistance
 	})
 	Names.Toggle({
 		Text = "Show Health",
 		Callback = function(value)
-			esp:Set("Names","ShowHealth",value)
+			esp:Set(type,"ShowHealth",value)
 		end,
-		Enabled = ss.Names.ShowHealth
+		Enabled = s.ShowHealth
 	})
 	Names.Toggle({
 		Text = "Use Display Name",
 		Callback = function(value)
-			esp:Set("Names","UseDisplayName",value)
+			esp:Set(type,"UseDisplayName",value)
 		end,
-		Enabled = ss.Names.UseDisplayName
+		Enabled = s.UseDisplayName
 	})
 	Names.TextField({
 		Text = "Distance Data Type",
 		Type = "Default",
 		Callback = function(value)
-			esp:Set("Names","DistanceDataType",value)
+			esp:Set(type,"DistanceDataType",value)
 		end,
 		Menu = {
 			Info = function()
@@ -426,7 +452,7 @@ do -- Names
 	Names.Dropdown({
 		Text = "Health Data Type",
 		Callback = function(value)
-			esp:Set("Names","HealthDataType",value)
+			esp:Set(type,"HealthDataType",value)
 		end,
 		Options = {
 			"Percentage",
@@ -441,147 +467,167 @@ do -- Names
 end
 
 do -- Skeletons
+	local type = "Skeletons"
+	local s = ss[type]
 	Skeletons.Toggle({
 		Text = "Enabled",
 		Callback = function(value)
-			esp:Set("Skeletons","Enabled",value)
+			esp:Set(type,"Enabled",value)
 		end,
-		Enabled = ss.Skeletons.Enabled
+		Enabled = s.Enabled
 	})
 	Skeletons.Slider({
 		Text = "Transparency",
 		Callback = function(value)
-			esp:Set("Skeletons","Transparency",value / 10)
+			esp:Set(type,"Transparency",value / 10)
 		end,
 		Min = 0,
 		Max = 10,
-		Def = ss.Skeletons.Transparency * 10
+		Def = s.Transparency * 10
 	})
 	Skeletons.ColorPicker({
 		Text = "Color",
-		Default = ss.Skeletons.Color,
+		Default = s.Color,
 		Callback = function(value)
-			esp:Set("Skeletons","Color",value)
+			esp:Set(type,"Color",value)
 		end
 	})
 	Skeletons.Toggle({
 		Text = "Use Team Color",
 		Callback = function(value)
-			esp:Set("Skeletons","UseTeamColor",value)
+			esp:Set(type,"UseTeamColor",value)
 		end,
-		Enabled = ss.Skeletons.UseTeamColor
+		Enabled = s.UseTeamColor
 	})
 	Skeletons.Toggle({
 		Text = "Rainbow Color",
 		Callback = function(value)
-			esp:Set("Skeletons","RainbowColor",value)
+			esp:Set(type,"RainbowColor",value)
 		end,
-		Enabled = ss.Skeletons.RainbowColor
+		Enabled = s.RainbowColor
 	})
 	Skeletons.Toggle({
 		Text = "Outline",
 		Callback = function(value)
-			esp:Set("Skeletons","Outline",value)
+			esp:Set(type,"Outline",value)
 		end,
-		Enabled = ss.Skeletons.Outline
+		Enabled = s.Outline
 	})
 	Skeletons.ColorPicker({
 		Text = "Outline Color",
-		Default = ss.Skeletons.OutlineColor,
+		Default = s.OutlineColor,
 		Callback = function(value)
-			esp:Set("Skeletons","OutlineColor",value)
+			esp:Set(type,"OutlineColor",value)
 		end
 	})
 	Skeletons.Slider({
 		Text = "Outline Thickness",
 		Callback = function(value)
-			esp:Set("Skeletons","OutlineThickness",value)
+			esp:Set(type,"OutlineThickness",value)
 		end,
 		Min = 1,
 		Max = 5,
-		Def = ss.Skeletons.OutlineThickness
+		Def = s.OutlineThickness
 	})
 	Skeletons.Slider({
 		Text = "Thickness",
 		Callback = function(value)
-			esp:Set("Skeletons","Thickness",value)
+			esp:Set(type,"Thickness",value)
 		end,
 		Min = 1,
 		Max = 5,
-		Def = ss.Skeletons.Thickness
+		Def = s.Thickness
 	})
 end
 
 do -- HealthBars
+	local type = "HealthBars"
+	local s = ss[type]
 	HealthBars.Toggle({
 		Text = "Enabled",
 		Callback = function(value)
-			esp:Set("HealthBars","Enabled",value)
+			esp:Set(type,"Enabled",value)
 		end,
-		Enabled = ss.HealthBars.Enabled
+		Enabled = s.Enabled
 	})
 	HealthBars.Slider({
 		Text = "Transparency",
 		Callback = function(value)
-			esp:Set("HealthBars","Transparency",value / 10)
+			esp:Set(type,"Transparency",value / 10)
 		end,
 		Min = 0,
 		Max = 10,
-		Def = ss.HealthBars.Transparency * 10
+		Def = s.Transparency * 10
 	})
 	HealthBars.ColorPicker({
 		Text = "Color",
-		Default = ss.HealthBars.Color,
+		Default = s.Color,
 		Callback = function(value)
-			esp:Set("HealthBars","Color",value)
+			esp:Set(type,"Color",value)
 		end
 	})
 	HealthBars.Toggle({
 		Text = "Use Team Color",
 		Callback = function(value)
-			esp:Set("HealthBars","UseTeamColor",value)
+			esp:Set(type,"UseTeamColor",value)
 		end,
-		Enabled = ss.HealthBars.UseTeamColor
+		Enabled = s.UseTeamColor
 	})
 	HealthBars.Toggle({
 		Text = "Rainbow Color",
 		Callback = function(value)
-			esp:Set("HealthBars","RainbowColor",value)
+			esp:Set(type,"RainbowColor",value)
 		end,
-		Enabled = ss.HealthBars.RainbowColor
+		Enabled = s.RainbowColor
 	})
 	HealthBars.Toggle({
 		Text = "Outline",
 		Callback = function(value)
-			esp:Set("HealthBars","Outline",value)
+			esp:Set(type,"Outline",value)
 		end,
-		Enabled = ss.HealthBars.Outline
+		Enabled = s.Outline
 	})
 	HealthBars.ColorPicker({
 		Text = "Outline Color",
-		Default = ss.HealthBars.OutlineColor,
+		Default = s.OutlineColor,
 		Callback = function(value)
-			esp:Set("HealthBars","OutlineColor",value)
+			esp:Set(type,"OutlineColor",value)
 		end
 	})
 	HealthBars.Slider({
 		Text = "Outline Thickness",
 		Callback = function(value)
-			esp:Set("HealthBars","OutlineThickness",value)
+			esp:Set(type,"OutlineThickness",value)
 		end,
 		Min = 1,
 		Max = 5,
-		Def = ss.HealthBars.OutlineThickness
+		Def = s.OutlineThickness
+	})
+	HealthBars.Dropdown({
+		Text = "Origin",
+		Callback = function(value)
+			esp:Set(type,"Origin",value)
+		end,
+		Options = {"None","Left","Right"}
+	})
+	HealthBars.Toggle({
+		Text = "Outline Bar Only",
+		Callback = function(value)
+			esp:Set(type,"OutlineBarOnly",value)
+		end,
+		Enabled = s.OutlineBarOnly
 	})
 end
 
 do -- HeadDots
+	local type = "HeadDots"
+	local s = ss[type]
 	HeadDots.Toggle({
 		Text = "Enabled",
 		Callback = function(value)
-			esp:Set("HeadDots","Enabled",value)
+			esp:Set(type,"Enabled",value)
 		end,
-		Enabled = ss.HeadDots.Enabled,
+		Enabled = s.Enabled,
 		Menu = {
 			Info = function()
 				Banner("This works best on 70 camera fov! Anything higher can make the circle look larger when closer to the player.")
@@ -591,152 +637,163 @@ do -- HeadDots
 	HeadDots.Slider({
 		Text = "Transparency",
 		Callback = function(value)
-			esp:Set("HeadDots","Transparency",value / 10)
+			esp:Set(type,"Transparency",value / 10)
 		end,
 		Min = 0,
 		Max = 10,
-		Def = ss.HeadDots.Transparency * 10
+		Def = s.Transparency * 10
 	})
 	HeadDots.ColorPicker({
 		Text = "Color",
-		Default = ss.HeadDots.Color,
+		Default = s.Color,
 		Callback = function(value)
-			esp:Set("HeadDots","Color",value)
+			esp:Set(type,"Color",value)
 		end
 	})
 	HeadDots.Toggle({
 		Text = "Use Team Color",
 		Callback = function(value)
-			esp:Set("HeadDots","UseTeamColor",value)
+			esp:Set(type,"UseTeamColor",value)
 		end,
-		Enabled = ss.HeadDots.UseTeamColor
+		Enabled = s.UseTeamColor
 	})
 	HeadDots.Toggle({
 		Text = "Rainbow Color",
 		Callback = function(value)
-			esp:Set("HeadDots","RainbowColor",value)
+			esp:Set(type,"RainbowColor",value)
 		end,
-		Enabled = ss.HeadDots.RainbowColor
+		Enabled = s.RainbowColor
 	})
 	HeadDots.Toggle({
 		Text = "Outline",
 		Callback = function(value)
-			esp:Set("HeadDots","Outline",value)
+			esp:Set(type,"Outline",value)
 		end,
-		Enabled = ss.HeadDots.Outline
+		Enabled = s.Outline
 	})
 	HeadDots.ColorPicker({
 		Text = "Outline Color",
-		Default = ss.HeadDots.OutlineColor,
+		Default = s.OutlineColor,
 		Callback = function(value)
-			esp:Set("HeadDots","OutlineColor",value)
+			esp:Set(type,"OutlineColor",value)
 		end
 	})
 	HeadDots.Slider({
 		Text = "Outline Thickness",
 		Callback = function(value)
-			esp:Set("HeadDots","OutlineThickness",value)
+			esp:Set(type,"OutlineThickness",value)
 		end,
 		Min = 1,
 		Max = 5,
-		Def = ss.HeadDots.OutlineThickness
+		Def = s.OutlineThickness
 	})
 	HeadDots.Slider({
 		Text = "Thickness",
 		Callback = function(value)
-			esp:Set("HeadDots","Thickness",value)
+			esp:Set(type,"Thickness",value)
 		end,
 		Min = 1,
 		Max = 5,
-		Def = ss.HeadDots.Thickness
+		Def = s.Thickness
 	})
 	HeadDots.Toggle({
 		Text = "Filled",
 		Callback = function(value)
-			esp:Set("HeadDots","Filled",value)
+			esp:Set(type,"Filled",value)
 		end,
-		Enabled = ss.HeadDots.Filled
+		Enabled = s.Filled
+	})
+	HeadDots.Slider({
+		Text = "Scale (divided by 10)",
+		Callback = function(value)
+			esp:Set(type,"Scale",value / 10)
+		end,
+		Min = 5,
+		Max = 20,
+		Def = s.Scale * 10
 	})
 end
 
 do -- LookTracers
+	local type = "LookTracers"
+	local s = ss[type]
 	LookTracers.Toggle({
 		Text = "Enabled",
 		Callback = function(value)
-			esp:Set("LookTracers","Enabled",value)
+			esp:Set(type,"Enabled",value)
 		end,
-		Enabled = ss.LookTracers.Enabled
+		Enabled = s.Enabled
 	})
 	LookTracers.Slider({
 		Text = "Transparency",
 		Callback = function(value)
-			esp:Set("LookTracers","Transparency",value / 10)
+			esp:Set(type,"Transparency",value / 10)
 		end,
 		Min = 0,
 		Max = 10,
-		Def = ss.LookTracers.Transparency * 10
+		Def = s.Transparency * 10
 	})
 	LookTracers.ColorPicker({
 		Text = "Color",
-		Default = ss.LookTracers.Color,
+		Default = s.Color,
 		Callback = function(value)
-			esp:Set("LookTracers","Color",value)
+			esp:Set(type,"Color",value)
 		end
 	})
 	LookTracers.Toggle({
 		Text = "Use Team Color",
 		Callback = function(value)
-			esp:Set("LookTracers","UseTeamColor",value)
+			esp:Set(type,"UseTeamColor",value)
 		end,
-		Enabled = ss.LookTracers.UseTeamColor
+		Enabled = s.UseTeamColor
 	})
 	LookTracers.Toggle({
 		Text = "Rainbow Color",
 		Callback = function(value)
-			esp:Set("LookTracers","RainbowColor",value)
+			esp:Set(type,"RainbowColor",value)
 		end,
-		Enabled = ss.LookTracers.RainbowColor
+		Enabled = s.RainbowColor
 	})
 	LookTracers.Toggle({
 		Text = "Outline",
 		Callback = function(value)
-			esp:Set("LookTracers","Outline",value)
+			esp:Set(type,"Outline",value)
 		end,
-		Enabled = ss.LookTracers.Outline
+		Enabled = s.Outline
 	})
 	LookTracers.ColorPicker({
 		Text = "Outline Color",
-		Default = ss.LookTracers.OutlineColor,
+		Default = s.OutlineColor,
 		Callback = function(value)
-			esp:Set("LookTracers","OutlineColor",value)
+			esp:Set(type,"OutlineColor",value)
 		end
 	})
 	LookTracers.Slider({
 		Text = "Outline Thickness",
 		Callback = function(value)
-			esp:Set("LookTracers","OutlineThickness",value)
+			esp:Set(type,"OutlineThickness",value)
 		end,
 		Min = 1,
 		Max = 5,
-		Def = ss.LookTracers.OutlineThickness
+		Def = s.OutlineThickness
 	})
 	LookTracers.Slider({
 		Text = "Thickness",
 		Callback = function(value)
-			esp:Set("LookTracers","Thickness",value)
+			esp:Set(type,"Thickness",value)
 		end,
 		Min = 1,
 		Max = 5,
-		Def = ss.LookTracers.Thickness
+		Def = s.Thickness
 	})
 	LookTracers.Slider({
 		Text = "Length",
 		Callback = function(value)
-			esp:Set("LookTracers","Length",value)
+			esp:Set(type,"Length",value)
 		end,
 		Min = 3,
 		Max = 25,
-		Def = ss.LookTracers.Length
+		Def = s.Length
 	})
 end
 
@@ -860,12 +917,14 @@ do -- All
 end
 
 do -- MouseVisibility
+	local type = "MouseVisibility"
+	local s = ss[type]
 	MouseVisibility.Toggle({
 		Text = "Enabled",
 		Callback = function(value)
-			esp:Set("MouseVisibility","Enabled",value)
+			esp:Set(type,"Enabled",value)
 		end,
-		Enabled = ss.MouseVisibility.Enabled,
+		Enabled = s.Enabled,
 		Menu = {
 			Info = function()
 				Banner("Makes any drawing objects transparent when they are near your mouse.")
@@ -875,20 +934,36 @@ do -- MouseVisibility
 	MouseVisibility.Slider({
 		Text = "Radius",
 		Callback = function(value)
-			esp:Set("MouseVisibility","Radius",value)
+			esp:Set(type,"Radius",value)
 		end,
 		Min = 10,
 		Max = 150,
-		Def = ss.MouseVisibility.Radius
+		Def = s.Radius
 	})
 	MouseVisibility.Slider({
 		Text = "Transparency",
 		Callback = function(value)
-			esp:Set("MouseVisibility","Transparency",value / 10)
+			esp:Set(type,"Transparency",value / 10)
 		end,
 		Min = 0,
 		Max = 10,
-		Def = ss.MouseVisibility.Transparency * 10
+		Def = s.Transparency * 10
+	})
+	local selected = s.Selected
+	MouseVisibility.DataTable({
+		Text = "Selected",
+		Callback = function(value)
+			esp:Set(type,"Selected",value)
+		end,
+		Options = {
+			Boxes = selected.Boxes,
+			Tracers = selected.Tracers,
+			Names = selected.Names,
+			Skeletons = selected.Skeletons,
+			HealthBars = selected.HealthBars,
+			HeadDots = selected.HeadDots,
+			LookTracers = selected.LookTracers
+		}
 	})
 end
 
@@ -964,7 +1039,7 @@ do -- Other
 		end,
 		Menu = {
 			Info = function()
-				Banner("Saves your settings and uses them every time you execute! Note that this overrides your previous save.")
+				Banner("Saves your settings and uses them every time you execute! Note that this overwrites your previous save.")
 			end
 		}
 	})
@@ -973,6 +1048,7 @@ do -- Other
 		Callback = function()
 			conn1:Disconnect()
 			conn2:Disconnect()
+			conn3:Disconnect()
 			esp:Destroy()
 			ui:Destroy()
 		end,
@@ -992,6 +1068,10 @@ do -- Other
 				Banner(version)
 			end
 		}
+	})
+	Other.Button({
+		Text = "UI Toggle Key: Right Control",
+		Callback = function() end
 	})
 end
 
@@ -1056,7 +1136,7 @@ do -- Stats
 		Callback = function() end
 	})
 	local visible = Stats.Button({
-		Text = "Visible Objects: N/A",
+		Text = "Rendered Objects: N/A",
 		Callback = function() end
 	})
 	local destroyed = Stats.Button({
@@ -1124,5 +1204,11 @@ do -- Stats
 		end
 	})
 end
+
+conn3 = game:GetService("UserInputService").InputBegan:Connect(function(i,gp)
+	if not gp and i.KeyCode == Enum.KeyCode.RightControl then
+		ui.Enabled = not ui.Enabled
+	end
+end)
 
 loaded = true
