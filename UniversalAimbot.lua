@@ -1,10 +1,26 @@
+--[[
+v1.1.12 Changes
+- Added `TriggerBot`
+- Fixed `SlowSensitivity` on aim assist
+
+Function Changes
+- Added `SetFunction` and `ResetFunction`
+]]
+if game.GameId == 1168263273 then
+	game:GetService("StarterGui"):SetCore("SendNotification",{
+		Title = "Universal Aimbot",
+		Text = "Universal Aimbot is detected on Bad Business! Please use a different script to prevent getting banned.",
+		Duration = 5
+	})
+	return
+end
 if not getgenv().AimbotSettings then
 	getgenv().AimbotSettings = {
 		TeamCheck = true, -- Press ] to toggle
 		VisibleCheck = true,
 		RefreshRate = 10, -- how fast the aimbot updates (milliseconds)
-		Keybind = Enum.UserInputType.MouseButton2, -- Must be a UserInputType or KeyCode
-		ToggleKey = Enum.KeyCode.RightShift,
+		Keybind = "MouseButton2",
+		ToggleKey = "RightShift",
 		MaximumDistance = 300, -- Set this to something lower if you dont wanna lock on some random person across the map
 		AlwaysActive = false,
 		Aimbot = {
@@ -23,7 +39,7 @@ if not getgenv().AimbotSettings then
 			Strength = 55, -- 1% - 100%
 			SlowSensitivity = true,
 			SlowFactor = 1.75, -- 1% - 10%
-			RequireMovement = true,
+			RequireMovement = true
 		},
 		FovCircle = {
 			Enabled = true,
@@ -33,42 +49,40 @@ if not getgenv().AimbotSettings then
 			Color = Color3.fromRGB(255,255,255),
 			NumSides = 64,
 		},
+		TriggerBot = {
+			Enabled = false,
+			-- there will be more things in the future
+		},
 		Whitelisted = {}, -- Username or User ID
 		WhitelistFriends = true, -- Automatically adds friends to the whitelist
 		Ignore = nil -- Raycast Ignore
 	}
 end
-if game.GameId == 1168263273 then
-	game:GetService("StarterGui"):SetCore("SendNotification",{
-		Title = "Universal Aimbot",
-		Text = "Universal Aimbot is detected on Bad Business! Please use a different script to prevent getting banned.",
-		Duration = 5
-	})
-	return
-end
-task.delay(5,function()
+
+if not AimbotSettings.TriggerBot then
 	local bind = Instance.new("BindableFunction")
 	bind.OnInvoke = function(a)
-		if a == "Get Script" then
-			setclipboard("https://pastebin.com/raw/nwqE7v07")
-		end
+		setclipboard("https://pastebin.com/raw/nwqE7v07")
 	end
 	game:GetService("StarterGui"):SetCore("SendNotification",{
 		Title = "Universal Aimbot",
-		Text = "Script not working? Make sure you have the latest version!",
+		Text = "Please update your script!",
 		Duration = 5,
-		Button1 = "OK",
-		Button2 = "Get Script",
+		Button1 = "Get Latest Script",
 		Callback = bind
 	})
-end)
+	return
+end
 
 local players = game:GetService("Players")
 local player = players.LocalPlayer
 local camera = workspace.CurrentCamera
-local UIS = game:GetService("UserInputService")
+local uis = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
+
 local mousemoverel = mousemoverel
+local mouse1press = mouse1press
+local mouse1release = mouse1release
 local Drawingnew = Drawing.new 
 local Fonts = Drawing.Fonts
 local tableinsert = table.insert
@@ -78,23 +92,31 @@ local Vector2new = Vector2.new
 local Color3fromRGB = Color3.fromRGB
 local mathclamp = math.clamp
 local mathhuge = math.huge
-local mouse = UIS:GetMouseLocation()
+local lower = string.lower
+local mouse = uis:GetMouseLocation()
 local osclock = os.clock
+local RaycastParamsnew = RaycastParams.new
+local FindFirstChild = game.FindFirstChild
+local taskwait = task.wait
+local taskspawn = task.spawn
+
 local GameId = game.GameId
 local ss = getgenv().AimbotSettings
 local Aimbot = ss.Aimbot
 local AimAssist = ss.AimAssist
 local FovCircle = ss.FovCircle
+local Trigger = ss.TriggerBot
+local Mouse = player:GetMouse()
 
-if game.GameId == (111958650 or 115797356 or 147332621) then -- arsenal, counter blox, typical colors 2
+if GameId == (111958650 or 115797356 or 147332621) then -- arsenal, counter blox, typical colors 2
 	ss.Ignore = {workspace.Ray_Ignore}
-elseif game.GameId == 833423526 then -- strucid
+elseif GameId == 833423526 then -- strucid
 	ss.Ignore = {workspace.IgnoreThese}
-elseif game.GameId == 1168263273 then -- bad business
+elseif GameId == 1168263273 then -- bad business
 	do end
-elseif game.GameId == 2162282815 then -- rush point
+elseif GameId == 2162282815 then -- rush point
 	ss.Ignore = {camera, player.Character, workspace.RaycastIgnore, workspace.DroppedWeapons, workspace.MapFolder.Map.Ramps, workspace.MapFolder.Map.Walls.MapWalls}
-elseif workspace:FindFirstChild("Ignore") then
+elseif FindFirstChild(workspace, "Ignore") then
 	ss.Ignore = {workspace.Ignore}
 end
 
@@ -108,7 +130,7 @@ local bodyparts = {
 	"Chest","Hips","LeftArm","LeftForearm","RightArm","RightForearm","LeftLeg","LeftForeleg","RightLeg","RightForeleg"
 }
 local ads = false
-local olddelta = UIS.MouseDeltaSensitivity
+local olddelta = uis.MouseDeltaSensitivity
 local gids = { -- game ids
 	['arsenal'] = 111958650,
 	['pf'] = 113491250,
@@ -116,7 +138,7 @@ local gids = { -- game ids
 	['pfu'] = 1256867479, -- pf unstable branch
 	['bb'] = 1168263273,
 }
-local getchar, getvis, ts
+local getchar, getvis, ts, characters, teams
 if GameId == (gids.pf or gids.pft or gids.pfu) then
 	for _,v in next, getgc(true) do
 		if typeof(v) == "table" then
@@ -131,41 +153,86 @@ elseif GameId == gids.bb then
 	for _,v in next, getgc(true) do
 		if typeof(v) == "table" and rawget(v, "InitProjectile") and rawget(v, "TS") then
 			ts = rawget(v, "TS")
+			characters = ts.Characters
+			teams = ts.Teams
 		end
 	end
 end
 
+local rootpart = (getchar and "Torso") or (ts and "Chest") or "HumanoidRootPart"
+
+local oldfuncs = {}
+
 function IsAlive(plr)
-	if plr.Character and plr.Character:FindFirstChild("Humanoid") and plr.Character:FindFirstChild("Humanoid").Health > 0 then
+	local humanoid = FindFirstChild(plr.Character or game, "Humanoid")
+	if humanoid and humanoid.Health > 0 then
 		return true
-	elseif getchar then
-		return getchar(plr) ~= nil
-	elseif ts then
-		return ts.Characters:GetCharacter(plr) ~= nil
 	end
 	return false
 end
-function GetChar(plr)
+do
 	if getchar then
-		local a = getchar(plr)
-		if a ~= nil then
-			return a.torso.Parent
+		IsAlive = function(plr)
+			return getchar(plr) ~= nil
 		end
-	elseif ts then
-		return ts.Characters:GetCharacter(plr).Body
-	elseif plr.Character ~= nil then
-		return plr.Character
 	end
-	return nil
-end
-function GetTeam(plr)
 	if ts then
-		return ts.Teams:GetPlayerTeam(plr)
+		IsAlive = function(plr)
+			return characters:GetCharacter(plr) ~= nil
+		end
 	end
+end
+oldfuncs.alive = IsAlive
+
+function GetChar(plr)
+	return plr.Character
+end
+do
+	if getchar then
+		GetChar = function(plr)
+			local a = getchar(plr)
+			if a ~= nil then
+				return a.torso.Parent
+			end
+			return nil
+		end
+	end
+	if ts then
+		GetChar = function(plr)
+			return characters:GetCharacter(plr)
+		end
+	end
+end
+oldfuncs.character = GetChar
+
+function GetTeam(plr)
 	return plr.Team
 end
+do
+	if ts then
+		GetTeam = function(plr)
+			return teams:GetPlayerTeam(plr)
+		end
+	end
+end
+oldfuncs.team = GetTeam
+
+function IsFFA()
+	local t = {}
+	for _,v in next, players:GetPlayers() do
+		local team = GetTeam(v)
+		if team == nil then return true end
+		team = team.Name or team
+		if not t[team] then
+			tableinsert(t, team)
+		end
+	end
+	return #t == 1
+end
+oldfuncs.ffa = IsFFA
+
 function ClosestPlayer()
-	mouse = UIS:GetMouseLocation()
+	mouse = uis:GetMouseLocation()
 	local plr = nil
 	local closest = mathhuge
 	local myteam = GetTeam(player)
@@ -185,18 +252,22 @@ function ClosestPlayer()
 	end
 	return plr
 end
+oldfuncs.closest = ClosestPlayer
+
 function IsVisible(plr)
 	local char = GetChar(plr)
-	if ss.VisibleCheck and IsAlive(plr) and char:FindFirstChild(Aimbot.TargetPart) then
+	if ss.VisibleCheck and IsAlive(plr) and FindFirstChild(char, Aimbot.TargetPart) then
 		if getvis then
 			return getvis(player,plr)
 		else
 			local mychar = GetChar(player)
 			local ignore = {camera, mychar}
-			for _,v in next, ss.Ignore do
-				tableinsert(ignore, v)
+			if typeof(ss.Ignore) == "Instance" then
+				for _,v in next, ss.Ignore do
+					tableinsert(ignore, v)
+				end
 			end
-			local params = RaycastParams.new()
+			local params = RaycastParamsnew()
 			params.FilterDescendantsInstances = ignore
 			params.FilterType = Enum.RaycastFilterType.Blacklist
 			params.IgnoreWater = true
@@ -210,9 +281,11 @@ function IsVisible(plr)
 	end
 	return false
 end
+oldfuncs.visible = IsVisible
+
 local fov
 function InFov(plr,Fov)
-	mouse = UIS:GetMouseLocation()
+	mouse = uis:GetMouseLocation()
 	if IsAlive(plr) then
 		local char = GetChar(plr)
 		local _, inViewport = WorldToViewportPoint(camera, char[Aimbot.TargetPart].Position)
@@ -238,27 +311,30 @@ function IsWhitelisted(plr)
 	return false
 end
 
-local conn1 = UIS.InputBegan:Connect(function(i,gp)
+local conn1 = uis.InputBegan:Connect(function(i,gp)
 	if gp then
 		return
 	end
-	if i.UserInputType == ss.Keybind or i.KeyCode == ss.Keybind then
+	local a = (Enum.UserInputType[ss.Keybind] ~= nil and Enum.UserInputType[ss.Keybind]) or (Enum.KeyCode[ss.Keybind] ~= nil and Enum.KeyCode[ss.Keybind])
+	local b = Enum.KeyCode[ss.ToggleKey] ~= nil and Enum.KeyCode[ss.ToggleKey]
+	if i.UserInputType == a or i.KeyCode == a then
 		if Aimbot.AimType == "Toggle" then
 			ads = not ads
 		else
 			ads = true
 		end
-	elseif i.KeyCode == ss.ToggleKey then
+	elseif i.KeyCode == b then
 		Aimbot.Enabled = not Aimbot.Enabled
 		fov.Visible = Aimbot.Enabled
 		AimAssist.Enabled = not AimAssist.Enabled
 	end
 end)
-local conn2 = UIS.InputEnded:Connect(function(i,gp)
+local conn2 = uis.InputEnded:Connect(function(i,gp)
 	if gp then
 		return
 	end
-	if (i.UserInputType == ss.Keybind or i.KeyCode == ss.Keybind) and Aimbot.AimType == "Hold" then
+	local a = (Enum.UserInputType[ss.Keybind] ~= nil and Enum.UserInputType[ss.Keybind]) or (Enum.KeyCode[ss.Keybind] ~= nil and Enum.KeyCode[ss.Keybind])
+	if (i.UserInputType == a or i.KeyCode == a) and Aimbot.AimType == "Hold" then
 		ads = false
 	end
 end)
@@ -313,7 +389,8 @@ function update()
 		return
 	end
 	lastupdate = osclock()
-	mouse = UIS:GetMouseLocation()
+
+	mouse = uis:GetMouseLocation()
 	local min, max, dyn, size = AimAssist.MinFov, AimAssist.MaxFov, AimAssist.DynamicFov, camera.ViewportSize
 	local bot, assist = Aimbot.Enabled, AimAssist.Enabled
 	if ts then
@@ -326,7 +403,7 @@ function update()
 		fov.Transparency = FovCircle.Transparency
 		fov.Color = FovCircle.Color
 		if FovCircle.Dynamic then
-			fov.Radius = FovCircle.Radius / (camera.FieldOfView / 100)
+			fov.Radius = FovCircle.Radius / (camera.FieldOfView / 80)
 		end
 	else
 		fov.Transparency = 0
@@ -354,36 +431,40 @@ function update()
 	local s = (bot and not assist and Aimbot) or (assist and not bot and AimAssist)
 	local char, mychar = GetChar(plr), GetChar(player)
 	local cf, ccf = char:GetBoundingBox(), camera.CFrame
+
 	if (ads or ss.AlwaysActive) and (ccf.Position - cf.Position).Magnitude <= ss.MaximumDistance then
 		if IsVisible(plr) and not IsWhitelisted(plr) then
 			local str = mathclamp(s.Strength, 1, (bot and 200) or (assist and 100))
 			if getchar then
 				str = mathclamp(str, 1, 65)
 			end
-			if bot and InFov(plr) and char:FindFirstChild(Aimbot.TargetPart) then
-				local vector = WorldToViewportPoint(camera, char[Aimbot.TargetPart].Position)
+			local target = Aimbot.TargetPart
+			if bot and InFov(plr) and FindFirstChild(char, target) then
+				local vector = WorldToViewportPoint(camera, char[target].Position)
 				if Aimbot.Use_mousemoverel then
 					str /= 100
 					mousemoverel((vector.X - mouse.X) * str, (vector.Y - mouse.Y) * str)
 				else
-					camera.CFrame = CFramenew(ccf.Position, char[Aimbot.TargetPart].Position)
+					camera.CFrame = CFramenew(ccf.Position, char[target].Position)
 				end
 			end
-			if assist and not InFov(plr, min) and InFov(plr, max) then
+			local inmaxfov = InFov(plr, max)
+			if assist and not InFov(plr, min) and inmaxfov then
+				local factor = AimAssist.SlowFactor
 				if AimAssist.SlowSensitivity then
-					local factor = AimAssist.SlowFactor 
 					factor = mathclamp(factor, 1, 10)
-					UIS.MouseDeltaSensitivity = (InFov(plr, max) and (olddelta / factor)) or olddelta
+					uis.MouseDeltaSensitivity = (inmaxfov and (olddelta / factor)) or olddelta
 				end
 				if (AimAssist.RequireMovement and mychar.Humanoid.MoveDirection.Magnitude > 0) or not AimAssist.RequireMovement or getchar then
-					local part = (getchar and "Torso") or (ts and "Chest") or "HumanoidRootPart"
-					local body = WorldToViewportPoint(camera, char[part].Position)
+					local body = WorldToViewportPoint(camera, char[rootpart].Position)
 					local head = WorldToViewportPoint(camera, char.Head.Position)
 					local vector = body
 					if (mouse - Vector2new(head.X, head.Y)).Magnitude < (mouse - Vector2new(body.X, body.Y)).Magnitude then
 						vector = head
 					end
-					local mag, mult = (ccf.Position - char[part].Position).Magnitude, 1
+
+					-- distance based strength
+					local mag, mult = (ccf.Position - char[rootpart].Position).Magnitude, 1
 					if mag <= 20 then
 						mult = 2
 					elseif mag <= 40 then
@@ -394,12 +475,30 @@ function update()
 					if ads then
 						mult /= 1.8
 					end
+					if AimAssist.SlowSensitivity then
+						mult *= factor
+					end
+
 					str *= mult
 					str /= 1000
-					mousemoverel((vector.X - mouse.X) * str, (vector.Y - mouse.Y) * str)
+					mousemoverel((vector.X - mouse.X) * str, (vector.Y - mouse.Y) * str * 1.2)
 				end
+			elseif assist and not inmaxfov then
+				uis.MouseDeltaSensitivity = olddelta
 			end
+		elseif assist and not InFov(plr, max) then
+			uis.MouseDeltaSensitivity = olddelta
 		end
+	end
+
+	if Trigger.Enabled and Mouse.Target:IsDescendantOf(char) then
+		taskspawn(function()
+			repeat
+				mouse1press()
+				taskwait()
+			until char == nil or not Mouse.Target:IsDescendantOf(char)
+			mouse1release()
+		end)
 	end
 end
 local conn3 = RunService.RenderStepped:Connect(update)
@@ -408,8 +507,15 @@ local conn4 = players.PlayerAdded:Connect(function(plr)
 		tableinsert(ss.Whitelisted,plr.UserId)
 	end
 end)
+if typeof(ss.Keybind) == "EnumItem" then
+	ss.Keybind = ss.Keybind.Name
+end
+if typeof(ss.ToggleKey) == "EnumItem" then
+	ss.ToggleKey = ss.ToggleKey.Name
+end
 
 local aimbot = {}
+local destroyed = false
 
 function ValidType(type)
 	return type == "Other" or ss[type] ~= nil
@@ -443,12 +549,52 @@ function aimbot:Set(type,option,value)
 		ss[type][option] = value
 	end
 end
+function aimbot:SetFunction(a,f)
+	assert(typeof(a) == "string",("Universal Aimbot: bad argument to #1 'SetFunction' (string expected, got %s)"):format(typeof(a)))
+	assert(typeof(f) == "function",("Universal Aimbot: bad argument to #2 'SetFunction' (function expected, got %s)"):format(typeof(f)))
+	a = lower(a)
+	if a == "alive" then
+		IsAlive = f
+	elseif a == "character" then
+		GetChar = f
+	elseif a == "team" then
+		GetTeam = f
+	elseif a == "ffa" then
+		IsFFA = f
+	elseif a == "closest" then
+		ClosestPlayer = f
+	elseif a == "visible" then
+		IsVisible = f
+	end
+end
+function aimbot:ResetFunction(a)
+	assert(typeof(a) == "string",("Universal Aimbot: bad argument to #1 'SetFunction' (string expected, got %s)"):format(typeof(a)))
+	a = lower(a)
+	assert(oldfuncs[a] ~= nil,"Universal Aimbot: bad argument to #1 'SetFunction' (invalid function)")
+	local f = oldfuncs[a]
+	if a == "alive" then
+		IsAlive = f
+	elseif a == "character" then
+		GetChar = f
+	elseif a == "team" then
+		GetTeam = f
+	elseif a == "ffa" then
+		IsFFA = f
+	elseif a == "closest" then
+		ClosestPlayer = f
+	elseif a == "visible" then
+		IsVisible = f
+	end
+end
 function aimbot:Destroy()
+	if destroyed then return end
 	conn1:Disconnect()
 	conn2:Disconnect()
 	conn3:Disconnect()
 	conn4:Disconnect()
 	removefov()
+	uis.MouseDeltaSensitivity = olddelta
+	destroyed = true
 end
 getgenv().UAIM = aimbot
 return aimbot
