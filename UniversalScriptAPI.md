@@ -51,6 +51,84 @@ aimbot:Set("Aimbot", "Enabled", true)
   
 ---
   
+## Set Function  
+Replaces script functions.  
+This can allow custom compatibility for unsupported games.  
+```
+void api:SetFunction(function, newfunction)
+```  
+### Example  
+```lua
+api:SetFunction("Alive", function(plr)
+  return plr.Character:FindFirstChild("Humanoid").Health > 0
+  -- make sure to return a boolean
+end)
+api:SetFunction("Character", function(plr)
+  return plr.Character
+  -- make sure to return the player's CHARACTER OBJECT WITH THEIR BODY PARTS
+end)
+api:SetFunction("Team", function(plr)
+  return plr.Team
+  -- this does not have to be the team object, it can be the team name or whatever
+end)
+api:SetFunction("FFA", function()
+  return game:GetService("Players").LocalPlayer.Team == nil
+  -- make sure to return a boolean
+end)
+
+esp:SetFunction("Health", function(plr)
+  local hum = plr.Character.Humanoid
+  return {hum.Health, hum.MaxHealth}
+  -- make sure to put the player's HEALTH before MAX HEALTH {health, maxhealth}
+end)
+
+aimbot:SetFunction("Closest", function()
+  -- return the closest player
+  -- make sure to return the player OBJECT, not player name
+end)
+aimbot:SetFunction("Visible", function(plr)
+  -- return if plr is visible or not
+  -- make sure to return a boolean
+end)
+```  
+### Base Functions  
+Universal Esp and Aimbot both have these.  
+| Name | Description | Arguments |
+|:-----|:------------|:----------|
+|Alive|Returns a boolean indicating if the player is alive|Player|
+|Character|Returns the player's character|Player|
+|Health|Returns the player's health in a table|Player|
+|Team|Returns the player's team|Player|
+  
+### Esp Functions  
+| Name | Description | Arguments |
+|:-----|:------------|:----------|
+|Health|Returns the player's health in a table|Player|
+  
+### Aimbot Functions  
+| Name | Description | Arguments |
+|:-----|:------------|:----------|
+|Closest|Returns the closest player|None|
+|Visible|Returns true if the player is visible|Player|
+  
+---
+  
+## Reset Function  
+Resets the specified function back to its original function 
+```
+void esp:ResetFunction(function)
+```  
+### Example  
+```lua
+esp:SetFunction("Character", function(plr)
+  return workspace[plr.Name]
+end)
+
+task.wait(3)
+
+esp:ResetFunction("Character")
+```  
+  
 ## Destroy  
 Removes all drawing objects and disconnects all connections.  
 ```
@@ -218,59 +296,6 @@ esp:Remove("Roblox")
   
 ---
   
-## Set Function  
-Replaces universal esp's functions.  
-This can allow custom compatibility for unsupported games.  
-```
-void esp:SetFunction(function, newfunction)
-```  
-### Example  
-```lua
-esp:SetFunction("Alive", function(player)
-  if player.Character:FindFirstChild("Humanoid").Health > 0 then
-      return true
-  end
-  return false
-end)
-esp:SetFunction("Character", function(player)
-  return player.Character
-end)
-esp:SetFunction("Health", function(player)
-  local hum = player.Character.Humanoid
-  return {hum.Health, hum.MaxHealth} -- Make sure to put the player's HEALTH before MAX HEALTH
-end)
-esp:SetFunction("Team", function(player)
-  return player.Team
-end)
-```  
-### Functions  
-| Name | Description |
-|:-----|:------------|
-|Alive|Returns a boolean indicating if the player is alive|
-|Character|Returns the player's character|
-|Health|Returns the player's health in a table|
-|Team|Returns the player's team|
-  
----
-  
-## Reset Function  
-Resets the specified function back to its original function 
-```
-void esp:ResetFunction(function)
-```  
-### Example  
-```lua
-esp:SetFunction("Character", function(player)
-  return workspace[player.Name]
-end)
-
-task.wait(3)
-
-esp:ResetFunction("Character")
-```  
-  
----
-  
 ## Remove  
 Removes specific object(s).  
 ```
@@ -323,16 +348,20 @@ esp:GetObjects(game.Players.Roblox).Box:Remove() -- Only call :Remove on the tab
 ### Skeletons
 | Name | Type | Default |
 |:------|:-----|:------|
-|Thickness|Number|1|  
+|Thickness|Number|1|
   
 ### Health Bars
-Health Bars do not have any additional options.  
+| Name | Type | Default |
+|:------|:-----|:------|
+|Origin|String|None|
+|OutlineBarOnly|Boolean|true|
   
 ### Head Dots  
 | Name | Type | Default |
 |:------|:-----|:------|
 |Thickness|Number|1|
 |Filled|Boolean|false|
+|Scale|Number|1|
   
 ### Look Tracers  
 | Name | Type | Default |
@@ -346,6 +375,7 @@ Health Bars do not have any additional options.
 |Enabled|Boolean|true|
 |Radius|Number|60|
 |Transparency|Number|0.3|
+|Selected|Table|All true|
   
 ### Other
 | Name | Type | Default |
@@ -390,14 +420,19 @@ Health Bars do not have any additional options.
 |Color|Color3|255,255,255|
 |NumSides|Number|64|
   
+### TriggerBot
+| Name | Type | Default |
+|:-----|:-----|:--------|
+|Enabled|Boolean|true|
+  
 ### Other  
 | Name | Type | Default |
 |:-----|:-----|:--------|
 |TeamCheck|Boolean|true|
 |VisibleCheck|Boolean|true|
 |RefreshRate|Number|10|
-|Keybind|Enum.UserInputType/KeyCode|Enum.UserInputType.MouseButton2|
-|ToggleKey|Enum.KeyCode|Enum.KeyCode.RightShift|
+|Keybind|String|MouseButton2|
+|ToggleKey|String|RightShift|
 |MaximumDistance|Number|300|
 |AlwaysActive|Boolean|false|
 |Whitelisted|Table|{}|
