@@ -122,6 +122,7 @@ end
 if OldInstance then
 	getgenv().OldInstance = nil
 end
+getgenv().EspSettings.Names.OutlineThickness = 0 -- prevent error
 
 local version = "v1.6.6"
 local esp = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEsp.lua", true))()
@@ -154,26 +155,6 @@ function clonetable(a)
 	return t
 end
 
-if isfile("UESP.json") then
-	local a = game:GetService("HttpService"):JSONDecode(readfile("UESP.json"))
-	for i,v in next, a do
-		if typeof(v) == "table" then
-			for i2,v2 in next, v do
-				if typeof(v2) == "table" and v2.R then
-					local color = tocolor(v2)
-					a[i][i2] = color
-					esp:Set(i, i2, color)
-				else
-					if i ~= "Names" and i2 ~= "OutlineThickness" then
-						esp:Set(i, i2, v2)
-					end
-				end
-			end
-		end
-	end
-	getgenv().EspSettings = a
-end
-
 local Boxes = UI.New({Title = "Boxes"})
 local Tracers = UI.New({Title = "Tracers"})
 local Names = UI.New({Title = "Names"})
@@ -184,12 +165,74 @@ local LookTracers = UI.New({Title = "Look Tracers"})
 local All = UI.New({Title = "All"})
 local MouseVisibility = UI.New({Title = "Mouse Visibility"})
 local Other = UI.New({Title = "Other"})
+local Configs = UI.New({Title = "Configs"})
 local Players = UI.New({Title = "Players"})
 local Stats = UI.New({Title = "Statistics"})
 local ui = OldInstance
 local ss = getgenv().EspSettings
 local loaded = false
 local conn1,conn2,conn3 = nil,nil,nil
+local cfgname,selectedcfg = "",""
+
+if not isfolder("UESP") then
+	makefolder("UESP")
+end
+if isfile("UESP.json") then
+	writefile("UESP\\Default.json", readfile("UESP.json"))
+	delfile("UESP.json")
+end
+
+function destroy()
+	conn1:Disconnect()
+	conn2:Disconnect()
+	conn3:Disconnect()
+	esp:Destroy()
+	ui:Destroy()
+end
+function save()
+	local a = clonetable(ss)
+	for i,v in next, ss do
+		if typeof(v) == "table" then
+			for i2,v2 in next, v do
+				if typeof(v2) == "Color3" then
+					a[i][i2] = totable(v2)
+				end
+			end
+		end
+	end
+
+	writefile("UESP\\"..cfgname..".json", game:GetService("HttpService"):JSONEncode(a))
+end
+function load()
+	local path = "UESP\\"..selectedcfg
+	if not isfile(path) then Banner(selectedcfg.." does not exist.") return end
+	local a = game:GetService("HttpService"):JSONDecode(readfile(path))
+	for i,v in next, a do
+		if typeof(v) == "table" then
+			for i2,v2 in next, v do
+				if typeof(v2) == "table" and v2.R then
+					local color = tocolor(v2)
+					a[i][i2] = color
+					esp:Set(i, i2, color)
+				else
+					esp:Set(i, i2, v2)
+				end
+			end
+		else
+			esp:Set("Other", i, v)
+		end
+	end
+	getgenv().EspSettings = a
+	getgenv().EspSettings.Names.OutlineThickness = 0 -- prevent error
+end
+if isfile("UESP\\Default.json") then
+	selectedcfg = "Default.json"
+	load()
+else
+	cfgname = "Default"
+	save()
+	cfgname = ""
+end
 
 do -- Boxes
 	local type = "Boxes"
@@ -1021,37 +1064,8 @@ do -- Other
 		Def = ss.MaximumDistance
 	})
 	Other.Button({
-		Text = "Save Settings",
-		Callback = function()
-			local a = clonetable(ss)
-			for i,v in next, ss do
-				if typeof(v) == "table" then
-					for i2,v2 in next, v do
-						if typeof(v2) == "Color3" then
-							a[i][i2] = totable(v2)
-						end
-					end
-				end
-			end
-
-			writefile("UESP.json", game:GetService("HttpService"):JSONEncode(a))
-			Banner("Successfully saved your settings.")
-		end,
-		Menu = {
-			Info = function()
-				Banner("Saves your settings and uses them every time you execute! Note that this overwrites your previous save.")
-			end
-		}
-	})
-	Other.Button({
 		Text = "Destroy Esp",
-		Callback = function()
-			conn1:Disconnect()
-			conn2:Disconnect()
-			conn3:Disconnect()
-			esp:Destroy()
-			ui:Destroy()
-		end,
+		Callback = destroy,
 		Menu = {
 			Info = function()
 				Banner("This will completely remove Universal Esp, including the UI.")
@@ -1072,6 +1086,91 @@ do -- Other
 	Other.Button({
 		Text = "UI Toggle Key: Right Control",
 		Callback = function() end
+	})
+end
+
+do -- Configs
+	local list
+	local function isempty(s)
+		return s:gsub(" ","") == ""
+	end
+	local function refresh()
+		local t = {}
+		for _,v in next, listfiles("UESP") do
+			table.insert(t, v:sub(6,-1))
+		end
+		table.sort(t, function(a,b)
+			return a < b
+		end)
+		list:SetOptions(t)
+	end
+	Configs.TextField({
+		Text = "Config Name",
+		Type = "Default",
+		Callback = function(value)
+			if not isempty(value) then
+				cfgname = value
+			end
+		end
+	})
+	Configs.Button({
+		Text = "Create New Config",
+		Callback = function()
+			if not isempty(cfgname) then
+				save()
+				Banner("Successfully created a new config: "..cfgname)
+				refresh()
+			else
+				Banner("Please enter a name for your config in the text box above.")
+			end 
+		end
+	})
+	list = Configs.Dropdown({
+		Text = "Your Configs",
+		Callback = function(value)
+			selectedcfg = value
+		end,
+		Options = {}
+	})
+	refresh()
+	Configs.Button({
+		Text = "Load Selected Config",
+		Callback = load,
+		Menu = {
+			Info = function()
+				Banner("Your settings will not apply to the UI. (cuz im lazy)")
+			end
+		}
+	})
+	Configs.Button({
+		Text = "Delete Selected Config",
+		Callback = function()
+			if isfile("UESP\\"..selectedcfg) then
+				delfile("UESP\\"..selectedcfg)
+				Banner("Successfully deleted config: "..selectedcfg)
+				refresh()
+			else
+				Banner(selectedcfg.." does not exist.")
+			end
+		end
+	})
+	Configs.Button({
+		Text = "Set Selected Config as Default",
+		Callback = function()
+			local old = cfgname
+			cfgname = "Default"
+			save()
+			cfgname = old
+		end,
+		Menu = {
+			Info = function()
+				Banner("This will overwrite your current default config!")
+			end
+		}
+	})
+	Configs.Button({
+		Text = "Refresh Config List",
+		Callback = refresh
 	})
 end
 
