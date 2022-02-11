@@ -4,7 +4,7 @@ my cool scripts
 ---
   
 # Universal Esp  
-Updated February 5, 2022  
+Updated February 11, 2022  
 v1.6.6  
 - Box Esp  
 - Tracers  
@@ -18,7 +18,7 @@ v1.6.6
 https://pastebin.com/raw/5zw0rLH9
 ```  
 ### UI Version  
-Updated February 5, 2022  
+Updated February 11, 2022  
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua"))()
 ```  
@@ -38,30 +38,32 @@ Main Changes
 - Added `OutlineBarOnly` option for Health Bars
 - Added `Scale` option for Head Dots
   
+UI Changes  
+- Added support for multiple configs
+  
 ---
   
 # Universal Aimbot  
-Updated December 31, 2021  
-v1.1.11  
+Updated February 11, 2021  
+v1.1.12  
 ```
 https://pastebin.com/raw/nwqE7v07
 ```  
 **UI Version**  
-Updated January 2, 2022  
+Updated February 11, 2022  
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalAimbotUI.lua"))()
 ```  
-## Update v1.1.11  
-- Optimizations  
-- Added `RefreshRate`; allows you to control how fast the aimbot updates, which can save on performance   
-- Moved the following settings to the AimbotSettings table:  
-  - TeamCheck  
-  - VisibleCheck  
-  - Keybind  
-  - ToggleKey  
-  - MaximumDistance  
-  - AlwaysActive  
-These have been moved since they are shared between Aimbot and Aim Assist  
+## Update v1.1.12  
+Main Changes  
+- Added `TriggerBot`
+- Fixed `SlowSensitivity` on Aim Assist
+  
+Function Changes  
+- Added `SetFunction` and `ResetFunction`
+  
+UI Changes  
+- Added Configs w/ support for multiple configs
   
 ## NOTICE  
 ```
