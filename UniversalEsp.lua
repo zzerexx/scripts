@@ -125,12 +125,10 @@ if not EspSettings then
 	}
 end
 
-if not EspSettings.HeadDots and not EspSettings.LookTracers then
+if not EspSettings.MouseVisibility and not EspSettings.MouseVisibility.Selected then
 	local bind = Instance.new("BindableFunction")
 	bind.OnInvoke = function(a)
-		if a == "Get Script" then
-			setclipboard("https://pastebin.com/raw/5zw0rLH9")
-		end
+		setclipboard("https://pastebin.com/raw/5zw0rLH9")
 	end
 	game:GetService("StarterGui"):SetCore("SendNotification",{
 		Title = "Universal Esp",
@@ -191,7 +189,7 @@ local GetMouseLocation = uis.GetMouseLocation
 
 local GameId = game.GameId
 local ss, mousevis = getgenv().EspSettings, getgenv().EspSettings.MouseVisibility
-local OBJECTS, VISIBLE, ID = {}, true, 0
+local OBJECTS, VISIBLE, ID, OUTLINES = {}, true, 0, true
 --[[local bodyparts = {
 	"Head","UpperTorso","LowerTorso","LeftUpperArm","LeftLowerArm","LeftHand","RightUpperArm","RightLowerArm","RightHand","LeftUpperLeg","LeftLowerLeg","LeftFoot","RightUpperLeg","RightLowerLeg","RightFoot",
 	"Torso","Left Arm","Right Arm","Left Leg","Right Leg",
@@ -288,56 +286,90 @@ local oldfuncs = {}
 
 function IsAlive(plr)
 	local humanoid = FindFirstChild(plr.Character or game, "Humanoid")
-	if plr.Character and humanoid and humanoid.Health > 0 then
+	if humanoid and humanoid.Health > 0 then
 		return true
-	elseif getchar then
-		return getchar(plr) ~= nil
-	elseif ts then
-		return characters:GetCharacter(plr) ~= nil
 	end
 	return false
 end
-oldfuncs.alive = IsAlive
-function GetChar(plr)
+do
 	if getchar then
-		local a = getchar(plr)
-		if a ~= nil then
-			return a.torso.Parent
+		IsAlive = function(plr)
+			return getchar(plr) ~= nil
 		end
-	elseif ts then
-		return characters:GetCharacter(plr)
-	elseif plr.Character ~= nil then
-		return plr.Character
 	end
-	return nil
+	if ts then
+		IsAlive = function(plr)
+			return characters:GetCharacter(plr) ~= nil
+		end
+	end
+end
+oldfuncs.alive = IsAlive
+
+function GetChar(plr)
+	return plr.Character
+end
+do
+	if getchar then
+		GetChar = function(plr)
+			local a = getchar(plr)
+			if a ~= nil then
+				return a.torso.Parent
+			end
+			return nil
+		end
+	end
+	if ts then
+		GetChar = function(plr)
+			return characters:GetCharacter(plr)
+		end
+	end
 end
 oldfuncs.character = GetChar
+
 function GetHealth(plr)
-	local a = plr.Character
-	local humanoid = FindFirstChild(a or game, "Humanoid")
-	if gethealth then
-		return {mathfloor(gethealth(plr,plr)),100}
-	elseif ts then 
-		a = characters:GetCharacter(plr)
-		if FindFirstChild(a, "Health") then
-			return {mathfloor(a.Health.Value), mathfloor(a.Health.MaxHealth.Value)}
-		end
-	elseif GameId == gids.arsenal then
-		a = plr.NRPBS
-		return {mathfloor(a.Health.Value), mathfloor(a.MaxHealth.Value)}
-	elseif a ~= nil and humanoid then
-		return {mathfloor(humanoid.Health), mathfloor(humanoid.MaxHealth)}
+	local a = FindFirstChild(plr.Character or game, "Humanoid")
+	if a then
+		return {mathfloor(a.Health), mathfloor(a.MaxHealth)}
 	end
 	return {100,100}
 end
-oldfuncs.health = GetHealth
-function GetTeam(plr)
-	if ts then
-		return teams:GetPlayerTeam(plr)
+do
+	if gethealth then
+		GetHealth = function(plr)
+			return {mathfloor(gethealth(plr, plr)), 100}
+		end
 	end
+	if ts then
+		GetHealth = function(plr)
+			local a = characters:GetCharacter(plr)
+			local hp = FindFirstChild(a, "Health")
+			if hp then
+				return {mathfloor(hp.Value), mathfloor(hp.MaxHealth.Value)}
+			end
+			return {100,100}
+		end
+	end
+	if GameId == gids.arsenal then
+		GetHealth = function(plr)
+			local a = plr.NRPBS
+			return {mathfloor(a.Health.Value), mathfloor(a.MaxHealth.Value)}
+		end
+	end
+end
+oldfuncs.health = GetHealth
+
+function GetTeam(plr)
 	return plr.Team
 end
+do
+	if ts then
+		GetTeam = function(plr)
+			return teams:GetPlayerTeam(plr)
+		end
+	end
+end
 oldfuncs.team = GetTeam
+
 function IsFFA()
 	local t = {}
 	for _,v in next, players:GetPlayers() do
@@ -351,6 +383,7 @@ function IsFFA()
 	return #t == 1
 end
 oldfuncs.ffa = IsFFA
+
 function ApplyZIndex(obj,name)
 	if ZIndexEnabled then
 		local idx = zindex[name]
@@ -361,7 +394,7 @@ function ApplyZIndex(obj,name)
 end
 function SetProp(obj,prop,value,outline)
 	for i,v in next, obj do
-		if (outline and find(i, "Outline")) or not outline then
+		if (OUTLINES and outline and find(i, "Outline")) or (not outline and OUTLINES) then
 			v[prop] = value
 		end
 	end
@@ -848,14 +881,16 @@ function update()
 							box.PointC = Vector2new(blx, bly)
 							box.PointD = Vector2new(brx, bry)
 
-							out.Visible = s.Outline and box.Visible
-							if s.Outline then
-								out.Color = s.OutlineColor
-								out.Thickness = s.Thickness + s.OutlineThickness
-								out.PointA = box.PointA
-								out.PointB = box.PointB
-								out.PointC = box.PointC
-								out.PointD = box.PointD
+							if OUTLINES then
+								out.Visible = s.Outline and box.Visible
+								if s.Outline then
+									out.Color = s.OutlineColor
+									out.Thickness = s.Thickness + s.OutlineThickness
+									out.PointA = box.PointA
+									out.PointB = box.PointB
+									out.PointC = box.PointC
+									out.PointD = box.PointD
+								end
 							end
 						elseif type == "Tracers" then
 							local thickness, outline, origin = s.Thickness, s.Outline, lower(s.Origin)
@@ -871,12 +906,14 @@ function update()
 								tracer.To = to
 							end
 
-							out.Visible = outline and tracer.Visible
-							if outline then
-								out.Color = s.OutlineColor
-								out.Thickness = thickness + s.OutlineThickness
-								out.From = from
-								out.To = to
+							if OUTLINES then
+								out.Visible = outline and tracer.Visible
+								if outline then
+									out.Color = s.OutlineColor
+									out.Thickness = thickness + s.OutlineThickness
+									out.From = from
+									out.To = to
+								end
 							end
 						elseif type == "Names" then
 							SetProp(obj, "Size", s.Size)
@@ -924,16 +961,18 @@ function update()
 									end
 								end
 							end
-							for i2,v2 in next, obj do
-								if find(i2, "Outline") then
-									local name = i2:gsub("Outline","")
-									local v3 = obj[name]
-									v2.Visible = outline and v3.Visible
-									if v2.Visible then
-										v2.Color = s.OutlineColor
-										v2.Thickness = thickness + othickness
-										v2.From = v3.From
-										v2.To = v3.To
+							if OUTLINES then
+								for i2,v2 in next, obj do
+									if find(i2, "Outline") then
+										local name = i2:gsub("Outline","")
+										local v3 = obj[name]
+										v2.Visible = outline and v3.Visible
+										if v2.Visible then
+											v2.Color = s.OutlineColor
+											v2.Thickness = thickness + othickness
+											v2.From = v3.From
+											v2.To = v3.To
+										end
 									end
 								end
 							end
@@ -975,32 +1014,40 @@ function update()
 								(lefty + (righty - lefty) * health) + z
 							)
 	
-							out.Visible = outline and bar.Visible
-							if outline then
-								out.Color = s.OutlineColor
-								out.Thickness = s.OutlineThickness
-								out.PointA = (baronly and bar.PointA) or Vector2new(brx, bry + 5)
-								out.PointB = (baronly and bar.PointB) or Vector2new(blx, bly + 5)
-								out.PointC = (baronly and bar.PointC) or Vector2new(blx, bly + z)
-								out.PointD = (baronly and bar.PointD) or Vector2new(brx, bry + z)
+							if OUTLINES then
+								out.Visible = outline and bar.Visible
+								if outline then
+									out.Color = s.OutlineColor
+									out.Thickness = s.OutlineThickness
+									out.PointA = (baronly and bar.PointA) or Vector2new(brx, bry + 5)
+									out.PointB = (baronly and bar.PointB) or Vector2new(blx, bly + 5)
+									out.PointC = (baronly and bar.PointC) or Vector2new(blx, bly + z)
+									out.PointD = (baronly and bar.PointD) or Vector2new(brx, bry + z)
+								end
 							end
 						elseif type == "HeadDots" then
-							local thickness, outline, filled = s.Thickness, s.Outline, s.Filled
-							local dot, out = obj.Dot, obj.Outline
-							dot.Thickness = thickness 
-							dot.Filled = filled
+							if FindFirstChild(char, "Head") then
+								local thickness, outline, filled = s.Thickness, s.Outline, s.Filled
+								local dot, out = obj.Dot, obj.Outline
+								dot.Thickness = thickness 
+								dot.Filled = filled
 
-							local pos = Vector2new(head.X, head.Y)
-							local radius = z / ((mag / 60) * (camfov / 70)) * s.Scale
-							dot.Position = pos
-							dot.Radius = radius
+								local pos = Vector2new(head.X, head.Y)
+								local radius = z / ((mag / 60) * (camfov / 70)) * s.Scale
+								dot.Position = pos
+								dot.Radius = radius
 
-							out.Visible = outline and dot.Visible
-							if outline then
-								out.Color = s.OutlineColor
-								out.Thickness = (filled and thickness + (s.OutlineThickness - 1)) or thickness + s.OutlineThickness
-								out.Position = pos
-								out.Radius = (filled and radius + 1) or radius
+								if OUTLINES then
+									out.Visible = outline and dot.Visible
+									if outline then
+										out.Color = s.OutlineColor
+										out.Thickness = (filled and thickness + (s.OutlineThickness - 1)) or thickness + s.OutlineThickness
+										out.Position = pos
+										out.Radius = (filled and radius + 1) or radius
+									end
+								end
+							else
+								SetProp(obj, "Visible", false)
 							end
 						elseif type == "LookTracers" then
 							if FindFirstChild(char, "Head") then
@@ -1013,12 +1060,14 @@ function update()
 								tracer.From = from
 								tracer.To = to
 
-								out.Visible = outline and tracer.Visible
-								if outline then
-									out.Color = s.OutlineColor
-									out.Thickness = thickness + s.OutlineThickness
-									out.From = from
-									out.To = to
+								if OUTLINES then
+									out.Visible = outline and tracer.Visible
+									if outline then
+										out.Color = s.OutlineColor
+										out.Thickness = thickness + s.OutlineThickness
+										out.From = from
+										out.To = to
+									end
 								end
 							else
 								SetProp(obj, "Visible", false)
@@ -1266,6 +1315,16 @@ function esp:Remove(a)
 		end
 	end
 end
+--[[function esp:DisableOutlines()
+	OUTLINES = false
+	for _,v in next, OBJECTS do
+		for i2,v2 in next, v.Object do
+			if i2:find("Outline") then
+				v2:Remove()
+			end
+		end
+	end
+end]]
 function esp:SetFunction(a,f)
 	assert(typeof(a) == "string",("Universal Esp: bad argument to #1 'SetFunction' (string expected, got %s)"):format(typeof(a)))
 	assert(typeof(f) == "function",("Universal Esp: bad argument to #2 'SetFunction' (function expected, got %s)"):format(typeof(f)))
@@ -1282,7 +1341,6 @@ function esp:SetFunction(a,f)
 	elseif a == "ffa" then
 		IsFFA = f
 	end
-	
 end
 function esp:ResetFunction(a)
 	assert(typeof(a) == "string",("Universal Esp: bad argument to #1 'SetFunction' (string expected, got %s)"):format(typeof(a)))
@@ -1297,6 +1355,8 @@ function esp:ResetFunction(a)
 		GetHealth = f
 	elseif a == "team" then
 		GetTeam = f
+	elseif a == "ffa" then
+		IsFFA = f
 	end
 end
 function esp:Destroy()
