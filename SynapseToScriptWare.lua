@@ -35,7 +35,6 @@ getgenv().Drawing.Fonts = {
 }
 
 local headers = game:GetService("HttpService"):JSONDecode(request({Url = "https://httpbin.org/get"}).Body).headers
-local bs = Bitstream.new()
 local oldr, oldd, olds
 oldr = hookfunction(request,function(options)
 	local h = options.Headers or {}
@@ -226,10 +225,6 @@ local functions = {
 	end,
 	['is_redirection_enabled'] = function()
 		return false -- idk what it actually does but whatever
-	end,
-	['readbinarystring'] = function(obj,prop)
-		-- i think this is what it does
-		return bs:ReadString(gethiddenproperty(obj, prop))
 	end,
 	-- get_
 	['get_calling_script'] = getcallingscript,
