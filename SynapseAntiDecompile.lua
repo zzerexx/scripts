@@ -1,3 +1,5 @@
+-- put this at the top of any localscript and it will fuck up the decompiled output
+-- note that if u just put it in a script by itself, it will not work. it needs to have a function or something to actually work
 local v1 = ...
 
 if not v1 then
