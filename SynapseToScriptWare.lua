@@ -40,7 +40,7 @@ oldr = hookfunction(request,function(options)
 	local h = options.Headers or {}
 	h['Syn-Fingerprint'] = SWHWID or headers['Sw-Fingerprint']
 	h['Syn-User-Identifier'] = SWUID or headers['Sw-User-Identifier']
-	h['User-Agent'] = "synx/v2.14.6b"
+	h['User-Agent'] = "synx/v2.14.9b"
 	return oldr({
 		Url = options.Url,
 		Method = options.Method or "GET",
@@ -55,10 +55,12 @@ oldd = hookfunction(Drawing.new,function(class)
 		['__OBJECT'] = obj,
 		['__OBJECT_EXISTS'] = true
 	}
-	function t:Remove()
+	local function remove()
 		obj:Remove()
 		t.__OBJECT_EXISTS = false
 	end
+	t.Remove = remove
+	t.Destroy = remove
 	setmetatable(t,{
 		__index = function(_,i)
 			if i == ("__OBJECT" or "__OBJECT_EXISTS") then
@@ -83,7 +85,8 @@ olds = hookfunction(saveinstance,function(t)
 	}
 	if typeof(t) == "table" then
 		local mode, noscripts, timeout = t.mode, t.noscripts, t.timeout
-		if mode ~= nil then
+		if typeof(mode) == "string" then
+			mode = mode:lower()
 			if mode == "optimized" then
 				s.Decompile = true
 				s.NilInstances = true
@@ -96,16 +99,16 @@ olds = hookfunction(saveinstance,function(t)
 			elseif mode == "scripts" then
 				s.Decompile = true
 			end
-			if noscripts then
-				s.Decompile = false
-			end
-			if timeout then
-				s.DecompileTimeout = timeout
-			end
+		end
+		if noscripts then
+			s.Decompile = false
+		end
+		if typeof(timeout) == "number" then
+			s.DecompileTimeout = timeout
 		end
 	end
 	local name = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
-	return olds(game, s, name)
+	return "-- Disassembled with the Script-Ware disassembler.\n\n"..olds(game, s, name)
 end)
 
 local oldmt = getrawmetatable(game)
@@ -271,7 +274,7 @@ local functions = {
 		end)
 	end,
 	['printconsole'] = function(data)
-		output(data)
+		printuiconsole(data)
 	end,
 	['rconsoleclose'] = consoledestroy,
 	-- unavailable
@@ -281,13 +284,13 @@ local functions = {
 	--['setuntouched'] = nil,
 	--['setupvaluename'] = nil,
 	--['XPROTECT'] = nil,
-	--['is_redirection_enabled'] = nil,
 	--['getpointerfromstate'] = nil,
 	--['setnonreplicatedproperty'] = nil,
+	--['readbinarystring'] = nil
 }
 
 for i,v in next, functions do
-	getgenv()[i] = v
+    getgenv()[i] = v
 end
 
 getgenv().syn = {
@@ -341,10 +344,10 @@ getgenv().syn = {
 				return crypt.custom_decrypt(data,key,nonce,ciphers[cipher:gsub("_","-")])
 			end,
 			['hash'] = function(alg,data)
-				assert(not hashalgs[alg],"bad argument #1 to 'hash' (non-existant hash algorithm)")
-				if alg == ("sha224" or "sha3-384") then
-					return hash[alg:gsub("-","_")](data)
-				end
+                assert(not hashalgs[alg],"bad argument #1 to 'hash' (non-existant hash algorithm)")
+                if alg == ("sha224" or "sha3-384") then
+                    return hash[alg:gsub("-","_")](data)
+                end
 				return crypt.hash(data,alg):lower()
 			end
 		},
