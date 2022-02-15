@@ -1073,6 +1073,18 @@ do -- Other
 		}
 	})
 	Other.Button({
+		Text = "Load Performance Version",
+		Callback = function()
+			destroy()
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspPerformance.lua"))()
+		end,
+		Menu = {
+			Info = function()
+				Banner("This will replace the current esp with an optimized version made for performance. Note that this version does NOT have any customizability.")
+			end
+		}
+	})
+	Other.Button({
 		Text = "Credits",
 		Callback = function()
 			Banner("Material UI Library created by twink marie\nUniversal Esp created by zzerexx#3970")
