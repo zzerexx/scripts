@@ -125,7 +125,7 @@ if not EspSettings then
 	}
 end
 
-if not EspSettings.MouseVisibility and not EspSettings.MouseVisibility.Selected then
+if not EspSettings.MouseVisibility or (EspSettings.MouseVisibility and not EspSettings.MouseVisibility.Selected) then
 	local bind = Instance.new("BindableFunction")
 	bind.OnInvoke = function(a)
 		setclipboard("https://pastebin.com/raw/5zw0rLH9")
@@ -381,6 +381,13 @@ function IsFFA()
 		end
 	end
 	return #t == 1
+end
+do
+	if GameId == gids.arsenal then
+		IsFFa = function()
+			return game:GetService("ReplicatedStorage").wkspc.FFA.Value == true
+		end
+	end
 end
 oldfuncs.ffa = IsFFA
 
