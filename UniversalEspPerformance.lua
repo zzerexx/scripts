@@ -180,8 +180,9 @@ function IsFFA()
 end
 do
 	if GameId == gids.arsenal then
-		IsFFa = function()
-			return game:GetService("ReplicatedStorage").wkspc.FFA.Value == true
+		local ffa = game:GetService("ReplicatedStorage"):WaitForChild("wkspc"):WaitForChild("FFA")
+		IsFFA = function()
+			return ffa.Value == true
 		end
 	end
 end
