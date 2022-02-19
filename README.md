@@ -4,7 +4,7 @@ my cool scripts
 ---
   
 # Universal Esp  
-Updated February 14, 2022  
+Updated February 19, 2022  
 v1.6.6  
 - Box Esp  
 - Tracers  
@@ -20,12 +20,12 @@ v1.6.6
 https://pastebin.com/raw/5zw0rLH9
 ```  
 ### UI Version  
-Updated February 14, 2022  
+Updated February 19, 2022  
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua"))()
 ```  
 ### Performance Version  
-Updated February 14, 2022  
+Updated February 19, 2022  
 Boxes, Names, zero customizability, optimized asf  
 Supports `SetFunction` and `ResetFunction` for compatibility!  
 ```
@@ -46,13 +46,13 @@ UI Changes
 ---
   
 # Universal Aimbot  
-Updated February 11, 2021  
+Updated February 19, 2022  
 v1.1.12  
 ```
 https://pastebin.com/raw/nwqE7v07
 ```  
 **UI Version**  
-Updated February 11, 2022  
+Updated February 19, 2022  
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalAimbotUI.lua"))()
 ```  
