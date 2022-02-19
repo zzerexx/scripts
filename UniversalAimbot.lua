@@ -229,6 +229,14 @@ function IsFFA()
 	end
 	return #t == 1
 end
+do
+	if GameId == gids.arsenal then
+		local ffa = game:GetService("ReplicatedStorage"):WaitForChild("wkspc"):WaitForChild("FFA")
+		IsFFA = function()
+			return ffa.Value == true
+		end
+	end
+end
 oldfuncs.ffa = IsFFA
 
 function ClosestPlayer()
