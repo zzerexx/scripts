@@ -1,3 +1,49 @@
+# Table of Contents  
+- [Universal Script API](#universal-script-api)
+  - [Loading Universal Script](#loading-universal-script)
+  - [Toggle Type](#toggle-type)
+  - [Get Option Value](#get-option-value)
+  - [Set Option Value](#set-option-value)
+  - [Set Function](#set-function)
+    - [Base Functions](#base-functions)
+    - [Esp Functions](#esp-functions)
+    - [Aimbot Functions](#aimbot-functions)
+  - [Reset Function](#reset-function)
+  - [Destroy](#destroy)
+- [Universal Esp Functions](#universal-esp-functions)
+  - [Add Label](#add-label)
+  - [Add Cham](#add-cham)
+    - [Set Part](#set-part)
+    - [Set Prop](#set-prop)
+  - [Set All](#set-all)
+  - [Get Objects](#get-objects)
+  - [Get Total Objects](#get-total-objects)
+  - [Add Esp](#add-esp)
+  - [Remove Esp](#remove-esp)
+  - [Remove](#remove)
+- [Esp Types & Options](#esp-types--options)
+  - [All Types](#all)
+  - [Boxes](#boxes)
+  - [Tracers](#tracers)
+  - [Names](#names)
+  - [Skeletons](#skeletons)
+  - [Health Bars](#health-bars)
+  - [Head Dots](#head-dots)
+  - [Look Tracers](#look-tracers)
+  - [Mouse Visibility](#mouse-visibility)
+  - [Other](#other)
+- [Aimbot Types & Options](#aimbot-types--options)
+  - [Aimbot](#aimbot)
+  - [Aim Assist](#aim-assist)
+  - [Fov Circle](#fov-circle)
+  - [Trigger Bot](#trigger-bot)
+  - [Other](#other)
+- [Script Errors](#script-errors)
+  - [Invalid Type](#invalid-type)
+  - [Invalid Option](#invalid-option)
+  
+---
+  
 # Universal Script API  
 This applies to Universal Esp and Aimbot  
   
@@ -309,7 +355,8 @@ esp:GetObjects(game.Players.Roblox).Box:Remove() -- Only call :Remove on the tab
 ---
   
 # Esp Types & Options  
-### All - All types have these options  
+### All  
+All types have these options  
 | Name | Type | Default |
 |:------|:-----|:------|
 |Enabled|Boolean|true|
@@ -397,7 +444,7 @@ esp:GetObjects(game.Players.Roblox).Box:Remove() -- Only call :Remove on the tab
 |Strength|Number|100|
 |AimType|String|Hold|
   
-### AimAssist  
+### Aim Assist  
 | Name | Type | Default |
 |:-----|:-----|:--------|
 |Enabled|Boolean|false|
@@ -410,7 +457,7 @@ esp:GetObjects(game.Players.Roblox).Box:Remove() -- Only call :Remove on the tab
 |SlowFactor|Number|1.75|
 |RequireMovement|Boolean|true|  
   
-### FovCircle  
+### Fov Circle  
 | Name | Type | Default |
 |:-----|:-----|:--------|
 |Enabled|Boolean|true|
@@ -420,7 +467,7 @@ esp:GetObjects(game.Players.Roblox).Box:Remove() -- Only call :Remove on the tab
 |Color|Color3|255,255,255|
 |NumSides|Number|64|
   
-### TriggerBot
+### Trigger Bot
 | Name | Type | Default |
 |:-----|:-----|:--------|
 |Enabled|Boolean|true|
