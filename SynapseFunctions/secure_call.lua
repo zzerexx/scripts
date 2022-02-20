@@ -1,3 +1,5 @@
+-- bypasses getfenv detections
+-- DOES NOT bypass debug.traceback detection
 return function(func,env,...)
 	return coroutine.wrap(function(...)
 		setfenv(0, getsenv(env))
