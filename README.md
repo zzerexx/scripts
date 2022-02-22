@@ -46,26 +46,23 @@ UI Changes
 ---
   
 # Universal Aimbot  
-Updated February 19, 2022  
-v1.1.12  
+Updated February 21, 2022  
+v1.1.13  
 ```
 https://pastebin.com/raw/nwqE7v07
 ```  
 **UI Version**  
-Updated February 19, 2022  
+Updated February 21, 2022  
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalAimbotUI.lua"))()
 ```  
-## Update v1.1.12  
+## Update v1.1.13  
 Main Changes  
-- Added `TriggerBot`
-- Fixed `SlowSensitivity` on Aim Assist
-  
-Function Changes  
-- Added `SetFunction` and `ResetFunction`
-  
-UI Changes  
-- Added Configs w/ support for multiple configs
+- Added `Delay` for TriggerBot; waits the provided amount of time in milliseconds before clicking
+- Added `Spam` for TriggerBot; spams left click
+- Added `ClicksPerSecond` for TriggerBot
+- Fixed TriggerBot causing frame drops
+- `VisibleCheck` now automatically filters transparent instances
   
 ## NOTICE  
 ```
