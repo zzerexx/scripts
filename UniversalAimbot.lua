@@ -1,10 +1,10 @@
 --[[
-v1.1.12 Changes
-- Added `TriggerBot`
-- Fixed `SlowSensitivity` on aim assist
-
-Function Changes
-- Added `SetFunction` and `ResetFunction`
+v1.1.13 Changes
+- Added `Delay` for TriggerBot
+- Added `Spam` for TriggerBot
+- Added `ClicksPerSecond` for TriggerBot
+- Fixed Trigger Bot causing frame drops
+- VisibleCheck now automatically filters transparent instances
 ]]
 if game.GameId == 1168263273 then
 	game:GetService("StarterGui"):SetCore("SendNotification",{
@@ -51,11 +51,13 @@ if not getgenv().AimbotSettings then
 		},
 		TriggerBot = {
 			Enabled = false,
-			-- there will be more things in the future
+			Delay = 60, -- how long it waits before clicking (milliseconds)
+			Spam = true, -- for semi-auto weapons
+			ClicksPerSecond = 10 -- set this to 0 to get anything higher than 37 cps
 		},
 		Whitelisted = {}, -- Username or User ID
 		WhitelistFriends = true, -- Automatically adds friends to the whitelist
-		Ignore = nil -- Raycast Ignore
+		Ignore = {} -- Raycast Ignore
 	}
 end
 
@@ -131,6 +133,8 @@ local bodyparts = {
 }
 local ads = false
 local olddelta = uis.MouseDeltaSensitivity
+local triggering = false
+local Ignore = {camera}
 local gids = { -- game ids
 	['arsenal'] = 111958650,
 	['pf'] = 113491250,
@@ -233,7 +237,7 @@ do
 	if GameId == gids.arsenal then
 		local ffa = game:GetService("ReplicatedStorage"):WaitForChild("wkspc"):WaitForChild("FFA")
 		IsFFA = function()
-			return ffa.Value == true
+			return ffa.Value
 		end
 	end
 end
@@ -262,6 +266,9 @@ function ClosestPlayer()
 end
 oldfuncs.closest = ClosestPlayer
 
+local params = RaycastParamsnew()
+params.FilterType = Enum.RaycastFilterType.Blacklist
+params.IgnoreWater = true
 function IsVisible(plr)
 	local char = GetChar(plr)
 	if ss.VisibleCheck and IsAlive(plr) and FindFirstChild(char, Aimbot.TargetPart) then
@@ -269,19 +276,19 @@ function IsVisible(plr)
 			return getvis(player,plr)
 		else
 			local mychar = GetChar(player)
-			local ignore = {camera, mychar}
-			if typeof(ss.Ignore) == "Instance" then
-				for _,v in next, ss.Ignore do
-					tableinsert(ignore, v)
-				end
-			end
-			local params = RaycastParamsnew()
-			params.FilterDescendantsInstances = ignore
-			params.FilterType = Enum.RaycastFilterType.Blacklist
-			params.IgnoreWater = true
+			tableinsert(Ignore, mychar)
+			params.FilterDescendantsInstances = Ignore
 			local result = workspace:Raycast(camera.CFrame.Position, (char[Aimbot.TargetPart].Position - camera.CFrame.Position).Unit * 500,params)
-			if result and result.Instance:IsDescendantOf(char) then
-				return true
+			if result then
+				local ins = result.Instance
+				local isdes = ins:IsDescendantOf(char)
+				local model = ins:FindFirstAncestorOfClass("Model")
+				if ins.Transparency > 0.8 and not (model ~= nil and model:FindFirstChildOfClass("Humanoid")) and not isdes then
+					tableinsert(Ignore, ins)
+					return IsVisible(plr)
+				elseif isdes then
+					return true
+				end
 			end
 		end
 	elseif not ss.VisibleCheck and IsAlive(plr) then
@@ -290,6 +297,16 @@ function IsVisible(plr)
 	return false
 end
 oldfuncs.visible = IsVisible
+task.spawn(function() -- update ignore list
+	while true do
+		if typeof(ss.Ignore) == "table" then
+			for _,v in next, ss.Ignore do
+				tableinsert(Ignore, v)
+			end
+		end
+		taskwait(3)
+	end
+end)
 
 local fov
 function InFov(plr,Fov)
@@ -472,14 +489,9 @@ function update()
 					end
 
 					-- distance based strength
-					local mag, mult = (ccf.Position - char[rootpart].Position).Magnitude, 1
-					if mag <= 20 then
-						mult = 2
-					elseif mag <= 40 then
-						mult = 1.4 
-					elseif mag > 100 then
-						mult = 0.8
-					end
+					local mag = (ccf.Position - char[rootpart].Position).Magnitude
+					local mult = (mag <= 20 and 2) or (mag <= 40 and 1.4) or 1
+
 					if ads then
 						mult /= 1.8
 					end
@@ -499,17 +511,40 @@ function update()
 		end
 	end
 
-	if Trigger.Enabled and Mouse.Target:IsDescendantOf(char) then
+	local target = Mouse.Target
+	if not triggering and Trigger.Enabled and target ~= nil and target:IsDescendantOf(char) then
 		taskspawn(function()
-			repeat
-				mouse1press()
-				taskwait()
-			until char == nil or not Mouse.Target:IsDescendantOf(char)
-			mouse1release()
+			triggering = true
+			taskwait(Trigger.Delay / 1000)
+			target = Mouse.Target
+			if target ~= nil and target:IsDescendantOf(char) then
+				triggering = true
+				local cps = Trigger.ClicksPerSecond
+				if cps > 37 then
+					cps = 0
+				end
+				local waitamount = 1 / Trigger.ClicksPerSecond
+				repeat
+					target = Mouse.Target
+					if Trigger.Spam then
+						mouse1press()
+					end
+					taskwait(waitamount)
+				until char == nil or Mouse.Target == nil or not Mouse.Target:IsDescendantOf(char)
+				mouse1release()
+				triggering = false
+			else
+				triggering = false
+			end
 		end)
 	end
 end
-local conn3 = RunService.RenderStepped:Connect(update)
+--local conn3 = RunService.RenderStepped:Connect(update)
+local name = ""
+for _ = 1, math.random(16, 24) do
+	name = name..string.char(math.random(97, 122))
+end
+RunService:BindToRenderStep(name, 0, update)
 local conn4 = players.PlayerAdded:Connect(function(plr)
 	if ss.WhitelistFriends and player:IsFriendsWith(plr.UserId) then
 		tableinsert(ss.Whitelisted,plr.UserId)
@@ -598,8 +633,9 @@ function aimbot:Destroy()
 	if destroyed then return end
 	conn1:Disconnect()
 	conn2:Disconnect()
-	conn3:Disconnect()
+	--conn3:Disconnect()
 	conn4:Disconnect()
+	RunService:UnbindFromRenderStep(name)
 	removefov()
 	uis.MouseDeltaSensitivity = olddelta
 	destroyed = true
