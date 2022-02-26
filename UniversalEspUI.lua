@@ -171,21 +171,63 @@ local Stats = UI.New({Title = "Statistics"})
 local ui = OldInstance
 local ss = getgenv().EspSettings
 local loaded = false
-local conn1,conn2,conn3 = nil,nil,nil
+local conn1,conn2,conn3,conn4
 local cfgname,selectedcfg = "",""
+local name = "UESP"
+local addtonew = true
 
-if not isfolder("UESP") then
-	makefolder("UESP")
+if not isfolder(name) then
+	makefolder(name)
 end
-if isfile("UESP.json") then
-	writefile("UESP\\Default.json", readfile("UESP.json"))
-	delfile("UESP.json")
+if isfile(name..".json") then
+	writefile(name.."\\Default.json", readfile(name..".json"))
+	delfile(name..".json")
+end
+
+local newsettings = {
+	HealthBars = {
+		Enabled = true,
+		Transparency = 1,
+		Color = Color3.fromRGB(0,255,0),
+		UseTeamColor = true,
+		RainbowColor = false,
+		Outline = true,
+		OutlineColor = Color3.fromRGB(0,0,0),
+		OutlineThickness = 3,
+			Origin = "None",
+			OutlineBarOnly = true
+	},
+	HeadDots = {
+		Enabled = true,
+		Transparency = 1,
+		Color = Color3.fromRGB(255,255,255),
+		UseTeamColor = true,
+		RainbowColor = false,
+		Outline = true,
+		OutlineColor = Color3.fromRGB(0,0,0),
+		OutlineThickness = 3,
+		Thickness = 1,
+		Filled = false,
+			Scale = 1
+	},
+}
+for i,v in next, newsettings do
+	if ss[i] == nil then
+		ss[i] = v
+	else
+		for i2,v2 in next, v do
+			if ss[i][i2] == nil then
+				ss[i][i2] = v2
+			end
+		end
+	end
 end
 
 function destroy()
 	conn1:Disconnect()
 	conn2:Disconnect()
 	conn3:Disconnect()
+	conn4:Disconnect()
 	esp:Destroy()
 	ui:Destroy()
 end
@@ -201,10 +243,10 @@ function save()
 		end
 	end
 
-	writefile("UESP\\"..cfgname..".json", game:GetService("HttpService"):JSONEncode(a))
+	writefile(name.."\\"..cfgname..".json", game:GetService("HttpService"):JSONEncode(a))
 end
 function load()
-	local path = "UESP\\"..selectedcfg
+	local path = name.."\\"..selectedcfg
 	if not isfile(path) then Banner(selectedcfg.." does not exist.") return end
 	local a = game:GetService("HttpService"):JSONDecode(readfile(path))
 	for i,v in next, a do
@@ -222,10 +264,9 @@ function load()
 			esp:Set("Other", i, v)
 		end
 	end
-	getgenv().EspSettings = a
 	getgenv().EspSettings.Names.OutlineThickness = 0 -- prevent error
 end
-if isfile("UESP\\Default.json") then
+if isfile(name.."\\Default.json") then
 	selectedcfg = "Default.json"
 	load()
 else
@@ -1108,7 +1149,7 @@ do -- Configs
 	end
 	local function refresh()
 		local t = {}
-		for _,v in next, listfiles("UESP") do
+		for _,v in next, listfiles(name) do
 			table.insert(t, v:sub(6,-1))
 		end
 		table.sort(t, function(a,b)
@@ -1157,8 +1198,8 @@ do -- Configs
 	Configs.Button({
 		Text = "Delete Selected Config",
 		Callback = function()
-			if isfile("UESP\\"..selectedcfg) then
-				delfile("UESP\\"..selectedcfg)
+			if isfile(name.."\\"..selectedcfg) then
+				delfile(name.."\\"..selectedcfg)
 				Banner("Successfully deleted config: "..selectedcfg)
 				refresh()
 			else
@@ -1239,6 +1280,34 @@ do -- Players
 			end
 		}
 	})
+	Players.Button({
+		Text = "Add esp to all players",
+		Callback = function()
+			for _,v in next, players:GetPlayers() do
+				esp:Add(v)
+			end
+		end
+	})
+	Players.Button({
+		Text = "Remove esp from all players",
+		Callback = function()
+			for _,v in next, players:GetPlayers() do
+				esp:Remove(v)
+			end
+		end
+	})
+	Players.Toggle({
+		Text = "Add esp to players upon joining",
+		Callback = function(value)
+			addtonew = value
+		end,
+		Enabled = true,
+		Menu = {
+			Info = function()
+				Banner("Adds esp to players when they join the game.\nThis setting DOES NOT save in your config.")
+			end
+		}
+	})
 end
 
 do -- Stats
@@ -1295,23 +1364,80 @@ do -- Stats
 		Callback = function() end
 	})
 
+	local bruhwtf = {
+		{
+			Text = "Drawing Objects: %s",
+			ValueName = "DrawingObjects",
+			Object = drawing
+		},
+		{
+			Text = "Visible Objects: %s",
+			ValueName = "VisibleObjects",
+			Object = visible
+		},
+		{
+			Text = "Destroyed Objects: %s",
+			ValueName = "DestroyedObjects",
+			Object = destroyed
+		},
+		{
+			Text = "Boxes: %s",
+			ValueName = "Boxes",
+			Object = boxes
+		},
+		{
+			Text = "Tracers: %s",
+			ValueName = "Tracers",
+			Object = tracers
+		},
+		{
+			Text = "Names: %s",
+			ValueName = "Names",
+			Object = names
+		},
+		{
+			Text = "Skeletons: %s",
+			ValueName = "Skeletons",
+			Object = skeletons
+		},
+		{
+			Text = "Health Bars: %s",
+			ValueName = "HealthBars",
+			Object = healthbars
+		},
+		{
+			Text = "Head Dots: %s",
+			ValueName = "HeadDots",
+			Object = headdots
+		},
+		{
+			Text = "Look Tracers: %s",
+			ValueName = "LookTracers",
+			Object = looktracers
+		},
+		{
+			Text = "Labels: %s",
+			ValueName = "Labels",
+			Object = labels
+		},
+		{
+			Text = "Chams: %s",
+			ValueName = "Chams",
+			Object = chams
+		},
+		{
+			Text = "Outlines: %s",
+			ValueName = "Outlines",
+			Object = outlines
+		}
+	}
 	Stats.Button({
 		Text = "Update Statistics",
 		Callback = function()
 			local data = esp:GetTotalObjects()
-			drawing:SetText(("Drawing Objects: %s"):format(data.DrawingObjects))
-			visible:SetText(("Visible Objects: %s"):format(data.VisibleObjects))
-			destroyed:SetText(("Destroyed Objects: %s"):format(data.DestroyedObjects))
-			boxes:SetText(("Boxes: %s"):format(data.Boxes))
-			tracers:SetText(("Tracers: %s"):format(data.Tracers))
-			names:SetText(("Names: %s"):format(data.Names))
-			skeletons:SetText(("Skeletons: %s"):format(data.Skeletons))
-			healthbars:SetText(("Health Bars: %s"):format(data.HealthBars))
-			headdots:SetText(("Head Dots: %s"):format(data.HeadDots))
-			looktracers:SetText(("Look Tracers: %s"):format(data.LookTracers))
-			labels:SetText(("Labels: %s"):format(data.Labels))
-			chams:SetText(("Chams: %s"):format(data.Chams))
-			outlines:SetText(("Outlines: %s"):format(data.Outlines))
+			for _,v in next, bruhwtf do
+				v.Object:SetText((v.Text):format(data[v.ValueName]))
+			end
 		end
 	})
 end
@@ -1319,6 +1445,12 @@ end
 conn3 = game:GetService("UserInputService").InputBegan:Connect(function(i,gp)
 	if not gp and i.KeyCode == Enum.KeyCode.RightControl then
 		ui.Enabled = not ui.Enabled
+	end
+end)
+conn4 = players.PlayerAdded:Connect(function(plr)
+	if not addtonew then
+		task.wait(0.5)
+		esp:Remove(plr)
 	end
 end)
 
