@@ -20,7 +20,7 @@ v1.6.6
 https://pastebin.com/raw/5zw0rLH9
 ```  
 ### UI Version  
-Updated February 19, 2022  
+Updated February 26, 2022  
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua"))()
 ```  
@@ -42,6 +42,10 @@ Main Changes
   
 UI Changes  
 - Added support for multiple configs
+- Added `Add esp to all players`
+- Added `Remove esp from all players`
+- Added `Add esp to players upon joining`
+- Fixed ui not loading when executing Universal Aimbot UI beforehand
   
 ---
   
@@ -52,7 +56,7 @@ v1.1.13
 https://pastebin.com/raw/nwqE7v07
 ```  
 **UI Version**  
-Updated February 21, 2022  
+Updated February 26, 2022  
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalAimbotUI.lua"))()
 ```  
