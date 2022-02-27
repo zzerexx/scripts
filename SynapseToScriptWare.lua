@@ -1,7 +1,8 @@
-assert(identifyexecutor():find("ScriptWare"),"you are not using script ware")
+assert(import,"you are not using script ware")
 local hash = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/HashLib.lua"))()
-local hashalgs = {"md5","sha1","sha224","sha256","sha384","sha3-256","sha3-384","sha3-512"}
-
+local hashalgs = {"md2","md5","sha1","sha256","sha384","sha512","sha3-224","sha3-256","sha3-512","haval","ripemd128","ripemd160","ripemd256","ripemd320"}
+local hashlibalgs = {"md5","sha1","sha224","sha256","sha512-224","sha512-256","sha384","sha512","sha3-224","sha3-256","sha3-384","sha3-512","hmac"}
+local version = "v2.14.10c"
 local consolecolor, colors = "white", {
 	['black'] = "black",
 	['blue'] = "blue",
@@ -35,12 +36,11 @@ getgenv().Drawing.Fonts = {
 }
 
 local headers = game:GetService("HttpService"):JSONDecode(request({Url = "https://httpbin.org/get"}).Body).headers
-local oldr, oldd, olds
-oldr = hookfunction(request,function(options)
+local oldr;oldr = hookfunction(request,function(options)
 	local h = options.Headers or {}
 	h['Syn-Fingerprint'] = SWHWID or headers['Sw-Fingerprint']
 	h['Syn-User-Identifier'] = SWUID or headers['Sw-User-Identifier']
-	h['User-Agent'] = "synx/v2.14.9b"
+	h['User-Agent'] = "synx/"..version
 	return oldr({
 		Url = options.Url,
 		Method = options.Method or "GET",
@@ -49,7 +49,7 @@ oldr = hookfunction(request,function(options)
 		Body = options.Body or ""
 	})
 end)
-oldd = hookfunction(Drawing.new,function(class)
+local oldd;oldd = hookfunction(Drawing.new,function(class)
 	local obj = oldd(class)
 	local t = {
 		['__OBJECT'] = obj,
@@ -75,7 +75,7 @@ oldd = hookfunction(Drawing.new,function(class)
 	})
 	return t
 end)
-olds = hookfunction(saveinstance,function(t)
+local olds;olds = hookfunction(saveinstance,function(t)
 	local s = {
 		Decompile = false,
 		NilInstances = false,
@@ -109,6 +109,15 @@ olds = hookfunction(saveinstance,function(t)
 	end
 	local name = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
 	return "-- Disassembled with the Script-Ware disassembler.\n\n"..olds(game, s, name)
+end)
+local oldt;oldt = hookfunction(getrenv().debug.traceback,function(lol)
+	if checkcaller() then
+		return lol.."\n"..oldt():split("\n")[2].."\n"
+	end
+	return oldt()
+end)
+hookfunction(identifyexecutor,function()
+	return "Synapse X", version
 end)
 
 local oldmt = getrawmetatable(game)
@@ -269,6 +278,7 @@ local functions = {
 		consolesettitle(title)
 	end,
 	['rconsoleinputasync'] = function()
+		consolecreate()
 		task.spawn(function()
 			return consoleinput()
 		end)
@@ -290,7 +300,7 @@ local functions = {
 }
 
 for i,v in next, functions do
-    getgenv()[i] = v
+	getgenv()[i] = v
 end
 
 getgenv().syn = {
@@ -344,11 +354,15 @@ getgenv().syn = {
 				return crypt.custom_decrypt(data,key,nonce,ciphers[cipher:gsub("_","-")])
 			end,
 			['hash'] = function(alg,data)
-                assert(not hashalgs[alg],"bad argument #1 to 'hash' (non-existant hash algorithm)")
-                if alg == ("sha224" or "sha3-384") then
-                    return hash[alg:gsub("-","_")](data)
-                end
-				return crypt.hash(data,alg):lower()
+				alg = alg:lower():gsub("_","-")
+				local a,b = table.find(hashalgs, alg), table.find(hashlibalgs, alg)
+				assert(a or b,"bad argument #1 to 'hash' (non-existant hash algorithm)")
+				if a then
+					return crypt.hash(data, alg):lower()
+				elseif b then
+					alg = alg:gsub("-","_")
+					return hash[alg](data)
+				end
 			end
 		},
 		['lz4'] = {
