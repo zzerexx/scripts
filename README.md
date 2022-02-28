@@ -190,7 +190,7 @@ F9 to toggle
 ---
   
 # Synapse to Script-Ware  
-Updated February 1, 2022  
+Updated February 27, 2022  
 Allows you to use Synapse functions on Script-Ware!  
   
 **Loader**  
