@@ -2,7 +2,7 @@ assert(import,"you are not using script ware")
 local hash = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/HashLib.lua"))()
 local hashalgs = {"md2","md5","sha1","sha256","sha384","sha512","sha3-224","sha3-256","sha3-512","haval","ripemd128","ripemd160","ripemd256","ripemd320"}
 local hashlibalgs = {"md5","sha1","sha224","sha256","sha512-224","sha512-256","sha384","sha512","sha3-224","sha3-256","sha3-384","sha3-512","hmac"}
-local version = "v2.14.10c"
+local version = "v2.14.11b"
 local consolecolor, colors = "white", {
 	['black'] = "black",
 	['blue'] = "blue",
@@ -27,6 +27,24 @@ local ciphers = {
 	['aes-ofb'] = "OFB",
 	['aes-gcm'] = "GCM"
 	-- no aes-eax, bf-cbc, bf-cfb, bf-ofb
+}
+local specialinfo = {
+	MeshPart = {
+		"PhysicsData",
+		"InitialSize"
+	},
+	UnionOperation = {
+		"AssetId",
+		"ChildData",
+		"FormFactor",
+		"InitialSize",
+		"MeshData",
+		"PhysicsData"
+	},
+	Terrain = {
+		"SmoothGrid",
+		"MaterialColors"
+	}
 }
 getgenv().Drawing.Fonts = {
 	['UI'] = 0,
@@ -161,12 +179,12 @@ local functions = {
 	['syn_crypt_b64_encode'] = crypt.base64encode,
 	['syn_crypt_b64_decode'] = crypt.base64decode,
 	['syn_crypt_random'] = crypt.generatekey,
-	['syn_crypt_hash'] = function(data)
+	['syn_crypt_hash'] = newcclosure(function(data)
 		return crypt.hash(data,"sha384")
-	end,
-	['syn_crypt_derive'] = function(_,len)
+	end),
+	['syn_crypt_derive'] = newcclosure(function(_,len)
 		return crypt.generatebytes(len)
-	end,
+	end),
 	-- syn_
 	['syn_getgenv'] = getgenv,
 	['syn_getrenv'] = getrenv,
@@ -183,12 +201,18 @@ local functions = {
 	['syn_checkcaller'] = checkcaller,
 	['syn_clipboard_set'] = setclipboard,
 	['syn_newcclosure'] = newcclosure,
-	['syn_decompile'] = function(s)
+	['syn_decompile'] = newcclosure(function(s)
 		return disassemble(getscriptbytecode(s))
-	end,
+	end),
 	['syn_getloadedmodules'] = getloadedmodules,
 	['syn_getcallingscript'] = getcallingscript,
 	['syn_isactive'] = isrbxactive,
+	['syn_websocket_connect'] = newcclosure(function(a)
+		return WebSocket.connect(a)
+	end),
+	['syn_websocket_close'] = newcclosure(function(a)
+		a:Close()
+	end),
 	-- stuff
 	['is_synapse_function'] = isourclosure,
 	['is_protosmasher_closure'] = isourclosure,
@@ -203,14 +227,14 @@ local functions = {
 	['getpcdprop'] = getpcd,
 	['getsynasset'] = getcustomasset,
 	['htgetf'] = game.HttpGet,
-	['gbmt'] = function()
+	['gbmt'] = newcclosure(function()
 		return oldmt
-	end,
+	end),
 	['setscriptable'] = sethidden,
-	['getpropvalue'] = function(obj,prop)
+	['getpropvalue'] = newcclosure(function(obj,prop)
 		return obj[prop]
-	end,
-	['setpropvalue'] = function(obj,prop,value)
+	end),
+	['setpropvalue'] = newcclosure(function(obj,prop,value)
 		local conn1 = obj:GetPropertyChangedSignal(prop)
 		local conn2 = obj.Changed
 		connection(conn1,false)
@@ -218,8 +242,8 @@ local functions = {
 		obj[prop] = value
 		connection(conn1,true)
 		connection(conn2,true)
-	end,
-	['getstates'] = function()
+	end),
+	['getstates'] = newcclosure(function()
 		local t = {}
 		for i,v in next, getreg() do
 			if typeof(v) == "thread" then
@@ -227,17 +251,29 @@ local functions = {
 			end
 		end
 		return t
-	end,
+	end),
 	['getstateenv'] = gettenv,
-	['getinstancefromstate'] = function(state)
+	['getinstancefromstate'] = newcclosure(function(state)
 		local a = gettenv(state).script
 		if a ~= nil then
 			return a
 		end
-	end,
-	['is_redirection_enabled'] = function()
+	end),
+	['is_redirection_enabled'] = newcclosure(function()
 		return false -- idk what it actually does but whatever
-	end,
+	end),
+	['getspecialinfo'] = newcclosure(function(obj)
+		assert(typeof(obj) == "Instance","bad argument to #1 'getspecialinfo' (Instance expected, got "..typeof(obj)..")")
+		local info = specialinfo[obj.ClassName]
+		local props = {}
+		if info then
+			for _,v in next, info do
+				props[v] = gethiddenproperty(obj, v)
+			end
+			return props
+		end
+		return props
+	end),
 	-- get_
 	['get_calling_script'] = getcallingscript,
 	['get_instances'] = getinstances,
@@ -245,7 +281,7 @@ local functions = {
 	['get_scripts'] = getscripts,
 	['get_loaded_modules'] = getloadedmodules,
 	-- rconsole
-	['rconsoleprint'] = function(msg)
+	['rconsoleprint'] = newcclosure(function(msg)
 		consolecreate()
 		if string.find(msg,"@@") then
 			consolecolor = msg:gsub("@@",""):lower()
@@ -253,54 +289,56 @@ local functions = {
 		else
 			consoleprint(msg,consolecolor)
 		end
-	end,
-	['rconsoleinfo'] = function(msg)
+	end),
+	['rconsoleinfo'] = newcclosure(function(msg)
 		consolecreate()
 		consoleprint("\n[*]: ","white")
 		consoleprint(msg.."\n",consolecolor)
-	end,
-	['rconsolewarn'] = function(msg)
+	end),
+	['rconsolewarn'] = newcclosure(function(msg)
 		consolecreate()
 		consoleprint("\n[","white")
 		consoleprint("*","yellow")
 		consoleprint("]: ","white")
 		consoleprint(msg.."\n",consolecolor)
-	end,
-	['rconsoleerr'] = function(msg)
+	end),
+	['rconsoleerr'] = newcclosure(function(msg)
 		consolecreate()
 		consoleprint("\n[","white")
 		consoleprint("*","red")
 		consoleprint("]: ","white")
 		consoleprint(msg.."\n",consolecolor)
-	end,
-	['rconsolename'] = function(title)
+	end),
+	['rconsolename'] = newcclosure(function(title)
 		consolecreate()
 		consolesettitle(title)
-	end,
-	['rconsoleinputasync'] = function()
+	end),
+	['rconsoleinputasync'] = newcclosure(function()
 		consolecreate()
 		task.spawn(function()
 			return consoleinput()
 		end)
-	end,
-	['printconsole'] = function(data)
+	end),
+	['printconsole'] = newcclosure(function(data)
 		printuiconsole(data)
-	end,
+	end),
 	['rconsoleclose'] = consoledestroy,
 	-- unavailable
-	--['getlocal'] = nil,
-	--['getlocals'] = nil,
-	--['isuntouched'] = nil,
-	--['setuntouched'] = nil,
-	--['setupvaluename'] = nil,
-	--['XPROTECT'] = nil,
-	--['getpointerfromstate'] = nil,
-	--['setnonreplicatedproperty'] = nil,
-	--['readbinarystring'] = nil
+	['setlocal'] = newcclosure(function() end),
+	['getlocal'] = newcclosure(function() end),
+	['getlocals'] = newcclosure(function() end),
+	['getcallstack'] = newcclosure(function() end),
+	['isuntouched'] = newcclosure(function() end),
+	['setuntouched'] = newcclosure(function() end),
+	['setupvaluename'] = newcclosure(function() end),
+	['XPROTECT'] = newcclosure(function() end),
+	['getpointerfromstate'] = newcclosure(function() end),
+	['setnonreplicatedproperty'] = newcclosure(function() end),
+	['readbinarystring'] = newcclosure(function() end)
 }
 
 for i,v in next, functions do
-	getgenv()[i] = v
+    getgenv()[i] = v
 end
 
 getgenv().syn = {
@@ -311,22 +349,26 @@ getgenv().syn = {
 	['get_thread_identity'] = getthreadidentity,
 	['write_clipboard'] = setclipboard,
 	['queue_on_teleport'] = queue_on_teleport,
-	['protect_gui'] = function(obj)
+	['protect_gui'] = newcclosure(function(obj)
 		assert(typeof(obj) == "Instance","bad argument #1 to 'protect_gui' (Instance expected, got "..typeof(obj)..")")
 		obj.Parent = gethui()
-		local conn = obj.AncestryChanged:Connect(function()
+		local conn = obj.AncestryChanged:Connect(function(_,p)
 			-- most scripts parent it to coregui right after protecting (cuz thats how ur supposed to use it)
 			obj.Parent = gethui()
+			obj:SetAttribute("Parent", p)
 		end)
 		task.wait(2)
 		conn:Disconnect()
-	end,
-	['unprotect_gui'] = function()
-		do end
-	end,
-	['is_beta'] = function()
+	end),
+	['unprotect_gui'] = newcclosure(function(obj)
+		local p = obj:GetAttribute("Parent")
+		if p ~= nil then
+			obj.Parent = p
+		end
+	end),
+	['is_beta'] = newcclosure(function()
 		return false
-	end,
+	end),
 	['request'] = request,
 	['crypt'] = {
 		['encrypt'] = crypt.encrypt,
@@ -335,25 +377,25 @@ getgenv().syn = {
 			['encode'] = crypt.base64encode,
 			['decode'] = crypt.base64decode
 		},
-		['hash'] = function(data)
+		['hash'] = newcclosure(function(data)
 			return crypt.hash(data,"sha384")
-		end,
-		['derive'] = function(_,len)
+		end),
+		['derive'] = newcclosure(function(_,len)
 			return crypt.generatebytes(len)
-		end,
+		end),
 		['random'] = crypt.generatekey,
 		['custom'] = {
-			['encrypt'] = function(cipher,data,key,nonce)
+			['encrypt'] = newcclosure(function(cipher,data,key,nonce)
 				assert(cipher:find("eax"),"aes-eax is not supported")
 				assert(cipher:find("bf"),"Blowfish ciphers are not supported")
 				return crypt.custom_encrypt(data,key,nonce,ciphers[cipher:gsub("_","-")])
-			end,
-			['decrypt'] = function(cipher,data,key,nonce)
+			end),
+			['decrypt'] = newcclosure(function(cipher,data,key,nonce)
 				assert(cipher:find("eax"),"aes-eax is not supported")
 				assert(cipher:find("bf"),"Blowfish ciphers are not supported")
 				return crypt.custom_decrypt(data,key,nonce,ciphers[cipher:gsub("_","-")])
-			end,
-			['hash'] = function(alg,data)
+			end),
+			['hash'] = newcclosure(function(alg,data)
 				alg = alg:lower():gsub("_","-")
 				local a,b = table.find(hashalgs, alg), table.find(hashlibalgs, alg)
 				assert(a or b,"bad argument #1 to 'hash' (non-existant hash algorithm)")
@@ -363,7 +405,7 @@ getgenv().syn = {
 					alg = alg:gsub("-","_")
 					return hash[alg](data)
 				end
-			end
+			end)
 		},
 		['lz4'] = {
 			['compress'] = lz4compress
@@ -372,7 +414,7 @@ getgenv().syn = {
 	['websocket'] = {
 		['connect'] = WebSocket.connect
 	},
-	['secure_call'] = function(func,env,...)
+	['secure_call'] = newcclosure(function(func,env,...)
 		assert(typeof(func) == "function","bad argument to #1 to 'secure_call' (function expected, got "..typeof(func)..")")
 		assert(typeof(env) == "Instance","bad argument to #2 to 'secure_call' (Instance expected, got"..typeof(env)..")")
 		assert(env.ClassName == "LocalScript" or env.ClassName == "ModuleScript","bad argument to #2 to 'secure_call' (LocalScript or ModuleScript expected, got "..env.ClassName..")")
@@ -381,18 +423,19 @@ getgenv().syn = {
 			setfenv(1,getsenv(env))
 			return func(...)
 		end)(...)
-	end,
-	--['create_secure_function'] = nil,
-	--['run_secure_function'] = nil,
-	--['run_secure_lua'] = nil,
-	--['secrun'] = nil,
+	end),
+
+	['create_secure_function'] = newcclosure(function() end),
+	['run_secure_function'] = newcclosure(function() end),
+	['run_secure_lua'] = newcclosure(function() end),
+	['secrun'] = newcclosure(function() end),
 }
-getgenv().decompile = function(s)
+getgenv().decompile = newcclosure(function(s)
 	return disassemble(getscriptbytecode(s))
-end
+end)
 getgenv().syn.crypto = syn.crypt
 getgenv().bit.ror = bit.rrotate
 getgenv().bit.rol = bit.lrotate
-getgenv().bit.tohex = function(a)
+getgenv().bit.tohex = newcclosure(function(a)
 	return tonumber(string.format("%08x", a % 4294967296))
-end
+end)
