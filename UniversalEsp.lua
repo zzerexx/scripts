@@ -1,9 +1,6 @@
 --[[
-v1.6.6 Changes
-- Added selections to Mouse Visibility
-- Added `Origin` option for Health Bars
-- Added `OutlineBarOnly` option for Health Bars
-- Added `Scale` option for Head Dots
+v1.6.7 Changes
+- Added FaceCamera; makes Boxes and Health Bars appear 2D
 ]]
 
 if game.GameId == 1168263273 then
@@ -21,6 +18,7 @@ if not EspSettings then
 		ToggleKey = "RightAlt",
 		RefreshRate = 10, -- how fast the esp updates (milliseconds)
 		MaximumDistance = 500, -- only renders players within this distance
+		FaceCamera = false, -- Makes some esp appear 2D
 		MouseVisibility = {
 			Enabled = true, -- makes any drawing objects transparent when they are near your mouse
 			Radius = 60,
@@ -127,7 +125,7 @@ end
 
 if not EspSettings.MouseVisibility or (EspSettings.MouseVisibility and not EspSettings.MouseVisibility.Selected) then
 	local bind = Instance.new("BindableFunction")
-	bind.OnInvoke = function(a)
+	bind.OnInvoke = function()
 		setclipboard("https://pastebin.com/raw/5zw0rLH9")
 	end
 	game:GetService("StarterGui"):SetCore("SendNotification",{
@@ -386,7 +384,7 @@ do
 	if GameId == gids.arsenal then
 		local ffa = game:GetService("ReplicatedStorage"):WaitForChild("wkspc"):WaitForChild("FFA")
 		IsFFA = function()
-			return ffa.Value == true
+			return ffa.Value
 		end
 	end
 end
@@ -801,6 +799,9 @@ function update()
 				mag = (ccf - cf.Position).Magnitude
 				render = ffa or (not ss.TeamCheck or (not ffa and ss.TeamCheck and team ~= myteam)) and mag <= ss.MaximumDistance
 				if render then
+					if ss.FaceCamera then
+						cf = CFramenew(cf.Position, ccf)
+					end
 					size /= 2
 					local x, y = size.X, size.Y
 					mid, inViewport = WorldToViewportPoint(camera, cf.Position)
@@ -1144,7 +1145,12 @@ function update()
 	end
 end
 
-local conn2 = RunService.RenderStepped:Connect(update)
+--local conn2 = RunService.RenderStepped:Connect(update)
+local name = ""
+for _ = 1, math.random(16, 24) do
+	name = name..string.char(math.random(97, 122))
+end
+RunService:BindToRenderStep(name, 0, update)
 if typeof(ss.ToggleKey) == "EnumItem" then
 	ss.ToggleKey = ss.ToggleKey.Name
 end
@@ -1351,9 +1357,9 @@ function esp:SetFunction(a,f)
 	end
 end
 function esp:ResetFunction(a)
-	assert(typeof(a) == "string",("Universal Esp: bad argument to #1 'SetFunction' (string expected, got %s)"):format(typeof(a)))
+	assert(typeof(a) == "string",("Universal Esp: bad argument to #1 'ResetFunction' (string expected, got %s)"):format(typeof(a)))
 	a = lower(a)
-	assert(oldfuncs[a] ~= nil,"Universal Esp: bad argument to #1 'SetFunction' (invalid function)")
+	assert(oldfuncs[a] ~= nil,"Universal Esp: bad argument to #1 'ResetFunction' (invalid function)")
 	local f = oldfuncs[a]
 	if a == "alive" then
 		IsAlive = f
@@ -1370,9 +1376,10 @@ end
 function esp:Destroy()
 	if destroyed then return end
 	conn1:Disconnect()
-	conn2:Disconnect()
+	--conn2:Disconnect()
 	conn3:Disconnect()
 	conn4:Disconnect()
+	RunService:UnbindFromRenderStep(name)
 	for _,v in next, OBJECTS do
 		v:Remove()
 	end
