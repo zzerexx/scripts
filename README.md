@@ -36,6 +36,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/
 Main Changes  
 -  **Universal Esp no longer supports Bad Business due to detections**
 - Added `FaceCamera`; makes Boxes and Health Bars appear 2D [Preview](https://streamable.com/glsw2f)
+  - This can make the esp look weird from certain perspectives
   
 ---
   
