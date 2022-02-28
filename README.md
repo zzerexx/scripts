@@ -4,8 +4,8 @@ my cool scripts
 ---
   
 # Universal Esp  
-Updated February 19, 2022  
-v1.6.6  
+Updated February 27, 2022  
+v1.6.7  
 - Box Esp  
 - Tracers  
 - Name Esp  
@@ -25,27 +25,17 @@ Updated February 26, 2022
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua"))()
 ```  
 ### Performance Version  
-Updated February 19, 2022  
+Updated February 17, 2022  
 Boxes, Names, zero customizability, optimized asf  
 Supports `SetFunction` and `ResetFunction` for compatibility!  
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspPerformance.lua"))()
 ```  
   
-## Update v1.6.6  
+## Update v1.6.7  
 Main Changes  
-- Universal Esp no longer supports Bad Business due to detections
-- Added selections to Mouse Visibility
-- Added `Origin` option for Health Bars
-- Added `OutlineBarOnly` option for Health Bars
-- Added `Scale` option for Head Dots
-  
-UI Changes  
-- Added support for multiple configs
-- Added `Add esp to all players`
-- Added `Remove esp from all players`
-- Added `Add esp to players upon joining`
-- Fixed ui not loading when executing Universal Aimbot UI beforehand
+-  **Universal Esp no longer supports Bad Business due to detections**
+- Added `FaceCamera`; makes Boxes and Health Bars appear 2D
   
 ---
   
