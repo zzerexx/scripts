@@ -254,10 +254,7 @@ local functions = {
 	end),
 	['getstateenv'] = gettenv,
 	['getinstancefromstate'] = newcclosure(function(state)
-		local a = gettenv(state).script
-		if a ~= nil then
-			return a
-		end
+		return gettenv(state).script
 	end),
 	['is_redirection_enabled'] = newcclosure(function()
 		return false -- idk what it actually does but whatever
@@ -352,18 +349,25 @@ getgenv().syn = {
 	['protect_gui'] = newcclosure(function(obj)
 		assert(typeof(obj) == "Instance","bad argument #1 to 'protect_gui' (Instance expected, got "..typeof(obj)..")")
 		obj.Parent = gethui()
-		local conn = obj.AncestryChanged:Connect(function(_,p)
-			-- most scripts parent it to coregui right after protecting (cuz thats how ur supposed to use it)
-			obj.Parent = gethui()
-			obj:SetAttribute("Parent", p)
+		task.spawn(function()
+			local conn = obj.AncestryChanged:Connect(function(_,p)
+				-- most scripts parent it to coregui right after protecting (cuz thats how ur supposed to use it)
+				task.wait()
+				obj.Parent = gethui()
+
+				local a = Instance.new("ObjectValue") -- save the original parent for unprotecting
+				a.Name = "__PARENT"
+				a.Value = p
+				a.Parent = obj
+			end)
+			task.wait(2)
+			conn:Disconnect()
 		end)
-		task.wait(2)
-		conn:Disconnect()
 	end),
 	['unprotect_gui'] = newcclosure(function(obj)
-		local p = obj:GetAttribute("Parent")
-		if p ~= nil then
-			obj.Parent = p
+		local p = obj:FindFirstChild("__PARENT")
+		if p ~= nil and p.Value ~= nil then
+			obj.Parent = p.Value
 		end
 	end),
 	['is_beta'] = newcclosure(function()
