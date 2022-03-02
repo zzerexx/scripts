@@ -431,6 +431,7 @@ All types have these options
 |ToggleKey|String|RightAlt|
 |RefreshRate|Number|10|
 |MaximumDistance|Number|500|
+|FaceCamera|Boolean|false|
   
 ---
   
@@ -471,6 +472,9 @@ All types have these options
 | Name | Type | Default |
 |:-----|:-----|:--------|
 |Enabled|Boolean|true|
+|Delay|Number|60|
+|Spam|Boolean|true|
+|ClicksPerSecond|Number|10|
   
 ### Other  
 | Name | Type | Default |
@@ -484,7 +488,7 @@ All types have these options
 |AlwaysActive|Boolean|false|
 |Whitelisted|Table|{}|
 |WhitelistFriends|Boolean|true|
-|Ignore|Instance|nil|  
+|Ignore|Table|{}|  
   
 ---
   
