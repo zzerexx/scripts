@@ -14,7 +14,7 @@
   - [Add Label](#add-label)
   - [Add Cham](#add-cham)
     - [Set Part](#set-part)
-    - [Set Prop](#set-prop)
+    - [Set Property](#set-property)
   - [Set All](#set-all)
   - [Get Objects](#get-objects)
   - [Get Total Objects](#get-total-objects)
@@ -256,7 +256,7 @@ label:SetPart(workspace.OtherPart)
   
 ---
   
-## Set Prop  
+## Set Property  
 Sets the label/cham's property.  
 This is only available for Labels and Chams!  
 ```
