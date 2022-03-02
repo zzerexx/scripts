@@ -1,6 +1,7 @@
 --[[
 v1.6.8 Changes
-- FaceCamera now makes esp actually 2D
+- Added AlignPoints; further improves 2D effect, only works while FaceCamera is enabled
+  - This may cause esp to have abnormal behavior when looking from certain angles
 ]]
 
 if game.GameId == 1168263273 then
@@ -18,7 +19,9 @@ if not EspSettings then
 		ToggleKey = "RightAlt",
 		RefreshRate = 10, -- how fast the esp updates (milliseconds)
 		MaximumDistance = 500, -- only renders players within this distance
-		FaceCamera = false, -- Makes some esp appear 2D
+		FaceCamera = false, -- Makes esp appear 2D
+		AlignPoints = false, -- Improves 2D effect; only works while FaceCamera is enabled
+		-- AlignPoints: This may cause esp to have abnormal behavior when looking from certain angles
 		MouseVisibility = {
 			Enabled = true, -- makes any drawing objects transparent when they are near your mouse
 			Radius = 60,
@@ -816,6 +819,22 @@ function update()
 					blx, bly = bl.X, bl.Y
 					brx, bry = br.X, br.Y
 					z = mathclamp(1000 / tlz, 8, 12)
+
+					if ss.FaceCamera and ss.AlignPoints then
+						if tly < try then
+							tly += mathabs(tly - try) / 2
+						else
+							tly += mathabs(try - tly) / 2
+						end
+						try = tly
+
+						if bly < bry then
+							bly += mathabs(bly - bry) / 2
+						else
+							bly += mathabs(bry - bly) / 2
+						end
+						bry = bly
+					end
 
 					if (type == "HeadDots" or type == "LookTracers") and FindFirstChild(char, "Head") then
 						local headcf = char.Head.CFrame
