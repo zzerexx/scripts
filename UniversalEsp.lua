@@ -816,22 +816,6 @@ function update()
 					blx, bly = bl.X, bl.Y
 					brx, bry = br.X, br.Y
 					z = mathclamp(1000 / tlz, 8, 12)
-					
-					if ss.FaceCamera then
-						if tly < try then
-							tly += mathabs(tly - try) / 2
-						else
-							tly += mathabs(try - tly) / 2
-						end
-						try = tly
-
-						if bly < bry then
-							bly += mathabs(bly - bry) / 2
-						else
-							bly += mathabs(bry - bly) / 2
-						end
-						bry = bly
-					end
 
 					if (type == "HeadDots" or type == "LookTracers") and FindFirstChild(char, "Head") then
 						local headcf = char.Head.CFrame
