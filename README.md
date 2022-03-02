@@ -4,8 +4,8 @@ my cool scripts
 ---
   
 # Universal Esp  
-Updated February 27, 2022  
-v1.6.7  
+Updated March 1, 2022  
+v1.6.8  
 - Box Esp  
 - Tracers  
 - Name Esp  
@@ -32,11 +32,12 @@ Supports `SetFunction` and `ResetFunction` for compatibility!
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspPerformance.lua"))()
 ```  
   
-## Update v1.6.7  
+## Update v1.6.8  
 Main Changes  
 -  **Universal Esp no longer supports Bad Business due to detections**
-- Added `FaceCamera`; makes Boxes and Health Bars appear 2D [Preview](https://streamable.com/glsw2f)
+- (1.6.7) Added `FaceCamera`; makes Boxes and Health Bars appear 2D [Preview](https://streamable.com/glsw2f)
   - This can make the esp look weird from certain perspectives
+- (1.6.8) `FaceCamera` now makes esp actually 2D
   
 ---
   
