@@ -145,6 +145,7 @@ Universal Esp and Aimbot both have these.
 |Character|Returns the player's character|Player|
 |Health|Returns the player's health in a table|Player|
 |Team|Returns the player's team|Player|
+|FFA|Returns true if the teams are free-for-all|None|
   
 ### Esp Functions  
 | Name | Description | Arguments |
