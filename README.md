@@ -37,7 +37,8 @@ Main Changes
 -  **Universal Esp no longer supports Bad Business due to detections**
 - (1.6.7) Added `FaceCamera`; makes Boxes and Health Bars appear 2D [Preview](https://streamable.com/glsw2f)
   - This can make the esp look weird from certain perspectives
-- (1.6.8) `FaceCamera` now makes esp actually 2D
+- (1.6.8) Added `AlignPoints`; further improves 2D effect, only works while `FaceCamera` is enabled
+  - This may cause esp to have abnormal behavior when looking from certain angles
   
 ---
   
