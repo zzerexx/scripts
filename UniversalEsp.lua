@@ -1,6 +1,6 @@
 --[[
-v1.6.7 Changes
-- Added FaceCamera; makes Boxes and Health Bars appear 2D
+v1.6.8 Changes
+- FaceCamera now makes esp actually 2D
 ]]
 
 if game.GameId == 1168263273 then
@@ -815,6 +815,22 @@ function update()
 					blx, bly = bl.X, bl.Y
 					brx, bry = br.X, br.Y
 					z = mathclamp(1000 / tlz, 8, 12)
+					
+					if ss.FaceCamera then
+						if tly < try then
+							tly += mathabs(tly - try) / 2
+						else
+							tly += mathabs(try - tly) / 2
+						end
+						try = tly
+
+						if bly < bry then
+							bly += mathabs(bly - bry) / 2
+						else
+							bly += mathabs(bry - bly) / 2
+						end
+						bry = bly
+					end
 
 					if (type == "HeadDots" or type == "LookTracers") and FindFirstChild(char, "Head") then
 						local headcf = char.Head.CFrame
