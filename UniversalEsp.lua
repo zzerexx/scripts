@@ -176,6 +176,7 @@ local fromHSV = Color3.fromHSV
 local mathfloor = math.floor
 local mathclamp = math.clamp
 local mathhuge = math.huge
+local mathabs = math.abs
 local lower = string.lower
 local find = string.find
 local osclock = os.clock
