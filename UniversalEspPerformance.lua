@@ -1,14 +1,3 @@
-if game.GameId == 1168263273 then
-	game:GetService("StarterGui"):SetCore("SendNotification",{
-		Title = "Universal Esp",
-		Text = "Universal Esp is detected on Bad Business! Please use a different script to prevent getting banned.",
-		Duration = 5
-	})
-	return
-end
-for _,v in next, getconnections(game:GetService("ScriptContext").Error) do
-	v:Disable()
-end
 if not Drawing then
 	game:GetService("Players").LocalPlayer:Kick("\n\nUniversal Esp\nYour exploit does not have a Drawing Library!\n")
 	return
@@ -160,7 +149,7 @@ end
 do
 	if ts then
 		GetTeam = function(plr)
-			return teams:GetPlayerTeam(plr)
+			return teams:GetPlayerTeam(plr, plr)
 		end
 	end
 end
@@ -182,7 +171,7 @@ do
 	if GameId == gids.arsenal then
 		local ffa = game:GetService("ReplicatedStorage"):WaitForChild("wkspc"):WaitForChild("FFA")
 		IsFFA = function()
-			return ffa.Value == true
+			return ffa.Value
 		end
 	end
 end
@@ -293,6 +282,10 @@ function update()
 					blx, bly = bl.X, bl.Y
 					brx, bry = br.X, br.Y
 
+					if ts and FindFirstChild(char, "Body") then
+						char = char.Body
+					end
+
 					mousemag = (GetMouseLocation(uis) - Vector2new(mid.X, mid.Y)).Magnitude
 				end
 			end
@@ -345,7 +338,12 @@ function update()
 	end
 end
 
-local conn2 = RunService.RenderStepped:Connect(update)
+--local conn2 = RunService.RenderStepped:Connect(update)
+local name = ""
+for _ = 1, math.random(16, 24) do
+	name = name..string.char(math.random(97, 122))
+end
+RunService:BindToRenderStep(name, 0, update)
 local conn3 = uis.InputBegan:Connect(function(i,gp)
 	if not gp and i.KeyCode == Enum.KeyCode.RightAlt then
 		VISIBLE = not VISIBLE
@@ -383,9 +381,9 @@ function esp:SetFunction(a,f)
 	end
 end
 function esp:ResetFunction(a)
-	assert(typeof(a) == "string",("Universal Esp: bad argument to #1 'SetFunction' (string expected, got %s)"):format(typeof(a)))
+	assert(typeof(a) == "string",("Universal Esp: bad argument to #1 'ResetFunction' (string expected, got %s)"):format(typeof(a)))
 	a = lower(a)
-	assert(oldfuncs[a] ~= nil,"Universal Esp: bad argument to #1 'SetFunction' (invalid function)")
+	assert(oldfuncs[a] ~= nil,"Universal Esp: bad argument to #1 'ResetFunction' (invalid function)")
 	local f = oldfuncs[a]
 	if a == "alive" then
 		IsAlive = f
@@ -401,9 +399,10 @@ function esp:ResetFunction(a)
 end
 function esp:Destroy()
 	if destroyed then return end
-	conn2:Disconnect()
+	--conn2:Disconnect()
 	conn3:Disconnect()
 	conn4:Disconnect()
+	RunService:UnbindFromRenderStep(name)
 	for _,v in next, OBJECTS do
 		v:Remove()
 	end
