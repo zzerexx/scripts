@@ -1,11 +1,3 @@
-if game.GameId == 1168263273 then
-	game:GetService("StarterGui"):SetCore("SendNotification",{
-		Title = "Universal Aimbot",
-		Text = "Universal Aimbot is detected on Bad Business! Please use a different script to prevent getting banned.",
-		Duration = 5
-	})
-	return
-end
 if not AimbotSettings then
 	getgenv().AimbotSettings = {
 		TeamCheck = true, -- Press ] to toggle
@@ -59,7 +51,7 @@ if OldInstance then
 	getgenv().OldInstance = nil
 end
 
-local version = "v1.1.13"
+local version = "v1.1.14"
 local players = game:GetService("Players")
 local aimbot = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalAimbot.lua"))()
 local Material = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kinlei/MaterialLua/master/Module.lua"))()
