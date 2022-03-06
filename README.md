@@ -20,7 +20,7 @@ v1.6.9
 https://pastebin.com/raw/5zw0rLH9
 ```  
 ### UI Version  
-Updated March 1, 2022  
+Updated March 5, 2022  
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua"))()
 ```  
@@ -50,7 +50,7 @@ v1.1.14
 https://pastebin.com/raw/nwqE7v07
 ```  
 **UI Version**  
-Updated February 26, 2022  
+Updated March 5, 2022  
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalAimbotUI.lua"))()
 ```  
