@@ -1,17 +1,7 @@
 --[[
-v1.6.8 Changes
-- Added AlignPoints; further improves 2D effect, only works while FaceCamera is enabled
-  - This may cause esp to have abnormal behavior when looking from certain angles
+v1.6.9 Changes
+- no longer detected on bad business
 ]]
-
-if game.GameId == 1168263273 then
-	game:GetService("StarterGui"):SetCore("SendNotification",{
-		Title = "Universal Esp",
-		Text = "Universal Esp is detected on Bad Business! Please use a different script to prevent getting banned.",
-		Duration = 5
-	})
-	return
-end
 
 if not EspSettings then
 	getgenv().EspSettings = {
@@ -126,7 +116,7 @@ if not EspSettings then
 	}
 end
 
-if not EspSettings.MouseVisibility or (EspSettings.MouseVisibility and not EspSettings.MouseVisibility.Selected) then
+if EspSettings.AlignPoints == nil then
 	local bind = Instance.new("BindableFunction")
 	bind.OnInvoke = function()
 		setclipboard("https://pastebin.com/raw/5zw0rLH9")
@@ -142,9 +132,6 @@ if not EspSettings.MouseVisibility or (EspSettings.MouseVisibility and not EspSe
 end
 getgenv().EspSettings.Names.OutlineThickness = 0 -- to make setall work
 
-for _,v in next, getconnections(game:GetService("ScriptContext").Error) do
-	v:Disable()
-end
 if not Drawing then
 	game:GetService("Players").LocalPlayer:Kick("\n\nUniversal Esp\nYour exploit does not have a Drawing Library!\n")
 	return
@@ -240,8 +227,8 @@ elseif GameId == gids.bb then
 	for _,v in next, getgc(true) do
 		if typeof(v) == "table" and rawget(v, "InitProjectile") and rawget(v, "TS") then
 			ts = rawget(v, "TS")
-			characters = rawget(ts, "Character")
-			teams = rawget(ts, "Teams")
+			characters = ts.Characters
+			teams = ts.Teams
 		end
 	end
 end
@@ -366,7 +353,7 @@ end
 do
 	if ts then
 		GetTeam = function(plr)
-			return teams:GetPlayerTeam(plr)
+			return teams:GetPlayerTeam(plr, plr)
 		end
 	end
 end
@@ -836,6 +823,9 @@ function update()
 						bry = bly
 					end
 
+					if ts and FindFirstChild(char, "Body") then
+						char = char.Body
+					end
 					if (type == "HeadDots" or type == "LookTracers") and FindFirstChild(char, "Head") then
 						local headcf = char.Head.CFrame
 						head = WorldToViewportPoint(camera, headcf.Position)
@@ -974,9 +964,6 @@ function update()
 							local thickness, othickness, outline = s.Thickness, s.OutlineThickness, s.Outline
 							SetProp(obj, "Thickness", thickness)
 	
-							if ts then
-								char = char.Body
-							end
 							for i2,v2 in next, obj do
 								local from = FindFirstChild(char, From[i2] or "")
 								local to = FindFirstChild(char, i2 or "")
