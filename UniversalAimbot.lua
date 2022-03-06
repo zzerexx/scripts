@@ -1,19 +1,7 @@
 --[[
-v1.1.13 Changes
-- Added `Delay` for TriggerBot
-- Added `Spam` for TriggerBot
-- Added `ClicksPerSecond` for TriggerBot
-- Fixed Trigger Bot causing frame drops
-- VisibleCheck now automatically filters transparent instances
+v1.1.14 Changes
+- no longer detected on bad business
 ]]
-if game.GameId == 1168263273 then
-	game:GetService("StarterGui"):SetCore("SendNotification",{
-		Title = "Universal Aimbot",
-		Text = "Universal Aimbot is detected on Bad Business! Please use a different script to prevent getting banned.",
-		Duration = 5
-	})
-	return
-end
 if not getgenv().AimbotSettings then
 	getgenv().AimbotSettings = {
 		TeamCheck = true, -- Press ] to toggle
@@ -215,7 +203,7 @@ end
 do
 	if ts then
 		GetTeam = function(plr)
-			return teams:GetPlayerTeam(plr)
+			return teams:GetPlayerTeam(plr, plr)
 		end
 	end
 end
@@ -313,6 +301,9 @@ function InFov(plr,Fov)
 	mouse = uis:GetMouseLocation()
 	if IsAlive(plr) then
 		local char = GetChar(plr)
+		if ts and FindFirstChild(char, "Body") then
+			char = char.Body
+		end
 		local _, inViewport = WorldToViewportPoint(camera, char[Aimbot.TargetPart].Position)
 		if (FovCircle.Enabled or AimAssist.Enabled) and inViewport then
 			for _,v in next, char:GetChildren() do
@@ -464,6 +455,9 @@ function update()
 				str = mathclamp(str, 1, 65)
 			end
 			local target = Aimbot.TargetPart
+			if ts and FindFirstChild(char, "Body") then
+				char = char.Body
+			end
 			if bot and InFov(plr) and FindFirstChild(char, target) then
 				local vector = WorldToViewportPoint(camera, char[target].Position)
 				if Aimbot.Use_mousemoverel then
@@ -611,9 +605,9 @@ function aimbot:SetFunction(a,f)
 	end
 end
 function aimbot:ResetFunction(a)
-	assert(typeof(a) == "string",("Universal Aimbot: bad argument to #1 'SetFunction' (string expected, got %s)"):format(typeof(a)))
+	assert(typeof(a) == "string",("Universal Aimbot: bad argument to #1 'ResetFunction' (string expected, got %s)"):format(typeof(a)))
 	a = lower(a)
-	assert(oldfuncs[a] ~= nil,"Universal Aimbot: bad argument to #1 'SetFunction' (invalid function)")
+	assert(oldfuncs[a] ~= nil,"Universal Aimbot: bad argument to #1 'ResetFunction' (invalid function)")
 	local f = oldfuncs[a]
 	if a == "alive" then
 		IsAlive = f
