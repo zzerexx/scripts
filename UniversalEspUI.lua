@@ -1,11 +1,3 @@
-if game.GameId == 1168263273 then
-	game:GetService("StarterGui"):SetCore("SendNotification",{
-		Title = "Universal Esp",
-		Text = "Universal Esp is detected on Bad Business! Please use a different script to prevent getting banned.",
-		Duration = 5
-	})
-	return
-end
 if not EspSettings then
 	getgenv().EspSettings = {
 		TeamCheck = false,
@@ -127,7 +119,7 @@ if OldInstance then
 end
 getgenv().EspSettings.Names.OutlineThickness = 0 -- prevent error
 
-local version = "v1.6.8"
+local version = "v1.6.9"
 local esp = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEsp.lua"))()
 local Material = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kinlei/MaterialLua/master/Module.lua"))()
 local UI = Material.Load({
