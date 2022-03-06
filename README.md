@@ -4,8 +4,8 @@ my cool scripts
 ---
   
 # Universal Esp  
-Updated March 1, 2022  
-v1.6.8  
+Updated March51, 2022  
+v1.6.9  
 - Box Esp  
 - Tracers  
 - Name Esp  
@@ -25,26 +25,27 @@ Updated March 1, 2022
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua"))()
 ```  
 ### Performance Version  
-Updated February 17, 2022  
+Updated March 5, 2022  
 Boxes, Names, zero customizability, optimized asf  
 Supports `SetFunction` and `ResetFunction` for compatibility!  
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspPerformance.lua"))()
 ```  
   
-## Update v1.6.8  
+## Update v1.6.9  
 Main Changes  
 -  **Universal Esp no longer supports Bad Business due to detections**
 - (1.6.7) Added `FaceCamera`; makes Boxes and Health Bars appear 2D [Preview](https://streamable.com/glsw2f)
   - This can make the esp look weird from certain perspectives
 - (1.6.8) Added `AlignPoints`; further improves 2D effect, only works while `FaceCamera` is enabled
   - This may cause esp to have abnormal behavior when looking from certain angles
+- (1.6.9) no longer detected on bad business
   
 ---
   
 # Universal Aimbot  
-Updated February 21, 2022  
-v1.1.13  
+Updated March 5, 2022  
+v1.1.14  
 ```
 https://pastebin.com/raw/nwqE7v07
 ```  
@@ -53,13 +54,9 @@ Updated February 26, 2022
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalAimbotUI.lua"))()
 ```  
-## Update v1.1.13  
+## Update v1.1.14  
 Main Changes  
-- Added `Delay` for TriggerBot; waits the provided amount of time in milliseconds before clicking
-- Added `Spam` for TriggerBot; spams left click
-- Added `ClicksPerSecond` for TriggerBot
-- Fixed TriggerBot causing frame drops
-- `VisibleCheck` now automatically filters transparent instances
+- no longer detected on bad business
   
 ## NOTICE  
 ```
