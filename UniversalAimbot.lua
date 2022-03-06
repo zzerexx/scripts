@@ -304,18 +304,23 @@ function InFov(plr,Fov)
 		if ts and FindFirstChild(char, "Body") then
 			char = char.Body
 		end
-		local _, inViewport = WorldToViewportPoint(camera, char[Aimbot.TargetPart].Position)
-		if (FovCircle.Enabled or AimAssist.Enabled) and inViewport then
-			for _,v in next, char:GetChildren() do
-				if table.find(bodyparts, v.Name) and v.ClassName:find("Part") then
-					local vector2, inViewport2 = WorldToViewportPoint(camera, v.Position)
-					if inViewport2 and (Vector2new(mouse.X, mouse.Y) - Vector2new(vector2.X, vector2.Y)).Magnitude <= (Fov or fov.Radius or FovCircle.Radius) then
-						return true
+		local target = FindFirstChild(char, Aimbot.TargetPart)
+		if target then
+			local _, inViewport = WorldToViewportPoint(camera, char[Aimbot.TargetPart].Position)
+			if (FovCircle.Enabled or AimAssist.Enabled) and inViewport then
+				for _,v in next, char:GetChildren() do
+					if table.find(bodyparts, v.Name) and v.ClassName:find("Part") then
+						local vector2, inViewport2 = WorldToViewportPoint(camera, v.Position)
+						if inViewport2 and (Vector2new(mouse.X, mouse.Y) - Vector2new(vector2.X, vector2.Y)).Magnitude <= (Fov or fov.Radius or FovCircle.Radius) then
+							return true
+						end
 					end
 				end
+			elseif not FovCircle.Enabled and IsAlive(plr) then
+				return true
 			end
-		elseif not FovCircle.Enabled and IsAlive(plr) then
-			return true
+		else
+			return false
 		end
 	end
 	return false
