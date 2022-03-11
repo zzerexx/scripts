@@ -40,9 +40,9 @@ If a `Callback` is specified, it calls the function with the default config as a
 ```lua
 -- Two methods to load the default config
 local MySettings = {bruh = true, ok = "hey"}
-local Default = cfg.Init("my script hub or whatever", MySettings).Data -- storing it in a variable
+local Default = cfg.Init("my script hub or whatever", MySettings).Data -- 1: storing it in a variable
 
-cfg.Init("my script hub or whatever", MySettings, function(data)
+cfg.Init("my script hub or whatever", MySettings, function(data) -- 2: using a function
     MySettings = data.Data
     ConfigLoaded() -- using functions allow for a more extensive use such as calling a function after retrieving a config
 end)
@@ -60,9 +60,9 @@ If a `Callback` is specified, it calls that function with the specified `Config`
 ### Example  
 ```lua
 -- Two methods to retrieve a config
-local Config = cfg.Load("MyConfig").Data -- storing it in a variable
+local Config = cfg.Load("MyConfig").Data -- 1: storing it in a variable
 
-cfg.Load("MyConfig", function(data) -- using a function
+cfg.Load("MyConfig", function(data) -- 2: using a function
     Config = data.Data
     ConfigLoaded() -- using functions allow for a more extensive use such as calling a function after retrieving a config
 end)
