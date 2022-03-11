@@ -4,7 +4,7 @@ my cool scripts
 ---
   
 # Universal Esp  
-Updated March51, 2022  
+Updated March 5, 2022  
 v1.6.9  
 - Box Esp  
 - Tracers  
@@ -35,7 +35,6 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/
   
 ## Update v1.6.9  
 Main Changes  
--  **Universal Esp no longer supports Bad Business due to detections**
 - (1.6.7) Added `FaceCamera`; makes Boxes and Health Bars appear 2D [Preview](https://streamable.com/glsw2f)
   - This can make the esp look weird from certain perspectives
 - (1.6.8) Added `AlignPoints`; further improves 2D effect, only works while `FaceCamera` is enabled
