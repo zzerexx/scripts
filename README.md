@@ -19,6 +19,7 @@ v1.6.9
 ```
 https://pastebin.com/raw/5zw0rLH9
 ```  
+[Documentation](https://github.com/zzerexx/scripts/blob/main/UniversalScriptAPI.md)  
 ### UI Version  
 Updated March 5, 2022  
 ```
@@ -49,7 +50,8 @@ v1.1.14
 ```
 https://pastebin.com/raw/nwqE7v07
 ```  
-**UI Version**  
+[Documentation](https://github.com/zzerexx/scripts/blob/main/UniversalScriptAPI.md)  
+### UI Version  
 Updated March 5, 2022  
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalAimbotUI.lua"))()
@@ -70,6 +72,14 @@ Read UniversalScriptAPI.md for more info
 Updated November 24, 2021  
 minecraft keystrokes  
 shows W, A, S, D, LMB, RMB, Space, CPS, and FPS  
+  
+---
+  
+# Config Manager  
+Updated March 11, 2022  
+v1.0.0  
+Easily manage script configurations.  
+[Documentation](https://github.com/zzerexx/scripts/blob/main/ConfigManagerDocs.md)
   
 ---
   
@@ -188,10 +198,7 @@ Allows you to use Synapse functions on Script-Ware!
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/SynapseToScriptWare.lua"))()
 ```  
   
-**Supported Functions**  
-```
-https://pastebin.com/raw/WeFREykX
-```  
+[Supported Functions](https://pastebin.com/raw/WeFREykX)  
   
 ---
   
@@ -204,10 +211,7 @@ Allows you to use Synapse functions on Krnl!
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/SynapseToKrnl.lua"))()
 ```  
   
-**Supported Functions**  
-```
-https://pastebin.com/raw/T78hpe3S
-```  
+[Supported Functions](https://pastebin.com/raw/T78hpe3S)  
   
 ---
   
