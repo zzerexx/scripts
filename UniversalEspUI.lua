@@ -1,3 +1,7 @@
+repeat
+	task.wait(0.5)
+until not UAIM_LOADING
+getgenv().UESP_LOADING = true
 if not EspSettings then
 	getgenv().EspSettings = {
 		TeamCheck = false,
@@ -121,6 +125,7 @@ getgenv().EspSettings.Names.OutlineThickness = 0 -- prevent error
 
 local version = "v1.6.9"
 local esp = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEsp.lua"))()
+local cfg = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/ConfigManager.lua"))()
 local Material = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kinlei/MaterialLua/master/Module.lua"))()
 local UI = Material.Load({
 	Title = "Universal Esp",
@@ -132,22 +137,6 @@ local UI = Material.Load({
 local players = game:GetService("Players")
 function Banner(text)
 	UI.Banner({Text = text})
-end
-function totable(a)
-	return {R = a.R, G = a.G, B = a.B}
-end
-function tocolor(a)
-	return Color3.fromRGB(a.R * 255, a.G * 255, a.B * 255)
-end
-function clonetable(a)
-	local t = {}
-	for i,v in next, a do
-		if typeof(v) == "table" then
-			v = clonetable(v)
-		end
-		t[i] = v
-	end
-	return t
 end
 
 local Boxes = UI.New({Title = "Boxes"})
@@ -168,16 +157,9 @@ local ss = getgenv().EspSettings
 local loaded = false
 local conn1,conn2,conn3,conn4
 local cfgname,selectedcfg = "",""
-local name = "UESP"
 local addtonew = true
-
-if not isfolder(name) then
-	makefolder(name)
-end
-if isfile(name..".json") then
-	writefile(name.."\\Default.json", readfile(name..".json"))
-	delfile(name..".json")
-end
+local togglekey = Enum.KeyCode.RightControl
+local esptogglebtn, uitogglebtn
 
 local newsettings = {
 	FaceCamera = false,
@@ -210,49 +192,24 @@ function destroy()
 	conn4:Disconnect()
 	esp:Destroy()
 	ui:Destroy()
+	getgenv().UESP = nil
 end
-function save()
-	local a = clonetable(ss)
-	for i,v in next, ss do
-		if typeof(v) == "table" then
-			for i2,v2 in next, v do
-				if typeof(v2) == "Color3" then
-					a[i][i2] = totable(v2)
-				end
+local listening = false
+function Keybind(btn, text, f)
+	if not listening then
+		listening = true
+		btn:SetText(text..": ...")
+		local lol;lol = game:GetService("UserInputService").InputBegan:Connect(function(i)
+			local key = i.KeyCode
+			if listening and key.Name ~= "Unknown" then
+				btn:SetText(text..": "..key.Name)
+				listening = false
+				lol:Disconnect()
+				task.wait(0.1)
+				f(key)
 			end
-		end
+		end)
 	end
-
-	writefile(name.."\\"..cfgname..".json", game:GetService("HttpService"):JSONEncode(a))
-end
-function load()
-	local path = name.."\\"..selectedcfg
-	if not isfile(path) then Banner(selectedcfg.." does not exist.") return end
-	local a = game:GetService("HttpService"):JSONDecode(readfile(path))
-	for i,v in next, a do
-		if typeof(v) == "table" then
-			for i2,v2 in next, v do
-				if typeof(v2) == "table" and v2.R then
-					local color = tocolor(v2)
-					a[i][i2] = color
-					esp:Set(i, i2, color)
-				else
-					esp:Set(i, i2, v2)
-				end
-			end
-		else
-			esp:Set("Other", i, v)
-		end
-	end
-	getgenv().EspSettings.Names.OutlineThickness = 0 -- prevent error
-end
-if isfile(name.."\\Default.json") then
-	selectedcfg = "Default.json"
-	load()
-else
-	cfgname = "Default"
-	save()
-	cfgname = ""
 end
 
 do -- Boxes
@@ -261,14 +218,14 @@ do -- Boxes
 	Boxes.Toggle({
 		Text = "Enabled",
 		Callback = function(value)
-			esp:Set(type,"Enabled",value)
+			esp:Set(type, "Enabled", value)
 		end,
 		Enabled = s.Enabled
 	})
 	Boxes.Slider({
 		Text = "Transparency",
 		Callback = function(value)
-			esp:Set(type,"Transparency",value / 10)
+			esp:Set(type, "Transparency", value / 10)
 		end,
 		Min = 0,
 		Max = 10,
@@ -278,27 +235,27 @@ do -- Boxes
 		Text = "Color",
 		Default = s.Color,
 		Callback = function(value)
-			esp:Set(type,"Color",value)
+			esp:Set(type, "Color", value)
 		end
 	})
 	Boxes.Toggle({
 		Text = "Use Team Color",
 		Callback = function(value)
-			esp:Set(type,"UseTeamColor",value)
+			esp:Set(type, "UseTeamColor", value)
 		end,
 		Enabled = s.UseTeamColor
 	})
 	Boxes.Toggle({
 		Text = "Rainbow Color",
 		Callback = function(value)
-			esp:Set(type,"RainbowColor",value)
+			esp:Set(type, "RainbowColor", value)
 		end,
 		Enabled = s.RainbowColor
 	})
 	Boxes.Toggle({
 		Text = "Outline",
 		Callback = function(value)
-			esp:Set(type,"Outline",value)
+			esp:Set(type, "Outline", value)
 		end,
 		Enabled = s.Outline
 	})
@@ -306,13 +263,13 @@ do -- Boxes
 		Text = "Outline Color",
 		Default = s.OutlineColor,
 		Callback = function(value)
-			esp:Set(type,"OutlineColor",value)
+			esp:Set(type, "OutlineColor", value)
 		end
 	})
 	Boxes.Slider({
 		Text = "Outline Thickness",
 		Callback = function(value)
-			esp:Set(type,"OutlineThickness",value)
+			esp:Set(type, "OutlineThickness", value)
 		end,
 		Min = 1,
 		Max = 5,
@@ -321,7 +278,7 @@ do -- Boxes
 	Boxes.Slider({
 		Text = "Thickness",
 		Callback = function(value)
-			esp:Set(type,"Thickness",value)
+			esp:Set(type, "Thickness", value)
 		end,
 		Min = 1,
 		Max = 5,
@@ -335,14 +292,14 @@ do -- Tracers
 	Tracers.Toggle({
 		Text = "Enabled",
 		Callback = function(value)
-			esp:Set(type,"Enabled",value)
+			esp:Set(type, "Enabled", value)
 		end,
 		Enabled = s.Enabled
 	})
 	Tracers.Slider({
 		Text = "Transparency",
 		Callback = function(value)
-			esp:Set(type,"Transparency",value / 10)
+			esp:Set(type, "Transparency", value / 10)
 		end,
 		Min = 0,
 		Max = 10,
@@ -352,27 +309,27 @@ do -- Tracers
 		Text = "Color",
 		Default = s.Color,
 		Callback = function(value)
-			esp:Set(type,"Color",value)
+			esp:Set(type, "Color", value)
 		end
 	})
 	Tracers.Toggle({
 		Text = "Use Team Color",
 		Callback = function(value)
-			esp:Set(type,"UseTeamColor",value)
+			esp:Set(type, "UseTeamColor", value)
 		end,
 		Enabled = s.UseTeamColor
 	})
 	Tracers.Toggle({
 		Text = "Rainbow Color",
 		Callback = function(value)
-			esp:Set(type,"RainbowColor",value)
+			esp:Set(type, "RainbowColor", value)
 		end,
 		Enabled = s.RainbowColor
 	})
 	Tracers.Toggle({
 		Text = "Outline",
 		Callback = function(value)
-			esp:Set(type,"Outline",value)
+			esp:Set(type, "Outline", value)
 		end,
 		Enabled = s.Outline
 	})
@@ -380,13 +337,13 @@ do -- Tracers
 		Text = "Outline Color",
 		Default = s.OutlineColor,
 		Callback = function(value)
-			esp:Set(type,"OutlineColor",value)
+			esp:Set(type, "OutlineColor", value)
 		end
 	})
 	Tracers.Slider({
 		Text = "Outline Thickness",
 		Callback = function(value)
-			esp:Set(type,"OutlineThickness",value)
+			esp:Set(type, "OutlineThickness", value)
 		end,
 		Min = 1,
 		Max = 5,
@@ -395,14 +352,14 @@ do -- Tracers
 	Tracers.Dropdown({
 		Text = "Origin",
 		Callback = function(value)
-			esp:Set(type,"Origin",value)
+			esp:Set(type, "Origin", value)
 		end,
 		Options = {"Top","Center","Bottom","Mouse"}
 	})
 	Tracers.Slider({
 		Text = "Thickness",
 		Callback = function(value)
-			esp:Set(type,"Thickness",value)
+			esp:Set(type, "Thickness", value)
 		end,
 		Min = 1,
 		Max = 5,
@@ -416,14 +373,14 @@ do -- Names
 	Names.Toggle({
 		Text = "Enabled",
 		Callback = function(value)
-			esp:Set(type,"Enabled",value)
+			esp:Set(type, "Enabled", value)
 		end,
 		Enabled = s.Enabled
 	})
 	Names.Slider({
 		Text = "Transparency",
 		Callback = function(value)
-			esp:Set(type,"Transparency",value / 10)
+			esp:Set(type, "Transparency", value / 10)
 		end,
 		Min = 0,
 		Max = 10,
@@ -433,27 +390,27 @@ do -- Names
 		Text = "Color",
 		Default = s.Color,
 		Callback = function(value)
-			esp:Set(type,"Color",value)
+			esp:Set(type, "Color", value)
 		end
 	})
 	Names.Toggle({
 		Text = "Use Team Color",
 		Callback = function(value)
-			esp:Set(type,"UseTeamColor",value)
+			esp:Set(type, "UseTeamColor", value)
 		end,
 		Enabled = s.UseTeamColor
 	})
 	Names.Toggle({
 		Text = "Rainbow Color",
 		Callback = function(value)
-			esp:Set(type,"RainbowColor",value)
+			esp:Set(type, "RainbowColor", value)
 		end,
 		Enabled = s.RainbowColor
 	})
 	Names.Toggle({
 		Text = "Outline",
 		Callback = function(value)
-			esp:Set(type,"Outline",value)
+			esp:Set(type, "Outline", value)
 		end,
 		Enabled = s.Outline
 	})
@@ -461,20 +418,20 @@ do -- Names
 		Text = "Outline Color",
 		Default = s.OutlineColor,
 		Callback = function(value)
-			esp:Set(type,"OutlineColor",value)
+			esp:Set(type, "OutlineColor", value)
 		end
 	})
 	Names.Dropdown({
 		Text = "Font",
 		Callback = function(value)
-			esp:Set(type,"Font",Drawing.Fonts[value])
+			esp:Set(type, "Font", Drawing.Fonts[value])
 		end,
 		Options = {"UI","System","Plex","Monospace"}
 	})
 	Names.Slider({
 		Text = "Text Size",
 		Callback = function(value)
-			esp:Set(type,"Size",value)
+			esp:Set(type, "Size",value)
 		end,
 		Min = 1,
 		Max = 32,
@@ -483,21 +440,21 @@ do -- Names
 	Names.Toggle({
 		Text = "Show Distance",
 		Callback = function(value)
-			esp:Set(type,"ShowDistance",value)
+			esp:Set(type, "ShowDistance", value)
 		end,
 		Enabled = s.ShowDistance
 	})
 	Names.Toggle({
 		Text = "Show Health",
 		Callback = function(value)
-			esp:Set(type,"ShowHealth",value)
+			esp:Set(type, "ShowHealth", value)
 		end,
 		Enabled = s.ShowHealth
 	})
 	Names.Toggle({
 		Text = "Use Display Name",
 		Callback = function(value)
-			esp:Set(type,"UseDisplayName",value)
+			esp:Set(type, "UseDisplayName", value)
 		end,
 		Enabled = s.UseDisplayName
 	})
@@ -505,7 +462,7 @@ do -- Names
 		Text = "Distance Data Type",
 		Type = "Default",
 		Callback = function(value)
-			esp:Set(type,"DistanceDataType",value)
+			esp:Set(type, "DistanceDataType", value)
 		end,
 		Menu = {
 			Info = function()
@@ -516,7 +473,7 @@ do -- Names
 	Names.Dropdown({
 		Text = "Health Data Type",
 		Callback = function(value)
-			esp:Set(type,"HealthDataType",value)
+			esp:Set(type, "HealthDataType", value)
 		end,
 		Options = {
 			"Percentage",
@@ -536,14 +493,14 @@ do -- Skeletons
 	Skeletons.Toggle({
 		Text = "Enabled",
 		Callback = function(value)
-			esp:Set(type,"Enabled",value)
+			esp:Set(type, "Enabled", value)
 		end,
 		Enabled = s.Enabled
 	})
 	Skeletons.Slider({
 		Text = "Transparency",
 		Callback = function(value)
-			esp:Set(type,"Transparency",value / 10)
+			esp:Set(type, "Transparency", value / 10)
 		end,
 		Min = 0,
 		Max = 10,
@@ -553,27 +510,27 @@ do -- Skeletons
 		Text = "Color",
 		Default = s.Color,
 		Callback = function(value)
-			esp:Set(type,"Color",value)
+			esp:Set(type, "Color", value)
 		end
 	})
 	Skeletons.Toggle({
 		Text = "Use Team Color",
 		Callback = function(value)
-			esp:Set(type,"UseTeamColor",value)
+			esp:Set(type, "UseTeamColor", value)
 		end,
 		Enabled = s.UseTeamColor
 	})
 	Skeletons.Toggle({
 		Text = "Rainbow Color",
 		Callback = function(value)
-			esp:Set(type,"RainbowColor",value)
+			esp:Set(type, "RainbowColor",value)
 		end,
 		Enabled = s.RainbowColor
 	})
 	Skeletons.Toggle({
 		Text = "Outline",
 		Callback = function(value)
-			esp:Set(type,"Outline",value)
+			esp:Set(type, "Outline", value)
 		end,
 		Enabled = s.Outline
 	})
@@ -581,13 +538,13 @@ do -- Skeletons
 		Text = "Outline Color",
 		Default = s.OutlineColor,
 		Callback = function(value)
-			esp:Set(type,"OutlineColor",value)
+			esp:Set(type, "OutlineColor", value)
 		end
 	})
 	Skeletons.Slider({
 		Text = "Outline Thickness",
 		Callback = function(value)
-			esp:Set(type,"OutlineThickness",value)
+			esp:Set(type, "OutlineThickness", value)
 		end,
 		Min = 1,
 		Max = 5,
@@ -596,7 +553,7 @@ do -- Skeletons
 	Skeletons.Slider({
 		Text = "Thickness",
 		Callback = function(value)
-			esp:Set(type,"Thickness",value)
+			esp:Set(type, "Thickness", value)
 		end,
 		Min = 1,
 		Max = 5,
@@ -610,14 +567,14 @@ do -- HealthBars
 	HealthBars.Toggle({
 		Text = "Enabled",
 		Callback = function(value)
-			esp:Set(type,"Enabled",value)
+			esp:Set(type, "Enabled", value)
 		end,
 		Enabled = s.Enabled
 	})
 	HealthBars.Slider({
 		Text = "Transparency",
 		Callback = function(value)
-			esp:Set(type,"Transparency",value / 10)
+			esp:Set(type, "Transparency", value / 10)
 		end,
 		Min = 0,
 		Max = 10,
@@ -627,27 +584,27 @@ do -- HealthBars
 		Text = "Color",
 		Default = s.Color,
 		Callback = function(value)
-			esp:Set(type,"Color",value)
+			esp:Set(type, "Color", value)
 		end
 	})
 	HealthBars.Toggle({
 		Text = "Use Team Color",
 		Callback = function(value)
-			esp:Set(type,"UseTeamColor",value)
+			esp:Set(type, "UseTeamColor", value)
 		end,
 		Enabled = s.UseTeamColor
 	})
 	HealthBars.Toggle({
 		Text = "Rainbow Color",
 		Callback = function(value)
-			esp:Set(type,"RainbowColor",value)
+			esp:Set(type, "RainbowColor", value)
 		end,
 		Enabled = s.RainbowColor
 	})
 	HealthBars.Toggle({
 		Text = "Outline",
 		Callback = function(value)
-			esp:Set(type,"Outline",value)
+			esp:Set(type, "Outline", value)
 		end,
 		Enabled = s.Outline
 	})
@@ -655,13 +612,13 @@ do -- HealthBars
 		Text = "Outline Color",
 		Default = s.OutlineColor,
 		Callback = function(value)
-			esp:Set(type,"OutlineColor",value)
+			esp:Set(type, "OutlineColor", value)
 		end
 	})
 	HealthBars.Slider({
 		Text = "Outline Thickness",
 		Callback = function(value)
-			esp:Set(type,"OutlineThickness",value)
+			esp:Set(type, "OutlineThickness", value)
 		end,
 		Min = 1,
 		Max = 5,
@@ -670,14 +627,14 @@ do -- HealthBars
 	HealthBars.Dropdown({
 		Text = "Origin",
 		Callback = function(value)
-			esp:Set(type,"Origin",value)
+			esp:Set(type, "Origin", value)
 		end,
 		Options = {"None","Left","Right"}
 	})
 	HealthBars.Toggle({
 		Text = "Outline Bar Only",
 		Callback = function(value)
-			esp:Set(type,"OutlineBarOnly",value)
+			esp:Set(type, "OutlineBarOnly", value)
 		end,
 		Enabled = s.OutlineBarOnly
 	})
@@ -689,7 +646,7 @@ do -- HeadDots
 	HeadDots.Toggle({
 		Text = "Enabled",
 		Callback = function(value)
-			esp:Set(type,"Enabled",value)
+			esp:Set(type, "Enabled", value)
 		end,
 		Enabled = s.Enabled,
 		Menu = {
@@ -701,7 +658,7 @@ do -- HeadDots
 	HeadDots.Slider({
 		Text = "Transparency",
 		Callback = function(value)
-			esp:Set(type,"Transparency",value / 10)
+			esp:Set(type, "Transparency", value / 10)
 		end,
 		Min = 0,
 		Max = 10,
@@ -711,27 +668,27 @@ do -- HeadDots
 		Text = "Color",
 		Default = s.Color,
 		Callback = function(value)
-			esp:Set(type,"Color",value)
+			esp:Set(type, "Color", value)
 		end
 	})
 	HeadDots.Toggle({
 		Text = "Use Team Color",
 		Callback = function(value)
-			esp:Set(type,"UseTeamColor",value)
+			esp:Set(type, "UseTeamColor", value)
 		end,
 		Enabled = s.UseTeamColor
 	})
 	HeadDots.Toggle({
 		Text = "Rainbow Color",
 		Callback = function(value)
-			esp:Set(type,"RainbowColor",value)
+			esp:Set(type, "RainbowColor", value)
 		end,
 		Enabled = s.RainbowColor
 	})
 	HeadDots.Toggle({
 		Text = "Outline",
 		Callback = function(value)
-			esp:Set(type,"Outline",value)
+			esp:Set(type, "Outline", value)
 		end,
 		Enabled = s.Outline
 	})
@@ -739,13 +696,13 @@ do -- HeadDots
 		Text = "Outline Color",
 		Default = s.OutlineColor,
 		Callback = function(value)
-			esp:Set(type,"OutlineColor",value)
+			esp:Set(type, "OutlineColor", value)
 		end
 	})
 	HeadDots.Slider({
 		Text = "Outline Thickness",
 		Callback = function(value)
-			esp:Set(type,"OutlineThickness",value)
+			esp:Set(type, "OutlineThickness", value)
 		end,
 		Min = 1,
 		Max = 5,
@@ -754,7 +711,7 @@ do -- HeadDots
 	HeadDots.Slider({
 		Text = "Thickness",
 		Callback = function(value)
-			esp:Set(type,"Thickness",value)
+			esp:Set(type, "Thickness", value)
 		end,
 		Min = 1,
 		Max = 5,
@@ -763,14 +720,14 @@ do -- HeadDots
 	HeadDots.Toggle({
 		Text = "Filled",
 		Callback = function(value)
-			esp:Set(type,"Filled",value)
+			esp:Set(type, "Filled", value)
 		end,
 		Enabled = s.Filled
 	})
 	HeadDots.Slider({
 		Text = "Scale (divided by 10)",
 		Callback = function(value)
-			esp:Set(type,"Scale",value / 10)
+			esp:Set(type, "Scale", value / 10)
 		end,
 		Min = 5,
 		Max = 20,
@@ -784,14 +741,14 @@ do -- LookTracers
 	LookTracers.Toggle({
 		Text = "Enabled",
 		Callback = function(value)
-			esp:Set(type,"Enabled",value)
+			esp:Set(type, "Enabled", value)
 		end,
 		Enabled = s.Enabled
 	})
 	LookTracers.Slider({
 		Text = "Transparency",
 		Callback = function(value)
-			esp:Set(type,"Transparency",value / 10)
+			esp:Set(type, "Transparency", value / 10)
 		end,
 		Min = 0,
 		Max = 10,
@@ -801,27 +758,27 @@ do -- LookTracers
 		Text = "Color",
 		Default = s.Color,
 		Callback = function(value)
-			esp:Set(type,"Color",value)
+			esp:Set(type, "Color", value)
 		end
 	})
 	LookTracers.Toggle({
 		Text = "Use Team Color",
 		Callback = function(value)
-			esp:Set(type,"UseTeamColor",value)
+			esp:Set(type, "UseTeamColor", value)
 		end,
 		Enabled = s.UseTeamColor
 	})
 	LookTracers.Toggle({
 		Text = "Rainbow Color",
 		Callback = function(value)
-			esp:Set(type,"RainbowColor",value)
+			esp:Set(type, "RainbowColor", value)
 		end,
 		Enabled = s.RainbowColor
 	})
 	LookTracers.Toggle({
 		Text = "Outline",
 		Callback = function(value)
-			esp:Set(type,"Outline",value)
+			esp:Set(type, "Outline", value)
 		end,
 		Enabled = s.Outline
 	})
@@ -829,13 +786,13 @@ do -- LookTracers
 		Text = "Outline Color",
 		Default = s.OutlineColor,
 		Callback = function(value)
-			esp:Set(type,"OutlineColor",value)
+			esp:Set(type, "OutlineColor", value)
 		end
 	})
 	LookTracers.Slider({
 		Text = "Outline Thickness",
 		Callback = function(value)
-			esp:Set(type,"OutlineThickness",value)
+			esp:Set(type, "OutlineThickness", value)
 		end,
 		Min = 1,
 		Max = 5,
@@ -844,7 +801,7 @@ do -- LookTracers
 	LookTracers.Slider({
 		Text = "Thickness",
 		Callback = function(value)
-			esp:Set(type,"Thickness",value)
+			esp:Set(type, "Thickness", value)
 		end,
 		Min = 1,
 		Max = 5,
@@ -853,7 +810,7 @@ do -- LookTracers
 	LookTracers.Slider({
 		Text = "Length",
 		Callback = function(value)
-			esp:Set(type,"Length",value)
+			esp:Set(type, "Length", value)
 		end,
 		Min = 3,
 		Max = 25,
@@ -866,7 +823,7 @@ do -- All
 		Text = "Enabled (All)",
 		Callback = function(value)
 			if loaded then
-				esp:SetAll("Enabled",value)
+				esp:SetAll("Enabled", value)
 			end
 		end,
 		Enabled = false,
@@ -880,7 +837,7 @@ do -- All
 		Text = "Transparency (All)",
 		Callback = function(value)
 			if loaded then
-				esp:SetAll("Transparency",value / 10)
+				esp:SetAll("Transparency", value / 10)
 			end
 		end,
 		Min = 0,
@@ -897,7 +854,7 @@ do -- All
 		Default = Color3.fromRGB(255,255,255),
 		Callback = function(value)
 			if loaded then
-				esp:SetAll("Color",value)
+				esp:SetAll("Color", value)
 			end
 		end,
 		Menu = {
@@ -910,7 +867,7 @@ do -- All
 		Text = "Use Team Color (All)",
 		Callback = function(value)
 			if loaded then
-				esp:SetAll("UseTeamColor",value)
+				esp:SetAll("UseTeamColor", value)
 			end
 		end,
 		Enabled = true,
@@ -924,7 +881,7 @@ do -- All
 		Text = "Rainbow Color (All)",
 		Callback = function(value)
 			if loaded then
-				esp:SetAll("RainbowColor",value)
+				esp:SetAll("RainbowColor", value)
 			end
 		end,
 		Enabled = false,
@@ -938,7 +895,7 @@ do -- All
 		Text = "Outline (All)",
 		Callback = function(value)
 			if loaded then
-				esp:SetAll("Outline",value)
+				esp:SetAll("Outline", value)
 			end
 		end,
 		Enabled = true,
@@ -953,7 +910,7 @@ do -- All
 		Default = Color3.fromRGB(0,0,0),
 		Callback = function(value)
 			if loaded then
-				esp:SetAll("OutlineColor",value)
+				esp:SetAll("OutlineColor", value)
 			end
 		end,
 		Menu = {
@@ -966,7 +923,7 @@ do -- All
 		Text = "Outline Thickness (All)",
 		Callback = function(value)
 			if loaded then
-				esp:SetAll("OutlineThickness",value)
+				esp:SetAll("OutlineThickness", value)
 			end
 		end,
 		Min = 1,
@@ -986,7 +943,7 @@ do -- MouseVisibility
 	MouseVisibility.Toggle({
 		Text = "Enabled",
 		Callback = function(value)
-			esp:Set(type,"Enabled",value)
+			esp:Set(type, "Enabled", value)
 		end,
 		Enabled = s.Enabled,
 		Menu = {
@@ -998,7 +955,7 @@ do -- MouseVisibility
 	MouseVisibility.Slider({
 		Text = "Radius",
 		Callback = function(value)
-			esp:Set(type,"Radius",value)
+			esp:Set(type, "Radius", value)
 		end,
 		Min = 10,
 		Max = 150,
@@ -1007,7 +964,7 @@ do -- MouseVisibility
 	MouseVisibility.Slider({
 		Text = "Transparency",
 		Callback = function(value)
-			esp:Set(type,"Transparency",value / 10)
+			esp:Set(type, "Transparency", value / 10)
 		end,
 		Min = 0,
 		Max = 10,
@@ -1017,7 +974,7 @@ do -- MouseVisibility
 	MouseVisibility.DataTable({
 		Text = "Selected",
 		Callback = function(value)
-			esp:Set(type,"Selected",value)
+			esp:Set(type, "Selected", value)
 		end,
 		Options = {
 			Boxes = selected.Boxes,
@@ -1032,39 +989,26 @@ do -- MouseVisibility
 end
 
 do -- Other
+	local type = "Other"
 	Other.Toggle({
 		Text = "Team Check",
 		Callback = function(value)
-			esp:Set("Other","TeamCheck",value)
+			esp:Set(type, "TeamCheck", value)
 		end,
 		Enabled = ss.TeamCheck
 	})
-	Other.TextField({
-		Text = "Toggle Key",
-		Type = "Default",
-		Callback = function(value)
-			if loaded then
-				if not Enum.KeyCode[value] then
-					Banner("Invalid KeyCode")
-					return
-				end
-				esp:Set("Other","ToggleKey",value)
-			end
-		end,
-		Menu = {
-			Info = function()
-				Banner("Must be a valid KeyCode. See a list of KeyCodes by clicking the Link button.") 
-			end,
-			Link = function()
-				setclipboard("https://developer.roblox.com/en-us/api-reference/enum/KeyCode")
-				Banner("Copied to clipboard!")
-			end
-		}
+	esptogglebtn = Other.Button({
+		Text = "Esp Toggle Key: "..esp:Get("Other", "ToggleKey"),
+		Callback = function()
+			Keybind(esptogglebtn, "Esp Toggle Key", function(key)
+				esp:Set(type, "ToggleKey", key.Name)
+			end)
+		end
 	})
 	Other.Slider({
 		Text = "Refresh Rate (ms)",
 		Callback = function(value)
-			esp:Set("Other","RefreshRate",value)
+			esp:Set(type, "RefreshRate", value)
 		end,
 		Min = 0,
 		Max = 50,
@@ -1078,7 +1022,7 @@ do -- Other
 	Other.Slider({
 		Text = "Maximum Distance",
 		Callback = function(value)
-			esp:Set("Other","MaximumDistance",value)
+			esp:Set(type, "MaximumDistance", value)
 		end,
 		Min = 50,
 		Max = 1000,
@@ -1087,19 +1031,19 @@ do -- Other
 	Other.Toggle({
 		Text = "Face Camera",
 		Callback = function(value)
-			esp:Set("Other","FaceCamera",value)
+			esp:Set(type, "FaceCamera", value)
 		end,
 		Enabled = ss.FaceCamera,
 		Menu = {
 			Info = function()
-				Banner("Makes Boxes and Health Bars appear 2D")
+				Banner("Makes Boxes and Health Bars appear 2D.")
 			end
 		}
 	})
 	Other.Toggle({
 		Text = "Align Points",
 		Callback = function(value)
-			esp:Set("Other","AlignPoints",value)
+			esp:Set(type, "AlignPoints", value)
 		end,
 		Enabled = ss.AlignPoints,
 		Menu = {
@@ -1125,7 +1069,19 @@ do -- Other
 		end,
 		Menu = {
 			Info = function()
-				Banner("This will replace the current esp with an optimized version made for performance. Note that this version does NOT have any customizability.")
+				Banner("This will replace the current esp with an optimized version made for performance which can offer more fps. Note that this version does NOT have any customizability.")
+			end
+		}
+	})
+	Other.Button({
+		Text = "Load Safe Mode",
+		Callback = function()
+			destroy()
+			pcall(loadstring, (game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua")))
+		end,
+		Menu = {
+			Info = function()
+				Banner("Re-loads the ui in Safe Mode. (prevents detection via script errors)")
 			end
 		}
 	})
@@ -1140,27 +1096,90 @@ do -- Other
 			end
 		}
 	})
-	Other.Button({
-		Text = "UI Toggle Key: Right Control",
-		Callback = function() end
+	uitogglebtn = Other.Button({
+		Text = "UI Toggle Key: "..togglekey.Name,
+		Callback = function() 
+			Keybind(uitogglebtn, "UI Toggle Key", function(key)
+				togglekey = key
+			end)
+		end
 	})
 end
 
 do -- Configs
+	if not game:GetService("HttpService"):JSONDecode(readfile(listfiles("UESP")[1])).Data then
+		for _,v in next, listfiles("UESP") do
+			local data = game:GetService("HttpService"):JSONDecode(readfile(v))
+			for i2,v2 in next, data do
+				if typeof(v2) == "table" then
+					for i3,v3 in next, v2 do
+						if typeof(v3) == "table" and v3.R then
+							data[i2][i3] = Color3.new(v3.R, v3.G, v3.B)
+						end
+					end
+				end
+			end
+
+			writefile(v, cfg.Encode({
+				settings = data,
+				ui = {
+					ToggleKey = togglekey.Name,
+					AddToNew = addtonew
+				}
+			}))
+		end
+	end
+
+	local function save(a)
+		cfg.Save(a, {
+			settings = ss,
+			ui = {
+				ToggleKey = togglekey.Name,
+				AddToNew = addtonew
+			}
+		})
+	end
+	local function load(a)
+		local settings = ((a.Data ~= nil and a.Data.settings ~= nil and a.Data.settings) or a.settings ~= nil and a.settings) or a
+		for i,v in next, settings do
+			if typeof(v) == "table" then
+				for i2,v2 in next, v do
+					esp:Set(i, i2, v2)
+				end
+			else
+				esp:Set("Other", i, v)
+			end
+		end
+		local key = settings.ToggleKey
+		esptogglebtn:SetText("Esp Toggle Key: "..((typeof(key) == "EnumItem" and key.Name) or key))
+		if a.Data ~= nil and a.Data.ui ~= nil then
+			local b,c = a.Data.ui.ToggleKey, a.Data.ui.AddToNew
+			if b then
+				togglekey = Enum.KeyCode[b]
+				uitogglebtn:SetText("UI Toggle Key: "..b)
+			end
+			if c then
+				addtonew = c
+			end
+		end
+	end
+
+	cfg.Init("UESP", {
+		settings = ss,
+		ui = {
+			ToggleKey = togglekey.Name,
+			AddToNew = addtonew
+		}
+	}, load)
+
 	local list
 	local function isempty(s)
 		return s:gsub(" ","") == ""
 	end
 	local function refresh()
-		local t = {}
-		for _,v in next, listfiles(name) do
-			table.insert(t, v:sub(6,-1))
-		end
-		table.sort(t, function(a,b)
-			return a < b
-		end)
-		list:SetOptions(t)
+		list:SetOptions(cfg.Get())
 	end
+
 	Configs.TextField({
 		Text = "Config Name",
 		Type = "Default",
@@ -1174,8 +1193,8 @@ do -- Configs
 		Text = "Create New Config",
 		Callback = function()
 			if not isempty(cfgname) then
-				save()
-				Banner("Successfully created a new config: "..cfgname)
+				save(cfgname)
+				Banner("Successfully created: "..cfgname)
 				refresh()
 			else
 				Banner("Please enter a name for your config in the text box above.")
@@ -1192,7 +1211,9 @@ do -- Configs
 	refresh()
 	Configs.Button({
 		Text = "Load Selected Config",
-		Callback = load,
+		Callback = function()
+			cfg.Load(selectedcfg, load)
+		end,
 		Menu = {
 			Info = function()
 				Banner("Your settings will not apply to the UI. (cuz im lazy)")
@@ -1200,11 +1221,18 @@ do -- Configs
 		}
 	})
 	Configs.Button({
+		Text = "Overwrite Selected Config",
+		Callback = function()
+			save(selectedcfg)
+			Banner("Successfully overwritten: "..selectedcfg)
+		end
+	})
+	Configs.Button({
 		Text = "Delete Selected Config",
 		Callback = function()
-			if isfile(name.."\\"..selectedcfg) then
-				delfile(name.."\\"..selectedcfg)
-				Banner("Successfully deleted config: "..selectedcfg)
+			if cfg.Valid(selectedcfg) then
+				cfg.Delete(selectedcfg)
+				Banner("Successfully deleted: "..selectedcfg)
 				refresh()
 			else
 				Banner(selectedcfg.." does not exist.")
@@ -1214,10 +1242,7 @@ do -- Configs
 	Configs.Button({
 		Text = "Set Selected Config as Default",
 		Callback = function()
-			local old = cfgname
-			cfgname = "Default"
-			save()
-			cfgname = old
+			cfg.SetDefault(selectedcfg)
 		end,
 		Menu = {
 			Info = function()
@@ -1308,7 +1333,7 @@ do -- Players
 		Enabled = true,
 		Menu = {
 			Info = function()
-				Banner("Adds esp to players when they join the game.\nThis setting DOES NOT save in your config.")
+				Banner("Adds esp to players when they join the game.")
 			end
 		}
 	})
@@ -1447,7 +1472,7 @@ do -- Stats
 end
 
 conn3 = game:GetService("UserInputService").InputBegan:Connect(function(i,gp)
-	if not gp and i.KeyCode == Enum.KeyCode.RightControl then
+	if not gp and i.KeyCode == togglekey then
 		ui.Enabled = not ui.Enabled
 	end
 end)
@@ -1459,3 +1484,4 @@ conn4 = players.PlayerAdded:Connect(function(plr)
 end)
 
 loaded = true
+getgenv().UESP_LOADING = false
