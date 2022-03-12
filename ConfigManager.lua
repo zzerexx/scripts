@@ -43,7 +43,7 @@ end
 function ToTable(a) -- converts data types to tables
 	local t = typeof(a)
 	local b = {}
-	if t == "Color3" then
+    if t == "Color3" then
 		b.Values = {
 			[1] = a.R,
 			[2] = a.G,
@@ -112,14 +112,14 @@ function ToValue(a) -- converts tables to data types
 	return new[a.__ValueTable](unpack(a.Values))
 end
 function CloneTable(a) -- clones a table so it doesnt fuck up the original table during conversion
-	local t = {}
-	for i,v in next, a do
-		if typeof(v) == "table" then
-			v = CloneTable(v)
-		end
-		t[i] = v
-	end
-	return t
+    local t = {}
+    for i,v in next, a do
+        if typeof(v) == "table" then
+            v = CloneTable(v)
+        end
+        t[i] = v
+    end
+    return t
 end
 function ConvertData(a) -- recursively converts data types to tables (encoding)
 	for i,v in next, a do
@@ -229,7 +229,13 @@ return {
 	Get = Get,
 	SetDefault = SetDefault,
 	Delete = Delete,
-	Valid = Valid
+	Valid = Valid,
+	Encode = function(data)
+		return Encode(ConvertData(CloneTable(data)))
+	end,
+	Decode = function(data)
+		return ConvertTables(Decode(data))
+	end
 }
 
 --[[
@@ -262,4 +268,12 @@ return {
 	Valid
 	<bool> Valid(<string> Config)
 	Returns true if the specified Config exists.
+
+	Encode
+	<string> Encode(<table> Data)
+	Encodes Data and returns it. This is a copy of the function that is used to write configs.
+
+	Decode
+	<table> Decode(<string> Data)
+	Decodes Data and returns it. This is a copy of the function that is used to read configs.
 ]]
