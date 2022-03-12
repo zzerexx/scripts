@@ -231,7 +231,7 @@ return {
 	Delete = Delete,
 	Valid = Valid,
 	Encode = function(data)
-		return Encode(ConvertData(CloneTable(data)))
+		return Encode(ConvertData({Saved = GetDate(), Data = CloneTable(data)}))
 	end,
 	Decode = function(data)
 		return ConvertTables(Decode(data))
