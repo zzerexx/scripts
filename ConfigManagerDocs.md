@@ -9,6 +9,8 @@
 - [Set Default Config](#set-default)
 - [Delete Config](#delete)
 - [Valid Config](#valid)
+- [Encode](#encode)
+- [Decode](#decode)
 
 ## Loading Config Manager  
 ```lua
@@ -144,4 +146,39 @@ function LoadConfig(Name)
     end
 end
 LoadConfig("MyConfig")
+```
+
+## Encode  
+```js
+<string> cfg.Encode(<table> Data)
+```
+Encodes `Data` and returns it.  
+This is a copy of the function that is used to **write** configs.  
+  
+### Example  
+```lua
+local Data = {
+  hey = "hey",
+  ok = true
+}
+local Encoded = cfg.Encode(Data)
+
+writefile("my cool data.json", Encoded)
+```
+
+---
+
+## Decode  
+```js
+<table> cfg.Decode(<string> Data)
+```
+Decodes `Data` and returns it.  
+This is a copy of the function that is used to **read** configs.  
+  
+### Example  
+```lua
+local Data = readfile("my cool data.json")
+local Decoded = cfg.Decode(Data)
+
+table.foreach(Decoded, print)
 ```
