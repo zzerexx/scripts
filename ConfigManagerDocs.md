@@ -1,7 +1,9 @@
 # Config Manager Documentation
-*Last Updated March 11, 2022*  
+*Last Updated March 12, 2022*  
+
 # Table of Contents  
 - [Loading Config Manager](#loading-config-manager)
+- [Supported Data Types](#supported-data-types)
 - [Initialize](#init)
 - [Load Config](#load)
 - [Save Config](#save)
@@ -16,6 +18,16 @@
 ```lua
 local cfg = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/ConfigManager.lua"))()
 ```  
+  
+## Supported Data Types  
+The following data types are automatically converted to table form before saving a config:  
+|Category|Data Type|
+|:-------|:--------|
+|Colors|Color3, BrickColor|
+|Positions|Vector2, Vector3, CFrame|
+|Interface|UDim, UDim2|
+  
+*more may be added in the future*  
   
 ## Additional Notes  
 After loading a config, the data can be accessed via the `Data` table.  
