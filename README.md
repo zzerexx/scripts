@@ -21,7 +21,7 @@ https://pastebin.com/raw/5zw0rLH9
 ```  
 [Documentation](https://github.com/zzerexx/scripts/blob/main/UniversalScriptAPI.md)  
 ### UI Version  
-Updated March 5, 2022  
+Updated March 12, 2022  
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua"))()
 ```  
@@ -41,6 +41,15 @@ Main Changes
   - This may cause esp to have abnormal behavior when looking from certain angles
 - (1.6.9) no longer detected on bad business
   
+UI Changes  
+- Updated to utilize [Config Manager](https://github.com/zzerexx/scripts/blob/main/ConfigManagerDocs.md)
+- Executing Universal Esp and Aimbot simulataneously will now wait until the first ui loads
+- `Toggle Key` is easier to set with the keybind button
+- `UI Toggle Key` is now customizable with the keybind button
+- `UI Toggle Key` can be saved in configs
+- `Add esp to players upon joining` can be saved in configs
+- Added `Safe Mode`; prevents script error detections (recommended on games like bad business)
+  
 ---
   
 # Universal Aimbot  
@@ -51,13 +60,20 @@ https://pastebin.com/raw/nwqE7v07
 ```  
 [Documentation](https://github.com/zzerexx/scripts/blob/main/UniversalScriptAPI.md)  
 ### UI Version  
-Updated March 5, 2022  
+Updated March 12, 2022  
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalAimbotUI.lua"))()
 ```  
 ## Update v1.1.14  
 Main Changes  
-- no longer detected on bad business
+- no longer detected on bad business  
+  
+UI Changes  
+- Updated to utilize [Config Manager](https://github.com/zzerexx/scripts/blob/main/ConfigManagerDocs.md)
+- Executing Universal Esp and Aimbot simulataneously will now wait until the first ui loads
+- `Toggle Key` is easier to set with the keybind button
+- `UI Toggle Key` is now customizable with the keybind button
+- `UI Toggle Key` can be saved in configs
   
 ## NOTICE  
 ```
