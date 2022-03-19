@@ -37,6 +37,7 @@ You can replace the Material Lua loadstring with this loadstring to use Remake w
 <table> Material.Load(<table> Options)
 ```
 Creates a new `UI` with `Options`.  
+Note: Remake does not support Themes or ThemeOverrides yet.
 
 ### Example  
 ```lua
