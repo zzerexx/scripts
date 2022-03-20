@@ -161,12 +161,13 @@ local uilib = {
 	UIPadding_22 = Instance.new("UIPadding"),
 	Enabled = Instance.new("ImageButton"),
 	UICorner_41 = Instance.new("UICorner"),
+	Menu_9 = Instance.new("ImageButton"),
 	Button_6 = Instance.new("TextButton"),
 	Fill_4 = Instance.new("Frame"),
 	RippleHolder_3 = Instance.new("Frame"),
 	Indicator_8 = Instance.new("Frame"),
 	UICorner_42 = Instance.new("UICorner"),
-	Menu_9 = Instance.new("ImageButton"),
+	Menu_10 = Instance.new("ImageButton"),
 	Table = Instance.new("Frame"),
 	UIPadding_23 = Instance.new("UIPadding"),
 	UICorner_43 = Instance.new("UICorner"),
@@ -187,7 +188,7 @@ local uilib = {
 	RippleHolder_4 = Instance.new("Frame"),
 	Indicator_9 = Instance.new("Frame"),
 	UICorner_46 = Instance.new("UICorner"),
-	Menu_10 = Instance.new("ImageButton"),
+	Menu_11 = Instance.new("ImageButton"),
 	BackgroundDim = Instance.new("Frame"),
 	Banner = Instance.new("Frame"),
 	UICorner_47 = Instance.new("UICorner"),
@@ -218,7 +219,7 @@ local uilib = {
 	UIPadding_30 = Instance.new("UIPadding"),
 	Minimize = Instance.new("TextButton"),
 	UICorner_54 = Instance.new("UICorner"),
-	Menu_11 = Instance.new("ImageButton"),
+	Menu_12 = Instance.new("ImageButton"),
 	Ripple = Instance.new("Frame"),
 	UICorner_55 = Instance.new("UICorner"),
 	Focus = Instance.new("Frame"),
@@ -407,7 +408,7 @@ uilib.Menu.Position = UDim2.new(1, 0, 0, 5)
 uilib.Menu.Size = UDim2.new(0, 20, 0, 20)
 uilib.Menu.Visible = false
 uilib.Menu.ZIndex = 3
-uilib.Menu.Image = "rbxassetid://9130495393"
+uilib.Menu.Image = "http://www.roblox.com/asset/?id=9147554930"
 
 uilib.UIListLayout_2.Parent = uilib.Example_2
 uilib.UIListLayout_2.SortOrder = Enum.SortOrder.LayoutOrder
@@ -466,7 +467,7 @@ uilib.Menu_2.Position = UDim2.new(1, 0, 0, 5)
 uilib.Menu_2.Size = UDim2.new(0, 20, 0, 20)
 uilib.Menu_2.Visible = false
 uilib.Menu_2.ZIndex = 3
-uilib.Menu_2.Image = "rbxassetid://9130495393"
+uilib.Menu_2.Image = "http://www.roblox.com/asset/?id=9147554930"
 
 uilib.Dropdown.Name = "Dropdown"
 uilib.Dropdown.Parent = uilib.Example_2
@@ -602,7 +603,7 @@ uilib.Menu_3.Position = UDim2.new(1, 0, 0, 5)
 uilib.Menu_3.Size = UDim2.new(0, 20, 0, 20)
 uilib.Menu_3.Visible = false
 uilib.Menu_3.ZIndex = 3
-uilib.Menu_3.Image = "rbxassetid://9130495393"
+uilib.Menu_3.Image = "http://www.roblox.com/asset/?id=9147554930"
 
 uilib.TextBox.Parent = uilib.Example_2
 uilib.TextBox.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
@@ -647,7 +648,7 @@ uilib.Menu_4.Position = UDim2.new(1, 0, 0, 5)
 uilib.Menu_4.Size = UDim2.new(0, 20, 0, 20)
 uilib.Menu_4.Visible = false
 uilib.Menu_4.ZIndex = 3
-uilib.Menu_4.Image = "rbxassetid://9130495393"
+uilib.Menu_4.Image = "http://www.roblox.com/asset/?id=9147554930"
 
 uilib.Label_2.Name = "Label"
 uilib.Label_2.Parent = uilib.Example_2
@@ -676,7 +677,7 @@ uilib.Menu_5.Position = UDim2.new(1, 0, 0, 5)
 uilib.Menu_5.Size = UDim2.new(0, 20, 0, 20)
 uilib.Menu_5.Visible = false
 uilib.Menu_5.ZIndex = 3
-uilib.Menu_5.Image = "rbxassetid://9130495393"
+uilib.Menu_5.Image = "http://www.roblox.com/asset/?id=9147554930"
 
 uilib.Slider.Name = "Slider"
 uilib.Slider.Parent = uilib.Example_2
@@ -803,7 +804,7 @@ uilib.Menu_6.Position = UDim2.new(1, 0, 0, 5)
 uilib.Menu_6.Size = UDim2.new(0, 20, 0, 20)
 uilib.Menu_6.Visible = false
 uilib.Menu_6.ZIndex = 3
-uilib.Menu_6.Image = "rbxassetid://9130495393"
+uilib.Menu_6.Image = "http://www.roblox.com/asset/?id=9147554930"
 
 uilib.ColorPicker.Name = "ColorPicker"
 uilib.ColorPicker.Parent = uilib.Example_2
@@ -1227,7 +1228,7 @@ uilib.Menu_7.Position = UDim2.new(1, 0, 0, 5)
 uilib.Menu_7.Size = UDim2.new(0, 20, 0, 20)
 uilib.Menu_7.Visible = false
 uilib.Menu_7.ZIndex = 3
-uilib.Menu_7.Image = "rbxassetid://9130495393"
+uilib.Menu_7.Image = "http://www.roblox.com/asset/?id=9147554930"
 
 uilib.Keybind.Name = "Keybind"
 uilib.Keybind.Parent = uilib.Example_2
@@ -1274,7 +1275,7 @@ uilib.Menu_8.Position = UDim2.new(1, 0, 0, 5)
 uilib.Menu_8.Size = UDim2.new(0, 20, 0, 20)
 uilib.Menu_8.Visible = false
 uilib.Menu_8.ZIndex = 3
-uilib.Menu_8.Image = "rbxassetid://9130495393"
+uilib.Menu_8.Image = "http://www.roblox.com/asset/?id=9147554930"
 
 uilib.ChipSet.Name = "ChipSet"
 uilib.ChipSet.Parent = uilib.Example_2
@@ -1363,6 +1364,18 @@ uilib.Enabled.Image = "rbxassetid://9122106066"
 uilib.UICorner_41.CornerRadius = UDim.new(0, 4)
 uilib.UICorner_41.Parent = uilib.Enabled
 
+uilib.Menu_9.Name = "Menu"
+uilib.Menu_9.Parent = uilib.Option_3
+uilib.Menu_9.AnchorPoint = Vector2.new(1, 0)
+uilib.Menu_9.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+uilib.Menu_9.BackgroundTransparency = 1.000
+uilib.Menu_9.BorderSizePixel = 0
+uilib.Menu_9.Position = UDim2.new(1, -5, 0, 5)
+uilib.Menu_9.Size = UDim2.new(0, 20, 0, 20)
+uilib.Menu_9.Visible = false
+uilib.Menu_9.ZIndex = 3
+uilib.Menu_9.Image = "http://www.roblox.com/asset/?id=9147554930"
+
 uilib.Button_6.Name = "Button"
 uilib.Button_6.Parent = uilib.ChipSet
 uilib.Button_6.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -1404,17 +1417,17 @@ uilib.Indicator_8.ZIndex = 2
 uilib.UICorner_42.CornerRadius = UDim.new(0, 4)
 uilib.UICorner_42.Parent = uilib.Indicator_8
 
-uilib.Menu_9.Name = "Menu"
-uilib.Menu_9.Parent = uilib.ChipSet
-uilib.Menu_9.AnchorPoint = Vector2.new(1, 0)
-uilib.Menu_9.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Menu_9.BackgroundTransparency = 1.000
-uilib.Menu_9.BorderSizePixel = 0
-uilib.Menu_9.Position = UDim2.new(1, 0, 0, 5)
-uilib.Menu_9.Size = UDim2.new(0, 20, 0, 20)
-uilib.Menu_9.Visible = false
-uilib.Menu_9.ZIndex = 3
-uilib.Menu_9.Image = "rbxassetid://9130495393"
+uilib.Menu_10.Name = "Menu"
+uilib.Menu_10.Parent = uilib.ChipSet
+uilib.Menu_10.AnchorPoint = Vector2.new(1, 0)
+uilib.Menu_10.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+uilib.Menu_10.BackgroundTransparency = 1.000
+uilib.Menu_10.BorderSizePixel = 0
+uilib.Menu_10.Position = UDim2.new(1, 0, 0, 5)
+uilib.Menu_10.Size = UDim2.new(0, 20, 0, 20)
+uilib.Menu_10.Visible = false
+uilib.Menu_10.ZIndex = 3
+uilib.Menu_10.Image = "http://www.roblox.com/asset/?id=9147554930"
 
 uilib.Table.Name = "Table"
 uilib.Table.Parent = uilib.Example_2
@@ -1558,17 +1571,17 @@ uilib.Indicator_9.ZIndex = 2
 uilib.UICorner_46.CornerRadius = UDim.new(0, 4)
 uilib.UICorner_46.Parent = uilib.Indicator_9
 
-uilib.Menu_10.Name = "Menu"
-uilib.Menu_10.Parent = uilib.Table
-uilib.Menu_10.AnchorPoint = Vector2.new(1, 0)
-uilib.Menu_10.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Menu_10.BackgroundTransparency = 1.000
-uilib.Menu_10.BorderSizePixel = 0
-uilib.Menu_10.Position = UDim2.new(1, 0, 0, 5)
-uilib.Menu_10.Size = UDim2.new(0, 20, 0, 20)
-uilib.Menu_10.Visible = false
-uilib.Menu_10.ZIndex = 3
-uilib.Menu_10.Image = "rbxassetid://9130495393"
+uilib.Menu_11.Name = "Menu"
+uilib.Menu_11.Parent = uilib.Table
+uilib.Menu_11.AnchorPoint = Vector2.new(1, 0)
+uilib.Menu_11.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+uilib.Menu_11.BackgroundTransparency = 1.000
+uilib.Menu_11.BorderSizePixel = 0
+uilib.Menu_11.Position = UDim2.new(1, 0, 0, 5)
+uilib.Menu_11.Size = UDim2.new(0, 20, 0, 20)
+uilib.Menu_11.Visible = false
+uilib.Menu_11.ZIndex = 3
+uilib.Menu_11.Image = "http://www.roblox.com/asset/?id=9147554930"
 
 uilib.BackgroundDim.Name = "BackgroundDim"
 uilib.BackgroundDim.Parent = uilib.Main
@@ -1786,17 +1799,17 @@ uilib.Minimize.TextSize = 14.000
 uilib.UICorner_54.CornerRadius = UDim.new(0, 4)
 uilib.UICorner_54.Parent = uilib.Minimize
 
-uilib.Menu_11.Name = "Menu"
-uilib.Menu_11.Parent = uilib.Topbar
-uilib.Menu_11.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Menu_11.BackgroundTransparency = 1.000
-uilib.Menu_11.BorderSizePixel = 0
-uilib.Menu_11.Position = UDim2.new(0, 3, 0, 3)
-uilib.Menu_11.Size = UDim2.new(0, 24, 0, 24)
-uilib.Menu_11.Visible = false
-uilib.Menu_11.ZIndex = 6
-uilib.Menu_11.AutoButtonColor = false
-uilib.Menu_11.Image = "rbxassetid://9087103499"
+uilib.Menu_12.Name = "Menu"
+uilib.Menu_12.Parent = uilib.Topbar
+uilib.Menu_12.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+uilib.Menu_12.BackgroundTransparency = 1.000
+uilib.Menu_12.BorderSizePixel = 0
+uilib.Menu_12.Position = UDim2.new(0, 3, 0, 3)
+uilib.Menu_12.Size = UDim2.new(0, 24, 0, 24)
+uilib.Menu_12.Visible = false
+uilib.Menu_12.ZIndex = 6
+uilib.Menu_12.AutoButtonColor = false
+uilib.Menu_12.Image = "rbxassetid://9087103499"
 
 uilib.Ripple.Name = "Ripple"
 uilib.Ripple.Parent = uilib.Topbar
@@ -1854,6 +1867,8 @@ do -- uilib.uilib.UI
 	local script = Instance.new('ModuleScript', uilib.uilib)
 	script.Name = "UI"
 	local function module_script()
+		-- shitty code !
+		
 		local uis = game:GetService("UserInputService")
 		local ts = game:GetService("TweenService")
 		local mouse = game:GetService("Players").LocalPlayer:GetMouse()
@@ -1877,7 +1892,7 @@ do -- uilib.uilib.UI
 		local dim2 = main.BackgroundDim2
 		local banner = main.Banner
 		
-		-- constants
+		-- constants / placeholders
 		local sine = Enum.EasingStyle.Sine
 		local out = Enum.EasingDirection.Out
 		local nofunc = function() end
@@ -2216,6 +2231,10 @@ do -- uilib.uilib.UI
 				new.BackgroundTransparency = BANNER_TRANSPARENCY
 				new.Label.BackgroundTransparency = BANNER_TRANSPARENCY
 				new.Label.TextTransparency = BANNER_TRANSPARENCY
+				new.Label.Size = UDim2new(1, 0, 10, 0)
+				local bound = new.Label.TextBounds.Y
+				new.Label.Size = UDim2new(1, 0, 1, 0)
+				new.Size = UDim2new(1, -20, 0, clamp(bound + 45, 100, inf))
 		
 				taskdelay(0.1, function()
 					new:TweenPosition(UDim2new(0.5, 0, 1, -10), "Out", "Sine", 0.35)
@@ -2266,7 +2285,7 @@ do -- uilib.uilib.UI
 							new.Name = "BUTTON_"..i
 							new.Text = i 
 							new.Activated:Connect(function()
-								v()
+								v({Object = menubtn})
 								menu:TweenSize(UDim2new(0, 100, 0, 0), unpack(MENU_INFO))
 								LAST_BUTTON = nil
 							end)
@@ -2292,6 +2311,7 @@ do -- uilib.uilib.UI
 					end
 				end)
 			end
+			
 			function ui.Load(t)
 				UI_LOADED = false
 				ApplyDefaultProps("Load", t)
@@ -2328,10 +2348,73 @@ do -- uilib.uilib.UI
 				local dim2 = main.BackgroundDim2
 				local banner = main.Banner
 				
+				local Theme = {
+					MainFrame = main,
+		
+					Minimise = minimize,
+					MinimiseAccent = nil,
+					Maximise = nil,
+					MaximiseAccent = nil,
+		
+					NavBar = {{navigator, "BackgroundColor3"}},
+					NavBarAccent = nil,
+					NavBarInvert = nil,
+		
+					TitleBar = topbar,
+					TitleBarAccent = {{topbar.Title, "BackgroundColor3"}},
+		
+					Overlay = nil,
+		
+					Banner = main.Banner,
+					BannerAccent = {main.BackgroundDim2, main.Banner.Label},
+		
+					Content = nil,
+		
+					Button = ex.Button,
+					ButtonAccent = nil,
+		
+					ChipSet = Color3.fromRGB(219, 68, 103),
+					ChipSetAccent = Color3.fromRGB(255,255,255),
+		
+					DataTable = Color3.fromRGB(219, 68, 103),
+					DataTableAccent = Color3.fromRGB(255,255,255),
+		
+					Slider = Color3.fromRGB(255,255,255),
+					SliderAccent = Color3.fromRGB(219, 68, 103),
+		
+					Toggle = Color3.fromRGB(219, 68, 103),
+					ToggleAccent = Color3.fromRGB(255,255,255),
+		
+					Dropdown = Color3.fromRGB(255,255,255),
+					DropdownAccent = Color3.fromRGB(219, 68, 103),
+		
+					ColorPicker = Color3.fromRGB(255,255,255),
+					ColorPickerAccent = Color3.fromRGB(219, 68, 103),
+		
+					TextField = Color3.fromRGB(175,175,175),
+					TextFieldAccent = Color3.fromRGB(255,255,255)
+				}
+				
+				local function ColorOverride(t)
+					for _,info in next, t do
+						if info ~= nil then
+							for i,v in next, info do
+								local Object = v[1]
+								local Property = v[2]
+								local Value = v[3]
+		
+								Object[Property] = Value
+							end
+						end
+					end
+				end
+				
 				local UI_SIZE_X = clamp(t.SizeX, 275, inf)
 				local UI_SIZE_Y = t.SizeY
 				local FIRST_PAGE = true
 				local FIRST_PAGE_OBJ = nil
+				local MIN_BTN_COLOR = fromRGB(250, 170, 75)
+				local MAX_BTN_COLOR = fromRGB(150, 250, 170)
 				
 				local res = workspace.CurrentCamera.ViewportSize
 				topbar.Visible = true
@@ -2476,17 +2559,18 @@ do -- uilib.uilib.UI
 					newnav.Activated:Connect(open)
 					pagebtns.CanvasSize = UDim2new(0, 0, 0, pagebtns.UIListLayout.AbsoluteContentSize.Y + 3)
 					
-					if t.ImageId ~= nil then
-						local img = t.ImageId
+					local img = t.ImageId or t.ImageID
+					if img ~= nil then
 						local type = typeof(img)
-						newnav.Icon.Visible = true
+						local icon = newnav.Icon
+						icon.Visible = true
 						if tonumber(img) ~= nil then
-							newnav.Icon.Image = "rbxassetid://"..img
+							icon.Image = "rbxassetid://"..img
 						elseif type == "string" then
 							if img:find("rbxassetid://") then
-								newnav.Icon.Image = img
+								icon.Image = img
 							elseif isfile(img) and (getcustomasset or getsynasset) then
-								newnav.Icon.Image = (getcustomasset and getcustomasset(img)) or (getsynasset and getsynasset(img))
+								icon.Image = (getcustomasset and getcustomasset(img)) or (getsynasset and getsynasset(img))
 							end
 						end
 						newnav.UIPadding.PaddingLeft = UDim.new(0, 38)
@@ -2555,8 +2639,12 @@ do -- uilib.uilib.UI
 					
 					return funcs
 				end
-				function UI.Toggle()
-					topbar.Visible = not topbar.Visible
+				function UI.Toggle(vis)
+					if vis ~= nil then
+						topbar.Visible = vis
+					else
+						topbar.Visible = not topbar.Visible
+					end
 				end
 		
 				UI.New = UI.new
@@ -2588,19 +2676,24 @@ do -- uilib.uilib.UI
 					ui.InitMenu(t.Menu, new, {})
 				end
 				
-				local a = {}
+				local a = {Destroyed = false}
 				
 				function a:SetText(text)
+					if a.Destroyed then return end
 					new.Text = text
 				end
 				function a:GetText()
+					if a.Destroyed then return end
 					return new.Text
 				end
 				function a:GetId()
+					if a.Destroyed then return end
 					return id
 				end
-				function a:Remove()
+				function a:Destroy()
+					if a.Destroyed then return end
 					new:Destroy()
+					a.Destroyed = true
 				end
 				
 				return a
@@ -2640,26 +2733,34 @@ do -- uilib.uilib.UI
 					ui.InitMenu(t.Menu, new, {new.Toggle})
 				end
 				
-				local a = {}
+				local a = {Destroyed = false}
 				
 				function a:SetText(text)
+					if a.Destroyed then return end
 					new.Text = text
 				end
 				function a:GetText()
+					if a.Destroyed then return end
 					return new.Text
 				end
 				function a:GetId()
+					if a.Destroyed then return end
 					return id
 				end
 				function a:SetState(value)
+					if a.Destroyed then return end
 					toggled = value
+					toggle.Indicator.Position = (t.Enabled and UDim2new(0.5, 0, 0.5, 0)) or UDim2new(0, 0, 0.5, 0)
 					t.Callback(value)
 				end
 				function a:GetState()
+					if a.Destroyed then return end
 					return toggled
 				end
-				function a:Remove()
+				function a:Destroy()
+					if a.Destroyed then return end
 					new:Destroy()
+					a.Destroyed = true
 				end
 		
 				return a
@@ -2692,19 +2793,21 @@ do -- uilib.uilib.UI
 						end
 					end
 					for _,v in next, options do
-						local new2 = dropdown.Option:Clone()
-						new2.Parent = dropdown
-						new2.Visible = true
-						new2.Name = v
-						new2.Text = v
-						new2.Activated:Connect(function()
-							selected = v
-							new.Option.Text = v
-							ui.UpdateCanvasSize(p or ex)
-							t.Callback(v)
-						end)
+						if dropdown:FindFirstChild("Option") then
+							local new2 = dropdown.Option:Clone()
+							new2.Parent = dropdown
+							new2.Visible = true
+							new2.Name = v
+							new2.Text = v
+							new2.Activated:Connect(function()
+								selected = v
+								new.Option.Text = v
+								ui.UpdateCanvasSize(p or ex)
+								t.Callback(v)
+							end)
 		
-						ui.Ripple(new2)
+							ui.Ripple(new2)
+						end
 					end
 					if toggled then
 						new:TweenSize(UDim2new(1, 0, 0, 30 + 5 + (35 * amount)), "Out", "Sine", 0.15, true)
@@ -2736,27 +2839,34 @@ do -- uilib.uilib.UI
 					ui.InitMenu(t.Menu, new, {new.Option, new.Indicator})
 				end
 				
-				local a = {}
+				local a = {Destroyed = false}
 		
 				function a:SetText(text)
+					if a.Destroyed then return end
 					new.Label.Text = text
 				end
 				function a:GetText()
+					if a.Destroyed then return end
 					return new.Label.Text
 				end
 				function a:GetId()
+					if a.Destroyed then return end
 					return id
 				end
 				function a:SetOptions(value)
+					if a.Destroyed then return end
 					options = value
 					amount = #value
 					refresh()
 				end
 				function a:GetOptions()
+					if a.Destroyed then return end
 					return options
 				end
-				function a:Remove()
+				function a:Destroy()
+					if a.Destroyed then return end
 					new:Destroy()
+					a.Destroyed = false
 				end
 		
 				return a
@@ -2803,19 +2913,24 @@ do -- uilib.uilib.UI
 					ui.InitMenu(t.Menu, new, {})
 				end
 				
-				local a = {}
+				local a = {Destroyed = false}
 		
 				function a:SetText(text)
+					if a.Destroyed then return end
 					new.PlaceholderText = text
 				end
 				function a:GetText()
+					if a.Destroyed then return end
 					return new.PlaceholderText
 				end
 				function a:GetId()
+					if a.Destroyed then return end
 					return id
 				end
-				function a:Remove()
+				function a:Destroy()
+					if a.Destroyed then return end
 					new:Destroy()
+					a.Destroyed = true
 				end
 		
 				return a
@@ -2859,19 +2974,24 @@ do -- uilib.uilib.UI
 					ui.InitMenu(t.Menu, new, {})
 				end
 				
-				local a = {}
+				local a = {Destroyed = false}
 		
 				function a:SetText(text)
+					if a.Destroyed then return end
 					new.Text = text
 				end
 				function a:GetText()
+					if a.Destroyed then return end
 					return new.Text
 				end
 				function a:GetId()
+					if a.Destroyed then return end
 					return id
 				end
-				function a:Remove()
+				function a:Destroy()
+					if a.Destroyed then return end
 					new:Destroy()
+					a.Destroyed = true
 				end
 		
 				return a
@@ -3016,31 +3136,40 @@ do -- uilib.uilib.UI
 					t.Callback(lastvalue)
 				end)
 				
-				local a = {}
+				local a = {Destroyed = false}
 		
 				function a:SetText(text)
+					if a.Destroyed then return end
 					new.Label.Text = text
 				end
 				function a:GetText()
+					if a.Destroyed then return end
 					return new.Label.Text
 				end
 				function a:GetId()
+					if a.Destroyed then return end
 					return id
 				end
 				function a:SetMin(value)
+					if a.Destroyed then return end
 					min = value
 				end
 				function a:SetMax(value)
+					if a.Destroyed then return end
 					max = value
 				end
 				function a:GetMin()
+					if a.Destroyed then return end
 					return min
 				end
 				function a:GetMax()
+					if a.Destroyed then return end
 					return max
 				end
-				function a:Remove()
+				function a:Destroy()
+					if a.Destroyed then return end
 					new:Destroy()
+					a.Destroyed = true
 				end
 		
 				return a
@@ -3166,28 +3295,35 @@ do -- uilib.uilib.UI
 					end
 				end)
 				
-				local a = {}
+				local a = {Destroyed = false}
 		
 				function a:SetText(text)
+					if a.Destroyed then return end
 					new.Label.Text = text
 				end
 				function a:GetText()
+					if a.Destroyed then return end
 					return new.Label.Text
 				end
 				function a:GetId()
+					if a.Destroyed then return end
 					return id
 				end
 				function a:SetColor(value)
+					if a.Destroyed then return end
 					color = value
 					hue, sat, val = value:ToHSV()
 					ui.SetPickerPreview(new, color, true)
 					t.Callback(value)
 				end
 				function a:GetColor()
+					if a.Destroyed then return end
 					return fromHSV(hue, sat, val)
 				end
-				function a:Remove()
+				function a:Destroy()
+					if a.Destroyed then return end
 					new:Destroy()
+					a.Destroyed = true
 				end
 		
 				return a
@@ -3242,27 +3378,34 @@ do -- uilib.uilib.UI
 					ui.InitMenu(t.Menu, new, {new.Bind})
 				end
 				
-				local a = {}
+				local a = {Destroyed = false}
 		
 				function a:SetText(text)
+					if a.Destroyed then return end
 					new.Text = text
 				end
 				function a:GetText()
+					if a.Destroyed then return end
 					return new.Text
 				end
 				function a:GetId()
+					if a.Destroyed then return end
 					return id
 				end
 				function a:SetBind(value)
+					if a.Destroyed then return end
 					keybind = value
 					new.Bind.Text = value.Name
 					t.Callback(value)
 				end
 				function a:GetBind()
+					if a.Destroyed then return end
 					return keybind
 				end
-				function a:Remove()
+				function a:Destroy()
+					if a.Destroyed then return end
 					new:Destroy()
+					a.Destroyed = true
 				end
 		
 				return a
@@ -3300,23 +3443,38 @@ do -- uilib.uilib.UI
 						end
 					end
 					for i,v in next, data do
-						local new2 = dropdown.Option:Clone()
-						new2.Parent = dropdown
-						new2.Visible = true
-						new2.Name = i
-						new2.Enabled.Image = (data[i] and ENABLED_IMAGE) or DISABLED_IMAGE
-						new2.Button.Text = i
-						local function activated()
-							data[i] = not data[i]
-							new2.Enabled.Image = (data[i] and ENABLED_IMAGE) or DISABLED_IMAGE
-							ui.UpdateCanvasSize(p or ex)
-							t.Callback(data)
-						end
-						new2.Enabled.Activated:Connect(activated)
-						new2.Button.Activated:Connect(activated)
+						if dropdown:FindFirstChild("Option") then
+							local name = i
+							local enabled = true
+							local menu = false
+							if typeof(v) == "table" then
+								enabled = v.Enabled
+								menu = v.Menu ~= nil
+							else
+								enabled = v
+							end
+							local new2 = dropdown.Option:Clone()
+							new2.Parent = dropdown
+							new2.Visible = true
+							new2.Name = i
+							new2.Enabled.Image = (enabled and ENABLED_IMAGE) or DISABLED_IMAGE
+							new2.Button.Text = i
+							local function activated()
+								enabled = not enabled
+								new2.Enabled.Image = (enabled and ENABLED_IMAGE) or DISABLED_IMAGE
+								ui.UpdateCanvasSize(p or ex)
+								t.Callback(data)
+							end
+							new2.Enabled.Activated:Connect(activated)
+							new2.Button.Activated:Connect(activated)
 		
-						ui.Ripple(new2.Enabled, new2.Button)
-						ui.Ripple(new2.Button)
+							ui.Ripple(new2.Enabled, new2.Button)
+							ui.Ripple(new2.Button)
+							
+							if menu then
+								ui.InitMenu(v.Menu, new2, {})
+							end
+						end
 					end
 					if toggled then
 						new:TweenSize(UDim2new(1, 0, 0, 30 + 5 + (35 * amount)), "Out", "Sine", 0.15, true)
@@ -3348,18 +3506,22 @@ do -- uilib.uilib.UI
 					ui.InitMenu(t.Menu, new, {new.Indicator})
 				end
 				
-				local a = {}
+				local a = {Destroyed = false}
 		
 				function a:SetText(text)
+					if a.Destroyed then return end
 					new.Label.Text = text
 				end
 				function a:GetText()
+					if a.Destroyed then return end
 					return new.Label.Text
 				end
 				function a:GetId()
+					if a.Destroyed then return end
 					return id
 				end
 				function a:SetData(value)
+					if a.Destroyed then return end
 					table.sort(value, function(a,b)
 						return a < b
 					end)
@@ -3372,10 +3534,13 @@ do -- uilib.uilib.UI
 					refresh()
 				end
 				function a:GetData()
+					if a.Destroyed then return end
 					return data
 				end
-				function a:Remove()
+				function a:Destroy()
+					if a.Destroyed then return end
 					new:Destroy()
+					a.Destroyed = true
 				end
 		
 				return a
@@ -3416,12 +3581,14 @@ do -- uilib.uilib.UI
 						end
 					end
 					for i,v in next, data do
-						local new2 = dropdown.Info:Clone()
-						new2.Parent = dropdown
-						new2.Visible = true
-						new2.Name = "DATA_"..i
-						new2.Key.Text = tostring(i)
-						new2.Value.Text = tostring(v)
+						if dropdown:FindFirstChild("Info") then
+							local new2 = dropdown.Info:Clone()
+							new2.Parent = dropdown
+							new2.Visible = true
+							new2.Name = "DATA_"..i
+							new2.Key.Text = tostring(i)
+							new2.Value.Text = tostring(v)
+						end
 					end
 					if toggled then
 						new:TweenSize(UDim2new(1, 0, 0, 30 + 5 + (35 * (amount + (t.ShowInfo and 1 or 0)))), "Out", "Sine", 0.15, true)
@@ -3452,18 +3619,22 @@ do -- uilib.uilib.UI
 					ui.InitMenu(t.Menu, new, {new.Option, new.Indicator})
 				end
 		
-				local a = {}
+				local a = {Destroyed = false}
 		
 				function a:SetText(text)
+					if a.Destroyed then return end
 					new.Label.Text = text
 				end
 				function a:GetText()
+					if a.Destroyed then return end
 					return new.Label.Text
 				end
 				function a:GetId()
+					if a.Destroyed then return end
 					return id
 				end
 				function a:SetData(value)
+					if a.Destroyed then return end
 					table.sort(value, function(a,b)
 						return a < b
 					end)
@@ -3475,10 +3646,13 @@ do -- uilib.uilib.UI
 					refresh()
 				end
 				function a:GetData()
+					if a.Destroyed then return end
 					return data
 				end
-				function a:Remove()
+				function a:Destroy()
+					if a.Destroyed then return end
 					new:Destroy()
+					a.Destroyed = true
 				end
 		
 				return a
