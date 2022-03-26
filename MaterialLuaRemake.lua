@@ -1,8 +1,3 @@
--- Gui to Lua
--- Version: 3.2
-
--- Instances:
-
 local uilib = {
 	uilib = Instance.new("ScreenGui"),
 	Topbar = Instance.new("Frame"),
@@ -1868,11 +1863,11 @@ do -- uilib.uilib.UI
 	script.Name = "UI"
 	local function module_script()
 		-- shitty code !
-		
+
 		local uis = game:GetService("UserInputService")
 		local ts = game:GetService("TweenService")
 		local mouse = game:GetService("Players").LocalPlayer:GetMouse()
-		
+
 		-- ui stuffs
 		local topbar = script.Parent.Topbar
 		local main = topbar.Main
@@ -1891,7 +1886,7 @@ do -- uilib.uilib.UI
 		local dim1 = main.BackgroundDim
 		local dim2 = main.BackgroundDim2
 		local banner = main.Banner
-		
+
 		-- constants / placeholders
 		local sine = Enum.EasingStyle.Sine
 		local out = Enum.EasingDirection.Out
@@ -1899,7 +1894,7 @@ do -- uilib.uilib.UI
 		local bind = Instance.new("BindableEvent")
 		local nocolor = Color3.fromRGB(255, 255, 255)
 		local inf = math.huge
-		
+
 		-- variables
 		local UI_LOADED = false
 		local UI_SIZE_X = 400
@@ -1908,7 +1903,7 @@ do -- uilib.uilib.UI
 		local ENABLED_IMAGE = "rbxassetid://9122106066"
 		local DISABLED_IMAGE = "rbxassetid://9122119502"
 		local mousedown = false
-		
+
 		-- aliases
 		local clamp = math.clamp
 		local floor = math.floor 
@@ -1923,10 +1918,10 @@ do -- uilib.uilib.UI
 		local TweenInfonew = TweenInfo.new
 		local CSnew = ColorSequence.new
 		local CSKnew = ColorSequenceKeypoint.new
-		
+
 		local defaults = {
 			Load = {
-				Title = "Material Lua v2",
+				Title = "Material Lua Remake",
 				Style = 1,
 				SizeX = 400,
 				SizeY = 490
@@ -1985,6 +1980,7 @@ do -- uilib.uilib.UI
 				Text = "Keybind",
 				Callback = nofunc,
 				Def = Enum.KeyCode.Unknown,
+				AllowKeyboard = true,
 				AllowMouse = false
 			},
 			ChipSet = {
@@ -2006,9 +2002,9 @@ do -- uilib.uilib.UI
 				}
 			}
 		}
-		
+
 		topbar.Visible = false
-		
+
 		function CheckInvalidProps(a, b)
 			for i,v in next, defaults[a] do
 				if b[i] ~= nil and typeof(b[i]) ~= typeof(v) then
@@ -2016,7 +2012,7 @@ do -- uilib.uilib.UI
 				end
 			end
 		end
-		
+
 		function ApplyDefaultProps(a,b)
 			for i,v in next, defaults[a] do
 				if b[i] == nil then
@@ -2027,25 +2023,25 @@ do -- uilib.uilib.UI
 		function Round(num, dec)
 			return tonumber(format("%." .. (dec or 0) .. "f", num))
 		end
-		
+
 		local ToggleOn = UDim2new(0.5, 0, 0.5, 0)
 		local ToggleOff = UDim2new(0, 0, 0.5, 0)
-		
+
 		local ID = 0
 		local ui = {}
-		
+
 		uis.InputEnded:Connect(function(i,gp)
 			if i.UserInputType.Name == "MouseButton1" then
 				mousedown = false
 			end
 		end)
-		
+
 		do -- UI Effects
 			local GeneralInfo = TweenInfo.new(0.25, sine, out)
 			function ui.Tween(object, properties, tweeninfo, callback)
 				ts:Create(object, tweeninfo or GeneralInfo, properties):Play()
 			end
-			
+
 			local RIPPLE_DURATION = 0.65
 			function ui.Ripple(a, p)
 				a.AutoButtonColor = false
@@ -2056,7 +2052,7 @@ do -- uilib.uilib.UI
 				a.Activated:Connect(function()
 					local abp = a.AbsolutePosition
 					local abs = a.AbsoluteSize
-		
+
 					local new = ripple:Clone()
 					new.Size = UDim2new(0, 0, 0, 0)
 					new.Position = UDim2new(
@@ -2073,14 +2069,14 @@ do -- uilib.uilib.UI
 					new:Destroy()
 				end)
 			end
-			
+
 			local FOCUS_DURATION = 0.225
 			function ui.Focus(a, p)
 				a.Focused:Connect(function()
 					local new = focus:Clone()
 					new.Visible = true
 					new.Parent = p or a
-					
+
 					local padding = (p ~= nil and p.Parent:FindFirstChild("UIPadding")) or a.Parent:FindFirstChild("UIPadding")
 					padding = (padding ~= nil and padding.PaddingLeft.Offset + padding.PaddingRight.Offset) or 0
 					new:TweenSize(UDim2new(1, padding, 0, 1), "Out", "Quad", FOCUS_DURATION, true)
@@ -2092,7 +2088,7 @@ do -- uilib.uilib.UI
 					end)
 				end)
 			end
-			
+
 			function ui.Dim1(value, main)
 				if value then
 					ui.Tween(main.BackgroundDim, {BackgroundTransparency = 0.75})
@@ -2107,7 +2103,7 @@ do -- uilib.uilib.UI
 					ui.Tween(main.BackgroundDim2, {BackgroundTransparency = 1})
 				end
 			end
-			
+
 			local DRAG_SPEED = 0.075
 			local DRAG_INFO = TweenInfo.new(DRAG_SPEED)
 			function ui.SmoothDrag(a)
@@ -2116,13 +2112,13 @@ do -- uilib.uilib.UI
 				local start = nil
 				local pos = nil
 				local startpos = nil
-		
+
 				local function Update(i)
 					local delta = i.Position - start
 					local pos = UDim2new(startpos.X.Scale, startpos.X.Offset + delta.X, startpos.Y.Scale, startpos.Y.Offset + delta.Y)
 					ui.Tween(a, {Position = pos}, DRAG_INFO)
 				end
-		
+
 				a.InputBegan:Connect(function(i)
 					if i.UserInputType.Name == "MouseButton1" and uis:GetFocusedTextBox() == nil then
 						toggle = true
@@ -2147,13 +2143,13 @@ do -- uilib.uilib.UI
 				end)
 			end
 		end
-		
+
 		do -- Banner
 			local BANNER_TRANSPARENCY = 0.75
 			local BANNER_TWEENINFO = TweenInfonew(0.45, sine, out)
 			local BANNER_VISIBLE = false
 			local LAST_BANNER = nil
-			
+
 			local function show(a)
 				for _,v in next, a.Buttons:GetChildren() do
 					if v:IsA("TextButton") then
@@ -2186,20 +2182,20 @@ do -- uilib.uilib.UI
 					t = {Text = t}
 				end
 				ApplyDefaultProps("Banner", t)
-				
+
 				if LAST_BANNER and BANNER_VISIBLE then
 					hide(LAST_BANNER)
 				end
-				
+
 				local new = banner:Clone()
 				new.Name = "Banner"
 				new.Label.Text = t.Text
 				new.Parent = p or main
-		
+
 				ui.Dim2(true, p)
 				BANNER_VISIBLE = true
 				LAST_BANNER = new
-		
+
 				for _,v in next, t.Options do
 					local new2 = new.Buttons.Example:Clone()
 					new2.Name = v
@@ -2208,9 +2204,9 @@ do -- uilib.uilib.UI
 					new2.BackgroundTransparency = BANNER_TRANSPARENCY
 					new2.TextTransparency = BANNER_TRANSPARENCY
 					new2.Parent = new.Buttons
-					
+
 					taskwait()
-					
+
 					new2.Size = UDim2new(0, new2.TextBounds.X + 20, 0, 20)
 					new2.Activated:Connect(function()
 						t.Callback(v)
@@ -2219,14 +2215,14 @@ do -- uilib.uilib.UI
 						LAST_BANNER = nil
 						hide(new)
 					end)
-		
+
 					taskdelay(0.1, function()
 						ui.Tween(new2, {BackgroundTransparency = 0, TextTransparency = 0}, BANNER_TWEENINFO)
 					end)
-		
+
 					ui.Ripple(new2)
 				end
-		
+
 				new.Position = UDim2new(0.5, 0, 1, 0)
 				new.BackgroundTransparency = BANNER_TRANSPARENCY
 				new.Label.BackgroundTransparency = BANNER_TRANSPARENCY
@@ -2235,7 +2231,7 @@ do -- uilib.uilib.UI
 				local bound = new.Label.TextBounds.Y
 				new.Label.Size = UDim2new(1, 0, 1, 0)
 				new.Size = UDim2new(1, -20, 0, clamp(bound + 45, 100, inf))
-		
+
 				taskdelay(0.1, function()
 					new:TweenPosition(UDim2new(0.5, 0, 1, -10), "Out", "Sine", 0.35)
 					ui.Tween(new, {BackgroundTransparency = 0}, BANNER_TWEENINFO)
@@ -2244,7 +2240,7 @@ do -- uilib.uilib.UI
 				new.Visible = true
 			end
 		end
-		
+
 		do -- UI Core
 			function ui.UpdateCanvasSize(page)
 				task.spawn(function()
@@ -2260,12 +2256,12 @@ do -- uilib.uilib.UI
 				table.sort(t, function(a,b)
 					return a < b
 				end)
-			
+
 				local menubtn = p.Menu
 				local main = p:FindFirstAncestor("Main")
 				local menu = main.ObjectMenu
 				local list = menu.UIListLayout
-				
+
 				menubtn.Visible = true
 				menubtn.Activated:Connect(function()
 					if LAST_BUTTON ~= menubtn then
@@ -2303,7 +2299,7 @@ do -- uilib.uilib.UI
 						menu.Visible = false
 					end
 				end)
-				
+
 				taskdelay(0.5, function()
 					for _,v in next, o do
 						local pos = v.Position
@@ -2311,11 +2307,11 @@ do -- uilib.uilib.UI
 					end
 				end)
 			end
-			
+
 			function ui.Load(t)
 				UI_LOADED = false
 				ApplyDefaultProps("Load", t)
-				
+
 				local new = script.Parent:Clone()
 				if getgenv then
 					if syn then syn.protect_gui(new) end
@@ -2328,7 +2324,7 @@ do -- uilib.uilib.UI
 					new.Parent = game:GetService("Players").LocalPlayer.PlayerGui
 				end
 				new.Name = "MATERIAL_"..t.Title
-		
+
 				local topbar = new.Topbar
 				local main = topbar.Main
 				local pages = main.Pages
@@ -2347,54 +2343,54 @@ do -- uilib.uilib.UI
 				local dim1 = main.BackgroundDim
 				local dim2 = main.BackgroundDim2
 				local banner = main.Banner
-				
+
 				local Theme = {
 					MainFrame = main,
-		
+
 					Minimise = minimize,
 					MinimiseAccent = nil,
 					Maximise = nil,
 					MaximiseAccent = nil,
-		
+
 					NavBar = {{navigator, "BackgroundColor3"}},
 					NavBarAccent = nil,
 					NavBarInvert = nil,
-		
+
 					TitleBar = topbar,
 					TitleBarAccent = {{topbar.Title, "BackgroundColor3"}},
-		
+
 					Overlay = nil,
-		
+
 					Banner = main.Banner,
 					BannerAccent = {main.BackgroundDim2, main.Banner.Label},
-		
+
 					Content = nil,
-		
+
 					Button = ex.Button,
 					ButtonAccent = nil,
-		
+
 					ChipSet = Color3.fromRGB(219, 68, 103),
 					ChipSetAccent = Color3.fromRGB(255,255,255),
-		
+
 					DataTable = Color3.fromRGB(219, 68, 103),
 					DataTableAccent = Color3.fromRGB(255,255,255),
-		
+
 					Slider = Color3.fromRGB(255,255,255),
 					SliderAccent = Color3.fromRGB(219, 68, 103),
-		
+
 					Toggle = Color3.fromRGB(219, 68, 103),
 					ToggleAccent = Color3.fromRGB(255,255,255),
-		
+
 					Dropdown = Color3.fromRGB(255,255,255),
 					DropdownAccent = Color3.fromRGB(219, 68, 103),
-		
+
 					ColorPicker = Color3.fromRGB(255,255,255),
 					ColorPickerAccent = Color3.fromRGB(219, 68, 103),
-		
+
 					TextField = Color3.fromRGB(175,175,175),
 					TextFieldAccent = Color3.fromRGB(255,255,255)
 				}
-				
+
 				local function ColorOverride(t)
 					for _,info in next, t do
 						if info ~= nil then
@@ -2402,20 +2398,20 @@ do -- uilib.uilib.UI
 								local Object = v[1]
 								local Property = v[2]
 								local Value = v[3]
-		
+
 								Object[Property] = Value
 							end
 						end
 					end
 				end
-				
+
 				local UI_SIZE_X = clamp(t.SizeX, 275, inf)
 				local UI_SIZE_Y = t.SizeY
 				local FIRST_PAGE = true
 				local FIRST_PAGE_OBJ = nil
 				local MIN_BTN_COLOR = fromRGB(250, 170, 75)
 				local MAX_BTN_COLOR = fromRGB(150, 250, 170)
-				
+
 				local res = workspace.CurrentCamera.ViewportSize
 				topbar.Visible = true
 				topbar.Position = UDim2new(0, (res.X / 2) - (UI_SIZE_X / 2), 0, (res.Y / 2) - ((UI_SIZE_Y + 30) / 2))
@@ -2435,7 +2431,7 @@ do -- uilib.uilib.UI
 					end
 				end
 				ui.SmoothDrag(topbar)
-				
+
 				local style = t.Style
 				if style == 1 or style == 2 then
 					menubtn.Visible = false
@@ -2448,36 +2444,36 @@ do -- uilib.uilib.UI
 					tabs.Visible = false
 					pages.Size = UDim2new(1, 0, 1, 0)
 				end
-				
+
 				task.spawn(function() -- loading animation
 					local fadeinfo = TweenInfonew(0.75, sine, out)
 					local info = {"Out", "Sine", 1.25}
 					topbar:TweenSize(UDim2new(0, UI_SIZE_X, 0, 30), unpack(info))
 					main:TweenSize(UDim2new(0, UI_SIZE_X, 0, UI_SIZE_Y), unpack(info))
-					
+
 					taskwait(1.25)
 					ui.Tween(overlay, {BackgroundTransparency = 1}, TweenInfonew(0.5, sine, out))
 					ui.Tween(topbar.Title, {TextTransparency = 0}, fadeinfo)
 					ui.Tween(minimize, {BackgroundTransparency = 0}, fadeinfo)
-					
+
 					if style == 3 then
 						ui.Tween(menubtn, {ImageTransparency = 0}, fadeinfo)
 						topbar.Title:TweenPosition(UDim2new(0, 24, 0, 0), "Out", "Sine", 0.75)
 					end
-					
+
 					if style == 1 or style == 2 then
 						tabs.Visible = true
 						tabs.Position = UDim2new(0, 10, 0, 35)
 						tabs:TweenPosition(UDim2new(0, 10, 0, 10), "Out", "Sine", 0.75)
 					end
-					
+
 					pages.Visible = true
 					pages.Position = UDim2new(0, 0, 1, 25)
 					pages:TweenPosition(UDim2new(0, 0, 1, 0), "Out", "Sine", 0.75)
 					taskwait(0.8)
 					UI_LOADED = true
 				end)
-				
+
 				local Minimized = false
 				minimize.Activated:Connect(function()
 					Minimized = not Minimized
@@ -2496,7 +2492,7 @@ do -- uilib.uilib.UI
 						fillmain.Visible = true
 					end
 				end)
-		
+
 				local Navigating = false
 				menubtn.Activated:Connect(function()
 					Navigating = not Navigating
@@ -2507,11 +2503,11 @@ do -- uilib.uilib.UI
 					end
 					ui.Dim1(Navigating, main)
 				end)
-				
-				
-				
+
+
+
 				local UI = {}
-				
+
 				local PAGE_INDEX = 0
 				function UI.OpenPage(t)
 					for _,v in next, pages:GetChildren() do
@@ -2535,7 +2531,7 @@ do -- uilib.uilib.UI
 							title = t.." "..PAGE_INDEX..""
 						end
 					end
-					
+
 					local discriminator = ""
 					if pages:FindFirstChild("PAGE_"..title) then
 						discriminator = "_"
@@ -2543,14 +2539,14 @@ do -- uilib.uilib.UI
 							discriminator = discriminator..string.char(math.random(97, 122))
 						end
 					end
-					
+
 					local function open()
 						UI.OpenPage("PAGE_"..title..discriminator)
 						navigator:TweenPosition(UDim2new(0, -160, 0, 0), "Out", "Sine", 0.2, true)
 						Navigating = false
 						ui.Dim1(false, main)
 					end
-		
+
 					local newnav = pagebtns.Example:Clone()
 					newnav.Visible = true
 					newnav.Parent = pagebtns
@@ -2558,7 +2554,7 @@ do -- uilib.uilib.UI
 					newnav.Text = title
 					newnav.Activated:Connect(open)
 					pagebtns.CanvasSize = UDim2new(0, 0, 0, pagebtns.UIListLayout.AbsoluteContentSize.Y + 3)
-					
+
 					local img = t.ImageId or t.ImageID
 					if img ~= nil then
 						local type = typeof(img)
@@ -2574,7 +2570,7 @@ do -- uilib.uilib.UI
 							end
 						end
 						newnav.UIPadding.PaddingLeft = UDim.new(0, 38)
-						
+
 						local size = t.ImageSize
 						if size ~= nil then
 							local x = clamp(size.X, 0, 30)
@@ -2583,7 +2579,7 @@ do -- uilib.uilib.UI
 							newnav.Icon.Position = UDim2new(0, -34 + ((30 - x) / 2), 0, (30 - y) / 2)
 						end
 					end
-					
+
 					local newtab = pagetabs.Example:Clone()
 					newtab.Visible = true
 					newtab.Parent = pagetabs
@@ -2593,25 +2589,25 @@ do -- uilib.uilib.UI
 					newtab.Activated:Connect(open)
 					ui.Ripple(newtab)
 					pagetabs.CanvasSize = UDim2new(0, pagetabs.UIListLayout.AbsoluteContentSize.X, 0, 0)
-		
+
 					local newpage = ex:Clone()
 					newpage.Parent = pages
 					newpage.Visible = FIRST_PAGE
 					newpage.Name = "PAGE_"..title..discriminator
-					
+
 					if FIRST_PAGE then
 						FIRST_PAGE = false
 						FIRST_PAGE_OBJ = newpage
 						newnav.Line.BackgroundColor3 = fromRGB(120, 120, 120)
 					end
-					
+
 					for _,v in next, newpage:GetChildren() do
 						if not v:IsA("UIListLayout") then
 							v.Visible = false
 						end
 					end
-					
-		
+
+
 					local function newfunc(name)
 						return function(t)
 							return ui[name](t, newpage, ex)
@@ -2636,7 +2632,7 @@ do -- uilib.uilib.UI
 							newpage:Destroy()
 						end,
 					}
-					
+
 					return funcs
 				end
 				function UI.Toggle(vis)
@@ -2646,38 +2642,38 @@ do -- uilib.uilib.UI
 						topbar.Visible = not topbar.Visible
 					end
 				end
-		
+
 				UI.New = UI.new
 				UI.Banner = function(t)
 					return ui.Banner(t, main)
 				end
-				
+
 				return UI
 			end
 		end
-		
+
 		do -- Button
 			function ui.Button(t, p, ex)
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("Button", t)
-		
+
 				local new = ex.Button:Clone()
 				new.Name = "Button#"..id
 				new.Parent = p or ex
 				new.Visible = true
 				new.Text = t.Text
 				new.Activated:Connect(t.Callback)
-				
+
 				ui.Ripple(new)
 				ui.UpdateCanvasSize(p or ex)
-				
+
 				if t.Menu ~= nil then
 					ui.InitMenu(t.Menu, new, {})
 				end
-				
+
 				local a = {Destroyed = false}
-				
+
 				function a:SetText(text)
 					if a.Destroyed then return end
 					new.Text = text
@@ -2695,19 +2691,19 @@ do -- uilib.uilib.UI
 					new:Destroy()
 					a.Destroyed = true
 				end
-				
+
 				return a
 			end
 		end
-		
+
 		do -- Toggle
 			function ui.Toggle(t, p, ex)
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("Toggle", t)
-		
+
 				local toggled = t.Enabled
-		
+
 				local new = ex.Toggle:Clone()
 				local toggle = new.Toggle
 				new.Name = "Toggle#"..id
@@ -2724,17 +2720,17 @@ do -- uilib.uilib.UI
 						toggle.Indicator:TweenPosition(ToggleOff, "Out", "Sine", 0.15, true)
 					end
 				end)
-				
+
 				ui.Ripple(new)
 				ui.UpdateCanvasSize(p or ex)
 				t.Callback(toggled)
-				
+
 				if t.Menu ~= nil then
 					ui.InitMenu(t.Menu, new, {new.Toggle})
 				end
-				
+
 				local a = {Destroyed = false}
-				
+
 				function a:SetText(text)
 					if a.Destroyed then return end
 					new.Text = text
@@ -2762,22 +2758,22 @@ do -- uilib.uilib.UI
 					new:Destroy()
 					a.Destroyed = true
 				end
-		
+
 				return a
 			end
 		end
-		
+
 		do -- Dropdown
 			function ui.Dropdown(t, p, ex)
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("Dropdown", t)
-				
+
 				local toggled = false
 				local options = t.Options
 				local amount = #options
 				local selected = t.Def
-				
+
 				local new = ex.Dropdown:Clone()
 				local dropdown = new.Dropdown
 				new.Name = "Dropdown#"..id
@@ -2785,7 +2781,7 @@ do -- uilib.uilib.UI
 				new.Visible = true
 				new.Label.Text = t.Text
 				new.Option.Text = t.Def
-				
+
 				local function refresh()
 					for _,v in next, dropdown:GetChildren() do
 						if v:IsA("TextButton") and v.Name ~= "Option" then
@@ -2805,7 +2801,7 @@ do -- uilib.uilib.UI
 								ui.UpdateCanvasSize(p or ex)
 								t.Callback(v)
 							end)
-		
+
 							ui.Ripple(new2)
 						end
 					end
@@ -2815,7 +2811,7 @@ do -- uilib.uilib.UI
 					end
 				end
 				refresh()
-				
+
 				local list = dropdown.UIListLayout
 				new.Button.Activated:Connect(function()
 					toggled = not toggled
@@ -2830,17 +2826,17 @@ do -- uilib.uilib.UI
 					end
 					ui.UpdateCanvasSize(new.Parent)
 				end)
-				
+
 				ui.Ripple(new.Button, new.RippleHolder)
 				ui.UpdateCanvasSize(p or ex)
 				--t.Callback(selected)]]
-				
+
 				if t.Menu ~= nil then
 					ui.InitMenu(t.Menu, new, {new.Option, new.Indicator})
 				end
-				
+
 				local a = {Destroyed = false}
-		
+
 				function a:SetText(text)
 					if a.Destroyed then return end
 					new.Label.Text = text
@@ -2868,19 +2864,19 @@ do -- uilib.uilib.UI
 					new:Destroy()
 					a.Destroyed = false
 				end
-		
+
 				return a
 			end
 		end
-		
+
 		do -- Text Box / Text Field
 			function ui.TextBox(t, p, ex)
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("TextBox", t)
-				
+
 				local type = t.Type:lower()
-				
+
 				local new = ex.TextBox:Clone()
 				local hidden = new.Hidden
 				new.Name = "TextBox#"..id
@@ -2905,16 +2901,16 @@ do -- uilib.uilib.UI
 				hidden.FocusLost:Connect(function()
 					t.Callback(hidden.Text)
 				end)
-				
+
 				ui.Focus(hidden, new)
 				ui.UpdateCanvasSize(p or ex)
-				
+
 				if t.Menu ~= nil then
 					ui.InitMenu(t.Menu, new, {})
 				end
-				
+
 				local a = {Destroyed = false}
-		
+
 				function a:SetText(text)
 					if a.Destroyed then return end
 					new.PlaceholderText = text
@@ -2932,17 +2928,17 @@ do -- uilib.uilib.UI
 					new:Destroy()
 					a.Destroyed = true
 				end
-		
+
 				return a
 			end
 		end
-		
+
 		do -- Label
 			function ui.Label(t, p, ex)
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("Label", t)
-				
+
 				local new = ex.Label:Clone()
 				new.Name = "Label#"..id
 				new.Parent = p or ex
@@ -2955,11 +2951,11 @@ do -- uilib.uilib.UI
 						args[i] = tostring(v)
 						print(typeof(args[i]))
 					end
-					
+
 					local suc, str = pcall(function()
 						return table.concat(args, " ")
 					end)
-					
+
 					if suc and str then
 						new.Text = str
 					else
@@ -2967,15 +2963,15 @@ do -- uilib.uilib.UI
 						error("Failed to convert value to string on Label #"..id)
 					end
 				end)
-				
+
 				ui.UpdateCanvasSize(p or ex)
-				
+
 				if t.Menu ~= nil then
 					ui.InitMenu(t.Menu, new, {})
 				end
-				
+
 				local a = {Destroyed = false}
-		
+
 				function a:SetText(text)
 					if a.Destroyed then return end
 					new.Text = text
@@ -2993,15 +2989,15 @@ do -- uilib.uilib.UI
 					new:Destroy()
 					a.Destroyed = true
 				end
-		
+
 				return a
 			end
 		end
-		
+
 		do -- Slider
 			local SLIDER_TWEEN_TIME = 0.05
 			local SLIDER_SET_TWEEN_TIME = 0.4
-			
+
 			function ui.SetSliderValue(s, value, t)
 				task.spawn(function()
 					repeat
@@ -3012,7 +3008,7 @@ do -- uilib.uilib.UI
 					local indicator = bar.Indicator
 					local max = t.Max or 100
 					local pre, suf = t.Prefix or "", t.Suffix or ""
-		
+
 					local pos = UDim2new(0, clamp(bar.AbsoluteSize.X / (max / value), 0, bar.AbsoluteSize.X), 0.5, 0)
 					if t.Tween then
 						indicator:TweenPosition(pos, "Out", "Sine", SLIDER_SET_TWEEN_TIME, true)
@@ -3035,16 +3031,16 @@ do -- uilib.uilib.UI
 				local max = t.Max or 100
 				local lastvalue = nil
 				local lastpercent = nil
-				
+
 				local pre, suf = t.Prefix or "", t.Suffix or ""
-				
+
 				local conn;conn = slider.MouseButton1Down:Connect(function()
 					mousedown = true
 					while true do
 						if not mousedown then break end
-						
+
 						local pos = clamp(mouse.X - bar.AbsolutePosition.X, 0, bar.AbsoluteSize.X)
-						
+
 						indicator.Position = UDim2new(
 							0,
 							clamp(mouse.X - bar.AbsolutePosition.X, 0, bar.AbsoluteSize.X),
@@ -3056,7 +3052,7 @@ do -- uilib.uilib.UI
 						local percent = (value / max)
 						indicator.AnchorPoint = Vector2new(percent, 0.5)
 						s.Value.Text = pre..value..suf
-		
+
 						lastvalue = value
 						lastpercent = percent
 						taskwait()
@@ -3068,12 +3064,12 @@ do -- uilib.uilib.UI
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("Slider", t)
-				
+
 				local toggled = t.Enabled
 				local def, min, max = t.Def, t.Min, t.Max
 				local lastvalue = t.Def
 				local pre, suf = t.Prefix, t.Suffix
-				
+
 				local new = ex.Slider:Clone()
 				local toggle = new.Toggle
 				local indicator = toggle.Indicator
@@ -3085,14 +3081,14 @@ do -- uilib.uilib.UI
 				new.Visible = true
 				new.Label.Text = t.Text
 				new.Value.Text = t.Def
-				
+
 				ui.SetSliderValue(new, def, t)
 				ui.UpdateCanvasSize(p or ex)
-				
+
 				if t.Menu ~= nil then
 					ui.InitMenu(t.Menu, new, (t.Toggle and t.Enabled and {new.Value, new.Toggle}) or {new.Value})
 				end
-				
+
 				-- toggle stuff
 				if not t.Toggle then
 					toggle.Visible = false
@@ -3111,33 +3107,33 @@ do -- uilib.uilib.UI
 						end
 					end)
 				end
-				
+
 				t.Tween = true
 				val.FocusLost:Connect(function()
 					local a = val.Text:gsub("%a%p%s%c%x%z", "")
 					if a == "" then return end
-					
+
 					local value = a:gsub("%D", "")
 					value = tonumber(value)
-					
+
 					if a:sub(#a, #a) == "%" then
 						value = max * (value / 100)
 					end
-					
+
 					value = clamp(value, min, max)
 					t.Callback(value)
 					ui.SetSliderValue(new, value, t)
 				end)
-				
+
 				-- slider stuff
 				ui.InitSlider(new, t, function(self, value, percent)
 					lastvalue = (t.ReturnWithAffixes and pre..value..suf) or (t.ReturnAsPercent and percent * 100) or value 
 					val.Text = value
 					t.Callback(lastvalue)
 				end)
-				
+
 				local a = {Destroyed = false}
-		
+
 				function a:SetText(text)
 					if a.Destroyed then return end
 					new.Label.Text = text
@@ -3171,11 +3167,11 @@ do -- uilib.uilib.UI
 					new:Destroy()
 					a.Destroyed = true
 				end
-		
+
 				return a
 			end
 		end
-		
+
 		do -- Color Picker
 			function ui.SetPickerPreview(s, color, tween)
 				s.Color.Text = format("%s, %s, %s", floor(color.R * 255), floor(color.G * 255), floor(color.B * 255))
@@ -3193,15 +3189,15 @@ do -- uilib.uilib.UI
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("ColorPicker", t)
-				
+
 				if t.Default ~= nil then
 					t.Def = t.Default
 				end
-		
+
 				local toggled = false
 				local color = t.Def
 				local hue, sat, val = color:ToHSV()
-		
+
 				local new = ex.ColorPicker:Clone()
 				local picker = new.Picker
 				new.Name = "ColorPicker#"..id
@@ -3210,11 +3206,11 @@ do -- uilib.uilib.UI
 				new.Label.Text = t.Text
 				new.Color.Text = format("%s, %s, %s", floor(color.R * 255), floor(color.G * 255), floor(color.B * 255))
 				new.Preview.BackgroundColor3 = color
-				
+
 				ui.SetSliderValue(picker.Hue, floor(hue * 360), {Max = 360})
 				ui.SetSliderValue(picker.Saturation, floor(sat * 100))
 				ui.SetSliderValue(picker.Value, floor(val * 100))
-				
+
 				-- dropdown
 				new.Button.Activated:Connect(function()
 					toggled = not toggled
@@ -3227,7 +3223,7 @@ do -- uilib.uilib.UI
 					end
 					ui.UpdateCanvasSize(new.Parent)
 				end)
-				
+
 				-- HSV bars
 				ui.InitSlider(picker.Hue, {Max = 360}, function(_, value, percent)
 					hue = percent
@@ -3244,7 +3240,7 @@ do -- uilib.uilib.UI
 					ui.SetPickerPreview(new, fromHSV(hue, sat, val), false)
 					t.Callback(fromHSV(hue, sat, val))
 				end)
-				
+
 				-- custom section
 				local hex = picker.Custom.HEX
 				local rgb = picker.Custom.RGB
@@ -3272,18 +3268,18 @@ do -- uilib.uilib.UI
 				rainbow.Activated:Connect(function()
 					rgbenabled = not rgbenabled
 				end)
-				
+
 				ui.Ripple(new.Button, new.RippleHolder)
 				ui.Ripple(picker.Custom.Rainbow)
 				ui.Focus(picker.Custom.HEX)
 				ui.Focus(picker.Custom.RGB)
 				ui.UpdateCanvasSize(p or ex)
 				t.Callback(color)
-				
+
 				if t.Menu ~= nil then
 					ui.InitMenu(t.Menu, new, {new.Color, new.Preview})
 				end
-				
+
 				task.spawn(function()
 					while true do
 						if rgbenabled then
@@ -3294,9 +3290,9 @@ do -- uilib.uilib.UI
 						taskwait()
 					end
 				end)
-				
+
 				local a = {Destroyed = false}
-		
+
 				function a:SetText(text)
 					if a.Destroyed then return end
 					new.Label.Text = text
@@ -3325,13 +3321,13 @@ do -- uilib.uilib.UI
 					new:Destroy()
 					a.Destroyed = true
 				end
-		
+
 				return a
 			end
 		end
-		
+
 		do -- Keybind
-			local bl = {
+			local ignore = {
 				"None",
 				"MouseMovement",
 				"Focus"
@@ -3340,26 +3336,27 @@ do -- uilib.uilib.UI
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("Keybind", t)
-				
+
 				local listening = false
 				local keybind = t.Def
-		
+
 				local new = ex.Keybind:Clone()
 				new.Name = "Keybind#"..id
 				new.Parent = p or ex
 				new.Visible = true
 				new.Text = t.Text
 				new.Bind.Text = keybind.Name
-				
+
 				new.Activated:Connect(function()
 					if not listening then
 						listening = true
 						new.Bind.Text = "..."
-						
+
 						local conn;conn = uis.InputBegan:Connect(function(i)
 							local keyboard = i.UserInputType.Name == "Keyboard"
-							if ((not t.AllowMouse and keyboard and i.KeyCode.Name ~= "Unknown") or t.AllowMouse) and not table.find(bl, i.UserInputType.Name) then
-								local bind = (keyboard and i.KeyCode) or i.UserInputType
+							local mouse = i.UserInputType.Name:find("Mouse")
+							local bind = (keyboard and i.KeyCode) or (mouse and i.UserInputType)
+							if (t.AllowKeyboard and keyboard and i.KeyCode.Name ~= "Unknown") or (t.AllowMouse and mouse and not table.find(ignore, i.UserInputType.Name)) then
 								t.Callback(bind)
 								new.Bind.Text = bind.Name
 								keybind = bind
@@ -3369,17 +3366,17 @@ do -- uilib.uilib.UI
 						end)
 					end
 				end)
-				
+
 				ui.Ripple(new)
 				ui.UpdateCanvasSize(p or ex)
 				t.Callback(t.Def)
-				
+
 				if t.Menu ~= nil then
 					ui.InitMenu(t.Menu, new, {new.Bind})
 				end
-				
+
 				local a = {Destroyed = false}
-		
+
 				function a:SetText(text)
 					if a.Destroyed then return end
 					new.Text = text
@@ -3407,35 +3404,35 @@ do -- uilib.uilib.UI
 					new:Destroy()
 					a.Destroyed = true
 				end
-		
+
 				return a
 			end
 		end
-		
+
 		do -- Chip Set / Data Table
 			function ui.ChipSet(t, p, ex)
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("ChipSet", t)
-		
+
 				local toggled = false
 				local amount = 0
 				local data = t.Options
-				
+
 				for _,_ in next, t.Options do
 					amount += 1
 				end
 				table.sort(t.Options, function(a,b)
 					return a < b
 				end)
-		
+
 				local new = ex.ChipSet:Clone()
 				local dropdown = new.Dropdown
 				new.Name = "ChipSet#"..id
 				new.Parent = p or ex
 				new.Visible = true
 				new.Label.Text = t.Text
-				
+
 				local function refresh()
 					for _,v in next, dropdown:GetChildren() do
 						if v:IsA("Frame") and v.Name ~= "Option" then
@@ -3467,10 +3464,10 @@ do -- uilib.uilib.UI
 							end
 							new2.Enabled.Activated:Connect(activated)
 							new2.Button.Activated:Connect(activated)
-		
+
 							ui.Ripple(new2.Enabled, new2.Button)
 							ui.Ripple(new2.Button)
-							
+
 							if menu then
 								ui.InitMenu(v.Menu, new2, {})
 							end
@@ -3482,7 +3479,7 @@ do -- uilib.uilib.UI
 					end
 				end
 				refresh()
-		
+
 				local list = dropdown.UIListLayout
 				new.Button.Activated:Connect(function()
 					toggled = not toggled
@@ -3497,17 +3494,17 @@ do -- uilib.uilib.UI
 					end
 					ui.UpdateCanvasSize(new.Parent)
 				end)
-				
+
 				ui.UpdateCanvasSize(p or ex)
 				ui.Ripple(new.Button, new.RippleHolder)
 				t.Callback(data)
-				
+
 				if t.Menu ~= nil then
 					ui.InitMenu(t.Menu, new, {new.Indicator})
 				end
-				
+
 				local a = {Destroyed = false}
-		
+
 				function a:SetText(text)
 					if a.Destroyed then return end
 					new.Label.Text = text
@@ -3542,28 +3539,28 @@ do -- uilib.uilib.UI
 					new:Destroy()
 					a.Destroyed = true
 				end
-		
+
 				return a
 			end
 		end
-		
+
 		do -- Table
 			function ui.Table(t, p, ex)
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("Table", t)
-		
+
 				local toggled = false
 				local data = t.Data
 				local amount = 0
-				
+
 				for _,_ in next, data do
 					amount += 1
 				end
 				table.sort(data, function(a,b)
 					return a < b
 				end)
-		
+
 				local new = ex.Table:Clone()
 				local dropdown = new.Dropdown
 				new.Name = "Table#"..id
@@ -3573,7 +3570,7 @@ do -- uilib.uilib.UI
 				dropdown.Info.Visible = t.ShowInfo
 				dropdown.Info.Key.Text = t.Key
 				dropdown.Info.Value.Text = t.Value
-		
+
 				local function refresh()
 					for _,v in next, dropdown:GetChildren() do
 						if v:IsA("Frame") and v.Name ~= "Info" then
@@ -3596,7 +3593,7 @@ do -- uilib.uilib.UI
 					end
 				end
 				refresh()
-		
+
 				local list = dropdown.UIListLayout
 				new.Button.Activated:Connect(function()
 					toggled = not toggled
@@ -3611,16 +3608,16 @@ do -- uilib.uilib.UI
 					end
 					ui.UpdateCanvasSize(new.Parent)
 				end)
-		
+
 				ui.Ripple(new.Button, new.RippleHolder)
 				ui.UpdateCanvasSize(p or ex)
-		
+
 				if t.Menu ~= nil then
 					ui.InitMenu(t.Menu, new, {new.Option, new.Indicator})
 				end
-		
+
 				local a = {Destroyed = false}
-		
+
 				function a:SetText(text)
 					if a.Destroyed then return end
 					new.Label.Text = text
@@ -3654,15 +3651,15 @@ do -- uilib.uilib.UI
 					new:Destroy()
 					a.Destroyed = true
 				end
-		
+
 				return a
 			end
 		end
-		
+
 		return ui
 	end
 	fake_module_scripts[script] = module_script
 	library = module_script()
 end
 
-return library
+getgenv().Material = library
