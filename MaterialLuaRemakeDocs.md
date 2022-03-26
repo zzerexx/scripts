@@ -3,7 +3,6 @@ A UI library inspired by [Material Lua](https://github.com/Kinlei/MaterialLua).
 This library has pretty much the exact same usage as Material Lua, but with a bit more utilities to work with.  
 
 # This ui library is not completely finished yet, however it is usable.  
-### the documentation is also not finished clearly  
 
 ---
 
