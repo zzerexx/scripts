@@ -8,20 +8,23 @@ This library has pretty much the exact same usage as Material Lua, but with a bi
 
 # Table of Contents  
 - [Loader](#loader)
+- [Replacer](#replacer)
 - [Material.Load](#materialload)
-- [UI.new](#uinew)
-- [UI.Banner](#uibanner)
+  - [UI.new](#uinew)
+  - [UI.Banner](#uibanner)
+  - [UI.Toggle](#uitoggle)
+  - [UI.OpenPage](#uiopenpage)
 - [Page Elements](#page-elements)
-  - [Button](#button)
-  - [Toggle](#toggle)
-  - [Dropdown](#dropdown)
-  - [Text Box / Text Field](#text-box--text-field)
-  - [Label](#label)
-  - [Slider](#slider)
-  - [Color Picker](#color-picker)
-  - [Keybind](#keybind)
-  - [Chip Set / Data Table](#chip-set--data-table)
-  - [Table](#table)
+  - [Page.Button](#pagebutton)
+  - [Page.Toggle](#pagetoggle)
+  - [Page.Dropdown](#pagedropdown)
+  - [Page.TextBox / TextField](#pagetextbox)
+  - [Page.Label](#pagelabel)
+  - [Page.Slider](#pageslider)
+  - [Page.Color Picker](#pagecolorpicker)
+  - [Page.Keybind](#pagekeybind)
+  - [Page.Chip Set / Data Table](#pagechipset)
+  - [Page.Table](#pagetable)
 
 ## Loader  
 ```lua
@@ -31,12 +34,25 @@ You can replace the Material Lua loadstring with this loadstring to use Remake w
 
 ---
 
+## Replacer  
+```lua
+local old;old = hookfunction(game.HttpGet, function(self, url)
+    if url == "https://raw.githubusercontent.com/Kinlei/MaterialLua/master/Module.lua" then
+        return old(self, "https://raw.githubusercontent.com/zzerexx/scripts/main/MaterialLuaRemake.lua")
+    end
+    return old(self, url)
+end)
+```
+If you would like to use Remake instead of Material Lua on your favorite scripts, then execute this before your script!  
+
+---
+
 ## Material.Load  
 ```js
 <UI> Material.Load(<table> Options)
 ```
 Creates a new `UI` with `Options`.  
-Note: Remake does not support Themes or ThemeOverrides yet.
+Note: Remake does not support Themes or ColorOverrides yet.
 
 ### Example  
 ```lua
@@ -121,9 +137,45 @@ local UI = UI.Banner({ -- You can use a table for more utility
 
 ---
 
+## UI.Toggle  
+```js
+<void> UI.Toggle(<bool?> Visible)
+```
+Toggles UI visibility. If no argument is provided, it will set it to the opposite as the current visibility.  
+
+### Example  
+```lua
+local keybind = Enum.KeyCode.RightShift
+game:GetService("UserInputService").InputBegan:Connect(function(i, gp)
+    if not gp and i.KeyCode == keybind then
+        UI.Toggle()
+    end
+end)
+```
+
+---
+
+## UI.OpenPage  
+```js
+<void> UI.Toggle(<bool?> Visible)
+```
+Toggles UI visibility. If no argument is provided, it will set it to the opposite as the current visibility.  
+
+### Example  
+```lua
+local keybind = Enum.KeyCode.RightShift
+game:GetService("UserInputService").InputBegan:Connect(function(i, gp)
+    if not gp and i.KeyCode == keybind then
+        UI.Toggle()
+    end
+end)
+```
+
+---
+
 # Page Elements  
 
-## Button  
+## Page.Button  
 ```js
 <Button> Page.Button(<table> Options)
 ```
@@ -144,10 +196,18 @@ local Button = Page.Button({
 |:---|:---|:------|:----------|
 |Text|String|Button|The text shown on the Button|
 |Callback|Function|nil|The Button's callback|
+  
+### Methods  
+|Method|Description|
+|:-----|:----------|
+|void SetText(string Text)|Sets the Button's text|
+|string GetText()|Returns the Button's text|
+|number GetId()|Returns the Button's Id|
+|void Destroy()|Destroys the Button|
 
 ---
 
-## Toggle  
+## Page.Toggle  
 ```js
 <Toggle> Page.Toggle(<table> Options)
 ```
@@ -170,10 +230,20 @@ local Toggle = Page.Toggle({
 |Text|String|Toggle|The text shown on the Toggle|
 |Callback|Function|nil|The Toggle's callback|
 |Enabled|Boolean|false|Determines if the Toggle is enabled by default or not|
+  
+### Methods  
+|Method|Description|
+|:-----|:----------|
+|void SetText(string Text)|Sets the Toggle's text|
+|string GetText()|Returns the Toggle's text|
+|number GetId()|Returns the Toggle's Id|
+|void SetState(bool State)|Sets the Toggle's state|
+|bool GetState()|Returns the Toggle's state|
+|void Destroy()|Destroys the Toggle|
 
 ---
 
-## Dropdown  
+## Page.Dropdown  
 ```js
 <Dropdown> Page.Dropdown(<table> Options)
 ```
@@ -198,15 +268,25 @@ local Dropdown = Page.Dropdown({
 |Callback|Function|nil|The Dropdown's callback|
 |Options|Table|{"Option"}|The Dropdown's available options|
 |Def|String|Option|The Dropdown's default option|
+  
+### Methods  
+|Method|Description|
+|:-----|:----------|
+|void SetText(string Text)|Sets the Dropdown's text|
+|string GetText()|Returns the Dropdown's text|
+|number GetId()|Returns the Dropdown's Id|
+|void SetOptions(table Options)|Sets the Dropdown's options|
+|table GetOptions()|Returns the Dropdown's options|
+|void Destroy()|Destroys the Dropdown|
 
 ---
 
-## Text Box / Text Field  
+## Page.TextBox  
 ```js
 <TextBox> Page.TextBox(<table> Options)
-<TextBox> Page.TextField(<table> Options)
 ```
 Creates a new `TextBox` with `Options`.  
+Aliases: `Page.TextField`  
 
 ### Example  
 ```lua
@@ -223,7 +303,7 @@ local TextBox = Page.TextBox({
 ### Options  
 |Name|Type|Default|Description|
 |:---|:---|:------|:----------|
-|Text|String|Text Box|The text shown on the Toggle|
+|Text|String|Text Box|The text shown on the Text Box|
 |Callback|Function|nil|The Text Box's callback|
 |Type|String|Default|The Text Box's type.|
 |ClearOnFocus|Boolean|false|Determines if the Text Box clears on focus|
@@ -234,9 +314,17 @@ local TextBox = Page.TextBox({
 |Default|The Text Box's contents will be visible|
 |Password|The Text Box's contents will be hidden|
 
+### Methods  
+|Method|Description|
+|:-----|:----------|
+|void SetText(string Text)|Sets the Text Box's text|
+|string GetText()|Returns the Text Box's text|
+|number GetId()|Returns the Text Box's Id|
+|void Destroy()|Destroys the Text Box|
+
 ---
 
-## Label  
+## Page.Label  
 ```js
 <Label> Page.Label(<table> Options)
 ```
@@ -261,10 +349,18 @@ end)
 |:---|:---|:------|:----------|
 |Text|String|Label|The text shown on the Label|
 |Label|BindableEvent|nil|The Label's text can be updated by firing this BindableEvent|
+  
+### Methods  
+|Method|Description|
+|:-----|:----------|
+|void SetText(string Text)|Sets the Label's text|
+|string GetText()|Returns the Label's text|
+|number GetId()|Returns the Label's Id|
+|void Destroy()|Destroys the Label|
 
 ---
 
-## Slider  
+## Page.Slider  
 ```js
 <Slider> Page.Slider(<table> Options)
 ```
@@ -299,10 +395,22 @@ local Slider = Page.Slider({
 |Toggle|Boolean|false|If enabled, a Toggle will be shown on the Slider|
 |Enabled|Boolean|false|Determines if the Toggle is enabled by default or not.<br />Toggle must be enabled for this to work|
 |ToggleCallback|Function|nil|The Toggle's callback|
+  
+### Methods  
+|Method|Description|
+|:-----|:----------|
+|void SetText(string Text)|Sets the Slider's text|
+|string GetText()|Returns the Slider's text|
+|number GetId()|Returns the Slider's Id|
+|void SetMin(number Min)|Sets the Slider's minimum value|
+|void SetMax(number Max)|Sets the Slider's maximum value|
+|number GetMin()|Returns the Slider's minimum value|
+|number GetMax()|Returns the Slider's maximum value|
+|void Destroy()|Destroys the Slider|
 
 ---
 
-## Color Picker  
+## Page.ColorPicker  
 ```js
 <ColorPicker> Page.ColorPicker(<table> Options)
 ```
@@ -329,10 +437,20 @@ local ColorPicker = Page.ColorPicker({
 |Def|Color3|1, 1, 1|The Color Picker's default color|
 |Default|Color3|1, 1, 1|Same as Def|
 |Rainbow|Boolean|false|Determines if Rainbow mode is enabled by default or not|
+  
+### Methods  
+|Method|Description|
+|:-----|:----------|
+|void SetText(string Text)|Sets the Color Picker's text|
+|string GetText()|Returns the Color Picker's text|
+|number GetId()|Returns the Color Picker's Id|
+|void SetColor(Color3 Color)|Sets the Color Picker's color|
+|Color3 GetColor()|Returns the Color Picker's color|
+|void Destroy()|Destroys the Color Picker|
 
 ---
 
-## Keybind  
+## Page.Keybind  
 ```js
 <Toggle> Page.Keybind(<table> Options)
 ```
@@ -345,7 +463,9 @@ local Keybind = Page.Keybind({
     Callback = function(value)
         print("Keybind:", value.Name)
     end,
-    Def = Enum.KeyCode.RightShift
+    Def = Enum.KeyCode.RightShift,
+    AllowKeyboard = true,
+    AllowMouse = true
 })
 ```
 
@@ -355,16 +475,27 @@ local Keybind = Page.Keybind({
 |Text|String|Keybind|The text shown on the Keybind|
 |Callback|Function|nil|The Keybind's callback|
 |Def|EnumItem|Unknown|The Keybind's default value|
+|AllowKeyboard|Boolean|true|Determines if Keyboard inputs can be used|
 |AllowMouse|Boolean|false|Determines if Mouse inputs can be used|
+
+### Methods  
+|Method|Description|
+|:-----|:----------|
+|void SetText(string Text)|Sets the Keybind's text|
+|string GetText()|Returns the Keybind's text|
+|number GetId()|Returns the Keybind's Id|
+|void SetBind(EnumItem Bind)|Sets the Keybind's bind|
+|EnumItem GetBind()|Returns the Keybind's bind|
+|void Destroy()|Destroys the Keybind|
 
 ---
 
-## Chip Set / Data Table  
+## Page.ChipSet  
 ```js
 <ChipSet> Page.ChipSet(<table> Options)
-<ChipSet> Page.DataTable(<table> Options)
 ```
 Creates a new `ChipSet` with `Options`.  
+Aliases: `Page.DataTable`  
 
 ### Example  
 ```lua
@@ -387,9 +518,19 @@ local ChipSet = Page.ChipSet({
 |Callback|Function|nil|The Chip Set's callback|
 |Options|Table|Option 1 = true,<br />Option 2 = false|The Chip Set's available options|
 
+### Methods  
+|Method|Description|
+|:-----|:----------|
+|void SetText(string Text)|Sets the Chip Set's text|
+|string GetText()|Returns the Chip Set's text|
+|number GetId()|Returns the Chip Set's Id|
+|void SetOptions(table Options)|Sets the Chip Set's options|
+|table GetOptions()|Returns the Chip Set's options|
+|void Destroy()|Destroys the Chip Set|
+
 ---
 
-## Table  
+## Page.Table  
 ```js
 <Table> Page.Table(<table> Options)
 ```
@@ -423,3 +564,13 @@ local Table = Page.Table({
 |Value|String|Value|The Value name|
 |ShowInfo|Boolean|true|Determines if Key and Value are shown|
 |Data|Table|{Key = "Value"}|The data shown in the Table|
+
+### Methods  
+|Method|Description|
+|:-----|:----------|
+|void SetText(string Text)|Sets the Table's text|
+|string GetText()|Returns the Table's text|
+|number GetId()|Returns the Table's Id|
+|void SetData(table Bind)|Sets the Table's data|
+|table GetData()|Returns the Table's data|
+|void Destroy()|Destroys the Table|
