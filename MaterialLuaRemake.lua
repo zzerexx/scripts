@@ -3662,4 +3662,4 @@ do -- uilib.uilib.UI
 	library = module_script()
 end
 
-getgenv().Material = library
+return library
