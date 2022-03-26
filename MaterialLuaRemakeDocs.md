@@ -226,7 +226,7 @@ local TextBox = Page.TextBox({
 |Text|String|Text Box|The text shown on the Toggle|
 |Callback|Function|nil|The Text Box's callback|
 |Type|String|Default|The Text Box's type.|
-|ClearOnFocus|Boolean|Determines if the Text Box clears on focus|
+|ClearOnFocus|Boolean|false|Determines if the Text Box clears on focus|
 
 ### Text Box Types
 |Types|Description|
