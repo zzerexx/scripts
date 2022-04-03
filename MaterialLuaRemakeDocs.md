@@ -1,6 +1,8 @@
 # Material Lua Remake  
 A UI library inspired by [Material Lua](https://github.com/Kinlei/MaterialLua).  
-This library has pretty much the exact same usage as Material Lua, but with a bit more utilities to work with.  
+This library has pretty much the exact same usage as Material Lua, but with a different look and a bit more utilities to work with.  
+
+*Last Updated: April 2, 2022*  
 
 # This ui library is not completely finished yet, however it is usable.  
 
@@ -12,6 +14,7 @@ This library has pretty much the exact same usage as Material Lua, but with a bi
 - [Material.Load](#materialload)
   - [UI.new](#uinew)
   - [UI.Banner](#uibanner)
+  - [UI.Notify (INCOMPLETE)](#uinotify)
   - [UI.Toggle](#uitoggle)
   - [UI.OpenPage](#uiopenpage)
 - [Page Elements](#page-elements)
@@ -68,9 +71,21 @@ local UI = Material.Load({
 |Name|Type|Default|Description|
 |:---|:---|:------|:----------|
 |Title|String|Material Lua Remake|The title of the UI|
+|SubTitle|String|nil|The sub title shown next to/below the title|
+|Icon|String, Number|nil|The icon shown on the left of the title.<br />This will only be visible while ShowInNavigator is enabled<br />Recommended Image Size: 40x40|
+|ShowInNavigator|Boolean|false|If enabled, the title, subtitle, and icon will be visible in the navigator|
 |Style|Number|1|The UI style|
 |SizeX|Number|400|The width of the UI|
-|SizeY|Number|490|The height of the UI|
+|SizeY|Number|505|The height of the UI|
+|NavigatorSize|Number|200|The size of the Navigator|
+
+### UI Styles  
+|Style|Description|
+|:----|:----------|
+|1|The UI will display Tabs for each page|
+|2|The UI will display Tabs for each page which have a lighter gray color|
+|3|A 'Menu' button will be visible in the topbar on the left-hand side.<br />Clicking this will toggle the 'Navigator' which shows a vertical list of all pages.<br />This style can be used to show small Icons beside every button.|
+|4|The 'Navigator' will always be visible and will be attached to the left side of the UI contents.<br />The 'Navigator' cannot be toggle-able with this style.<br />Note that this will increase the size of the UI on the X axis based on the size of the 'Navigator'.|
 
 ---
 
@@ -137,6 +152,35 @@ local UI = UI.Banner({ -- You can use a table for more utility
 
 ---
 
+## UI.Notify  
+### Notifications have not been finished and will not work when attempted to use.  
+```js
+<void> UI.Notify(<table> Options)
+<void> UI.Notify(<string> Text)
+```
+Creates a new `Notification` with `Options`.  
+If you provide a string instead of a table, it will use that as the text.
+
+### Example  
+```lua
+UI.Notify({
+    Title = "Alert",
+    Text = "An error occurred!",
+    Duration = 3
+})
+```
+
+### Options  
+|Name|Type|Default|Description|
+|:---|:---|:------|:----------|
+|Title|String|Material Lua Remake|The Notification's title|
+|Text|String|Notification|The text shown in the Notification|
+|Duration|Number|3|How long the Notification will be displayed|
+|Callback|Function|nil|The Notification's callback<br />This is called when clicking one<br />of the buttons on the Notification|
+|Options|Table|{"OK"}|The buttons on the Notification|
+
+---
+
 ## UI.Toggle  
 ```js
 <void> UI.Toggle(<bool?> Visible)
@@ -157,18 +201,13 @@ end)
 
 ## UI.OpenPage  
 ```js
-<void> UI.Toggle(<bool?> Visible)
+<void> UI.OpenPage(<string> Page)
 ```
-Toggles UI visibility. If no argument is provided, it will set it to the opposite as the current visibility.  
+Opens the specified Page.  
 
 ### Example  
 ```lua
-local keybind = Enum.KeyCode.RightShift
-game:GetService("UserInputService").InputBegan:Connect(function(i, gp)
-    if not gp and i.KeyCode == keybind then
-        UI.Toggle()
-    end
-end)
+UI.OpenPage("Page 1")
 ```
 
 ---
