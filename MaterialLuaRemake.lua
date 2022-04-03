@@ -15,6 +15,9 @@ local uilib = {
 	Icon = Instance.new("ImageLabel"),
 	Fill = Instance.new("Frame"),
 	Line_2 = Instance.new("Frame"),
+	Title = Instance.new("TextLabel"),
+	Icon_2 = Instance.new("ImageLabel"),
+	SubTitle = Instance.new("TextLabel"),
 	Pages = Instance.new("Frame"),
 	UIPadding_2 = Instance.new("UIPadding"),
 	Example_2 = Instance.new("ScrollingFrame"),
@@ -140,40 +143,44 @@ local uilib = {
 	Keybind = Instance.new("TextButton"),
 	UICorner_37 = Instance.new("UICorner"),
 	UIPadding_19 = Instance.new("UIPadding"),
-	Bind = Instance.new("TextLabel"),
+	Bind_old = Instance.new("TextLabel"),
 	Menu_8 = Instance.new("ImageButton"),
-	ChipSet = Instance.new("Frame"),
-	UIPadding_20 = Instance.new("UIPadding"),
+	Bind = Instance.new("Frame"),
 	UICorner_38 = Instance.new("UICorner"),
 	Label_8 = Instance.new("TextLabel"),
-	Dropdown_3 = Instance.new("Frame"),
 	UICorner_39 = Instance.new("UICorner"),
+	ChipSet = Instance.new("Frame"),
+	UIPadding_20 = Instance.new("UIPadding"),
+	UICorner_40 = Instance.new("UICorner"),
+	Label_9 = Instance.new("TextLabel"),
+	Dropdown_3 = Instance.new("Frame"),
+	UICorner_41 = Instance.new("UICorner"),
 	UIPadding_21 = Instance.new("UIPadding"),
 	UIListLayout_5 = Instance.new("UIListLayout"),
 	Option_3 = Instance.new("Frame"),
 	Button_5 = Instance.new("TextButton"),
-	UICorner_40 = Instance.new("UICorner"),
+	UICorner_42 = Instance.new("UICorner"),
 	UIPadding_22 = Instance.new("UIPadding"),
 	Enabled = Instance.new("ImageButton"),
-	UICorner_41 = Instance.new("UICorner"),
+	UICorner_43 = Instance.new("UICorner"),
 	Menu_9 = Instance.new("ImageButton"),
 	Button_6 = Instance.new("TextButton"),
 	Fill_4 = Instance.new("Frame"),
 	RippleHolder_3 = Instance.new("Frame"),
 	Indicator_8 = Instance.new("Frame"),
-	UICorner_42 = Instance.new("UICorner"),
+	UICorner_44 = Instance.new("UICorner"),
 	Menu_10 = Instance.new("ImageButton"),
 	Table = Instance.new("Frame"),
 	UIPadding_23 = Instance.new("UIPadding"),
-	UICorner_43 = Instance.new("UICorner"),
-	Label_9 = Instance.new("TextLabel"),
+	UICorner_45 = Instance.new("UICorner"),
+	Label_10 = Instance.new("TextLabel"),
 	Dropdown_4 = Instance.new("Frame"),
-	UICorner_44 = Instance.new("UICorner"),
+	UICorner_46 = Instance.new("UICorner"),
 	UIPadding_24 = Instance.new("UIPadding"),
 	UIListLayout_6 = Instance.new("UIListLayout"),
 	Info = Instance.new("Frame"),
 	UIPadding_25 = Instance.new("UIPadding"),
-	UICorner_45 = Instance.new("UICorner"),
+	UICorner_47 = Instance.new("UICorner"),
 	Key = Instance.new("TextLabel"),
 	Value_6 = Instance.new("TextLabel"),
 	UIPadding_26 = Instance.new("UIPadding"),
@@ -182,46 +189,58 @@ local uilib = {
 	Fill_5 = Instance.new("Frame"),
 	RippleHolder_4 = Instance.new("Frame"),
 	Indicator_9 = Instance.new("Frame"),
-	UICorner_46 = Instance.new("UICorner"),
+	UICorner_48 = Instance.new("UICorner"),
 	Menu_11 = Instance.new("ImageButton"),
 	BackgroundDim = Instance.new("Frame"),
 	Banner = Instance.new("Frame"),
-	UICorner_47 = Instance.new("UICorner"),
-	Label_10 = Instance.new("TextLabel"),
+	UICorner_49 = Instance.new("UICorner"),
+	Label_11 = Instance.new("TextLabel"),
 	UIPadding_27 = Instance.new("UIPadding"),
-	UICorner_48 = Instance.new("UICorner"),
+	UICorner_50 = Instance.new("UICorner"),
 	UIPadding_28 = Instance.new("UIPadding"),
 	Buttons_2 = Instance.new("ScrollingFrame"),
 	Example_3 = Instance.new("TextButton"),
-	UICorner_49 = Instance.new("UICorner"),
+	UICorner_51 = Instance.new("UICorner"),
 	UIListLayout_7 = Instance.new("UIListLayout"),
 	BackgroundDim2 = Instance.new("Frame"),
 	Tabs = Instance.new("Frame"),
-	UICorner_50 = Instance.new("UICorner"),
+	UICorner_52 = Instance.new("UICorner"),
 	Buttons_3 = Instance.new("ScrollingFrame"),
 	UIListLayout_8 = Instance.new("UIListLayout"),
 	Example_4 = Instance.new("TextButton"),
-	UICorner_51 = Instance.new("UICorner"),
+	UICorner_53 = Instance.new("UICorner"),
 	ObjectMenu = Instance.new("Frame"),
 	UIListLayout_9 = Instance.new("UIListLayout"),
 	Example_5 = Instance.new("TextButton"),
 	UIPadding_29 = Instance.new("UIPadding"),
-	UICorner_52 = Instance.new("UICorner"),
-	UICorner_53 = Instance.new("UICorner"),
+	UICorner_54 = Instance.new("UICorner"),
+	UICorner_55 = Instance.new("UICorner"),
 	FillMain = Instance.new("Frame"),
 	FillTopbar = Instance.new("Frame"),
-	Title = Instance.new("TextLabel"),
+	Title_2 = Instance.new("TextLabel"),
 	UIPadding_30 = Instance.new("UIPadding"),
 	Minimize = Instance.new("TextButton"),
-	UICorner_54 = Instance.new("UICorner"),
+	UICorner_56 = Instance.new("UICorner"),
 	Menu_12 = Instance.new("ImageButton"),
 	Ripple = Instance.new("Frame"),
-	UICorner_55 = Instance.new("UICorner"),
+	UICorner_57 = Instance.new("UICorner"),
 	Focus = Instance.new("Frame"),
 	Overlay = Instance.new("Frame"),
-	UICorner_56 = Instance.new("UICorner"),
-	_200_LOCAL_LIMIT = Instance.new("Frame"),
-	_200_LOCAL_LIMIT_2 = Instance.new("Frame"),
+	UICorner_58 = Instance.new("UICorner"),
+	SubTitle_2 = Instance.new("TextLabel"),
+	UIPadding_31 = Instance.new("UIPadding"),
+	Notifications = Instance.new("Frame"),
+	UIListLayout_10 = Instance.new("UIListLayout"),
+	Notif = Instance.new("Frame"),
+	UICorner_59 = Instance.new("UICorner"),
+	UIPadding_32 = Instance.new("UIPadding"),
+	Title_3 = Instance.new("TextLabel"),
+	Label_12 = Instance.new("TextLabel"),
+	Line_4 = Instance.new("Frame"),
+	Buttons_4 = Instance.new("ScrollingFrame"),
+	UIListLayout_11 = Instance.new("UIListLayout"),
+	Button_8 = Instance.new("TextButton"),
+	UICorner_60 = Instance.new("UICorner"),
 }
 local library
 
@@ -257,8 +276,8 @@ uilib.Navigator.Name = "Navigator"
 uilib.Navigator.Parent = uilib.Main
 uilib.Navigator.BackgroundColor3 = Color3.fromRGB(55, 55, 55)
 uilib.Navigator.BorderSizePixel = 0
-uilib.Navigator.Position = UDim2.new(0, -160, 0, 0)
-uilib.Navigator.Size = UDim2.new(0, 160, 1, 0)
+uilib.Navigator.Position = UDim2.new(0, -200, 0, 0)
+uilib.Navigator.Size = UDim2.new(0, 200, 1, 0)
 uilib.Navigator.ZIndex = 8
 
 uilib.UICorner_2.CornerRadius = UDim.new(0, 4)
@@ -291,6 +310,7 @@ uilib.Example.Font = Enum.Font.Gotham
 uilib.Example.Text = "Page"
 uilib.Example.TextColor3 = Color3.fromRGB(255, 255, 255)
 uilib.Example.TextSize = 14.000
+uilib.Example.TextTransparency = 0.400
 uilib.Example.TextXAlignment = Enum.TextXAlignment.Left
 
 uilib.UIPadding.Parent = uilib.Example
@@ -347,6 +367,44 @@ uilib.Line_2.BorderSizePixel = 0
 uilib.Line_2.Position = UDim2.new(1, 0, 0, 0)
 uilib.Line_2.Size = UDim2.new(0, 1, 1, 0)
 uilib.Line_2.ZIndex = 7
+
+uilib.Title.Name = "Title"
+uilib.Title.Parent = uilib.Navigator
+uilib.Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+uilib.Title.BackgroundTransparency = 1.000
+uilib.Title.BorderSizePixel = 0
+uilib.Title.Position = UDim2.new(0, 50, 0, 5)
+uilib.Title.Size = UDim2.new(1, -50, 0, 20)
+uilib.Title.ZIndex = 8
+uilib.Title.Font = Enum.Font.GothamSemibold
+uilib.Title.Text = "Material Lua"
+uilib.Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+uilib.Title.TextSize = 16.000
+uilib.Title.TextXAlignment = Enum.TextXAlignment.Left
+
+uilib.Icon_2.Name = "Icon"
+uilib.Icon_2.Parent = uilib.Navigator
+uilib.Icon_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+uilib.Icon_2.BorderSizePixel = 0
+uilib.Icon_2.Position = UDim2.new(0, 5, 0, 5)
+uilib.Icon_2.Size = UDim2.new(0, 40, 0, 40)
+uilib.Icon_2.ZIndex = 8
+uilib.Icon_2.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png"
+
+uilib.SubTitle.Name = "SubTitle"
+uilib.SubTitle.Parent = uilib.Navigator
+uilib.SubTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+uilib.SubTitle.BackgroundTransparency = 1.000
+uilib.SubTitle.BorderSizePixel = 0
+uilib.SubTitle.Position = UDim2.new(0, 50, 0, 28)
+uilib.SubTitle.Size = UDim2.new(1, -50, 0, 20)
+uilib.SubTitle.ZIndex = 8
+uilib.SubTitle.Font = Enum.Font.Gotham
+uilib.SubTitle.Text = "Remake Version"
+uilib.SubTitle.TextColor3 = Color3.fromRGB(150, 150, 150)
+uilib.SubTitle.TextSize = 14.000
+uilib.SubTitle.TextXAlignment = Enum.TextXAlignment.Left
+uilib.SubTitle.TextYAlignment = Enum.TextYAlignment.Top
 
 uilib.Pages.Name = "Pages"
 uilib.Pages.Parent = uilib.Main
@@ -1191,6 +1249,7 @@ uilib.Fill_3.BackgroundColor3 = Color3.fromRGB(55, 55, 55)
 uilib.Fill_3.BorderSizePixel = 0
 uilib.Fill_3.Position = UDim2.new(0, -8, 0, 30)
 uilib.Fill_3.Size = UDim2.new(1, 18, 0, 5)
+uilib.Fill_3.Visible = false
 uilib.Fill_3.ZIndex = 2
 
 uilib.Preview.Name = "Preview"
@@ -1245,20 +1304,21 @@ uilib.UIPadding_19.Parent = uilib.Keybind
 uilib.UIPadding_19.PaddingLeft = UDim.new(0, 8)
 uilib.UIPadding_19.PaddingRight = UDim.new(0, 10)
 
-uilib.Bind.Name = "Bind"
-uilib.Bind.Parent = uilib.Keybind
-uilib.Bind.AnchorPoint = Vector2.new(1, 0)
-uilib.Bind.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Bind.BackgroundTransparency = 1.000
-uilib.Bind.BorderSizePixel = 0
-uilib.Bind.Position = UDim2.new(1, 0, 0, 0)
-uilib.Bind.Size = UDim2.new(0.349999994, 0, 1, 0)
-uilib.Bind.ZIndex = 2
-uilib.Bind.Font = Enum.Font.Gotham
-uilib.Bind.Text = "Unknown"
-uilib.Bind.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Bind.TextSize = 14.000
-uilib.Bind.TextXAlignment = Enum.TextXAlignment.Right
+uilib.Bind_old.Name = "Bind_old"
+uilib.Bind_old.Parent = uilib.Keybind
+uilib.Bind_old.AnchorPoint = Vector2.new(1, 0)
+uilib.Bind_old.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+uilib.Bind_old.BackgroundTransparency = 1.000
+uilib.Bind_old.BorderSizePixel = 0
+uilib.Bind_old.Position = UDim2.new(1, 0, 0, 0)
+uilib.Bind_old.Size = UDim2.new(0.349999994, 0, 1, 0)
+uilib.Bind_old.Visible = false
+uilib.Bind_old.ZIndex = 2
+uilib.Bind_old.Font = Enum.Font.Gotham
+uilib.Bind_old.Text = "Unknown"
+uilib.Bind_old.TextColor3 = Color3.fromRGB(255, 255, 255)
+uilib.Bind_old.TextSize = 14.000
+uilib.Bind_old.TextXAlignment = Enum.TextXAlignment.Right
 
 uilib.Menu_8.Name = "Menu"
 uilib.Menu_8.Parent = uilib.Keybind
@@ -1272,6 +1332,32 @@ uilib.Menu_8.Visible = false
 uilib.Menu_8.ZIndex = 3
 uilib.Menu_8.Image = "http://www.roblox.com/asset/?id=9147554930"
 
+uilib.Bind.Name = "Bind"
+uilib.Bind.Parent = uilib.Keybind
+uilib.Bind.AnchorPoint = Vector2.new(1, 0.5)
+uilib.Bind.BackgroundColor3 = Color3.fromRGB(150, 150, 150)
+uilib.Bind.BorderSizePixel = 0
+uilib.Bind.Position = UDim2.new(1, 0, 0, 15)
+uilib.Bind.Size = UDim2.new(0, 80, 0, 20)
+uilib.Bind.ZIndex = 2
+
+uilib.UICorner_38.CornerRadius = UDim.new(0, 4)
+uilib.UICorner_38.Parent = uilib.Bind
+
+uilib.Label_8.Name = "Label"
+uilib.Label_8.Parent = uilib.Bind
+uilib.Label_8.BackgroundColor3 = Color3.fromRGB(230, 230, 230)
+uilib.Label_8.Position = UDim2.new(0, 2, 0, 2)
+uilib.Label_8.Size = UDim2.new(1, -4, 0, 16)
+uilib.Label_8.ZIndex = 2
+uilib.Label_8.Font = Enum.Font.GothamBold
+uilib.Label_8.Text = "Unknown"
+uilib.Label_8.TextColor3 = Color3.fromRGB(0, 0, 0)
+uilib.Label_8.TextSize = 12.000
+
+uilib.UICorner_39.CornerRadius = UDim.new(0, 4)
+uilib.UICorner_39.Parent = uilib.Label_8
+
 uilib.ChipSet.Name = "ChipSet"
 uilib.ChipSet.Parent = uilib.Example_2
 uilib.ChipSet.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
@@ -1282,21 +1368,21 @@ uilib.UIPadding_20.Parent = uilib.ChipSet
 uilib.UIPadding_20.PaddingLeft = UDim.new(0, 8)
 uilib.UIPadding_20.PaddingRight = UDim.new(0, 10)
 
-uilib.UICorner_38.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_38.Parent = uilib.ChipSet
+uilib.UICorner_40.CornerRadius = UDim.new(0, 4)
+uilib.UICorner_40.Parent = uilib.ChipSet
 
-uilib.Label_8.Name = "Label"
-uilib.Label_8.Parent = uilib.ChipSet
-uilib.Label_8.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Label_8.BackgroundTransparency = 1.000
-uilib.Label_8.BorderSizePixel = 0
-uilib.Label_8.Size = UDim2.new(1, 0, 0, 30)
-uilib.Label_8.ZIndex = 2
-uilib.Label_8.Font = Enum.Font.Gotham
-uilib.Label_8.Text = "Chip Set"
-uilib.Label_8.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Label_8.TextSize = 14.000
-uilib.Label_8.TextXAlignment = Enum.TextXAlignment.Left
+uilib.Label_9.Name = "Label"
+uilib.Label_9.Parent = uilib.ChipSet
+uilib.Label_9.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+uilib.Label_9.BackgroundTransparency = 1.000
+uilib.Label_9.BorderSizePixel = 0
+uilib.Label_9.Size = UDim2.new(1, 0, 0, 30)
+uilib.Label_9.ZIndex = 2
+uilib.Label_9.Font = Enum.Font.Gotham
+uilib.Label_9.Text = "Chip Set"
+uilib.Label_9.TextColor3 = Color3.fromRGB(255, 255, 255)
+uilib.Label_9.TextSize = 14.000
+uilib.Label_9.TextXAlignment = Enum.TextXAlignment.Left
 
 uilib.Dropdown_3.Name = "Dropdown"
 uilib.Dropdown_3.Parent = uilib.ChipSet
@@ -1307,8 +1393,8 @@ uilib.Dropdown_3.Position = UDim2.new(0, -8, 0, 30)
 uilib.Dropdown_3.Size = UDim2.new(1, 18, 1, -30)
 uilib.Dropdown_3.ZIndex = 3
 
-uilib.UICorner_39.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_39.Parent = uilib.Dropdown_3
+uilib.UICorner_41.CornerRadius = UDim.new(0, 4)
+uilib.UICorner_41.Parent = uilib.Dropdown_3
 
 uilib.UIPadding_21.Parent = uilib.Dropdown_3
 uilib.UIPadding_21.PaddingBottom = UDim.new(0, 5)
@@ -1342,8 +1428,8 @@ uilib.Button_5.TextColor3 = Color3.fromRGB(255, 255, 255)
 uilib.Button_5.TextSize = 14.000
 uilib.Button_5.TextXAlignment = Enum.TextXAlignment.Left
 
-uilib.UICorner_40.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_40.Parent = uilib.Button_5
+uilib.UICorner_42.CornerRadius = UDim.new(0, 4)
+uilib.UICorner_42.Parent = uilib.Button_5
 
 uilib.UIPadding_22.Parent = uilib.Button_5
 uilib.UIPadding_22.PaddingLeft = UDim.new(0, 8)
@@ -1356,8 +1442,8 @@ uilib.Enabled.ZIndex = 3
 uilib.Enabled.AutoButtonColor = false
 uilib.Enabled.Image = "rbxassetid://9122106066"
 
-uilib.UICorner_41.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_41.Parent = uilib.Enabled
+uilib.UICorner_43.CornerRadius = UDim.new(0, 4)
+uilib.UICorner_43.Parent = uilib.Enabled
 
 uilib.Menu_9.Name = "Menu"
 uilib.Menu_9.Parent = uilib.Option_3
@@ -1390,6 +1476,7 @@ uilib.Fill_4.BackgroundColor3 = Color3.fromRGB(55, 55, 55)
 uilib.Fill_4.BorderSizePixel = 0
 uilib.Fill_4.Position = UDim2.new(0, -8, 0, 30)
 uilib.Fill_4.Size = UDim2.new(1, 18, 0, 5)
+uilib.Fill_4.Visible = false
 uilib.Fill_4.ZIndex = 2
 
 uilib.RippleHolder_3.Name = "RippleHolder"
@@ -1409,8 +1496,8 @@ uilib.Indicator_8.Position = UDim2.new(1, 0, 0, 5)
 uilib.Indicator_8.Size = UDim2.new(0, 20, 0, 20)
 uilib.Indicator_8.ZIndex = 2
 
-uilib.UICorner_42.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_42.Parent = uilib.Indicator_8
+uilib.UICorner_44.CornerRadius = UDim.new(0, 4)
+uilib.UICorner_44.Parent = uilib.Indicator_8
 
 uilib.Menu_10.Name = "Menu"
 uilib.Menu_10.Parent = uilib.ChipSet
@@ -1434,21 +1521,21 @@ uilib.UIPadding_23.Parent = uilib.Table
 uilib.UIPadding_23.PaddingLeft = UDim.new(0, 8)
 uilib.UIPadding_23.PaddingRight = UDim.new(0, 10)
 
-uilib.UICorner_43.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_43.Parent = uilib.Table
+uilib.UICorner_45.CornerRadius = UDim.new(0, 4)
+uilib.UICorner_45.Parent = uilib.Table
 
-uilib.Label_9.Name = "Label"
-uilib.Label_9.Parent = uilib.Table
-uilib.Label_9.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Label_9.BackgroundTransparency = 1.000
-uilib.Label_9.BorderSizePixel = 0
-uilib.Label_9.Size = UDim2.new(1, 0, 0, 30)
-uilib.Label_9.ZIndex = 2
-uilib.Label_9.Font = Enum.Font.Gotham
-uilib.Label_9.Text = "Table"
-uilib.Label_9.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Label_9.TextSize = 14.000
-uilib.Label_9.TextXAlignment = Enum.TextXAlignment.Left
+uilib.Label_10.Name = "Label"
+uilib.Label_10.Parent = uilib.Table
+uilib.Label_10.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+uilib.Label_10.BackgroundTransparency = 1.000
+uilib.Label_10.BorderSizePixel = 0
+uilib.Label_10.Size = UDim2.new(1, 0, 0, 30)
+uilib.Label_10.ZIndex = 2
+uilib.Label_10.Font = Enum.Font.Gotham
+uilib.Label_10.Text = "Table"
+uilib.Label_10.TextColor3 = Color3.fromRGB(255, 255, 255)
+uilib.Label_10.TextSize = 14.000
+uilib.Label_10.TextXAlignment = Enum.TextXAlignment.Left
 
 uilib.Dropdown_4.Name = "Dropdown"
 uilib.Dropdown_4.Parent = uilib.Table
@@ -1459,8 +1546,8 @@ uilib.Dropdown_4.Position = UDim2.new(0, -8, 0, 30)
 uilib.Dropdown_4.Size = UDim2.new(1, 18, 1, -30)
 uilib.Dropdown_4.ZIndex = 3
 
-uilib.UICorner_44.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_44.Parent = uilib.Dropdown_4
+uilib.UICorner_46.CornerRadius = UDim.new(0, 4)
+uilib.UICorner_46.Parent = uilib.Dropdown_4
 
 uilib.UIPadding_24.Parent = uilib.Dropdown_4
 uilib.UIPadding_24.PaddingBottom = UDim.new(0, 5)
@@ -1477,14 +1564,13 @@ uilib.Info.Parent = uilib.Dropdown_4
 uilib.Info.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
 uilib.Info.BorderSizePixel = 0
 uilib.Info.Size = UDim2.new(1, 0, 0, 30)
-uilib.Info.Visible = false
 uilib.Info.ZIndex = 3
 
 uilib.UIPadding_25.Parent = uilib.Info
 uilib.UIPadding_25.PaddingLeft = UDim.new(0, 8)
 
-uilib.UICorner_45.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_45.Parent = uilib.Info
+uilib.UICorner_47.CornerRadius = UDim.new(0, 4)
+uilib.UICorner_47.Parent = uilib.Info
 
 uilib.Key.Name = "Key"
 uilib.Key.Parent = uilib.Info
@@ -1563,8 +1649,8 @@ uilib.Indicator_9.Position = UDim2.new(1, 0, 0, 5)
 uilib.Indicator_9.Size = UDim2.new(0, 20, 0, 20)
 uilib.Indicator_9.ZIndex = 2
 
-uilib.UICorner_46.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_46.Parent = uilib.Indicator_9
+uilib.UICorner_48.CornerRadius = UDim.new(0, 4)
+uilib.UICorner_48.Parent = uilib.Indicator_9
 
 uilib.Menu_11.Name = "Menu"
 uilib.Menu_11.Parent = uilib.Table
@@ -1595,31 +1681,31 @@ uilib.Banner.Size = UDim2.new(1, -20, 0, 100)
 uilib.Banner.Visible = false
 uilib.Banner.ZIndex = 6
 
-uilib.UICorner_47.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_47.Parent = uilib.Banner
+uilib.UICorner_49.CornerRadius = UDim.new(0, 4)
+uilib.UICorner_49.Parent = uilib.Banner
 
-uilib.Label_10.Name = "Label"
-uilib.Label_10.Parent = uilib.Banner
-uilib.Label_10.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-uilib.Label_10.BorderSizePixel = 0
-uilib.Label_10.Size = UDim2.new(1, 0, 1, 0)
-uilib.Label_10.ZIndex = 6
-uilib.Label_10.Font = Enum.Font.Gotham
-uilib.Label_10.Text = "Banner"
-uilib.Label_10.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Label_10.TextSize = 12.000
-uilib.Label_10.TextWrapped = true
-uilib.Label_10.TextXAlignment = Enum.TextXAlignment.Left
-uilib.Label_10.TextYAlignment = Enum.TextYAlignment.Top
+uilib.Label_11.Name = "Label"
+uilib.Label_11.Parent = uilib.Banner
+uilib.Label_11.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+uilib.Label_11.BorderSizePixel = 0
+uilib.Label_11.Size = UDim2.new(1, 0, 1, 0)
+uilib.Label_11.ZIndex = 6
+uilib.Label_11.Font = Enum.Font.Gotham
+uilib.Label_11.Text = "Banner"
+uilib.Label_11.TextColor3 = Color3.fromRGB(255, 255, 255)
+uilib.Label_11.TextSize = 12.000
+uilib.Label_11.TextWrapped = true
+uilib.Label_11.TextXAlignment = Enum.TextXAlignment.Left
+uilib.Label_11.TextYAlignment = Enum.TextYAlignment.Top
 
-uilib.UIPadding_27.Parent = uilib.Label_10
+uilib.UIPadding_27.Parent = uilib.Label_11
 uilib.UIPadding_27.PaddingBottom = UDim.new(0, 5)
 uilib.UIPadding_27.PaddingLeft = UDim.new(0, 6)
 uilib.UIPadding_27.PaddingRight = UDim.new(0, 5)
 uilib.UIPadding_27.PaddingTop = UDim.new(0, 5)
 
-uilib.UICorner_48.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_48.Parent = uilib.Label_10
+uilib.UICorner_50.CornerRadius = UDim.new(0, 4)
+uilib.UICorner_50.Parent = uilib.Label_11
 
 uilib.UIPadding_28.Parent = uilib.Banner
 uilib.UIPadding_28.PaddingBottom = UDim.new(0, 30)
@@ -1652,8 +1738,8 @@ uilib.Example_3.Text = "OK"
 uilib.Example_3.TextColor3 = Color3.fromRGB(255, 255, 255)
 uilib.Example_3.TextSize = 14.000
 
-uilib.UICorner_49.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_49.Parent = uilib.Example_3
+uilib.UICorner_51.CornerRadius = UDim.new(0, 4)
+uilib.UICorner_51.Parent = uilib.Example_3
 
 uilib.UIListLayout_7.Parent = uilib.Buttons_2
 uilib.UIListLayout_7.FillDirection = Enum.FillDirection.Horizontal
@@ -1677,8 +1763,8 @@ uilib.Tabs.Position = UDim2.new(0, 10, 0, 10)
 uilib.Tabs.Size = UDim2.new(1, -20, 0, 25)
 uilib.Tabs.Visible = false
 
-uilib.UICorner_50.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_50.Parent = uilib.Tabs
+uilib.UICorner_52.CornerRadius = UDim.new(0, 4)
+uilib.UICorner_52.Parent = uilib.Tabs
 
 uilib.Buttons_3.Name = "Buttons"
 uilib.Buttons_3.Parent = uilib.Tabs
@@ -1706,8 +1792,8 @@ uilib.Example_4.Text = "Tab"
 uilib.Example_4.TextColor3 = Color3.fromRGB(255, 255, 255)
 uilib.Example_4.TextSize = 14.000
 
-uilib.UICorner_51.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_51.Parent = uilib.Example_4
+uilib.UICorner_53.CornerRadius = UDim.new(0, 4)
+uilib.UICorner_53.Parent = uilib.Example_4
 
 uilib.ObjectMenu.Name = "ObjectMenu"
 uilib.ObjectMenu.Parent = uilib.Main
@@ -1738,11 +1824,11 @@ uilib.Example_5.TextXAlignment = Enum.TextXAlignment.Left
 uilib.UIPadding_29.Parent = uilib.Example_5
 uilib.UIPadding_29.PaddingLeft = UDim.new(0, 10)
 
-uilib.UICorner_52.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_52.Parent = uilib.ObjectMenu
+uilib.UICorner_54.CornerRadius = UDim.new(0, 4)
+uilib.UICorner_54.Parent = uilib.ObjectMenu
 
-uilib.UICorner_53.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_53.Parent = uilib.Topbar
+uilib.UICorner_55.CornerRadius = UDim.new(0, 4)
+uilib.UICorner_55.Parent = uilib.Topbar
 
 uilib.FillMain.Name = "FillMain"
 uilib.FillMain.Parent = uilib.Topbar
@@ -1761,20 +1847,20 @@ uilib.FillTopbar.Position = UDim2.new(0, 0, 1, 0)
 uilib.FillTopbar.Size = UDim2.new(1, 0, 0, 10)
 uilib.FillTopbar.ZIndex = 5
 
-uilib.Title.Name = "Title"
-uilib.Title.Parent = uilib.Topbar
-uilib.Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Title.BackgroundTransparency = 1.000
-uilib.Title.BorderSizePixel = 0
-uilib.Title.Size = UDim2.new(0, 346, 0, 30)
-uilib.Title.ZIndex = 6
-uilib.Title.Font = Enum.Font.Gotham
-uilib.Title.Text = "Material Lua Remake"
-uilib.Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Title.TextSize = 16.000
-uilib.Title.TextXAlignment = Enum.TextXAlignment.Left
+uilib.Title_2.Name = "Title"
+uilib.Title_2.Parent = uilib.Topbar
+uilib.Title_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+uilib.Title_2.BackgroundTransparency = 1.000
+uilib.Title_2.BorderSizePixel = 0
+uilib.Title_2.Size = UDim2.new(0, 346, 0, 30)
+uilib.Title_2.ZIndex = 6
+uilib.Title_2.Font = Enum.Font.Gotham
+uilib.Title_2.Text = "Material Lua"
+uilib.Title_2.TextColor3 = Color3.fromRGB(255, 255, 255)
+uilib.Title_2.TextSize = 16.000
+uilib.Title_2.TextXAlignment = Enum.TextXAlignment.Left
 
-uilib.UIPadding_30.Parent = uilib.Title
+uilib.UIPadding_30.Parent = uilib.Title_2
 uilib.UIPadding_30.PaddingLeft = UDim.new(0, 8)
 
 uilib.Minimize.Name = "Minimize"
@@ -1791,8 +1877,8 @@ uilib.Minimize.Text = ""
 uilib.Minimize.TextColor3 = Color3.fromRGB(0, 0, 0)
 uilib.Minimize.TextSize = 14.000
 
-uilib.UICorner_54.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_54.Parent = uilib.Minimize
+uilib.UICorner_56.CornerRadius = UDim.new(0, 4)
+uilib.UICorner_56.Parent = uilib.Minimize
 
 uilib.Menu_12.Name = "Menu"
 uilib.Menu_12.Parent = uilib.Topbar
@@ -1816,8 +1902,8 @@ uilib.Ripple.Size = UDim2.new(0, 100, 0, 100)
 uilib.Ripple.Visible = false
 uilib.Ripple.ZIndex = 5
 
-uilib.UICorner_55.CornerRadius = UDim.new(1, 0)
-uilib.UICorner_55.Parent = uilib.Ripple
+uilib.UICorner_57.CornerRadius = UDim.new(1, 0)
+uilib.UICorner_57.Parent = uilib.Ripple
 
 uilib.Focus.Name = "Focus"
 uilib.Focus.Parent = uilib.Topbar
@@ -1837,22 +1923,131 @@ uilib.Overlay.Size = UDim2.new(1, 0, 1, 490)
 uilib.Overlay.Visible = false
 uilib.Overlay.ZIndex = 11
 
-uilib.UICorner_56.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_56.Parent = uilib.Overlay
+uilib.UICorner_58.CornerRadius = UDim.new(0, 4)
+uilib.UICorner_58.Parent = uilib.Overlay
 
-uilib._200_LOCAL_LIMIT.Name = "200_LOCAL_LIMIT"
-uilib._200_LOCAL_LIMIT.Parent = uilib.Topbar
-uilib._200_LOCAL_LIMIT.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib._200_LOCAL_LIMIT.BackgroundTransparency = 1.000
-uilib._200_LOCAL_LIMIT.BorderSizePixel = 0
-uilib._200_LOCAL_LIMIT.Visible = false
+uilib.SubTitle_2.Name = "SubTitle"
+uilib.SubTitle_2.Parent = uilib.Topbar
+uilib.SubTitle_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+uilib.SubTitle_2.BackgroundTransparency = 1.000
+uilib.SubTitle_2.BorderSizePixel = 0
+uilib.SubTitle_2.Position = UDim2.new(0, 96, 0, 0)
+uilib.SubTitle_2.Size = UDim2.new(0, 275, 0, 30)
+uilib.SubTitle_2.ZIndex = 6
+uilib.SubTitle_2.Font = Enum.Font.Gotham
+uilib.SubTitle_2.Text = "Remake Version"
+uilib.SubTitle_2.TextColor3 = Color3.fromRGB(150, 150, 150)
+uilib.SubTitle_2.TextSize = 14.000
+uilib.SubTitle_2.TextXAlignment = Enum.TextXAlignment.Left
+uilib.SubTitle_2.TextYAlignment = Enum.TextYAlignment.Bottom
 
-uilib._200_LOCAL_LIMIT_2.Name = "200_LOCAL_LIMIT"
-uilib._200_LOCAL_LIMIT_2.Parent = uilib.Topbar
-uilib._200_LOCAL_LIMIT_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib._200_LOCAL_LIMIT_2.BackgroundTransparency = 1.000
-uilib._200_LOCAL_LIMIT_2.BorderSizePixel = 0
-uilib._200_LOCAL_LIMIT_2.Visible = false
+uilib.UIPadding_31.Parent = uilib.SubTitle_2
+uilib.UIPadding_31.PaddingBottom = UDim.new(0, 6)
+uilib.UIPadding_31.PaddingLeft = UDim.new(0, 8)
+
+uilib.Notifications.Name = "Notifications"
+uilib.Notifications.Parent = uilib.uilib
+uilib.Notifications.AnchorPoint = Vector2.new(1, 1)
+uilib.Notifications.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+uilib.Notifications.BackgroundTransparency = 1.000
+uilib.Notifications.BorderSizePixel = 0
+uilib.Notifications.Position = UDim2.new(1, -10, 1, -10)
+uilib.Notifications.Size = UDim2.new(0, 200, 1, -20)
+uilib.Notifications.Visible = false
+uilib.Notifications.ZIndex = 20
+
+uilib.UIListLayout_10.Parent = uilib.Notifications
+uilib.UIListLayout_10.SortOrder = Enum.SortOrder.LayoutOrder
+uilib.UIListLayout_10.VerticalAlignment = Enum.VerticalAlignment.Bottom
+uilib.UIListLayout_10.Padding = UDim.new(0, 10)
+
+uilib.Notif.Name = "Notif"
+uilib.Notif.Parent = uilib.Notifications
+uilib.Notif.AnchorPoint = Vector2.new(1, 1)
+uilib.Notif.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+uilib.Notif.BorderSizePixel = 0
+uilib.Notif.Position = UDim2.new(1, -10, 1, -10)
+uilib.Notif.Size = UDim2.new(0, 200, 0, 100)
+uilib.Notif.ZIndex = 20
+
+uilib.UICorner_59.CornerRadius = UDim.new(0, 4)
+uilib.UICorner_59.Parent = uilib.Notif
+
+uilib.UIPadding_32.Parent = uilib.Notif
+uilib.UIPadding_32.PaddingBottom = UDim.new(0, 8)
+uilib.UIPadding_32.PaddingLeft = UDim.new(0, 8)
+uilib.UIPadding_32.PaddingRight = UDim.new(0, 8)
+uilib.UIPadding_32.PaddingTop = UDim.new(0, 8)
+
+uilib.Title_3.Name = "Title"
+uilib.Title_3.Parent = uilib.Notif
+uilib.Title_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+uilib.Title_3.BackgroundTransparency = 1.000
+uilib.Title_3.BorderSizePixel = 0
+uilib.Title_3.Size = UDim2.new(1, 0, 0, 16)
+uilib.Title_3.ZIndex = 21
+uilib.Title_3.Font = Enum.Font.GothamSemibold
+uilib.Title_3.Text = "Material Lua Remake"
+uilib.Title_3.TextColor3 = Color3.fromRGB(255, 255, 255)
+uilib.Title_3.TextSize = 16.000
+uilib.Title_3.TextXAlignment = Enum.TextXAlignment.Left
+uilib.Title_3.TextYAlignment = Enum.TextYAlignment.Top
+
+uilib.Label_12.Name = "Label"
+uilib.Label_12.Parent = uilib.Notif
+uilib.Label_12.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+uilib.Label_12.BackgroundTransparency = 1.000
+uilib.Label_12.BorderSizePixel = 0
+uilib.Label_12.Position = UDim2.new(0, 0, 0, 24)
+uilib.Label_12.Size = UDim2.new(1, 0, 1, -48)
+uilib.Label_12.ZIndex = 21
+uilib.Label_12.Font = Enum.Font.Gotham
+uilib.Label_12.Text = "Notification"
+uilib.Label_12.TextColor3 = Color3.fromRGB(255, 255, 255)
+uilib.Label_12.TextSize = 14.000
+uilib.Label_12.TextXAlignment = Enum.TextXAlignment.Left
+uilib.Label_12.TextYAlignment = Enum.TextYAlignment.Top
+
+uilib.Line_4.Name = "Line"
+uilib.Line_4.Parent = uilib.Notif
+uilib.Line_4.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+uilib.Line_4.BorderSizePixel = 0
+uilib.Line_4.Position = UDim2.new(0, 0, 0, 20)
+uilib.Line_4.Size = UDim2.new(1, 0, 0, 1)
+uilib.Line_4.ZIndex = 21
+
+uilib.Buttons_4.Name = "Buttons"
+uilib.Buttons_4.Parent = uilib.Notif
+uilib.Buttons_4.Active = true
+uilib.Buttons_4.AnchorPoint = Vector2.new(0, 1)
+uilib.Buttons_4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+uilib.Buttons_4.BackgroundTransparency = 1.000
+uilib.Buttons_4.BorderSizePixel = 0
+uilib.Buttons_4.Position = UDim2.new(0, 0, 1, 0)
+uilib.Buttons_4.Size = UDim2.new(1, 0, 0, 20)
+uilib.Buttons_4.ZIndex = 21
+uilib.Buttons_4.CanvasSize = UDim2.new(0, 0, 0, 0)
+uilib.Buttons_4.ScrollBarThickness = 0
+
+uilib.UIListLayout_11.Parent = uilib.Buttons_4
+uilib.UIListLayout_11.FillDirection = Enum.FillDirection.Horizontal
+uilib.UIListLayout_11.HorizontalAlignment = Enum.HorizontalAlignment.Right
+uilib.UIListLayout_11.SortOrder = Enum.SortOrder.LayoutOrder
+
+uilib.Button_8.Name = "Button"
+uilib.Button_8.Parent = uilib.Buttons_4
+uilib.Button_8.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+uilib.Button_8.Size = UDim2.new(0, 40, 0, 20)
+uilib.Button_8.Visible = false
+uilib.Button_8.ZIndex = 21
+uilib.Button_8.Font = Enum.Font.GothamBold
+uilib.Button_8.Text = "OK"
+uilib.Button_8.TextColor3 = Color3.fromRGB(255, 255, 255)
+uilib.Button_8.TextSize = 14.000
+uilib.Button_8.TextWrapped = true
+
+uilib.UICorner_60.CornerRadius = UDim.new(0, 4)
+uilib.UICorner_60.Parent = uilib.Button_8
 
 -- Module Scripts:
 
@@ -1863,11 +2058,11 @@ do -- uilib.uilib.UI
 	script.Name = "UI"
 	local function module_script()
 		-- shitty code !
-
+		
 		local uis = game:GetService("UserInputService")
 		local ts = game:GetService("TweenService")
 		local mouse = game:GetService("Players").LocalPlayer:GetMouse()
-
+		
 		-- ui stuffs
 		local topbar = script.Parent.Topbar
 		local main = topbar.Main
@@ -1886,7 +2081,8 @@ do -- uilib.uilib.UI
 		local dim1 = main.BackgroundDim
 		local dim2 = main.BackgroundDim2
 		local banner = main.Banner
-
+		local notification = topbar.Parent.Notifications.Notif
+		
 		-- constants / placeholders
 		local sine = Enum.EasingStyle.Sine
 		local out = Enum.EasingDirection.Out
@@ -1894,7 +2090,7 @@ do -- uilib.uilib.UI
 		local bind = Instance.new("BindableEvent")
 		local nocolor = Color3.fromRGB(255, 255, 255)
 		local inf = math.huge
-
+		
 		-- variables
 		local UI_LOADED = false
 		local UI_SIZE_X = 400
@@ -1903,7 +2099,7 @@ do -- uilib.uilib.UI
 		local ENABLED_IMAGE = "rbxassetid://9122106066"
 		local DISABLED_IMAGE = "rbxassetid://9122119502"
 		local mousedown = false
-
+		
 		-- aliases
 		local clamp = math.clamp
 		local floor = math.floor 
@@ -1918,22 +2114,34 @@ do -- uilib.uilib.UI
 		local TweenInfonew = TweenInfo.new
 		local CSnew = ColorSequence.new
 		local CSKnew = ColorSequenceKeypoint.new
-
+		
 		local defaults = {
 			Load = {
 				Title = "Material Lua Remake",
+				SubTitle = "",
+				Icon = nil,
+				ShowInNavigator = false,
 				Style = 1,
 				SizeX = 400,
-				SizeY = 490
+				SizeY = 505,
+				NavigatorSize = 200
 			},
 			Banner = {
 				Text = "Banner",
 				Callback = nofunc,
 				Options = {"OK"}
 			},
+			Notify = {
+				Title = "Material Lua Remake",
+				Text = "Notification",
+				Duration = 3,
+				Callback = nofunc,
+				Options = {"OK"}
+			},
 			Button = {
 				Text = "Button",
-				Callback = nofunc
+				Callback = nofunc,
+				Center = false
 			},
 			Toggle = {
 				Text = "Toggle",
@@ -1954,7 +2162,9 @@ do -- uilib.uilib.UI
 			},
 			Label = {
 				Text = "Label",
-				Event = bind
+				Event = bind,
+				Center = false,
+				Transparent = false
 			},
 			Slider = {
 				Text = "Slider",
@@ -2002,9 +2212,9 @@ do -- uilib.uilib.UI
 				}
 			}
 		}
-
+		
 		topbar.Visible = false
-
+		
 		function CheckInvalidProps(a, b)
 			for i,v in next, defaults[a] do
 				if b[i] ~= nil and typeof(b[i]) ~= typeof(v) then
@@ -2012,7 +2222,7 @@ do -- uilib.uilib.UI
 				end
 			end
 		end
-
+		
 		function ApplyDefaultProps(a,b)
 			for i,v in next, defaults[a] do
 				if b[i] == nil then
@@ -2023,25 +2233,25 @@ do -- uilib.uilib.UI
 		function Round(num, dec)
 			return tonumber(format("%." .. (dec or 0) .. "f", num))
 		end
-
+		
 		local ToggleOn = UDim2new(0.5, 0, 0.5, 0)
 		local ToggleOff = UDim2new(0, 0, 0.5, 0)
-
+		
 		local ID = 0
 		local ui = {}
-
+		
 		uis.InputEnded:Connect(function(i,gp)
 			if i.UserInputType.Name == "MouseButton1" then
 				mousedown = false
 			end
 		end)
-
+		
 		do -- UI Effects
 			local GeneralInfo = TweenInfo.new(0.25, sine, out)
 			function ui.Tween(object, properties, tweeninfo, callback)
 				ts:Create(object, tweeninfo or GeneralInfo, properties):Play()
 			end
-
+			
 			local RIPPLE_DURATION = 0.65
 			function ui.Ripple(a, p)
 				a.AutoButtonColor = false
@@ -2052,7 +2262,7 @@ do -- uilib.uilib.UI
 				a.Activated:Connect(function()
 					local abp = a.AbsolutePosition
 					local abs = a.AbsoluteSize
-
+		
 					local new = ripple:Clone()
 					new.Size = UDim2new(0, 0, 0, 0)
 					new.Position = UDim2new(
@@ -2069,14 +2279,14 @@ do -- uilib.uilib.UI
 					new:Destroy()
 				end)
 			end
-
+			
 			local FOCUS_DURATION = 0.225
 			function ui.Focus(a, p)
 				a.Focused:Connect(function()
 					local new = focus:Clone()
 					new.Visible = true
 					new.Parent = p or a
-
+					
 					local padding = (p ~= nil and p.Parent:FindFirstChild("UIPadding")) or a.Parent:FindFirstChild("UIPadding")
 					padding = (padding ~= nil and padding.PaddingLeft.Offset + padding.PaddingRight.Offset) or 0
 					new:TweenSize(UDim2new(1, padding, 0, 1), "Out", "Quad", FOCUS_DURATION, true)
@@ -2088,22 +2298,14 @@ do -- uilib.uilib.UI
 					end)
 				end)
 			end
-
+			
 			function ui.Dim1(value, main)
-				if value then
-					ui.Tween(main.BackgroundDim, {BackgroundTransparency = 0.75})
-				else
-					ui.Tween(main.BackgroundDim, {BackgroundTransparency = 1})
-				end
+				ui.Tween(main.BackgroundDim, {BackgroundTransparency = (value and 0.75) or 1})
 			end
 			function ui.Dim2(value, main)
-				if value then
-					ui.Tween(main.BackgroundDim2, {BackgroundTransparency = 0.75})
-				else
-					ui.Tween(main.BackgroundDim2, {BackgroundTransparency = 1})
-				end
+				ui.Tween(main.BackgroundDim2, {BackgroundTransparency = (value and 0.75) or 1})
 			end
-
+			
 			local DRAG_SPEED = 0.075
 			local DRAG_INFO = TweenInfo.new(DRAG_SPEED)
 			function ui.SmoothDrag(a)
@@ -2112,13 +2314,13 @@ do -- uilib.uilib.UI
 				local start = nil
 				local pos = nil
 				local startpos = nil
-
+		
 				local function Update(i)
 					local delta = i.Position - start
 					local pos = UDim2new(startpos.X.Scale, startpos.X.Offset + delta.X, startpos.Y.Scale, startpos.Y.Offset + delta.Y)
 					ui.Tween(a, {Position = pos}, DRAG_INFO)
 				end
-
+		
 				a.InputBegan:Connect(function(i)
 					if i.UserInputType.Name == "MouseButton1" and uis:GetFocusedTextBox() == nil then
 						toggle = true
@@ -2143,13 +2345,13 @@ do -- uilib.uilib.UI
 				end)
 			end
 		end
-
+		
 		do -- Banner
 			local BANNER_TRANSPARENCY = 0.75
 			local BANNER_TWEENINFO = TweenInfonew(0.45, sine, out)
 			local BANNER_VISIBLE = false
 			local LAST_BANNER = nil
-
+			
 			local function show(a)
 				for _,v in next, a.Buttons:GetChildren() do
 					if v:IsA("TextButton") then
@@ -2170,32 +2372,36 @@ do -- uilib.uilib.UI
 						ui.Tween(v, {BackgroundTransparency = BANNER_TRANSPARENCY, TextTransparency = BANNER_TRANSPARENCY}, BANNER_TWEENINFO)
 					end
 				end
-				a:TweenPosition(UDim2new(0.5, 0, 1, 20), "Out", "Sine", 0.35)
+				if a.AnchorPoint.X == 0 then
+					a:TweenPosition(UDim2new(0, a.Position.X.Offset, 1, 20), "Out", "Sine", 0.35)
+				else
+					a:TweenPosition(UDim2new(0.5, 0, 1, 20), "Out", "Sine", 0.35)
+				end
 				ui.Tween(a, {BackgroundTransparency = BANNER_TRANSPARENCY}, BANNER_TWEENINFO)
 				ui.Tween(a.Label, {BackgroundTransparency = BANNER_TRANSPARENCY, TextTransparency = BANNER_TRANSPARENCY}, BANNER_TWEENINFO)
 				taskdelay(0.375, function()
 					a:Destroy()
 				end)
 			end
-			function ui.Banner(t, p)
+			function ui.Banner(t, p, style, navsize)
 				if typeof(t) == "string" then
 					t = {Text = t}
 				end
 				ApplyDefaultProps("Banner", t)
-
+				
 				if LAST_BANNER and BANNER_VISIBLE then
 					hide(LAST_BANNER)
 				end
-
+				
 				local new = banner:Clone()
 				new.Name = "Banner"
 				new.Label.Text = t.Text
 				new.Parent = p or main
-
+		
 				ui.Dim2(true, p)
 				BANNER_VISIBLE = true
 				LAST_BANNER = new
-
+		
 				for _,v in next, t.Options do
 					local new2 = new.Buttons.Example:Clone()
 					new2.Name = v
@@ -2204,9 +2410,9 @@ do -- uilib.uilib.UI
 					new2.BackgroundTransparency = BANNER_TRANSPARENCY
 					new2.TextTransparency = BANNER_TRANSPARENCY
 					new2.Parent = new.Buttons
-
+					
 					taskwait()
-
+					
 					new2.Size = UDim2new(0, new2.TextBounds.X + 20, 0, 20)
 					new2.Activated:Connect(function()
 						t.Callback(v)
@@ -2215,32 +2421,73 @@ do -- uilib.uilib.UI
 						LAST_BANNER = nil
 						hide(new)
 					end)
-
+		
 					taskdelay(0.1, function()
 						ui.Tween(new2, {BackgroundTransparency = 0, TextTransparency = 0}, BANNER_TWEENINFO)
 					end)
-
+		
 					ui.Ripple(new2)
 				end
-
-				new.Position = UDim2new(0.5, 0, 1, 0)
+		
+				if style == 4 then
+					new.AnchorPoint = Vector2new(0, 1)
+					new.Position = UDim2new(0, navsize + 10, 1, 0)
+				else
+					new.Position = UDim2new(0.5, 0, 1, 0)
+				end
 				new.BackgroundTransparency = BANNER_TRANSPARENCY
 				new.Label.BackgroundTransparency = BANNER_TRANSPARENCY
 				new.Label.TextTransparency = BANNER_TRANSPARENCY
 				new.Label.Size = UDim2new(1, 0, 10, 0)
 				local bound = new.Label.TextBounds.Y
 				new.Label.Size = UDim2new(1, 0, 1, 0)
-				new.Size = UDim2new(1, -20, 0, clamp(bound + 45, 100, inf))
-
+				new.Size = UDim2new(1, -20 - ((style == 4 and navsize) or 0), 0, clamp(bound + 45, 100, inf))
+		
 				taskdelay(0.1, function()
-					new:TweenPosition(UDim2new(0.5, 0, 1, -10), "Out", "Sine", 0.35)
+					if style == 4 then
+						new:TweenPosition(UDim2new(0, navsize + 10, 1, -10), "Out", "Sine", 0.35)
+					else
+						new:TweenPosition(UDim2new(0.5, 0, 1, -10), "Out", "Sine", 0.35)
+					end
 					ui.Tween(new, {BackgroundTransparency = 0}, BANNER_TWEENINFO)
 					ui.Tween(new.Label, {BackgroundTransparency = 0, TextTransparency = 0}, BANNER_TWEENINFO)
 				end)
 				new.Visible = true
 			end
 		end
-
+		
+		do -- Notify incomplete
+			local NOTIF_TWEENINFO = TweenInfonew(0.35, sine, out)
+			local NOTIF_VISIBLE = false
+			local NOTIFS = {}
+			local NOTIF_COUNT = 0
+			
+			local function show(a)
+				if NOTIF_COUNT > 0 then
+					for _,v in next, NOTIFS do
+						v:TweenPosition(UDim2new())
+					end
+				else
+					
+				end
+			end
+			local function hide(a)
+				
+			end
+			function ui.Notify(t, p)
+				if typeof(t) == "string" then
+					t = {Text = t}
+				end
+				ApplyDefaultProps("Banner", t)
+		
+				local new = notification:Clone()
+				new.Name = "Notification"
+				new.Title.Text = t.Title
+				new.Label.Text = t.Text
+				new.Parent = p or main
+			end
+		end
+		
 		do -- UI Core
 			function ui.UpdateCanvasSize(page)
 				task.spawn(function()
@@ -2256,12 +2503,12 @@ do -- uilib.uilib.UI
 				table.sort(t, function(a,b)
 					return a < b
 				end)
-
+			
 				local menubtn = p.Menu
 				local main = p:FindFirstAncestor("Main")
 				local menu = main.ObjectMenu
 				local list = menu.UIListLayout
-
+				
 				menubtn.Visible = true
 				menubtn.Activated:Connect(function()
 					if LAST_BUTTON ~= menubtn then
@@ -2299,7 +2546,7 @@ do -- uilib.uilib.UI
 						menu.Visible = false
 					end
 				end)
-
+				
 				taskdelay(0.5, function()
 					for _,v in next, o do
 						local pos = v.Position
@@ -2307,11 +2554,11 @@ do -- uilib.uilib.UI
 					end
 				end)
 			end
-
+			
 			function ui.Load(t)
 				UI_LOADED = false
 				ApplyDefaultProps("Load", t)
-
+				
 				local new = script.Parent:Clone()
 				if getgenv then
 					if syn then syn.protect_gui(new) end
@@ -2324,7 +2571,7 @@ do -- uilib.uilib.UI
 					new.Parent = game:GetService("Players").LocalPlayer.PlayerGui
 				end
 				new.Name = "MATERIAL_"..t.Title
-
+		
 				local topbar = new.Topbar
 				local main = topbar.Main
 				local pages = main.Pages
@@ -2343,84 +2590,130 @@ do -- uilib.uilib.UI
 				local dim1 = main.BackgroundDim
 				local dim2 = main.BackgroundDim2
 				local banner = main.Banner
-
+				local notification = topbar.Parent.Notifications.Notif
+				
 				local Theme = {
 					MainFrame = main,
-
+		
 					Minimise = minimize,
 					MinimiseAccent = nil,
 					Maximise = nil,
 					MaximiseAccent = nil,
-
+		
 					NavBar = {{navigator, "BackgroundColor3"}},
 					NavBarAccent = nil,
 					NavBarInvert = nil,
-
+		
 					TitleBar = topbar,
 					TitleBarAccent = {{topbar.Title, "BackgroundColor3"}},
-
+		
 					Overlay = nil,
-
+		
 					Banner = main.Banner,
 					BannerAccent = {main.BackgroundDim2, main.Banner.Label},
-
+		
 					Content = nil,
-
+		
 					Button = ex.Button,
 					ButtonAccent = nil,
-
+		
 					ChipSet = Color3.fromRGB(219, 68, 103),
 					ChipSetAccent = Color3.fromRGB(255,255,255),
-
+		
 					DataTable = Color3.fromRGB(219, 68, 103),
 					DataTableAccent = Color3.fromRGB(255,255,255),
-
+		
 					Slider = Color3.fromRGB(255,255,255),
 					SliderAccent = Color3.fromRGB(219, 68, 103),
-
+		
 					Toggle = Color3.fromRGB(219, 68, 103),
 					ToggleAccent = Color3.fromRGB(255,255,255),
-
+		
 					Dropdown = Color3.fromRGB(255,255,255),
 					DropdownAccent = Color3.fromRGB(219, 68, 103),
-
+		
 					ColorPicker = Color3.fromRGB(255,255,255),
 					ColorPickerAccent = Color3.fromRGB(219, 68, 103),
-
+		
 					TextField = Color3.fromRGB(175,175,175),
 					TextFieldAccent = Color3.fromRGB(255,255,255)
 				}
-
-				local function ColorOverride(t)
+				
+				local function ColorOverride(t) -- not finished
 					for _,info in next, t do
 						if info ~= nil then
 							for i,v in next, info do
 								local Object = v[1]
 								local Property = v[2]
 								local Value = v[3]
-
+		
 								Object[Property] = Value
 							end
 						end
 					end
 				end
-
+				
 				local UI_SIZE_X = clamp(t.SizeX, 275, inf)
 				local UI_SIZE_Y = t.SizeY
 				local FIRST_PAGE = true
 				local FIRST_PAGE_OBJ = nil
 				local MIN_BTN_COLOR = fromRGB(250, 170, 75)
 				local MAX_BTN_COLOR = fromRGB(150, 250, 170)
-
+				local STYLE = clamp(t.Style, 1, 4)
+				local NAV_SIZE = clamp(t.NavigatorSize, 0, UI_SIZE_X)
+				
 				local res = workspace.CurrentCamera.ViewportSize
 				topbar.Visible = true
 				topbar.Position = UDim2new(0, (res.X / 2) - (UI_SIZE_X / 2), 0, (res.Y / 2) - ((UI_SIZE_Y + 30) / 2))
 				topbar.Size = UDim2new(0, 0, 0, 30)
 				topbar.Main.Size = UDim2new(0, 0, 0, UI_SIZE_Y)
+				
 				topbar.Title.TextTransparency = 1
 				topbar.Title.Text = t.Title
+				topbar.SubTitle.TextTransparency = 1
+				topbar.SubTitle.Text = t.SubTitle
+				topbar.SubTitle.Visible = false
+				taskdelay(2, function()
+					topbar.SubTitle.Position = UDim2new(0, topbar.Title.TextBounds.X + 4 +( (t.Style == 3 and 24) or 0), 0, 0)
+					topbar.SubTitle.Visible = not t.ShowInNavigator
+					ui.Tween(topbar.SubTitle, {TextTransparency = 0}, TweenInfonew(0.75, sine, out))
+				end)
+				
+				navigator.Size = UDim2new(0, NAV_SIZE, 1, 0)
+				navigator.Position = UDim2new(0, -NAV_SIZE, 0, 0)
+				navigator.Icon.Visible = t.ShowInNavigator
+				navigator.Title.Visible = t.ShowInNavigator
+				navigator.SubTitle.Visible = t.ShowInNavigator
+				navigator.Title.Text = t.Title
+				navigator.SubTitle.Text = t.SubTitle
+				if t.ShowInNavigator then
+					topbar.SubTitle.Visible = false
+					navigator.Buttons.Position = UDim2new(0, 0, 0, 50)
+				end
+				if t.Icon ~= nil then
+					local img = t.Icon
+					local icon = navigator.Icon
+					if tonumber(img) ~= nil then
+						icon.Image = "rbxassetid://"..img
+					elseif type == "string" then
+						if img:find("rbxassetid://") then
+							icon.Image = img
+						elseif isfile(img) and (getcustomasset or getsynasset) then
+							icon.Image = (getcustomasset and getcustomasset(img)) or (getsynasset and getsynasset(img))
+						end
+					else
+						icon.Image = img
+					end
+				else
+					navigator.Icon.Visible = false
+					navigator.Title.Position = UDim2new(0, 8, 0, 5)
+					navigator.SubTitle.Position = UDim2new(0, 8, 0, 28)
+				end
+				
+				
 				menubtn.ImageTransparency = 1
 				minimize.BackgroundTransparency = 1
+				
 				tabs.Visible = false
 				pages.Visible = false
 				overlay.Visible = true
@@ -2431,49 +2724,57 @@ do -- uilib.uilib.UI
 					end
 				end
 				ui.SmoothDrag(topbar)
-
-				local style = t.Style
-				if style == 1 or style == 2 then
+				
+				if STYLE == 1 or STYLE == 2 then
 					menubtn.Visible = false
 					topbar.Title.Position = UDim2new(0, 0, 0, 0)
-					if style == 2 then
+					if STYLE == 2 then
 						pagetabs.Example.BackgroundColor3 = fromRGB(90, 90, 90)
 					end
-				elseif style == 3 then
+				elseif STYLE == 3 then
 					menubtn.Visible = true
 					tabs.Visible = false
 					pages.Size = UDim2new(1, 0, 1, 0)
+				elseif STYLE == 4 then
+					menubtn.Visible = false
+					banner.Size = UDim2new(1, -20 - NAV_SIZE, 0, 100)
+					UI_SIZE_X += NAV_SIZE
 				end
-
+				
 				task.spawn(function() -- loading animation
 					local fadeinfo = TweenInfonew(0.75, sine, out)
-					local info = {"Out", "Sine", 1.25}
+					local info = {"Out", "Sine", 1.25, true}
 					topbar:TweenSize(UDim2new(0, UI_SIZE_X, 0, 30), unpack(info))
 					main:TweenSize(UDim2new(0, UI_SIZE_X, 0, UI_SIZE_Y), unpack(info))
-
+					
 					taskwait(1.25)
 					ui.Tween(overlay, {BackgroundTransparency = 1}, TweenInfonew(0.5, sine, out))
 					ui.Tween(topbar.Title, {TextTransparency = 0}, fadeinfo)
 					ui.Tween(minimize, {BackgroundTransparency = 0}, fadeinfo)
-
-					if style == 3 then
-						ui.Tween(menubtn, {ImageTransparency = 0}, fadeinfo)
-						topbar.Title:TweenPosition(UDim2new(0, 24, 0, 0), "Out", "Sine", 0.75)
-					end
-
-					if style == 1 or style == 2 then
+					
+					if STYLE == 1 or STYLE == 2 then
 						tabs.Visible = true
 						tabs.Position = UDim2new(0, 10, 0, 35)
 						tabs:TweenPosition(UDim2new(0, 10, 0, 10), "Out", "Sine", 0.75)
+					elseif STYLE == 3 then
+						ui.Tween(menubtn, {ImageTransparency = 0}, fadeinfo)
+						topbar.Title:TweenPosition(UDim2new(0, 24, 0, 0), "Out", "Sine", 0.75)
+					elseif STYLE == 4 then
+						pages.Size = UDim2new(1, 0, 1, 0)
+						navigator.Line.Visible = false
+						main:TweenPosition(UDim2new(0.5, 0, 0, 30), unpack(info))
+						navigator:TweenPosition(UDim2new(0, 0, 0, 0), "Out", "Sine", 0.75)
+						pages:TweenPosition(UDim2new(0, NAV_SIZE, 1, 0), "Out", "Sine", 0.75)
+						pages:TweenSize(UDim2new(1, -NAV_SIZE, 1, 0))
 					end
-
+					
 					pages.Visible = true
 					pages.Position = UDim2new(0, 0, 1, 25)
 					pages:TweenPosition(UDim2new(0, 0, 1, 0), "Out", "Sine", 0.75)
 					taskwait(0.8)
 					UI_LOADED = true
 				end)
-
+				
 				local Minimized = false
 				minimize.Activated:Connect(function()
 					Minimized = not Minimized
@@ -2492,23 +2793,20 @@ do -- uilib.uilib.UI
 						fillmain.Visible = true
 					end
 				end)
-
+		
 				local Navigating = false
 				menubtn.Activated:Connect(function()
 					Navigating = not Navigating
-					if Navigating then
-						navigator:TweenPosition(UDim2new(0, 0, 0, 0), "Out", "Sine", 0.2, true)
-					else
-						navigator:TweenPosition(UDim2new(0, -160, 0, 0), "Out", "Sine", 0.2, true)
-					end
+					navigator:TweenPosition(UDim2new(0, (not Navigating and -NAV_SIZE) or 0, 0, 0), "Out", "Sine", 0.2, true)
 					ui.Dim1(Navigating, main)
 				end)
-
-
-
+				
+				
+				
 				local UI = {}
-
+				
 				local PAGE_INDEX = 0
+				local OPEN_PAGE_INFO = TweenInfonew(0.2, sine, out)
 				function UI.OpenPage(t)
 					for _,v in next, pages:GetChildren() do
 						if v:IsA("ScrollingFrame") then
@@ -2517,7 +2815,8 @@ do -- uilib.uilib.UI
 					end
 					for _,v in next, pagebtns:GetChildren() do
 						if v:IsA("TextButton") then
-							ui.Tween(v.Line, {BackgroundColor3 = (v.Name == t and fromRGB(120, 120, 120)) or fromRGB(75, 75, 75)}, TweenInfonew(0.2, sine, out))
+							ui.Tween(v.Line, {BackgroundColor3 = (v.Name == t and fromRGB(120, 120, 120)) or fromRGB(75, 75, 75)}, OPEN_PAGE_INFO)
+							ui.Tween(v, {TextTransparency = (v.Name == t and 0) or 0.4}, OPEN_PAGE_INFO)
 						end
 					end
 				end
@@ -2531,7 +2830,7 @@ do -- uilib.uilib.UI
 							title = t.." "..PAGE_INDEX..""
 						end
 					end
-
+					
 					local discriminator = ""
 					if pages:FindFirstChild("PAGE_"..title) then
 						discriminator = "_"
@@ -2539,14 +2838,16 @@ do -- uilib.uilib.UI
 							discriminator = discriminator..string.char(math.random(97, 122))
 						end
 					end
-
+					
 					local function open()
 						UI.OpenPage("PAGE_"..title..discriminator)
-						navigator:TweenPosition(UDim2new(0, -160, 0, 0), "Out", "Sine", 0.2, true)
+						if STYLE ~= 4 and STYLE ~= 5 then
+							navigator:TweenPosition(UDim2new(0, -NAV_SIZE, 0, 0), "Out", "Sine", 0.2, true)
+						end
 						Navigating = false
 						ui.Dim1(false, main)
 					end
-
+		
 					local newnav = pagebtns.Example:Clone()
 					newnav.Visible = true
 					newnav.Parent = pagebtns
@@ -2554,7 +2855,7 @@ do -- uilib.uilib.UI
 					newnav.Text = title
 					newnav.Activated:Connect(open)
 					pagebtns.CanvasSize = UDim2new(0, 0, 0, pagebtns.UIListLayout.AbsoluteContentSize.Y + 3)
-
+					
 					local img = t.ImageId or t.ImageID
 					if img ~= nil then
 						local type = typeof(img)
@@ -2570,7 +2871,7 @@ do -- uilib.uilib.UI
 							end
 						end
 						newnav.UIPadding.PaddingLeft = UDim.new(0, 38)
-
+						
 						local size = t.ImageSize
 						if size ~= nil then
 							local x = clamp(size.X, 0, 30)
@@ -2579,7 +2880,7 @@ do -- uilib.uilib.UI
 							newnav.Icon.Position = UDim2new(0, -34 + ((30 - x) / 2), 0, (30 - y) / 2)
 						end
 					end
-
+					
 					local newtab = pagetabs.Example:Clone()
 					newtab.Visible = true
 					newtab.Parent = pagetabs
@@ -2589,25 +2890,26 @@ do -- uilib.uilib.UI
 					newtab.Activated:Connect(open)
 					ui.Ripple(newtab)
 					pagetabs.CanvasSize = UDim2new(0, pagetabs.UIListLayout.AbsoluteContentSize.X, 0, 0)
-
+		
 					local newpage = ex:Clone()
 					newpage.Parent = pages
 					newpage.Visible = FIRST_PAGE
 					newpage.Name = "PAGE_"..title..discriminator
-
+					
 					if FIRST_PAGE then
 						FIRST_PAGE = false
 						FIRST_PAGE_OBJ = newpage
+						newnav.TextTransparency = 0
 						newnav.Line.BackgroundColor3 = fromRGB(120, 120, 120)
 					end
-
+					
 					for _,v in next, newpage:GetChildren() do
 						if not v:IsA("UIListLayout") then
 							v.Visible = false
 						end
 					end
-
-
+					
+		
 					local function newfunc(name)
 						return function(t)
 							return ui[name](t, newpage, ex)
@@ -2632,7 +2934,7 @@ do -- uilib.uilib.UI
 							newpage:Destroy()
 						end,
 					}
-
+					
 					return funcs
 				end
 				function UI.Toggle(vis)
@@ -2642,38 +2944,41 @@ do -- uilib.uilib.UI
 						topbar.Visible = not topbar.Visible
 					end
 				end
-
-				UI.New = UI.new
-				UI.Banner = function(t)
-					return ui.Banner(t, main)
+				function UI.Banner(t)
+					return ui.Banner(t, main, STYLE, NAV_SIZE)
 				end
-
+				function UI.Notify(t)
+					
+				end
+		
+				UI.New = UI.new
+				
 				return UI
 			end
 		end
-
+		
 		do -- Button
 			function ui.Button(t, p, ex)
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("Button", t)
-
+		
 				local new = ex.Button:Clone()
 				new.Name = "Button#"..id
 				new.Parent = p or ex
 				new.Visible = true
 				new.Text = t.Text
 				new.Activated:Connect(t.Callback)
-
+				
 				ui.Ripple(new)
 				ui.UpdateCanvasSize(p or ex)
-
+				
 				if t.Menu ~= nil then
 					ui.InitMenu(t.Menu, new, {})
 				end
-
+				
 				local a = {Destroyed = false}
-
+				
 				function a:SetText(text)
 					if a.Destroyed then return end
 					new.Text = text
@@ -2691,19 +2996,19 @@ do -- uilib.uilib.UI
 					new:Destroy()
 					a.Destroyed = true
 				end
-
+				
 				return a
 			end
 		end
-
+		
 		do -- Toggle
 			function ui.Toggle(t, p, ex)
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("Toggle", t)
-
+		
 				local toggled = t.Enabled
-
+		
 				local new = ex.Toggle:Clone()
 				local toggle = new.Toggle
 				new.Name = "Toggle#"..id
@@ -2720,17 +3025,17 @@ do -- uilib.uilib.UI
 						toggle.Indicator:TweenPosition(ToggleOff, "Out", "Sine", 0.15, true)
 					end
 				end)
-
+				
 				ui.Ripple(new)
 				ui.UpdateCanvasSize(p or ex)
 				t.Callback(toggled)
-
+				
 				if t.Menu ~= nil then
 					ui.InitMenu(t.Menu, new, {new.Toggle})
 				end
-
+				
 				local a = {Destroyed = false}
-
+				
 				function a:SetText(text)
 					if a.Destroyed then return end
 					new.Text = text
@@ -2758,22 +3063,22 @@ do -- uilib.uilib.UI
 					new:Destroy()
 					a.Destroyed = true
 				end
-
+		
 				return a
 			end
 		end
-
+		
 		do -- Dropdown
 			function ui.Dropdown(t, p, ex)
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("Dropdown", t)
-
+				
 				local toggled = false
 				local options = t.Options
 				local amount = #options
 				local selected = t.Def
-
+				
 				local new = ex.Dropdown:Clone()
 				local dropdown = new.Dropdown
 				new.Name = "Dropdown#"..id
@@ -2781,7 +3086,7 @@ do -- uilib.uilib.UI
 				new.Visible = true
 				new.Label.Text = t.Text
 				new.Option.Text = t.Def
-
+				
 				local function refresh()
 					for _,v in next, dropdown:GetChildren() do
 						if v:IsA("TextButton") and v.Name ~= "Option" then
@@ -2801,7 +3106,7 @@ do -- uilib.uilib.UI
 								ui.UpdateCanvasSize(p or ex)
 								t.Callback(v)
 							end)
-
+		
 							ui.Ripple(new2)
 						end
 					end
@@ -2811,7 +3116,7 @@ do -- uilib.uilib.UI
 					end
 				end
 				refresh()
-
+				
 				local list = dropdown.UIListLayout
 				new.Button.Activated:Connect(function()
 					toggled = not toggled
@@ -2826,17 +3131,17 @@ do -- uilib.uilib.UI
 					end
 					ui.UpdateCanvasSize(new.Parent)
 				end)
-
+				
 				ui.Ripple(new.Button, new.RippleHolder)
 				ui.UpdateCanvasSize(p or ex)
 				--t.Callback(selected)]]
-
+				
 				if t.Menu ~= nil then
 					ui.InitMenu(t.Menu, new, {new.Option, new.Indicator})
 				end
-
+				
 				local a = {Destroyed = false}
-
+		
 				function a:SetText(text)
 					if a.Destroyed then return end
 					new.Label.Text = text
@@ -2864,19 +3169,19 @@ do -- uilib.uilib.UI
 					new:Destroy()
 					a.Destroyed = false
 				end
-
+		
 				return a
 			end
 		end
-
+		
 		do -- Text Box / Text Field
 			function ui.TextBox(t, p, ex)
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("TextBox", t)
-
+				
 				local type = t.Type:lower()
-
+				
 				local new = ex.TextBox:Clone()
 				local hidden = new.Hidden
 				new.Name = "TextBox#"..id
@@ -2901,16 +3206,16 @@ do -- uilib.uilib.UI
 				hidden.FocusLost:Connect(function()
 					t.Callback(hidden.Text)
 				end)
-
+				
 				ui.Focus(hidden, new)
 				ui.UpdateCanvasSize(p or ex)
-
+				
 				if t.Menu ~= nil then
 					ui.InitMenu(t.Menu, new, {})
 				end
-
+				
 				local a = {Destroyed = false}
-
+		
 				function a:SetText(text)
 					if a.Destroyed then return end
 					new.PlaceholderText = text
@@ -2928,17 +3233,17 @@ do -- uilib.uilib.UI
 					new:Destroy()
 					a.Destroyed = true
 				end
-
+		
 				return a
 			end
 		end
-
+		
 		do -- Label
 			function ui.Label(t, p, ex)
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("Label", t)
-
+				
 				local new = ex.Label:Clone()
 				new.Name = "Label#"..id
 				new.Parent = p or ex
@@ -2951,11 +3256,11 @@ do -- uilib.uilib.UI
 						args[i] = tostring(v)
 						print(typeof(args[i]))
 					end
-
+					
 					local suc, str = pcall(function()
 						return table.concat(args, " ")
 					end)
-
+					
 					if suc and str then
 						new.Text = str
 					else
@@ -2963,15 +3268,15 @@ do -- uilib.uilib.UI
 						error("Failed to convert value to string on Label #"..id)
 					end
 				end)
-
+				
 				ui.UpdateCanvasSize(p or ex)
-
+				
 				if t.Menu ~= nil then
 					ui.InitMenu(t.Menu, new, {})
 				end
-
+				
 				local a = {Destroyed = false}
-
+		
 				function a:SetText(text)
 					if a.Destroyed then return end
 					new.Text = text
@@ -2989,15 +3294,15 @@ do -- uilib.uilib.UI
 					new:Destroy()
 					a.Destroyed = true
 				end
-
+		
 				return a
 			end
 		end
-
+		
 		do -- Slider
 			local SLIDER_TWEEN_TIME = 0.05
 			local SLIDER_SET_TWEEN_TIME = 0.4
-
+			
 			function ui.SetSliderValue(s, value, t)
 				task.spawn(function()
 					repeat
@@ -3008,7 +3313,7 @@ do -- uilib.uilib.UI
 					local indicator = bar.Indicator
 					local max = t.Max or 100
 					local pre, suf = t.Prefix or "", t.Suffix or ""
-
+		
 					local pos = UDim2new(0, clamp(bar.AbsoluteSize.X / (max / value), 0, bar.AbsoluteSize.X), 0.5, 0)
 					if t.Tween then
 						indicator:TweenPosition(pos, "Out", "Sine", SLIDER_SET_TWEEN_TIME, true)
@@ -3031,16 +3336,16 @@ do -- uilib.uilib.UI
 				local max = t.Max or 100
 				local lastvalue = nil
 				local lastpercent = nil
-
+				
 				local pre, suf = t.Prefix or "", t.Suffix or ""
-
+				
 				local conn;conn = slider.MouseButton1Down:Connect(function()
 					mousedown = true
 					while true do
 						if not mousedown then break end
-
+						
 						local pos = clamp(mouse.X - bar.AbsolutePosition.X, 0, bar.AbsoluteSize.X)
-
+						
 						indicator.Position = UDim2new(
 							0,
 							clamp(mouse.X - bar.AbsolutePosition.X, 0, bar.AbsoluteSize.X),
@@ -3052,7 +3357,7 @@ do -- uilib.uilib.UI
 						local percent = (value / max)
 						indicator.AnchorPoint = Vector2new(percent, 0.5)
 						s.Value.Text = pre..value..suf
-
+		
 						lastvalue = value
 						lastpercent = percent
 						taskwait()
@@ -3064,12 +3369,12 @@ do -- uilib.uilib.UI
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("Slider", t)
-
+				
 				local toggled = t.Enabled
 				local def, min, max = t.Def, t.Min, t.Max
 				local lastvalue = t.Def
 				local pre, suf = t.Prefix, t.Suffix
-
+				
 				local new = ex.Slider:Clone()
 				local toggle = new.Toggle
 				local indicator = toggle.Indicator
@@ -3081,14 +3386,14 @@ do -- uilib.uilib.UI
 				new.Visible = true
 				new.Label.Text = t.Text
 				new.Value.Text = t.Def
-
+				
 				ui.SetSliderValue(new, def, t)
 				ui.UpdateCanvasSize(p or ex)
-
+				
 				if t.Menu ~= nil then
 					ui.InitMenu(t.Menu, new, (t.Toggle and t.Enabled and {new.Value, new.Toggle}) or {new.Value})
 				end
-
+				
 				-- toggle stuff
 				if not t.Toggle then
 					toggle.Visible = false
@@ -3107,33 +3412,33 @@ do -- uilib.uilib.UI
 						end
 					end)
 				end
-
+				
 				t.Tween = true
 				val.FocusLost:Connect(function()
 					local a = val.Text:gsub("%a%p%s%c%x%z", "")
 					if a == "" then return end
-
+					
 					local value = a:gsub("%D", "")
 					value = tonumber(value)
-
+					
 					if a:sub(#a, #a) == "%" then
 						value = max * (value / 100)
 					end
-
+					
 					value = clamp(value, min, max)
 					t.Callback(value)
 					ui.SetSliderValue(new, value, t)
 				end)
-
+				
 				-- slider stuff
 				ui.InitSlider(new, t, function(self, value, percent)
 					lastvalue = (t.ReturnWithAffixes and pre..value..suf) or (t.ReturnAsPercent and percent * 100) or value 
 					val.Text = value
 					t.Callback(lastvalue)
 				end)
-
+				
 				local a = {Destroyed = false}
-
+		
 				function a:SetText(text)
 					if a.Destroyed then return end
 					new.Label.Text = text
@@ -3167,11 +3472,11 @@ do -- uilib.uilib.UI
 					new:Destroy()
 					a.Destroyed = true
 				end
-
+		
 				return a
 			end
 		end
-
+		
 		do -- Color Picker
 			function ui.SetPickerPreview(s, color, tween)
 				s.Color.Text = format("%s, %s, %s", floor(color.R * 255), floor(color.G * 255), floor(color.B * 255))
@@ -3189,15 +3494,15 @@ do -- uilib.uilib.UI
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("ColorPicker", t)
-
+				
 				if t.Default ~= nil then
 					t.Def = t.Default
 				end
-
+		
 				local toggled = false
 				local color = t.Def
 				local hue, sat, val = color:ToHSV()
-
+		
 				local new = ex.ColorPicker:Clone()
 				local picker = new.Picker
 				new.Name = "ColorPicker#"..id
@@ -3206,11 +3511,11 @@ do -- uilib.uilib.UI
 				new.Label.Text = t.Text
 				new.Color.Text = format("%s, %s, %s", floor(color.R * 255), floor(color.G * 255), floor(color.B * 255))
 				new.Preview.BackgroundColor3 = color
-
+				
 				ui.SetSliderValue(picker.Hue, floor(hue * 360), {Max = 360})
 				ui.SetSliderValue(picker.Saturation, floor(sat * 100))
 				ui.SetSliderValue(picker.Value, floor(val * 100))
-
+				
 				-- dropdown
 				new.Button.Activated:Connect(function()
 					toggled = not toggled
@@ -3223,7 +3528,7 @@ do -- uilib.uilib.UI
 					end
 					ui.UpdateCanvasSize(new.Parent)
 				end)
-
+				
 				-- HSV bars
 				ui.InitSlider(picker.Hue, {Max = 360}, function(_, value, percent)
 					hue = percent
@@ -3240,7 +3545,7 @@ do -- uilib.uilib.UI
 					ui.SetPickerPreview(new, fromHSV(hue, sat, val), false)
 					t.Callback(fromHSV(hue, sat, val))
 				end)
-
+				
 				-- custom section
 				local hex = picker.Custom.HEX
 				local rgb = picker.Custom.RGB
@@ -3268,18 +3573,18 @@ do -- uilib.uilib.UI
 				rainbow.Activated:Connect(function()
 					rgbenabled = not rgbenabled
 				end)
-
+				
 				ui.Ripple(new.Button, new.RippleHolder)
 				ui.Ripple(picker.Custom.Rainbow)
 				ui.Focus(picker.Custom.HEX)
 				ui.Focus(picker.Custom.RGB)
 				ui.UpdateCanvasSize(p or ex)
 				t.Callback(color)
-
+				
 				if t.Menu ~= nil then
 					ui.InitMenu(t.Menu, new, {new.Color, new.Preview})
 				end
-
+				
 				task.spawn(function()
 					while true do
 						if rgbenabled then
@@ -3290,9 +3595,9 @@ do -- uilib.uilib.UI
 						taskwait()
 					end
 				end)
-
+				
 				local a = {Destroyed = false}
-
+		
 				function a:SetText(text)
 					if a.Destroyed then return end
 					new.Label.Text = text
@@ -3321,44 +3626,48 @@ do -- uilib.uilib.UI
 					new:Destroy()
 					a.Destroyed = true
 				end
-
+		
 				return a
 			end
 		end
-
+		
 		do -- Keybind
 			local ignore = {
 				"None",
 				"MouseMovement",
 				"Focus"
 			}
+			function ui.SetBindLabel(b, bind)
+				b.Bind.Label.Text = (typeof(bind) == "EnumItem" and bind.Name) or bind
+				b.Bind:TweenSize(UDim2new(0, b.Bind.Label.TextBounds.X + 26, 0, 20), "Out", "Sine", 0.125, true)
+			end
 			function ui.Keybind(t, p, ex)
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("Keybind", t)
-
+				
 				local listening = false
 				local keybind = t.Def
-
+		
 				local new = ex.Keybind:Clone()
 				new.Name = "Keybind#"..id
 				new.Parent = p or ex
 				new.Visible = true
 				new.Text = t.Text
-				new.Bind.Text = keybind.Name
-
+				ui.SetBindLabel(new, keybind)
+				
 				new.Activated:Connect(function()
 					if not listening then
 						listening = true
-						new.Bind.Text = "..."
-
+						ui.SetBindLabel(new, ". . .")
+						
 						local conn;conn = uis.InputBegan:Connect(function(i)
 							local keyboard = i.UserInputType.Name == "Keyboard"
 							local mouse = i.UserInputType.Name:find("Mouse")
 							local bind = (keyboard and i.KeyCode) or (mouse and i.UserInputType)
 							if (t.AllowKeyboard and keyboard and i.KeyCode.Name ~= "Unknown") or (t.AllowMouse and mouse and not table.find(ignore, i.UserInputType.Name)) then
 								t.Callback(bind)
-								new.Bind.Text = bind.Name
+								ui.SetBindLabel(new, bind)
 								keybind = bind
 								listening = false
 								conn:Disconnect()
@@ -3366,17 +3675,17 @@ do -- uilib.uilib.UI
 						end)
 					end
 				end)
-
+				
 				ui.Ripple(new)
 				ui.UpdateCanvasSize(p or ex)
 				t.Callback(t.Def)
-
+				
 				if t.Menu ~= nil then
 					ui.InitMenu(t.Menu, new, {new.Bind})
 				end
-
+				
 				local a = {Destroyed = false}
-
+		
 				function a:SetText(text)
 					if a.Destroyed then return end
 					new.Text = text
@@ -3392,7 +3701,7 @@ do -- uilib.uilib.UI
 				function a:SetBind(value)
 					if a.Destroyed then return end
 					keybind = value
-					new.Bind.Text = value.Name
+					new.Bind.Label.Text = value.Name
 					t.Callback(value)
 				end
 				function a:GetBind()
@@ -3404,35 +3713,35 @@ do -- uilib.uilib.UI
 					new:Destroy()
 					a.Destroyed = true
 				end
-
+		
 				return a
 			end
 		end
-
+		
 		do -- Chip Set / Data Table
 			function ui.ChipSet(t, p, ex)
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("ChipSet", t)
-
+		
 				local toggled = false
 				local amount = 0
 				local data = t.Options
-
+				
 				for _,_ in next, t.Options do
 					amount += 1
 				end
 				table.sort(t.Options, function(a,b)
 					return a < b
 				end)
-
+		
 				local new = ex.ChipSet:Clone()
 				local dropdown = new.Dropdown
 				new.Name = "ChipSet#"..id
 				new.Parent = p or ex
 				new.Visible = true
 				new.Label.Text = t.Text
-
+				
 				local function refresh()
 					for _,v in next, dropdown:GetChildren() do
 						if v:IsA("Frame") and v.Name ~= "Option" then
@@ -3464,10 +3773,10 @@ do -- uilib.uilib.UI
 							end
 							new2.Enabled.Activated:Connect(activated)
 							new2.Button.Activated:Connect(activated)
-
+		
 							ui.Ripple(new2.Enabled, new2.Button)
 							ui.Ripple(new2.Button)
-
+							
 							if menu then
 								ui.InitMenu(v.Menu, new2, {})
 							end
@@ -3479,7 +3788,7 @@ do -- uilib.uilib.UI
 					end
 				end
 				refresh()
-
+		
 				local list = dropdown.UIListLayout
 				new.Button.Activated:Connect(function()
 					toggled = not toggled
@@ -3494,17 +3803,17 @@ do -- uilib.uilib.UI
 					end
 					ui.UpdateCanvasSize(new.Parent)
 				end)
-
+				
 				ui.UpdateCanvasSize(p or ex)
 				ui.Ripple(new.Button, new.RippleHolder)
 				t.Callback(data)
-
+				
 				if t.Menu ~= nil then
 					ui.InitMenu(t.Menu, new, {new.Indicator})
 				end
-
+				
 				local a = {Destroyed = false}
-
+		
 				function a:SetText(text)
 					if a.Destroyed then return end
 					new.Label.Text = text
@@ -3539,28 +3848,28 @@ do -- uilib.uilib.UI
 					new:Destroy()
 					a.Destroyed = true
 				end
-
+		
 				return a
 			end
 		end
-
+		
 		do -- Table
 			function ui.Table(t, p, ex)
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("Table", t)
-
+		
 				local toggled = false
 				local data = t.Data
 				local amount = 0
-
+				
 				for _,_ in next, data do
 					amount += 1
 				end
 				table.sort(data, function(a,b)
 					return a < b
 				end)
-
+		
 				local new = ex.Table:Clone()
 				local dropdown = new.Dropdown
 				new.Name = "Table#"..id
@@ -3570,7 +3879,7 @@ do -- uilib.uilib.UI
 				dropdown.Info.Visible = t.ShowInfo
 				dropdown.Info.Key.Text = t.Key
 				dropdown.Info.Value.Text = t.Value
-
+		
 				local function refresh()
 					for _,v in next, dropdown:GetChildren() do
 						if v:IsA("Frame") and v.Name ~= "Info" then
@@ -3593,7 +3902,7 @@ do -- uilib.uilib.UI
 					end
 				end
 				refresh()
-
+		
 				local list = dropdown.UIListLayout
 				new.Button.Activated:Connect(function()
 					toggled = not toggled
@@ -3608,16 +3917,16 @@ do -- uilib.uilib.UI
 					end
 					ui.UpdateCanvasSize(new.Parent)
 				end)
-
+		
 				ui.Ripple(new.Button, new.RippleHolder)
 				ui.UpdateCanvasSize(p or ex)
-
+		
 				if t.Menu ~= nil then
 					ui.InitMenu(t.Menu, new, {new.Option, new.Indicator})
 				end
-
+		
 				local a = {Destroyed = false}
-
+		
 				function a:SetText(text)
 					if a.Destroyed then return end
 					new.Label.Text = text
@@ -3651,11 +3960,11 @@ do -- uilib.uilib.UI
 					new:Destroy()
 					a.Destroyed = true
 				end
-
+		
 				return a
 			end
 		end
-
+		
 		return ui
 	end
 	fake_module_scripts[script] = module_script
