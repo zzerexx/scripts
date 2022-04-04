@@ -2810,7 +2810,7 @@ do -- uilib.uilib.UI
 				function UI.OpenPage(t)
 					for _,v in next, pages:GetChildren() do
 						if v:IsA("ScrollingFrame") then
-							v.Visible = (v.Name == t and true) or false
+							v.Visible = (v.Name == t and true) or (v.Name == "PAGE_"..t and true) or false
 						end
 					end
 					for _,v in next, pagebtns:GetChildren() do
@@ -2952,6 +2952,7 @@ do -- uilib.uilib.UI
 				end
 		
 				UI.New = UI.new
+				UI.UI = new
 				
 				return UI
 			end
