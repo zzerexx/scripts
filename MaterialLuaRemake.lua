@@ -1,5 +1,8 @@
-local uilib = {
-	uilib = Instance.new("ScreenGui"),
+if getgenv().MLRemake ~= nil then
+	return MLRemake
+end
+local MLRemake = {
+	MLRemake = Instance.new("ScreenGui"),
 	Topbar = Instance.new("Frame"),
 	Main = Instance.new("Frame"),
 	UICorner = Instance.new("UICorner"),
@@ -74,9 +77,10 @@ local uilib = {
 	Indicator_4 = Instance.new("Frame"),
 	UICorner_17 = Instance.new("UICorner"),
 	Button_3 = Instance.new("TextButton"),
-	Value = Instance.new("TextBox"),
+	Input = Instance.new("TextBox"),
 	UICorner_18 = Instance.new("UICorner"),
 	Menu_6 = Instance.new("ImageButton"),
+	Value = Instance.new("TextLabel"),
 	ColorPicker = Instance.new("Frame"),
 	UIPadding_11 = Instance.new("UIPadding"),
 	UICorner_19 = Instance.new("UICorner"),
@@ -245,1816 +249,1831 @@ local uilib = {
 local library
 
 if syn then
-	syn.protect_gui(uilib.uilib)
+	syn.protect_gui(MLRemake.MLRemake)
 end
 
-uilib.uilib.Name = "uilib"
-uilib.uilib.Parent = (gethui and gethui()) or (get_hidden_ui and get_hidden_ui()) or game.CoreGui
-
-uilib.Topbar.Name = "Topbar"
-uilib.Topbar.Parent = uilib.uilib
-uilib.Topbar.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-uilib.Topbar.BorderSizePixel = 0
-uilib.Topbar.Position = UDim2.new(0, 375, 0, 45)
-uilib.Topbar.Size = UDim2.new(0, 400, 0, 30)
-uilib.Topbar.ZIndex = 5
-
-uilib.Main.Name = "Main"
-uilib.Main.Parent = uilib.Topbar
-uilib.Main.AnchorPoint = Vector2.new(0.5, 0)
-uilib.Main.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-uilib.Main.BorderSizePixel = 0
-uilib.Main.ClipsDescendants = true
-uilib.Main.Position = UDim2.new(0.5, 0, 0, 30)
-uilib.Main.Size = UDim2.new(0, 400, 0, 490)
-uilib.Main.ZIndex = 0
-
-uilib.UICorner.CornerRadius = UDim.new(0, 4)
-uilib.UICorner.Parent = uilib.Main
-
-uilib.Navigator.Name = "Navigator"
-uilib.Navigator.Parent = uilib.Main
-uilib.Navigator.BackgroundColor3 = Color3.fromRGB(55, 55, 55)
-uilib.Navigator.BorderSizePixel = 0
-uilib.Navigator.Position = UDim2.new(0, -200, 0, 0)
-uilib.Navigator.Size = UDim2.new(0, 200, 1, 0)
-uilib.Navigator.ZIndex = 8
-
-uilib.UICorner_2.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_2.Parent = uilib.Navigator
-
-uilib.Buttons.Name = "Buttons"
-uilib.Buttons.Parent = uilib.Navigator
-uilib.Buttons.Active = true
-uilib.Buttons.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Buttons.BackgroundTransparency = 1.000
-uilib.Buttons.BorderSizePixel = 0
-uilib.Buttons.Size = UDim2.new(1, 0, 1, 0)
-uilib.Buttons.ZIndex = 8
-uilib.Buttons.CanvasSize = UDim2.new(0, 0, 0, 0)
-uilib.Buttons.ScrollBarThickness = 0
-
-uilib.UIListLayout.Parent = uilib.Buttons
-uilib.UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-
-uilib.Example.Name = "Example"
-uilib.Example.Parent = uilib.Buttons
-uilib.Example.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Example.BackgroundTransparency = 1.000
-uilib.Example.BorderSizePixel = 0
-uilib.Example.Size = UDim2.new(1, 0, 0, 30)
-uilib.Example.Visible = false
-uilib.Example.ZIndex = 8
-uilib.Example.AutoButtonColor = false
-uilib.Example.Font = Enum.Font.Gotham
-uilib.Example.Text = "Page"
-uilib.Example.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Example.TextSize = 14.000
-uilib.Example.TextTransparency = 0.400
-uilib.Example.TextXAlignment = Enum.TextXAlignment.Left
-
-uilib.UIPadding.Parent = uilib.Example
-uilib.UIPadding.PaddingLeft = UDim.new(0, 8)
-
-uilib.Selection.Name = "Selection"
-uilib.Selection.Parent = uilib.Example
-uilib.Selection.AnchorPoint = Vector2.new(0, 0.5)
-uilib.Selection.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
-uilib.Selection.BackgroundTransparency = 0.500
-uilib.Selection.BorderSizePixel = 0
-uilib.Selection.Position = UDim2.new(0, -5, 0.5, 0)
-uilib.Selection.Size = UDim2.new(1, 1, 1, -5)
-uilib.Selection.Visible = false
-uilib.Selection.ZIndex = 8
-
-uilib.UICorner_3.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_3.Parent = uilib.Selection
-
-uilib.Line.Name = "Line"
-uilib.Line.Parent = uilib.Example
-uilib.Line.AnchorPoint = Vector2.new(0, 1)
-uilib.Line.BackgroundColor3 = Color3.fromRGB(75, 75, 75)
-uilib.Line.BorderSizePixel = 0
-uilib.Line.Position = UDim2.new(0, 0, 1, 0)
-uilib.Line.Size = UDim2.new(1, -8, 0, 1)
-uilib.Line.ZIndex = 8
-
-uilib.Icon.Name = "Icon"
-uilib.Icon.Parent = uilib.Example
-uilib.Icon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Icon.BackgroundTransparency = 1.000
-uilib.Icon.BorderSizePixel = 0
-uilib.Icon.Position = UDim2.new(0, -34, 0, 0)
-uilib.Icon.Size = UDim2.new(0, 30, 0, 30)
-uilib.Icon.Visible = false
-uilib.Icon.ZIndex = 8
-uilib.Icon.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png"
-
-uilib.Fill.Name = "Fill"
-uilib.Fill.Parent = uilib.Navigator
-uilib.Fill.AnchorPoint = Vector2.new(1, 0)
-uilib.Fill.BackgroundColor3 = Color3.fromRGB(55, 55, 55)
-uilib.Fill.BorderSizePixel = 0
-uilib.Fill.Position = UDim2.new(1, 0, 0, 0)
-uilib.Fill.Size = UDim2.new(0, 5, 1, 0)
-uilib.Fill.ZIndex = 7
-
-uilib.Line_2.Name = "Line"
-uilib.Line_2.Parent = uilib.Navigator
-uilib.Line_2.AnchorPoint = Vector2.new(1, 0)
-uilib.Line_2.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
-uilib.Line_2.BorderSizePixel = 0
-uilib.Line_2.Position = UDim2.new(1, 0, 0, 0)
-uilib.Line_2.Size = UDim2.new(0, 1, 1, 0)
-uilib.Line_2.ZIndex = 7
-
-uilib.Title.Name = "Title"
-uilib.Title.Parent = uilib.Navigator
-uilib.Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Title.BackgroundTransparency = 1.000
-uilib.Title.BorderSizePixel = 0
-uilib.Title.Position = UDim2.new(0, 50, 0, 5)
-uilib.Title.Size = UDim2.new(1, -50, 0, 20)
-uilib.Title.ZIndex = 8
-uilib.Title.Font = Enum.Font.GothamSemibold
-uilib.Title.Text = "Material Lua"
-uilib.Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Title.TextSize = 16.000
-uilib.Title.TextXAlignment = Enum.TextXAlignment.Left
-
-uilib.Icon_2.Name = "Icon"
-uilib.Icon_2.Parent = uilib.Navigator
-uilib.Icon_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Icon_2.BorderSizePixel = 0
-uilib.Icon_2.Position = UDim2.new(0, 5, 0, 5)
-uilib.Icon_2.Size = UDim2.new(0, 40, 0, 40)
-uilib.Icon_2.ZIndex = 8
-uilib.Icon_2.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png"
-
-uilib.SubTitle.Name = "SubTitle"
-uilib.SubTitle.Parent = uilib.Navigator
-uilib.SubTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.SubTitle.BackgroundTransparency = 1.000
-uilib.SubTitle.BorderSizePixel = 0
-uilib.SubTitle.Position = UDim2.new(0, 50, 0, 28)
-uilib.SubTitle.Size = UDim2.new(1, -50, 0, 20)
-uilib.SubTitle.ZIndex = 8
-uilib.SubTitle.Font = Enum.Font.Gotham
-uilib.SubTitle.Text = "Remake Version"
-uilib.SubTitle.TextColor3 = Color3.fromRGB(150, 150, 150)
-uilib.SubTitle.TextSize = 14.000
-uilib.SubTitle.TextXAlignment = Enum.TextXAlignment.Left
-uilib.SubTitle.TextYAlignment = Enum.TextYAlignment.Top
-
-uilib.Pages.Name = "Pages"
-uilib.Pages.Parent = uilib.Main
-uilib.Pages.AnchorPoint = Vector2.new(0, 1)
-uilib.Pages.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Pages.BackgroundTransparency = 1.000
-uilib.Pages.BorderSizePixel = 0
-uilib.Pages.Position = UDim2.new(0, 0, 1, 0)
-uilib.Pages.Size = UDim2.new(1, 0, 1, -35)
-uilib.Pages.ZIndex = 0
-
-uilib.UIPadding_2.Parent = uilib.Pages
-uilib.UIPadding_2.PaddingBottom = UDim.new(0, 10)
-uilib.UIPadding_2.PaddingLeft = UDim.new(0, 10)
-uilib.UIPadding_2.PaddingRight = UDim.new(0, 10)
-uilib.UIPadding_2.PaddingTop = UDim.new(0, 10)
-
-uilib.Example_2.Name = "Example"
-uilib.Example_2.Parent = uilib.Pages
-uilib.Example_2.Active = true
-uilib.Example_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Example_2.BackgroundTransparency = 1.000
-uilib.Example_2.BorderSizePixel = 0
-uilib.Example_2.Size = UDim2.new(1, 0, 1, 0)
-uilib.Example_2.CanvasSize = UDim2.new(0, 0, 0, 0)
-uilib.Example_2.ScrollBarThickness = 0
-
-uilib.Button.Name = "Button"
-uilib.Button.Parent = uilib.Example_2
-uilib.Button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-uilib.Button.BorderSizePixel = 0
-uilib.Button.Size = UDim2.new(1, 0, 0, 30)
-uilib.Button.ZIndex = 2
-uilib.Button.AutoButtonColor = false
-uilib.Button.Font = Enum.Font.Gotham
-uilib.Button.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Button.TextSize = 14.000
-uilib.Button.TextXAlignment = Enum.TextXAlignment.Left
-
-uilib.UICorner_4.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_4.Parent = uilib.Button
-
-uilib.UIPadding_3.Parent = uilib.Button
-uilib.UIPadding_3.PaddingLeft = UDim.new(0, 8)
-uilib.UIPadding_3.PaddingRight = UDim.new(0, 10)
-
-uilib.Menu.Name = "Menu"
-uilib.Menu.Parent = uilib.Button
-uilib.Menu.AnchorPoint = Vector2.new(1, 0)
-uilib.Menu.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Menu.BackgroundTransparency = 1.000
-uilib.Menu.BorderSizePixel = 0
-uilib.Menu.Position = UDim2.new(1, 0, 0, 5)
-uilib.Menu.Size = UDim2.new(0, 20, 0, 20)
-uilib.Menu.Visible = false
-uilib.Menu.ZIndex = 3
-uilib.Menu.Image = "http://www.roblox.com/asset/?id=9147554930"
-
-uilib.UIListLayout_2.Parent = uilib.Example_2
-uilib.UIListLayout_2.SortOrder = Enum.SortOrder.LayoutOrder
-uilib.UIListLayout_2.Padding = UDim.new(0, 5)
-
-uilib.Toggle.Name = "Toggle"
-uilib.Toggle.Parent = uilib.Example_2
-uilib.Toggle.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-uilib.Toggle.BorderSizePixel = 0
-uilib.Toggle.Size = UDim2.new(1, 0, 0, 30)
-uilib.Toggle.ZIndex = 2
-uilib.Toggle.AutoButtonColor = false
-uilib.Toggle.Font = Enum.Font.Gotham
-uilib.Toggle.Text = "Toggle"
-uilib.Toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Toggle.TextSize = 14.000
-uilib.Toggle.TextXAlignment = Enum.TextXAlignment.Left
-
-uilib.UICorner_5.CornerRadius = UDim.new(0, 6)
-uilib.UICorner_5.Parent = uilib.Toggle
-
-uilib.UIPadding_4.Parent = uilib.Toggle
-uilib.UIPadding_4.PaddingLeft = UDim.new(0, 8)
-uilib.UIPadding_4.PaddingRight = UDim.new(0, 10)
-
-uilib.Toggle_2.Name = "Toggle"
-uilib.Toggle_2.Parent = uilib.Toggle
-uilib.Toggle_2.AnchorPoint = Vector2.new(1, 0.5)
-uilib.Toggle_2.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-uilib.Toggle_2.BorderSizePixel = 0
-uilib.Toggle_2.Position = UDim2.new(1, 0, 0, 15)
-uilib.Toggle_2.Size = UDim2.new(0, 32, 0, 16)
-uilib.Toggle_2.ZIndex = 2
-
-uilib.UICorner_6.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_6.Parent = uilib.Toggle_2
-
-uilib.Indicator.Name = "Indicator"
-uilib.Indicator.Parent = uilib.Toggle_2
-uilib.Indicator.AnchorPoint = Vector2.new(0, 0.5)
-uilib.Indicator.BackgroundColor3 = Color3.fromRGB(90, 90, 90)
-uilib.Indicator.Position = UDim2.new(0, 0, 0.5, 0)
-uilib.Indicator.Size = UDim2.new(0, 16, 0, 16)
-uilib.Indicator.ZIndex = 2
-
-uilib.UICorner_7.CornerRadius = UDim.new(0, 6)
-uilib.UICorner_7.Parent = uilib.Indicator
-
-uilib.Menu_2.Name = "Menu"
-uilib.Menu_2.Parent = uilib.Toggle
-uilib.Menu_2.AnchorPoint = Vector2.new(1, 0)
-uilib.Menu_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Menu_2.BackgroundTransparency = 1.000
-uilib.Menu_2.BorderSizePixel = 0
-uilib.Menu_2.Position = UDim2.new(1, 0, 0, 5)
-uilib.Menu_2.Size = UDim2.new(0, 20, 0, 20)
-uilib.Menu_2.Visible = false
-uilib.Menu_2.ZIndex = 3
-uilib.Menu_2.Image = "http://www.roblox.com/asset/?id=9147554930"
-
-uilib.Dropdown.Name = "Dropdown"
-uilib.Dropdown.Parent = uilib.Example_2
-uilib.Dropdown.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-uilib.Dropdown.Size = UDim2.new(1, 0, 0, 30)
-uilib.Dropdown.ZIndex = 2
-
-uilib.UIPadding_5.Parent = uilib.Dropdown
-uilib.UIPadding_5.PaddingLeft = UDim.new(0, 8)
-uilib.UIPadding_5.PaddingRight = UDim.new(0, 10)
-
-uilib.UICorner_8.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_8.Parent = uilib.Dropdown
-
-uilib.Label.Name = "Label"
-uilib.Label.Parent = uilib.Dropdown
-uilib.Label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Label.BackgroundTransparency = 1.000
-uilib.Label.BorderSizePixel = 0
-uilib.Label.Size = UDim2.new(1, 0, 0, 30)
-uilib.Label.ZIndex = 2
-uilib.Label.Font = Enum.Font.Gotham
-uilib.Label.Text = "Dropdown"
-uilib.Label.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Label.TextSize = 14.000
-uilib.Label.TextXAlignment = Enum.TextXAlignment.Left
-
-uilib.Option.Name = "Option"
-uilib.Option.Parent = uilib.Dropdown
-uilib.Option.AnchorPoint = Vector2.new(1, 0)
-uilib.Option.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Option.BackgroundTransparency = 1.000
-uilib.Option.BorderSizePixel = 0
-uilib.Option.Position = UDim2.new(1, -25, 0, 0)
-uilib.Option.Size = UDim2.new(0.25, 0, 0, 30)
-uilib.Option.ZIndex = 2
-uilib.Option.Font = Enum.Font.Gotham
-uilib.Option.Text = "Option"
-uilib.Option.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Option.TextSize = 14.000
-uilib.Option.TextXAlignment = Enum.TextXAlignment.Right
-
-uilib.Dropdown_2.Name = "Dropdown"
-uilib.Dropdown_2.Parent = uilib.Dropdown
-uilib.Dropdown_2.BackgroundColor3 = Color3.fromRGB(55, 55, 55)
-uilib.Dropdown_2.BorderSizePixel = 0
-uilib.Dropdown_2.ClipsDescendants = true
-uilib.Dropdown_2.Position = UDim2.new(0, -8, 0, 30)
-uilib.Dropdown_2.Size = UDim2.new(1, 18, 1, -30)
-uilib.Dropdown_2.ZIndex = 3
-
-uilib.UICorner_9.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_9.Parent = uilib.Dropdown_2
-
-uilib.UIPadding_6.Parent = uilib.Dropdown_2
-uilib.UIPadding_6.PaddingBottom = UDim.new(0, 5)
-uilib.UIPadding_6.PaddingLeft = UDim.new(0, 5)
-uilib.UIPadding_6.PaddingRight = UDim.new(0, 5)
-uilib.UIPadding_6.PaddingTop = UDim.new(0, 5)
-
-uilib.UIListLayout_3.Parent = uilib.Dropdown_2
-uilib.UIListLayout_3.SortOrder = Enum.SortOrder.LayoutOrder
-uilib.UIListLayout_3.Padding = UDim.new(0, 5)
-
-uilib.Option_2.Name = "Option"
-uilib.Option_2.Parent = uilib.Dropdown_2
-uilib.Option_2.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-uilib.Option_2.BorderSizePixel = 0
-uilib.Option_2.Size = UDim2.new(1, 0, 0, 30)
-uilib.Option_2.Visible = false
-uilib.Option_2.ZIndex = 3
-uilib.Option_2.AutoButtonColor = false
-uilib.Option_2.Font = Enum.Font.Gotham
-uilib.Option_2.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Option_2.TextSize = 14.000
-uilib.Option_2.TextXAlignment = Enum.TextXAlignment.Left
-
-uilib.UICorner_10.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_10.Parent = uilib.Option_2
-
-uilib.UIPadding_7.Parent = uilib.Option_2
-uilib.UIPadding_7.PaddingLeft = UDim.new(0, 8)
-
-uilib.Button_2.Name = "Button"
-uilib.Button_2.Parent = uilib.Dropdown
-uilib.Button_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Button_2.BackgroundTransparency = 1.000
-uilib.Button_2.BorderSizePixel = 0
-uilib.Button_2.Size = UDim2.new(1, 0, 0, 30)
-uilib.Button_2.ZIndex = 3
-uilib.Button_2.AutoButtonColor = false
-uilib.Button_2.Font = Enum.Font.SourceSans
-uilib.Button_2.Text = ""
-uilib.Button_2.TextColor3 = Color3.fromRGB(0, 0, 0)
-uilib.Button_2.TextSize = 14.000
-
-uilib.Fill_2.Name = "Fill"
-uilib.Fill_2.Parent = uilib.Dropdown
-uilib.Fill_2.BackgroundColor3 = Color3.fromRGB(55, 55, 55)
-uilib.Fill_2.BorderSizePixel = 0
-uilib.Fill_2.Position = UDim2.new(0, -8, 0, 30)
-uilib.Fill_2.Size = UDim2.new(1, 18, 0, 5)
-uilib.Fill_2.Visible = false
-uilib.Fill_2.ZIndex = 2
-
-uilib.RippleHolder.Name = "RippleHolder"
-uilib.RippleHolder.Parent = uilib.Dropdown
-uilib.RippleHolder.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.RippleHolder.BackgroundTransparency = 1.000
-uilib.RippleHolder.BorderSizePixel = 0
-uilib.RippleHolder.Position = UDim2.new(0, -8, 0, 0)
-uilib.RippleHolder.Size = UDim2.new(0, 380, 0, 30)
-uilib.RippleHolder.ZIndex = 2
-
-uilib.Indicator_2.Name = "Indicator"
-uilib.Indicator_2.Parent = uilib.Dropdown
-uilib.Indicator_2.AnchorPoint = Vector2.new(1, 0)
-uilib.Indicator_2.BackgroundColor3 = Color3.fromRGB(250, 170, 75)
-uilib.Indicator_2.Position = UDim2.new(1, 0, 0, 5)
-uilib.Indicator_2.Size = UDim2.new(0, 20, 0, 20)
-uilib.Indicator_2.ZIndex = 2
-
-uilib.UICorner_11.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_11.Parent = uilib.Indicator_2
-
-uilib.Menu_3.Name = "Menu"
-uilib.Menu_3.Parent = uilib.Dropdown
-uilib.Menu_3.AnchorPoint = Vector2.new(1, 0)
-uilib.Menu_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Menu_3.BackgroundTransparency = 1.000
-uilib.Menu_3.BorderSizePixel = 0
-uilib.Menu_3.Position = UDim2.new(1, 0, 0, 5)
-uilib.Menu_3.Size = UDim2.new(0, 20, 0, 20)
-uilib.Menu_3.Visible = false
-uilib.Menu_3.ZIndex = 3
-uilib.Menu_3.Image = "http://www.roblox.com/asset/?id=9147554930"
-
-uilib.TextBox.Parent = uilib.Example_2
-uilib.TextBox.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-uilib.TextBox.Size = UDim2.new(1, 0, 0, 30)
-uilib.TextBox.ZIndex = 2
-uilib.TextBox.ClearTextOnFocus = false
-uilib.TextBox.Font = Enum.Font.Gotham
-uilib.TextBox.PlaceholderText = "Text Box"
-uilib.TextBox.Text = ""
-uilib.TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.TextBox.TextSize = 14.000
-uilib.TextBox.TextXAlignment = Enum.TextXAlignment.Left
-
-uilib.UIPadding_8.Parent = uilib.TextBox
-uilib.UIPadding_8.PaddingLeft = UDim.new(0, 8)
-uilib.UIPadding_8.PaddingRight = UDim.new(0, 10)
-
-uilib.UICorner_12.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_12.Parent = uilib.TextBox
-
-uilib.Hidden.Name = "Hidden"
-uilib.Hidden.Parent = uilib.TextBox
-uilib.Hidden.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Hidden.BackgroundTransparency = 1.000
-uilib.Hidden.BorderSizePixel = 0
-uilib.Hidden.Size = UDim2.new(1, 0, 1, 0)
-uilib.Hidden.Visible = false
-uilib.Hidden.ZIndex = 2
-uilib.Hidden.ClearTextOnFocus = false
-uilib.Hidden.Font = Enum.Font.SourceSans
-uilib.Hidden.Text = ""
-uilib.Hidden.TextColor3 = Color3.fromRGB(0, 0, 0)
-uilib.Hidden.TextSize = 14.000
-
-uilib.Menu_4.Name = "Menu"
-uilib.Menu_4.Parent = uilib.TextBox
-uilib.Menu_4.AnchorPoint = Vector2.new(1, 0)
-uilib.Menu_4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Menu_4.BackgroundTransparency = 1.000
-uilib.Menu_4.BorderSizePixel = 0
-uilib.Menu_4.Position = UDim2.new(1, 0, 0, 5)
-uilib.Menu_4.Size = UDim2.new(0, 20, 0, 20)
-uilib.Menu_4.Visible = false
-uilib.Menu_4.ZIndex = 3
-uilib.Menu_4.Image = "http://www.roblox.com/asset/?id=9147554930"
-
-uilib.Label_2.Name = "Label"
-uilib.Label_2.Parent = uilib.Example_2
-uilib.Label_2.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-uilib.Label_2.Size = UDim2.new(1, 0, 0, 30)
-uilib.Label_2.ZIndex = 2
-uilib.Label_2.Font = Enum.Font.Gotham
-uilib.Label_2.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Label_2.TextSize = 14.000
-uilib.Label_2.TextXAlignment = Enum.TextXAlignment.Left
-
-uilib.UIPadding_9.Parent = uilib.Label_2
-uilib.UIPadding_9.PaddingLeft = UDim.new(0, 8)
-uilib.UIPadding_9.PaddingRight = UDim.new(0, 10)
-
-uilib.UICorner_13.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_13.Parent = uilib.Label_2
-
-uilib.Menu_5.Name = "Menu"
-uilib.Menu_5.Parent = uilib.Label_2
-uilib.Menu_5.AnchorPoint = Vector2.new(1, 0)
-uilib.Menu_5.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Menu_5.BackgroundTransparency = 1.000
-uilib.Menu_5.BorderSizePixel = 0
-uilib.Menu_5.Position = UDim2.new(1, 0, 0, 5)
-uilib.Menu_5.Size = UDim2.new(0, 20, 0, 20)
-uilib.Menu_5.Visible = false
-uilib.Menu_5.ZIndex = 3
-uilib.Menu_5.Image = "http://www.roblox.com/asset/?id=9147554930"
-
-uilib.Slider.Name = "Slider"
-uilib.Slider.Parent = uilib.Example_2
-uilib.Slider.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-uilib.Slider.Size = UDim2.new(1, 0, 0, 50)
-uilib.Slider.ZIndex = 2
-
-uilib.UIPadding_10.Parent = uilib.Slider
-uilib.UIPadding_10.PaddingLeft = UDim.new(0, 8)
-uilib.UIPadding_10.PaddingRight = UDim.new(0, 10)
-
-uilib.UICorner_14.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_14.Parent = uilib.Slider
-
-uilib.Label_3.Name = "Label"
-uilib.Label_3.Parent = uilib.Slider
-uilib.Label_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Label_3.BackgroundTransparency = 1.000
-uilib.Label_3.BorderSizePixel = 0
-uilib.Label_3.Size = UDim2.new(0.699999988, 0, 0, 30)
-uilib.Label_3.ZIndex = 2
-uilib.Label_3.Font = Enum.Font.Gotham
-uilib.Label_3.Text = "Slider"
-uilib.Label_3.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Label_3.TextSize = 14.000
-uilib.Label_3.TextXAlignment = Enum.TextXAlignment.Left
-
-uilib.Bar.Name = "Bar"
-uilib.Bar.Parent = uilib.Slider
-uilib.Bar.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-uilib.Bar.BorderSizePixel = 0
-uilib.Bar.Position = UDim2.new(0, 0, 0, 33)
-uilib.Bar.Size = UDim2.new(1, 0, 0, 4)
-uilib.Bar.ZIndex = 2
-
-uilib.Indicator_3.Name = "Indicator"
-uilib.Indicator_3.Parent = uilib.Bar
-uilib.Indicator_3.AnchorPoint = Vector2.new(0, 0.5)
-uilib.Indicator_3.BackgroundColor3 = Color3.fromRGB(90, 90, 90)
-uilib.Indicator_3.BorderSizePixel = 0
-uilib.Indicator_3.Position = UDim2.new(0, 0, 0.5, 0)
-uilib.Indicator_3.Size = UDim2.new(0, 6, 0, 16)
-uilib.Indicator_3.ZIndex = 2
-
-uilib.UICorner_15.CornerRadius = UDim.new(0, 3)
-uilib.UICorner_15.Parent = uilib.Indicator_3
-
-uilib.Slider_2.Name = "Slider"
-uilib.Slider_2.Parent = uilib.Bar
-uilib.Slider_2.AnchorPoint = Vector2.new(0, 0.5)
-uilib.Slider_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Slider_2.BackgroundTransparency = 1.000
-uilib.Slider_2.BorderSizePixel = 0
-uilib.Slider_2.Position = UDim2.new(0, 0, 0, 2)
-uilib.Slider_2.Size = UDim2.new(1, 0, 0, 24)
-uilib.Slider_2.ZIndex = 3
-uilib.Slider_2.AutoButtonColor = false
-uilib.Slider_2.Font = Enum.Font.SourceSans
-uilib.Slider_2.Text = ""
-uilib.Slider_2.TextColor3 = Color3.fromRGB(0, 0, 0)
-uilib.Slider_2.TextSize = 14.000
-
-uilib.Toggle_3.Name = "Toggle"
-uilib.Toggle_3.Parent = uilib.Slider
-uilib.Toggle_3.AnchorPoint = Vector2.new(1, 0.5)
-uilib.Toggle_3.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-uilib.Toggle_3.BorderSizePixel = 0
-uilib.Toggle_3.LayoutOrder = 1
-uilib.Toggle_3.Position = UDim2.new(1, 0, 0, 15)
-uilib.Toggle_3.Size = UDim2.new(0, 32, 0, 16)
-uilib.Toggle_3.ZIndex = 2
-
-uilib.UICorner_16.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_16.Parent = uilib.Toggle_3
-
-uilib.Indicator_4.Name = "Indicator"
-uilib.Indicator_4.Parent = uilib.Toggle_3
-uilib.Indicator_4.AnchorPoint = Vector2.new(0, 0.5)
-uilib.Indicator_4.BackgroundColor3 = Color3.fromRGB(90, 90, 90)
-uilib.Indicator_4.Position = UDim2.new(0, 0, 0.5, 0)
-uilib.Indicator_4.Size = UDim2.new(0, 16, 0, 16)
-uilib.Indicator_4.ZIndex = 2
-
-uilib.UICorner_17.CornerRadius = UDim.new(0, 6)
-uilib.UICorner_17.Parent = uilib.Indicator_4
-
-uilib.Button_3.Name = "Button"
-uilib.Button_3.Parent = uilib.Toggle_3
-uilib.Button_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Button_3.BackgroundTransparency = 1.000
-uilib.Button_3.BorderSizePixel = 0
-uilib.Button_3.Size = UDim2.new(1, 0, 1, 0)
-uilib.Button_3.ZIndex = 3
-uilib.Button_3.AutoButtonColor = false
-uilib.Button_3.Font = Enum.Font.SourceSans
-uilib.Button_3.Text = ""
-uilib.Button_3.TextColor3 = Color3.fromRGB(0, 0, 0)
-uilib.Button_3.TextSize = 14.000
-
-uilib.Value.Name = "Value"
-uilib.Value.Parent = uilib.Slider
-uilib.Value.AnchorPoint = Vector2.new(1, 0.5)
-uilib.Value.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-uilib.Value.Position = UDim2.new(1, -38, 0, 15)
-uilib.Value.Size = UDim2.new(0, 70, 0, 16)
-uilib.Value.ZIndex = 2
-uilib.Value.ClearTextOnFocus = false
-uilib.Value.Font = Enum.Font.Gotham
-uilib.Value.PlaceholderText = "Value"
-uilib.Value.Text = "0"
-uilib.Value.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Value.TextSize = 12.000
-
-uilib.UICorner_18.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_18.Parent = uilib.Value
-
-uilib.Menu_6.Name = "Menu"
-uilib.Menu_6.Parent = uilib.Slider
-uilib.Menu_6.AnchorPoint = Vector2.new(1, 0)
-uilib.Menu_6.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Menu_6.BackgroundTransparency = 1.000
-uilib.Menu_6.BorderSizePixel = 0
-uilib.Menu_6.Position = UDim2.new(1, 0, 0, 5)
-uilib.Menu_6.Size = UDim2.new(0, 20, 0, 20)
-uilib.Menu_6.Visible = false
-uilib.Menu_6.ZIndex = 3
-uilib.Menu_6.Image = "http://www.roblox.com/asset/?id=9147554930"
-
-uilib.ColorPicker.Name = "ColorPicker"
-uilib.ColorPicker.Parent = uilib.Example_2
-uilib.ColorPicker.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-uilib.ColorPicker.Size = UDim2.new(1, 0, 0, 30)
-uilib.ColorPicker.ZIndex = 2
-
-uilib.UIPadding_11.Parent = uilib.ColorPicker
-uilib.UIPadding_11.PaddingLeft = UDim.new(0, 8)
-uilib.UIPadding_11.PaddingRight = UDim.new(0, 10)
-
-uilib.UICorner_19.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_19.Parent = uilib.ColorPicker
-
-uilib.Label_4.Name = "Label"
-uilib.Label_4.Parent = uilib.ColorPicker
-uilib.Label_4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Label_4.BackgroundTransparency = 1.000
-uilib.Label_4.BorderSizePixel = 0
-uilib.Label_4.Size = UDim2.new(1, 0, 0, 30)
-uilib.Label_4.ZIndex = 2
-uilib.Label_4.Font = Enum.Font.Gotham
-uilib.Label_4.Text = "Color Picker"
-uilib.Label_4.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Label_4.TextSize = 14.000
-uilib.Label_4.TextXAlignment = Enum.TextXAlignment.Left
-
-uilib.Color.Name = "Color"
-uilib.Color.Parent = uilib.ColorPicker
-uilib.Color.AnchorPoint = Vector2.new(1, 0)
-uilib.Color.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Color.BackgroundTransparency = 1.000
-uilib.Color.BorderSizePixel = 0
-uilib.Color.Position = UDim2.new(1, -25, 0, 0)
-uilib.Color.Size = UDim2.new(0.25, 0, 0, 30)
-uilib.Color.ZIndex = 2
-uilib.Color.Font = Enum.Font.Gotham
-uilib.Color.Text = "255, 255, 255"
-uilib.Color.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Color.TextSize = 14.000
-uilib.Color.TextXAlignment = Enum.TextXAlignment.Right
-
-uilib.Picker.Name = "Picker"
-uilib.Picker.Parent = uilib.ColorPicker
-uilib.Picker.BackgroundColor3 = Color3.fromRGB(55, 55, 55)
-uilib.Picker.BorderSizePixel = 0
-uilib.Picker.ClipsDescendants = true
-uilib.Picker.Position = UDim2.new(0, -8, 0, 30)
-uilib.Picker.Size = UDim2.new(1, 18, 1, -30)
-uilib.Picker.ZIndex = 3
-
-uilib.UICorner_20.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_20.Parent = uilib.Picker
-
-uilib.UIPadding_12.Parent = uilib.Picker
-uilib.UIPadding_12.PaddingBottom = UDim.new(0, 5)
-uilib.UIPadding_12.PaddingLeft = UDim.new(0, 5)
-uilib.UIPadding_12.PaddingRight = UDim.new(0, 5)
-uilib.UIPadding_12.PaddingTop = UDim.new(0, 5)
-
-uilib.UIListLayout_4.Parent = uilib.Picker
-uilib.UIListLayout_4.SortOrder = Enum.SortOrder.LayoutOrder
-uilib.UIListLayout_4.Padding = UDim.new(0, 5)
-
-uilib.Hue.Name = "Hue"
-uilib.Hue.Parent = uilib.Picker
-uilib.Hue.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Hue.BackgroundTransparency = 1.000
-uilib.Hue.Size = UDim2.new(1, 0, 0, 20)
-uilib.Hue.ZIndex = 3
-
-uilib.Bar_2.Name = "Bar"
-uilib.Bar_2.Parent = uilib.Hue
-uilib.Bar_2.BackgroundColor3 = Color3.fromRGB(230, 230, 230)
-uilib.Bar_2.BorderSizePixel = 0
-uilib.Bar_2.Position = UDim2.new(0, 35, 0, 0)
-uilib.Bar_2.Size = UDim2.new(1, -70, 0, 20)
-uilib.Bar_2.ZIndex = 3
-
-uilib.UICorner_21.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_21.Parent = uilib.Bar_2
-
-uilib.UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 0, 0)), ColorSequenceKeypoint.new(0.16, Color3.fromRGB(255, 244, 0)), ColorSequenceKeypoint.new(0.28, Color3.fromRGB(81, 255, 0)), ColorSequenceKeypoint.new(0.50, Color3.fromRGB(0, 255, 255)), ColorSequenceKeypoint.new(0.66, Color3.fromRGB(0, 10, 255)), ColorSequenceKeypoint.new(0.75, Color3.fromRGB(127, 0, 255)), ColorSequenceKeypoint.new(0.85, Color3.fromRGB(255, 0, 229)), ColorSequenceKeypoint.new(0.90, Color3.fromRGB(255, 0, 153)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 0, 0))}
-uilib.UIGradient.Parent = uilib.Bar_2
-
-uilib.Slider_3.Name = "Slider"
-uilib.Slider_3.Parent = uilib.Bar_2
-uilib.Slider_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Slider_3.BackgroundTransparency = 1.000
-uilib.Slider_3.BorderSizePixel = 0
-uilib.Slider_3.Size = UDim2.new(1, 0, 1, 0)
-uilib.Slider_3.ZIndex = 3
-uilib.Slider_3.Font = Enum.Font.SourceSans
-uilib.Slider_3.Text = ""
-uilib.Slider_3.TextColor3 = Color3.fromRGB(0, 0, 0)
-uilib.Slider_3.TextSize = 14.000
-
-uilib.Indicator_5.Name = "Indicator"
-uilib.Indicator_5.Parent = uilib.Bar_2
-uilib.Indicator_5.AnchorPoint = Vector2.new(0, 0.5)
-uilib.Indicator_5.BackgroundColor3 = Color3.fromRGB(90, 90, 90)
-uilib.Indicator_5.BorderSizePixel = 0
-uilib.Indicator_5.Position = UDim2.new(0, 0, 0.5, 0)
-uilib.Indicator_5.Size = UDim2.new(0, 6, 0, 20)
-uilib.Indicator_5.ZIndex = 3
-
-uilib.UICorner_22.CornerRadius = UDim.new(0, 3)
-uilib.UICorner_22.Parent = uilib.Indicator_5
-
-uilib.Label_5.Name = "Label"
-uilib.Label_5.Parent = uilib.Hue
-uilib.Label_5.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-uilib.Label_5.Size = UDim2.new(0, 30, 0, 20)
-uilib.Label_5.ZIndex = 3
-uilib.Label_5.Font = Enum.Font.GothamBold
-uilib.Label_5.Text = "H"
-uilib.Label_5.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Label_5.TextSize = 14.000
-
-uilib.UICorner_23.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_23.Parent = uilib.Label_5
-
-uilib.UIPadding_13.Parent = uilib.Label_5
-uilib.UIPadding_13.PaddingLeft = UDim.new(0, 1)
-
-uilib.Value_2.Name = "Value"
-uilib.Value_2.Parent = uilib.Hue
-uilib.Value_2.AnchorPoint = Vector2.new(1, 0)
-uilib.Value_2.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-uilib.Value_2.Position = UDim2.new(1, 0, 0, 0)
-uilib.Value_2.Size = UDim2.new(0, 30, 0, 20)
-uilib.Value_2.ZIndex = 3
-uilib.Value_2.Font = Enum.Font.GothamBold
-uilib.Value_2.Text = "0"
-uilib.Value_2.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Value_2.TextSize = 14.000
-
-uilib.UICorner_24.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_24.Parent = uilib.Value_2
-
-uilib.UIPadding_14.Parent = uilib.Value_2
-uilib.UIPadding_14.PaddingLeft = UDim.new(0, 1)
-
-uilib.Saturation.Name = "Saturation"
-uilib.Saturation.Parent = uilib.Picker
-uilib.Saturation.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Saturation.BackgroundTransparency = 1.000
-uilib.Saturation.Size = UDim2.new(1, 0, 0, 20)
-uilib.Saturation.ZIndex = 3
-
-uilib.Bar_3.Name = "Bar"
-uilib.Bar_3.Parent = uilib.Saturation
-uilib.Bar_3.BackgroundColor3 = Color3.fromRGB(230, 230, 230)
-uilib.Bar_3.BorderSizePixel = 0
-uilib.Bar_3.Position = UDim2.new(0, 35, 0, 0)
-uilib.Bar_3.Size = UDim2.new(1, -70, 0, 20)
-uilib.Bar_3.ZIndex = 3
-
-uilib.UICorner_25.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_25.Parent = uilib.Bar_3
-
-uilib.UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 0, 0))}
-uilib.UIGradient_2.Parent = uilib.Bar_3
-
-uilib.Slider_4.Name = "Slider"
-uilib.Slider_4.Parent = uilib.Bar_3
-uilib.Slider_4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Slider_4.BackgroundTransparency = 1.000
-uilib.Slider_4.BorderSizePixel = 0
-uilib.Slider_4.Size = UDim2.new(1, 0, 1, 0)
-uilib.Slider_4.ZIndex = 3
-uilib.Slider_4.Font = Enum.Font.SourceSans
-uilib.Slider_4.Text = ""
-uilib.Slider_4.TextColor3 = Color3.fromRGB(0, 0, 0)
-uilib.Slider_4.TextSize = 14.000
-
-uilib.Indicator_6.Name = "Indicator"
-uilib.Indicator_6.Parent = uilib.Bar_3
-uilib.Indicator_6.AnchorPoint = Vector2.new(0, 0.5)
-uilib.Indicator_6.BackgroundColor3 = Color3.fromRGB(90, 90, 90)
-uilib.Indicator_6.BorderSizePixel = 0
-uilib.Indicator_6.Position = UDim2.new(0, 0, 0.5, 0)
-uilib.Indicator_6.Size = UDim2.new(0, 6, 0, 20)
-uilib.Indicator_6.ZIndex = 3
-
-uilib.UICorner_26.CornerRadius = UDim.new(0, 3)
-uilib.UICorner_26.Parent = uilib.Indicator_6
-
-uilib.Label_6.Name = "Label"
-uilib.Label_6.Parent = uilib.Saturation
-uilib.Label_6.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-uilib.Label_6.Size = UDim2.new(0, 30, 0, 20)
-uilib.Label_6.ZIndex = 3
-uilib.Label_6.Font = Enum.Font.GothamBold
-uilib.Label_6.Text = "S"
-uilib.Label_6.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Label_6.TextSize = 14.000
-
-uilib.UICorner_27.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_27.Parent = uilib.Label_6
-
-uilib.UIPadding_15.Parent = uilib.Label_6
-uilib.UIPadding_15.PaddingLeft = UDim.new(0, 1)
-
-uilib.Value_3.Name = "Value"
-uilib.Value_3.Parent = uilib.Saturation
-uilib.Value_3.AnchorPoint = Vector2.new(1, 0)
-uilib.Value_3.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-uilib.Value_3.Position = UDim2.new(1, 0, 0, 0)
-uilib.Value_3.Size = UDim2.new(0, 30, 0, 20)
-uilib.Value_3.ZIndex = 3
-uilib.Value_3.Font = Enum.Font.GothamBold
-uilib.Value_3.Text = "0"
-uilib.Value_3.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Value_3.TextSize = 14.000
-
-uilib.UICorner_28.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_28.Parent = uilib.Value_3
-
-uilib.UIPadding_16.Parent = uilib.Value_3
-uilib.UIPadding_16.PaddingLeft = UDim.new(0, 1)
-
-uilib.Value_4.Name = "Value"
-uilib.Value_4.Parent = uilib.Picker
-uilib.Value_4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Value_4.BackgroundTransparency = 1.000
-uilib.Value_4.Size = UDim2.new(1, 0, 0, 20)
-uilib.Value_4.ZIndex = 3
-
-uilib.Bar_4.Name = "Bar"
-uilib.Bar_4.Parent = uilib.Value_4
-uilib.Bar_4.BackgroundColor3 = Color3.fromRGB(230, 230, 230)
-uilib.Bar_4.BorderSizePixel = 0
-uilib.Bar_4.Position = UDim2.new(0, 35, 0, 0)
-uilib.Bar_4.Size = UDim2.new(1, -70, 0, 20)
-uilib.Bar_4.ZIndex = 3
-
-uilib.UICorner_29.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_29.Parent = uilib.Bar_4
-
-uilib.UIGradient_3.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(0, 0, 0)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 255, 255))}
-uilib.UIGradient_3.Parent = uilib.Bar_4
-
-uilib.Slider_5.Name = "Slider"
-uilib.Slider_5.Parent = uilib.Bar_4
-uilib.Slider_5.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Slider_5.BackgroundTransparency = 1.000
-uilib.Slider_5.BorderSizePixel = 0
-uilib.Slider_5.Size = UDim2.new(1, 0, 1, 0)
-uilib.Slider_5.ZIndex = 3
-uilib.Slider_5.Font = Enum.Font.SourceSans
-uilib.Slider_5.Text = ""
-uilib.Slider_5.TextColor3 = Color3.fromRGB(0, 0, 0)
-uilib.Slider_5.TextSize = 14.000
-
-uilib.Indicator_7.Name = "Indicator"
-uilib.Indicator_7.Parent = uilib.Bar_4
-uilib.Indicator_7.AnchorPoint = Vector2.new(1, 0.5)
-uilib.Indicator_7.BackgroundColor3 = Color3.fromRGB(90, 90, 90)
-uilib.Indicator_7.BorderSizePixel = 0
-uilib.Indicator_7.Position = UDim2.new(1, 0, 0.5, 0)
-uilib.Indicator_7.Size = UDim2.new(0, 6, 0, 20)
-uilib.Indicator_7.ZIndex = 3
-
-uilib.UICorner_30.CornerRadius = UDim.new(0, 3)
-uilib.UICorner_30.Parent = uilib.Indicator_7
-
-uilib.Label_7.Name = "Label"
-uilib.Label_7.Parent = uilib.Value_4
-uilib.Label_7.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-uilib.Label_7.Size = UDim2.new(0, 30, 0, 20)
-uilib.Label_7.ZIndex = 3
-uilib.Label_7.Font = Enum.Font.GothamBold
-uilib.Label_7.Text = "V"
-uilib.Label_7.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Label_7.TextSize = 14.000
-
-uilib.UICorner_31.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_31.Parent = uilib.Label_7
-
-uilib.UIPadding_17.Parent = uilib.Label_7
-uilib.UIPadding_17.PaddingLeft = UDim.new(0, 1)
-
-uilib.Value_5.Name = "Value"
-uilib.Value_5.Parent = uilib.Value_4
-uilib.Value_5.AnchorPoint = Vector2.new(1, 0)
-uilib.Value_5.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-uilib.Value_5.Position = UDim2.new(1, 0, 0, 0)
-uilib.Value_5.Size = UDim2.new(0, 30, 0, 20)
-uilib.Value_5.ZIndex = 3
-uilib.Value_5.Font = Enum.Font.GothamBold
-uilib.Value_5.Text = "1"
-uilib.Value_5.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Value_5.TextSize = 14.000
-
-uilib.UICorner_32.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_32.Parent = uilib.Value_5
-
-uilib.UIPadding_18.Parent = uilib.Value_5
-uilib.UIPadding_18.PaddingLeft = UDim.new(0, 1)
-
-uilib.Custom.Name = "Custom"
-uilib.Custom.Parent = uilib.Picker
-uilib.Custom.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Custom.BackgroundTransparency = 1.000
-uilib.Custom.Size = UDim2.new(1, 0, 0, 20)
-uilib.Custom.ZIndex = 3
-
-uilib.HEX.Name = "HEX"
-uilib.HEX.Parent = uilib.Custom
-uilib.HEX.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-uilib.HEX.Size = UDim2.new(0.333000004, -3, 1, 0)
-uilib.HEX.ZIndex = 3
-uilib.HEX.ClearTextOnFocus = false
-uilib.HEX.Font = Enum.Font.Gotham
-uilib.HEX.PlaceholderText = "HEX"
-uilib.HEX.Text = ""
-uilib.HEX.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.HEX.TextSize = 12.000
-
-uilib.UICorner_33.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_33.Parent = uilib.HEX
-
-uilib.RGB.Name = "RGB"
-uilib.RGB.Parent = uilib.Custom
-uilib.RGB.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-uilib.RGB.Position = UDim2.new(0.333000004, 3, 0, 0)
-uilib.RGB.Size = UDim2.new(0.333000004, -6, 1, 0)
-uilib.RGB.ZIndex = 3
-uilib.RGB.ClearTextOnFocus = false
-uilib.RGB.Font = Enum.Font.Gotham
-uilib.RGB.PlaceholderText = "RGB"
-uilib.RGB.Text = ""
-uilib.RGB.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.RGB.TextSize = 12.000
-
-uilib.UICorner_34.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_34.Parent = uilib.RGB
-
-uilib.Rainbow.Name = "Rainbow"
-uilib.Rainbow.Parent = uilib.Custom
-uilib.Rainbow.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-uilib.Rainbow.Position = UDim2.new(0.666999996, 3, 0, 0)
-uilib.Rainbow.Size = UDim2.new(0.333000004, -3, 0, 20)
-uilib.Rainbow.ZIndex = 3
-uilib.Rainbow.AutoButtonColor = false
-uilib.Rainbow.Font = Enum.Font.Gotham
-uilib.Rainbow.Text = ""
-uilib.Rainbow.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Rainbow.TextSize = 12.000
-
-uilib.UICorner_35.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_35.Parent = uilib.Rainbow
-
-uilib.RainbowText.Name = "RainbowText"
-uilib.RainbowText.Parent = uilib.Rainbow
-uilib.RainbowText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.RainbowText.BackgroundTransparency = 1.000
-uilib.RainbowText.BorderSizePixel = 0
-uilib.RainbowText.Size = UDim2.new(1, 0, 1, 0)
-uilib.RainbowText.ZIndex = 3
-uilib.RainbowText.Font = Enum.Font.Gotham
-uilib.RainbowText.Text = "Rainbow"
-uilib.RainbowText.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.RainbowText.TextSize = 12.000
-uilib.RainbowText.TextStrokeTransparency = 0.000
-
-uilib.UIGradient_4.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 0, 0)), ColorSequenceKeypoint.new(0.16, Color3.fromRGB(255, 244, 0)), ColorSequenceKeypoint.new(0.28, Color3.fromRGB(81, 255, 0)), ColorSequenceKeypoint.new(0.50, Color3.fromRGB(0, 255, 255)), ColorSequenceKeypoint.new(0.66, Color3.fromRGB(0, 10, 255)), ColorSequenceKeypoint.new(0.75, Color3.fromRGB(127, 0, 255)), ColorSequenceKeypoint.new(0.85, Color3.fromRGB(255, 0, 229)), ColorSequenceKeypoint.new(0.90, Color3.fromRGB(255, 0, 153)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 0, 0))}
-uilib.UIGradient_4.Offset = Vector2.new(-0.00999999978, 0.5)
-uilib.UIGradient_4.Rotation = 30
-uilib.UIGradient_4.Parent = uilib.RainbowText
-
-uilib.Button_4.Name = "Button"
-uilib.Button_4.Parent = uilib.ColorPicker
-uilib.Button_4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Button_4.BackgroundTransparency = 1.000
-uilib.Button_4.BorderSizePixel = 0
-uilib.Button_4.Size = UDim2.new(1, 0, 0, 30)
-uilib.Button_4.ZIndex = 3
-uilib.Button_4.AutoButtonColor = false
-uilib.Button_4.Font = Enum.Font.SourceSans
-uilib.Button_4.Text = ""
-uilib.Button_4.TextColor3 = Color3.fromRGB(0, 0, 0)
-uilib.Button_4.TextSize = 14.000
-
-uilib.Fill_3.Name = "Fill"
-uilib.Fill_3.Parent = uilib.ColorPicker
-uilib.Fill_3.BackgroundColor3 = Color3.fromRGB(55, 55, 55)
-uilib.Fill_3.BorderSizePixel = 0
-uilib.Fill_3.Position = UDim2.new(0, -8, 0, 30)
-uilib.Fill_3.Size = UDim2.new(1, 18, 0, 5)
-uilib.Fill_3.Visible = false
-uilib.Fill_3.ZIndex = 2
-
-uilib.Preview.Name = "Preview"
-uilib.Preview.Parent = uilib.ColorPicker
-uilib.Preview.AnchorPoint = Vector2.new(1, 0)
-uilib.Preview.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Preview.Position = UDim2.new(1, 0, 0, 5)
-uilib.Preview.Size = UDim2.new(0, 20, 0, 20)
-uilib.Preview.ZIndex = 2
-
-uilib.UICorner_36.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_36.Parent = uilib.Preview
-
-uilib.RippleHolder_2.Name = "RippleHolder"
-uilib.RippleHolder_2.Parent = uilib.ColorPicker
-uilib.RippleHolder_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.RippleHolder_2.BackgroundTransparency = 1.000
-uilib.RippleHolder_2.BorderSizePixel = 0
-uilib.RippleHolder_2.Position = UDim2.new(0, -8, 0, 0)
-uilib.RippleHolder_2.Size = UDim2.new(1, 18, 0, 30)
-uilib.RippleHolder_2.ZIndex = 2
-
-uilib.Menu_7.Name = "Menu"
-uilib.Menu_7.Parent = uilib.ColorPicker
-uilib.Menu_7.AnchorPoint = Vector2.new(1, 0)
-uilib.Menu_7.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Menu_7.BackgroundTransparency = 1.000
-uilib.Menu_7.BorderSizePixel = 0
-uilib.Menu_7.Position = UDim2.new(1, 0, 0, 5)
-uilib.Menu_7.Size = UDim2.new(0, 20, 0, 20)
-uilib.Menu_7.Visible = false
-uilib.Menu_7.ZIndex = 3
-uilib.Menu_7.Image = "http://www.roblox.com/asset/?id=9147554930"
-
-uilib.Keybind.Name = "Keybind"
-uilib.Keybind.Parent = uilib.Example_2
-uilib.Keybind.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-uilib.Keybind.BorderSizePixel = 0
-uilib.Keybind.Size = UDim2.new(1, 0, 0, 30)
-uilib.Keybind.ZIndex = 2
-uilib.Keybind.AutoButtonColor = false
-uilib.Keybind.Font = Enum.Font.Gotham
-uilib.Keybind.Text = "Keybind"
-uilib.Keybind.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Keybind.TextSize = 14.000
-uilib.Keybind.TextXAlignment = Enum.TextXAlignment.Left
-
-uilib.UICorner_37.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_37.Parent = uilib.Keybind
-
-uilib.UIPadding_19.Parent = uilib.Keybind
-uilib.UIPadding_19.PaddingLeft = UDim.new(0, 8)
-uilib.UIPadding_19.PaddingRight = UDim.new(0, 10)
-
-uilib.Bind_old.Name = "Bind_old"
-uilib.Bind_old.Parent = uilib.Keybind
-uilib.Bind_old.AnchorPoint = Vector2.new(1, 0)
-uilib.Bind_old.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Bind_old.BackgroundTransparency = 1.000
-uilib.Bind_old.BorderSizePixel = 0
-uilib.Bind_old.Position = UDim2.new(1, 0, 0, 0)
-uilib.Bind_old.Size = UDim2.new(0.349999994, 0, 1, 0)
-uilib.Bind_old.Visible = false
-uilib.Bind_old.ZIndex = 2
-uilib.Bind_old.Font = Enum.Font.Gotham
-uilib.Bind_old.Text = "Unknown"
-uilib.Bind_old.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Bind_old.TextSize = 14.000
-uilib.Bind_old.TextXAlignment = Enum.TextXAlignment.Right
-
-uilib.Menu_8.Name = "Menu"
-uilib.Menu_8.Parent = uilib.Keybind
-uilib.Menu_8.AnchorPoint = Vector2.new(1, 0)
-uilib.Menu_8.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Menu_8.BackgroundTransparency = 1.000
-uilib.Menu_8.BorderSizePixel = 0
-uilib.Menu_8.Position = UDim2.new(1, 0, 0, 5)
-uilib.Menu_8.Size = UDim2.new(0, 20, 0, 20)
-uilib.Menu_8.Visible = false
-uilib.Menu_8.ZIndex = 3
-uilib.Menu_8.Image = "http://www.roblox.com/asset/?id=9147554930"
-
-uilib.Bind.Name = "Bind"
-uilib.Bind.Parent = uilib.Keybind
-uilib.Bind.AnchorPoint = Vector2.new(1, 0.5)
-uilib.Bind.BackgroundColor3 = Color3.fromRGB(150, 150, 150)
-uilib.Bind.BorderSizePixel = 0
-uilib.Bind.Position = UDim2.new(1, 0, 0, 15)
-uilib.Bind.Size = UDim2.new(0, 80, 0, 20)
-uilib.Bind.ZIndex = 2
-
-uilib.UICorner_38.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_38.Parent = uilib.Bind
-
-uilib.Label_8.Name = "Label"
-uilib.Label_8.Parent = uilib.Bind
-uilib.Label_8.BackgroundColor3 = Color3.fromRGB(230, 230, 230)
-uilib.Label_8.Position = UDim2.new(0, 2, 0, 2)
-uilib.Label_8.Size = UDim2.new(1, -4, 0, 16)
-uilib.Label_8.ZIndex = 2
-uilib.Label_8.Font = Enum.Font.GothamBold
-uilib.Label_8.Text = "Unknown"
-uilib.Label_8.TextColor3 = Color3.fromRGB(0, 0, 0)
-uilib.Label_8.TextSize = 12.000
-
-uilib.UICorner_39.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_39.Parent = uilib.Label_8
-
-uilib.ChipSet.Name = "ChipSet"
-uilib.ChipSet.Parent = uilib.Example_2
-uilib.ChipSet.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-uilib.ChipSet.Size = UDim2.new(1, 0, 0, 30)
-uilib.ChipSet.ZIndex = 2
-
-uilib.UIPadding_20.Parent = uilib.ChipSet
-uilib.UIPadding_20.PaddingLeft = UDim.new(0, 8)
-uilib.UIPadding_20.PaddingRight = UDim.new(0, 10)
-
-uilib.UICorner_40.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_40.Parent = uilib.ChipSet
-
-uilib.Label_9.Name = "Label"
-uilib.Label_9.Parent = uilib.ChipSet
-uilib.Label_9.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Label_9.BackgroundTransparency = 1.000
-uilib.Label_9.BorderSizePixel = 0
-uilib.Label_9.Size = UDim2.new(1, 0, 0, 30)
-uilib.Label_9.ZIndex = 2
-uilib.Label_9.Font = Enum.Font.Gotham
-uilib.Label_9.Text = "Chip Set"
-uilib.Label_9.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Label_9.TextSize = 14.000
-uilib.Label_9.TextXAlignment = Enum.TextXAlignment.Left
-
-uilib.Dropdown_3.Name = "Dropdown"
-uilib.Dropdown_3.Parent = uilib.ChipSet
-uilib.Dropdown_3.BackgroundColor3 = Color3.fromRGB(55, 55, 55)
-uilib.Dropdown_3.BorderSizePixel = 0
-uilib.Dropdown_3.ClipsDescendants = true
-uilib.Dropdown_3.Position = UDim2.new(0, -8, 0, 30)
-uilib.Dropdown_3.Size = UDim2.new(1, 18, 1, -30)
-uilib.Dropdown_3.ZIndex = 3
-
-uilib.UICorner_41.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_41.Parent = uilib.Dropdown_3
-
-uilib.UIPadding_21.Parent = uilib.Dropdown_3
-uilib.UIPadding_21.PaddingBottom = UDim.new(0, 5)
-uilib.UIPadding_21.PaddingLeft = UDim.new(0, 5)
-uilib.UIPadding_21.PaddingRight = UDim.new(0, 5)
-uilib.UIPadding_21.PaddingTop = UDim.new(0, 5)
-
-uilib.UIListLayout_5.Parent = uilib.Dropdown_3
-uilib.UIListLayout_5.SortOrder = Enum.SortOrder.LayoutOrder
-uilib.UIListLayout_5.Padding = UDim.new(0, 5)
-
-uilib.Option_3.Name = "Option"
-uilib.Option_3.Parent = uilib.Dropdown_3
-uilib.Option_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Option_3.BackgroundTransparency = 1.000
-uilib.Option_3.BorderSizePixel = 0
-uilib.Option_3.Size = UDim2.new(1, 0, 0, 30)
-uilib.Option_3.Visible = false
-
-uilib.Button_5.Name = "Button"
-uilib.Button_5.Parent = uilib.Option_3
-uilib.Button_5.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-uilib.Button_5.BorderSizePixel = 0
-uilib.Button_5.Position = UDim2.new(0, 35, 0, 0)
-uilib.Button_5.Size = UDim2.new(1, -35, 1, 0)
-uilib.Button_5.ZIndex = 3
-uilib.Button_5.AutoButtonColor = false
-uilib.Button_5.Font = Enum.Font.Gotham
-uilib.Button_5.Text = "Option"
-uilib.Button_5.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Button_5.TextSize = 14.000
-uilib.Button_5.TextXAlignment = Enum.TextXAlignment.Left
-
-uilib.UICorner_42.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_42.Parent = uilib.Button_5
-
-uilib.UIPadding_22.Parent = uilib.Button_5
-uilib.UIPadding_22.PaddingLeft = UDim.new(0, 8)
-
-uilib.Enabled.Name = "Enabled"
-uilib.Enabled.Parent = uilib.Option_3
-uilib.Enabled.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-uilib.Enabled.Size = UDim2.new(0, 30, 0, 30)
-uilib.Enabled.ZIndex = 3
-uilib.Enabled.AutoButtonColor = false
-uilib.Enabled.Image = "rbxassetid://9122106066"
-
-uilib.UICorner_43.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_43.Parent = uilib.Enabled
-
-uilib.Menu_9.Name = "Menu"
-uilib.Menu_9.Parent = uilib.Option_3
-uilib.Menu_9.AnchorPoint = Vector2.new(1, 0)
-uilib.Menu_9.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Menu_9.BackgroundTransparency = 1.000
-uilib.Menu_9.BorderSizePixel = 0
-uilib.Menu_9.Position = UDim2.new(1, -5, 0, 5)
-uilib.Menu_9.Size = UDim2.new(0, 20, 0, 20)
-uilib.Menu_9.Visible = false
-uilib.Menu_9.ZIndex = 3
-uilib.Menu_9.Image = "http://www.roblox.com/asset/?id=9147554930"
-
-uilib.Button_6.Name = "Button"
-uilib.Button_6.Parent = uilib.ChipSet
-uilib.Button_6.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Button_6.BackgroundTransparency = 1.000
-uilib.Button_6.BorderSizePixel = 0
-uilib.Button_6.Size = UDim2.new(1, 0, 0, 30)
-uilib.Button_6.ZIndex = 3
-uilib.Button_6.AutoButtonColor = false
-uilib.Button_6.Font = Enum.Font.SourceSans
-uilib.Button_6.Text = ""
-uilib.Button_6.TextColor3 = Color3.fromRGB(0, 0, 0)
-uilib.Button_6.TextSize = 14.000
-
-uilib.Fill_4.Name = "Fill"
-uilib.Fill_4.Parent = uilib.ChipSet
-uilib.Fill_4.BackgroundColor3 = Color3.fromRGB(55, 55, 55)
-uilib.Fill_4.BorderSizePixel = 0
-uilib.Fill_4.Position = UDim2.new(0, -8, 0, 30)
-uilib.Fill_4.Size = UDim2.new(1, 18, 0, 5)
-uilib.Fill_4.Visible = false
-uilib.Fill_4.ZIndex = 2
-
-uilib.RippleHolder_3.Name = "RippleHolder"
-uilib.RippleHolder_3.Parent = uilib.ChipSet
-uilib.RippleHolder_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.RippleHolder_3.BackgroundTransparency = 1.000
-uilib.RippleHolder_3.BorderSizePixel = 0
-uilib.RippleHolder_3.Position = UDim2.new(0, -8, 0, 0)
-uilib.RippleHolder_3.Size = UDim2.new(0, 380, 0, 30)
-uilib.RippleHolder_3.ZIndex = 2
-
-uilib.Indicator_8.Name = "Indicator"
-uilib.Indicator_8.Parent = uilib.ChipSet
-uilib.Indicator_8.AnchorPoint = Vector2.new(1, 0)
-uilib.Indicator_8.BackgroundColor3 = Color3.fromRGB(250, 170, 75)
-uilib.Indicator_8.Position = UDim2.new(1, 0, 0, 5)
-uilib.Indicator_8.Size = UDim2.new(0, 20, 0, 20)
-uilib.Indicator_8.ZIndex = 2
-
-uilib.UICorner_44.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_44.Parent = uilib.Indicator_8
-
-uilib.Menu_10.Name = "Menu"
-uilib.Menu_10.Parent = uilib.ChipSet
-uilib.Menu_10.AnchorPoint = Vector2.new(1, 0)
-uilib.Menu_10.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Menu_10.BackgroundTransparency = 1.000
-uilib.Menu_10.BorderSizePixel = 0
-uilib.Menu_10.Position = UDim2.new(1, 0, 0, 5)
-uilib.Menu_10.Size = UDim2.new(0, 20, 0, 20)
-uilib.Menu_10.Visible = false
-uilib.Menu_10.ZIndex = 3
-uilib.Menu_10.Image = "http://www.roblox.com/asset/?id=9147554930"
-
-uilib.Table.Name = "Table"
-uilib.Table.Parent = uilib.Example_2
-uilib.Table.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-uilib.Table.Size = UDim2.new(1, 0, 0, 30)
-uilib.Table.ZIndex = 2
-
-uilib.UIPadding_23.Parent = uilib.Table
-uilib.UIPadding_23.PaddingLeft = UDim.new(0, 8)
-uilib.UIPadding_23.PaddingRight = UDim.new(0, 10)
-
-uilib.UICorner_45.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_45.Parent = uilib.Table
-
-uilib.Label_10.Name = "Label"
-uilib.Label_10.Parent = uilib.Table
-uilib.Label_10.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Label_10.BackgroundTransparency = 1.000
-uilib.Label_10.BorderSizePixel = 0
-uilib.Label_10.Size = UDim2.new(1, 0, 0, 30)
-uilib.Label_10.ZIndex = 2
-uilib.Label_10.Font = Enum.Font.Gotham
-uilib.Label_10.Text = "Table"
-uilib.Label_10.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Label_10.TextSize = 14.000
-uilib.Label_10.TextXAlignment = Enum.TextXAlignment.Left
-
-uilib.Dropdown_4.Name = "Dropdown"
-uilib.Dropdown_4.Parent = uilib.Table
-uilib.Dropdown_4.BackgroundColor3 = Color3.fromRGB(55, 55, 55)
-uilib.Dropdown_4.BorderSizePixel = 0
-uilib.Dropdown_4.ClipsDescendants = true
-uilib.Dropdown_4.Position = UDim2.new(0, -8, 0, 30)
-uilib.Dropdown_4.Size = UDim2.new(1, 18, 1, -30)
-uilib.Dropdown_4.ZIndex = 3
-
-uilib.UICorner_46.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_46.Parent = uilib.Dropdown_4
-
-uilib.UIPadding_24.Parent = uilib.Dropdown_4
-uilib.UIPadding_24.PaddingBottom = UDim.new(0, 5)
-uilib.UIPadding_24.PaddingLeft = UDim.new(0, 5)
-uilib.UIPadding_24.PaddingRight = UDim.new(0, 5)
-uilib.UIPadding_24.PaddingTop = UDim.new(0, 5)
-
-uilib.UIListLayout_6.Parent = uilib.Dropdown_4
-uilib.UIListLayout_6.SortOrder = Enum.SortOrder.LayoutOrder
-uilib.UIListLayout_6.Padding = UDim.new(0, 5)
-
-uilib.Info.Name = "Info"
-uilib.Info.Parent = uilib.Dropdown_4
-uilib.Info.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-uilib.Info.BorderSizePixel = 0
-uilib.Info.Size = UDim2.new(1, 0, 0, 30)
-uilib.Info.ZIndex = 3
-
-uilib.UIPadding_25.Parent = uilib.Info
-uilib.UIPadding_25.PaddingLeft = UDim.new(0, 8)
-
-uilib.UICorner_47.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_47.Parent = uilib.Info
-
-uilib.Key.Name = "Key"
-uilib.Key.Parent = uilib.Info
-uilib.Key.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Key.BackgroundTransparency = 1.000
-uilib.Key.BorderSizePixel = 0
-uilib.Key.Size = UDim2.new(0.5, 0, 0, 30)
-uilib.Key.ZIndex = 3
-uilib.Key.Font = Enum.Font.Gotham
-uilib.Key.Text = "Key"
-uilib.Key.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Key.TextSize = 14.000
-uilib.Key.TextXAlignment = Enum.TextXAlignment.Left
-
-uilib.Value_6.Name = "Value"
-uilib.Value_6.Parent = uilib.Info
-uilib.Value_6.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Value_6.BackgroundTransparency = 1.000
-uilib.Value_6.BorderSizePixel = 0
-uilib.Value_6.Position = UDim2.new(0.5, 0, 0, 0)
-uilib.Value_6.Size = UDim2.new(0.5, 0, 0, 30)
-uilib.Value_6.ZIndex = 3
-uilib.Value_6.Font = Enum.Font.Gotham
-uilib.Value_6.Text = "Value"
-uilib.Value_6.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Value_6.TextSize = 14.000
-uilib.Value_6.TextXAlignment = Enum.TextXAlignment.Left
-
-uilib.UIPadding_26.Parent = uilib.Value_6
-uilib.UIPadding_26.PaddingLeft = UDim.new(0, 8)
-
-uilib.Line_3.Name = "Line"
-uilib.Line_3.Parent = uilib.Info
-uilib.Line_3.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
-uilib.Line_3.BorderSizePixel = 0
-uilib.Line_3.Position = UDim2.new(0.5, 0, 0, 5)
-uilib.Line_3.Size = UDim2.new(0, 1, 0, 20)
-uilib.Line_3.ZIndex = 3
-
-uilib.Button_7.Name = "Button"
-uilib.Button_7.Parent = uilib.Table
-uilib.Button_7.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Button_7.BackgroundTransparency = 1.000
-uilib.Button_7.BorderSizePixel = 0
-uilib.Button_7.Size = UDim2.new(1, 0, 0, 30)
-uilib.Button_7.ZIndex = 3
-uilib.Button_7.AutoButtonColor = false
-uilib.Button_7.Font = Enum.Font.SourceSans
-uilib.Button_7.Text = ""
-uilib.Button_7.TextColor3 = Color3.fromRGB(0, 0, 0)
-uilib.Button_7.TextSize = 14.000
-
-uilib.Fill_5.Name = "Fill"
-uilib.Fill_5.Parent = uilib.Table
-uilib.Fill_5.BackgroundColor3 = Color3.fromRGB(55, 55, 55)
-uilib.Fill_5.BorderSizePixel = 0
-uilib.Fill_5.Position = UDim2.new(0, -8, 0, 30)
-uilib.Fill_5.Size = UDim2.new(1, 18, 0, 5)
-uilib.Fill_5.Visible = false
-uilib.Fill_5.ZIndex = 2
-
-uilib.RippleHolder_4.Name = "RippleHolder"
-uilib.RippleHolder_4.Parent = uilib.Table
-uilib.RippleHolder_4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.RippleHolder_4.BackgroundTransparency = 1.000
-uilib.RippleHolder_4.BorderSizePixel = 0
-uilib.RippleHolder_4.Position = UDim2.new(0, -8, 0, 0)
-uilib.RippleHolder_4.Size = UDim2.new(0, 380, 0, 30)
-uilib.RippleHolder_4.ZIndex = 2
-
-uilib.Indicator_9.Name = "Indicator"
-uilib.Indicator_9.Parent = uilib.Table
-uilib.Indicator_9.AnchorPoint = Vector2.new(1, 0)
-uilib.Indicator_9.BackgroundColor3 = Color3.fromRGB(250, 170, 75)
-uilib.Indicator_9.Position = UDim2.new(1, 0, 0, 5)
-uilib.Indicator_9.Size = UDim2.new(0, 20, 0, 20)
-uilib.Indicator_9.ZIndex = 2
-
-uilib.UICorner_48.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_48.Parent = uilib.Indicator_9
-
-uilib.Menu_11.Name = "Menu"
-uilib.Menu_11.Parent = uilib.Table
-uilib.Menu_11.AnchorPoint = Vector2.new(1, 0)
-uilib.Menu_11.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Menu_11.BackgroundTransparency = 1.000
-uilib.Menu_11.BorderSizePixel = 0
-uilib.Menu_11.Position = UDim2.new(1, 0, 0, 5)
-uilib.Menu_11.Size = UDim2.new(0, 20, 0, 20)
-uilib.Menu_11.Visible = false
-uilib.Menu_11.ZIndex = 3
-uilib.Menu_11.Image = "http://www.roblox.com/asset/?id=9147554930"
-
-uilib.BackgroundDim.Name = "BackgroundDim"
-uilib.BackgroundDim.Parent = uilib.Main
-uilib.BackgroundDim.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-uilib.BackgroundDim.BackgroundTransparency = 1.000
-uilib.BackgroundDim.BorderSizePixel = 0
-uilib.BackgroundDim.Size = UDim2.new(1, 0, 1, 0)
-uilib.BackgroundDim.ZIndex = 7
-
-uilib.Banner.Name = "Banner"
-uilib.Banner.Parent = uilib.Main
-uilib.Banner.AnchorPoint = Vector2.new(0.5, 1)
-uilib.Banner.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-uilib.Banner.Position = UDim2.new(0.5, 0, 1, -10)
-uilib.Banner.Size = UDim2.new(1, -20, 0, 100)
-uilib.Banner.Visible = false
-uilib.Banner.ZIndex = 6
-
-uilib.UICorner_49.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_49.Parent = uilib.Banner
-
-uilib.Label_11.Name = "Label"
-uilib.Label_11.Parent = uilib.Banner
-uilib.Label_11.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-uilib.Label_11.BorderSizePixel = 0
-uilib.Label_11.Size = UDim2.new(1, 0, 1, 0)
-uilib.Label_11.ZIndex = 6
-uilib.Label_11.Font = Enum.Font.Gotham
-uilib.Label_11.Text = "Banner"
-uilib.Label_11.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Label_11.TextSize = 12.000
-uilib.Label_11.TextWrapped = true
-uilib.Label_11.TextXAlignment = Enum.TextXAlignment.Left
-uilib.Label_11.TextYAlignment = Enum.TextYAlignment.Top
-
-uilib.UIPadding_27.Parent = uilib.Label_11
-uilib.UIPadding_27.PaddingBottom = UDim.new(0, 5)
-uilib.UIPadding_27.PaddingLeft = UDim.new(0, 6)
-uilib.UIPadding_27.PaddingRight = UDim.new(0, 5)
-uilib.UIPadding_27.PaddingTop = UDim.new(0, 5)
-
-uilib.UICorner_50.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_50.Parent = uilib.Label_11
-
-uilib.UIPadding_28.Parent = uilib.Banner
-uilib.UIPadding_28.PaddingBottom = UDim.new(0, 30)
-uilib.UIPadding_28.PaddingLeft = UDim.new(0, 5)
-uilib.UIPadding_28.PaddingRight = UDim.new(0, 5)
-uilib.UIPadding_28.PaddingTop = UDim.new(0, 5)
-
-uilib.Buttons_2.Name = "Buttons"
-uilib.Buttons_2.Parent = uilib.Banner
-uilib.Buttons_2.Active = true
-uilib.Buttons_2.AnchorPoint = Vector2.new(0, 1)
-uilib.Buttons_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Buttons_2.BackgroundTransparency = 1.000
-uilib.Buttons_2.Position = UDim2.new(0, 0, 1, 25)
-uilib.Buttons_2.Size = UDim2.new(1, 0, 0, 20)
-uilib.Buttons_2.ZIndex = 6
-uilib.Buttons_2.CanvasSize = UDim2.new(0, 0, 0, 0)
-uilib.Buttons_2.ScrollBarThickness = 0
-
-uilib.Example_3.Name = "Example"
-uilib.Example_3.Parent = uilib.Buttons_2
-uilib.Example_3.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-uilib.Example_3.BorderSizePixel = 0
-uilib.Example_3.Size = UDim2.new(0, 40, 0, 20)
-uilib.Example_3.Visible = false
-uilib.Example_3.ZIndex = 6
-uilib.Example_3.AutoButtonColor = false
-uilib.Example_3.Font = Enum.Font.GothamBold
-uilib.Example_3.Text = "OK"
-uilib.Example_3.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Example_3.TextSize = 14.000
-
-uilib.UICorner_51.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_51.Parent = uilib.Example_3
-
-uilib.UIListLayout_7.Parent = uilib.Buttons_2
-uilib.UIListLayout_7.FillDirection = Enum.FillDirection.Horizontal
-uilib.UIListLayout_7.HorizontalAlignment = Enum.HorizontalAlignment.Right
-uilib.UIListLayout_7.SortOrder = Enum.SortOrder.LayoutOrder
-uilib.UIListLayout_7.Padding = UDim.new(0, 5)
-
-uilib.BackgroundDim2.Name = "BackgroundDim2"
-uilib.BackgroundDim2.Parent = uilib.Main
-uilib.BackgroundDim2.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-uilib.BackgroundDim2.BackgroundTransparency = 1.000
-uilib.BackgroundDim2.BorderSizePixel = 0
-uilib.BackgroundDim2.Size = UDim2.new(1, 0, 1, 0)
-uilib.BackgroundDim2.ZIndex = 3
-
-uilib.Tabs.Name = "Tabs"
-uilib.Tabs.Parent = uilib.Main
-uilib.Tabs.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
-uilib.Tabs.BackgroundTransparency = 1.000
-uilib.Tabs.Position = UDim2.new(0, 10, 0, 10)
-uilib.Tabs.Size = UDim2.new(1, -20, 0, 25)
-uilib.Tabs.Visible = false
-
-uilib.UICorner_52.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_52.Parent = uilib.Tabs
-
-uilib.Buttons_3.Name = "Buttons"
-uilib.Buttons_3.Parent = uilib.Tabs
-uilib.Buttons_3.Active = true
-uilib.Buttons_3.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
-uilib.Buttons_3.BackgroundTransparency = 1.000
-uilib.Buttons_3.BorderSizePixel = 0
-uilib.Buttons_3.Size = UDim2.new(1, 0, 1, 0)
-uilib.Buttons_3.ZIndex = 2
-uilib.Buttons_3.ScrollBarThickness = 0
-
-uilib.UIListLayout_8.Parent = uilib.Buttons_3
-uilib.UIListLayout_8.FillDirection = Enum.FillDirection.Horizontal
-uilib.UIListLayout_8.SortOrder = Enum.SortOrder.LayoutOrder
-uilib.UIListLayout_8.Padding = UDim.new(0, 5)
-
-uilib.Example_4.Name = "Example"
-uilib.Example_4.Parent = uilib.Buttons_3
-uilib.Example_4.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-uilib.Example_4.Size = UDim2.new(0, 72, 0, 25)
-uilib.Example_4.Visible = false
-uilib.Example_4.ZIndex = 2
-uilib.Example_4.Font = Enum.Font.Gotham
-uilib.Example_4.Text = "Tab"
-uilib.Example_4.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Example_4.TextSize = 14.000
-
-uilib.UICorner_53.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_53.Parent = uilib.Example_4
-
-uilib.ObjectMenu.Name = "ObjectMenu"
-uilib.ObjectMenu.Parent = uilib.Main
-uilib.ObjectMenu.AnchorPoint = Vector2.new(1, 0)
-uilib.ObjectMenu.BackgroundColor3 = Color3.fromRGB(230, 230, 230)
-uilib.ObjectMenu.BorderSizePixel = 0
-uilib.ObjectMenu.ClipsDescendants = true
-uilib.ObjectMenu.Position = UDim2.new(0, -10, 0, 0)
-uilib.ObjectMenu.Size = UDim2.new(0, 100, 0, 0)
-uilib.ObjectMenu.ZIndex = 4
-
-uilib.UIListLayout_9.Parent = uilib.ObjectMenu
-uilib.UIListLayout_9.SortOrder = Enum.SortOrder.LayoutOrder
-
-uilib.Example_5.Name = "Example"
-uilib.Example_5.Parent = uilib.ObjectMenu
-uilib.Example_5.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Example_5.BackgroundTransparency = 1.000
-uilib.Example_5.BorderSizePixel = 0
-uilib.Example_5.Size = UDim2.new(1, 0, 0, 30)
-uilib.Example_5.Visible = false
-uilib.Example_5.ZIndex = 4
-uilib.Example_5.Font = Enum.Font.Gotham
-uilib.Example_5.TextColor3 = Color3.fromRGB(0, 0, 0)
-uilib.Example_5.TextSize = 12.000
-uilib.Example_5.TextXAlignment = Enum.TextXAlignment.Left
-
-uilib.UIPadding_29.Parent = uilib.Example_5
-uilib.UIPadding_29.PaddingLeft = UDim.new(0, 10)
-
-uilib.UICorner_54.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_54.Parent = uilib.ObjectMenu
-
-uilib.UICorner_55.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_55.Parent = uilib.Topbar
-
-uilib.FillMain.Name = "FillMain"
-uilib.FillMain.Parent = uilib.Topbar
-uilib.FillMain.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-uilib.FillMain.BorderSizePixel = 0
-uilib.FillMain.Position = UDim2.new(0, 0, 1, 0)
-uilib.FillMain.Size = UDim2.new(1, 0, 0, 10)
-uilib.FillMain.ZIndex = 0
-
-uilib.FillTopbar.Name = "FillTopbar"
-uilib.FillTopbar.Parent = uilib.Topbar
-uilib.FillTopbar.AnchorPoint = Vector2.new(0, 1)
-uilib.FillTopbar.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-uilib.FillTopbar.BorderSizePixel = 0
-uilib.FillTopbar.Position = UDim2.new(0, 0, 1, 0)
-uilib.FillTopbar.Size = UDim2.new(1, 0, 0, 10)
-uilib.FillTopbar.ZIndex = 5
-
-uilib.Title_2.Name = "Title"
-uilib.Title_2.Parent = uilib.Topbar
-uilib.Title_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Title_2.BackgroundTransparency = 1.000
-uilib.Title_2.BorderSizePixel = 0
-uilib.Title_2.Size = UDim2.new(0, 346, 0, 30)
-uilib.Title_2.ZIndex = 6
-uilib.Title_2.Font = Enum.Font.Gotham
-uilib.Title_2.Text = "Material Lua"
-uilib.Title_2.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Title_2.TextSize = 16.000
-uilib.Title_2.TextXAlignment = Enum.TextXAlignment.Left
-
-uilib.UIPadding_30.Parent = uilib.Title_2
-uilib.UIPadding_30.PaddingLeft = UDim.new(0, 8)
-
-uilib.Minimize.Name = "Minimize"
-uilib.Minimize.Parent = uilib.Topbar
-uilib.Minimize.AnchorPoint = Vector2.new(1, 0)
-uilib.Minimize.BackgroundColor3 = Color3.fromRGB(150, 250, 150)
-uilib.Minimize.BorderSizePixel = 0
-uilib.Minimize.Position = UDim2.new(1, -5, 0, 5)
-uilib.Minimize.Size = UDim2.new(0, 20, 0, 20)
-uilib.Minimize.ZIndex = 6
-uilib.Minimize.AutoButtonColor = false
-uilib.Minimize.Font = Enum.Font.SourceSans
-uilib.Minimize.Text = ""
-uilib.Minimize.TextColor3 = Color3.fromRGB(0, 0, 0)
-uilib.Minimize.TextSize = 14.000
-
-uilib.UICorner_56.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_56.Parent = uilib.Minimize
-
-uilib.Menu_12.Name = "Menu"
-uilib.Menu_12.Parent = uilib.Topbar
-uilib.Menu_12.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Menu_12.BackgroundTransparency = 1.000
-uilib.Menu_12.BorderSizePixel = 0
-uilib.Menu_12.Position = UDim2.new(0, 3, 0, 3)
-uilib.Menu_12.Size = UDim2.new(0, 24, 0, 24)
-uilib.Menu_12.Visible = false
-uilib.Menu_12.ZIndex = 6
-uilib.Menu_12.AutoButtonColor = false
-uilib.Menu_12.Image = "rbxassetid://9087103499"
-
-uilib.Ripple.Name = "Ripple"
-uilib.Ripple.Parent = uilib.Topbar
-uilib.Ripple.AnchorPoint = Vector2.new(0.5, 0.5)
-uilib.Ripple.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
-uilib.Ripple.BackgroundTransparency = 0.500
-uilib.Ripple.BorderSizePixel = 0
-uilib.Ripple.Size = UDim2.new(0, 100, 0, 100)
-uilib.Ripple.Visible = false
-uilib.Ripple.ZIndex = 5
-
-uilib.UICorner_57.CornerRadius = UDim.new(1, 0)
-uilib.UICorner_57.Parent = uilib.Ripple
-
-uilib.Focus.Name = "Focus"
-uilib.Focus.Parent = uilib.Topbar
-uilib.Focus.AnchorPoint = Vector2.new(0.5, 1)
-uilib.Focus.BackgroundColor3 = Color3.fromRGB(150, 150, 150)
-uilib.Focus.BorderSizePixel = 0
-uilib.Focus.Position = UDim2.new(0.5, 0, 1, 0)
-uilib.Focus.Size = UDim2.new(0, 0, 0, 1)
-uilib.Focus.Visible = false
-uilib.Focus.ZIndex = 5
-
-uilib.Overlay.Name = "Overlay"
-uilib.Overlay.Parent = uilib.Topbar
-uilib.Overlay.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-uilib.Overlay.BorderSizePixel = 0
-uilib.Overlay.Size = UDim2.new(1, 0, 1, 490)
-uilib.Overlay.Visible = false
-uilib.Overlay.ZIndex = 11
-
-uilib.UICorner_58.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_58.Parent = uilib.Overlay
-
-uilib.SubTitle_2.Name = "SubTitle"
-uilib.SubTitle_2.Parent = uilib.Topbar
-uilib.SubTitle_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.SubTitle_2.BackgroundTransparency = 1.000
-uilib.SubTitle_2.BorderSizePixel = 0
-uilib.SubTitle_2.Position = UDim2.new(0, 96, 0, 0)
-uilib.SubTitle_2.Size = UDim2.new(0, 275, 0, 30)
-uilib.SubTitle_2.ZIndex = 6
-uilib.SubTitle_2.Font = Enum.Font.Gotham
-uilib.SubTitle_2.Text = "Remake Version"
-uilib.SubTitle_2.TextColor3 = Color3.fromRGB(150, 150, 150)
-uilib.SubTitle_2.TextSize = 14.000
-uilib.SubTitle_2.TextXAlignment = Enum.TextXAlignment.Left
-uilib.SubTitle_2.TextYAlignment = Enum.TextYAlignment.Bottom
-
-uilib.UIPadding_31.Parent = uilib.SubTitle_2
-uilib.UIPadding_31.PaddingBottom = UDim.new(0, 6)
-uilib.UIPadding_31.PaddingLeft = UDim.new(0, 8)
-
-uilib.Notifications.Name = "Notifications"
-uilib.Notifications.Parent = uilib.uilib
-uilib.Notifications.AnchorPoint = Vector2.new(1, 1)
-uilib.Notifications.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Notifications.BackgroundTransparency = 1.000
-uilib.Notifications.BorderSizePixel = 0
-uilib.Notifications.Position = UDim2.new(1, -10, 1, -10)
-uilib.Notifications.Size = UDim2.new(0, 200, 1, -20)
-uilib.Notifications.Visible = false
-uilib.Notifications.ZIndex = 20
-
-uilib.UIListLayout_10.Parent = uilib.Notifications
-uilib.UIListLayout_10.SortOrder = Enum.SortOrder.LayoutOrder
-uilib.UIListLayout_10.VerticalAlignment = Enum.VerticalAlignment.Bottom
-uilib.UIListLayout_10.Padding = UDim.new(0, 10)
-
-uilib.Notif.Name = "Notif"
-uilib.Notif.Parent = uilib.Notifications
-uilib.Notif.AnchorPoint = Vector2.new(1, 1)
-uilib.Notif.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-uilib.Notif.BorderSizePixel = 0
-uilib.Notif.Position = UDim2.new(1, -10, 1, -10)
-uilib.Notif.Size = UDim2.new(0, 200, 0, 100)
-uilib.Notif.ZIndex = 20
-
-uilib.UICorner_59.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_59.Parent = uilib.Notif
-
-uilib.UIPadding_32.Parent = uilib.Notif
-uilib.UIPadding_32.PaddingBottom = UDim.new(0, 8)
-uilib.UIPadding_32.PaddingLeft = UDim.new(0, 8)
-uilib.UIPadding_32.PaddingRight = UDim.new(0, 8)
-uilib.UIPadding_32.PaddingTop = UDim.new(0, 8)
-
-uilib.Title_3.Name = "Title"
-uilib.Title_3.Parent = uilib.Notif
-uilib.Title_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Title_3.BackgroundTransparency = 1.000
-uilib.Title_3.BorderSizePixel = 0
-uilib.Title_3.Size = UDim2.new(1, 0, 0, 16)
-uilib.Title_3.ZIndex = 21
-uilib.Title_3.Font = Enum.Font.GothamSemibold
-uilib.Title_3.Text = "Material Lua Remake"
-uilib.Title_3.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Title_3.TextSize = 16.000
-uilib.Title_3.TextXAlignment = Enum.TextXAlignment.Left
-uilib.Title_3.TextYAlignment = Enum.TextYAlignment.Top
-
-uilib.Label_12.Name = "Label"
-uilib.Label_12.Parent = uilib.Notif
-uilib.Label_12.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Label_12.BackgroundTransparency = 1.000
-uilib.Label_12.BorderSizePixel = 0
-uilib.Label_12.Position = UDim2.new(0, 0, 0, 24)
-uilib.Label_12.Size = UDim2.new(1, 0, 1, -48)
-uilib.Label_12.ZIndex = 21
-uilib.Label_12.Font = Enum.Font.Gotham
-uilib.Label_12.Text = "Notification"
-uilib.Label_12.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Label_12.TextSize = 14.000
-uilib.Label_12.TextXAlignment = Enum.TextXAlignment.Left
-uilib.Label_12.TextYAlignment = Enum.TextYAlignment.Top
-
-uilib.Line_4.Name = "Line"
-uilib.Line_4.Parent = uilib.Notif
-uilib.Line_4.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
-uilib.Line_4.BorderSizePixel = 0
-uilib.Line_4.Position = UDim2.new(0, 0, 0, 20)
-uilib.Line_4.Size = UDim2.new(1, 0, 0, 1)
-uilib.Line_4.ZIndex = 21
-
-uilib.Buttons_4.Name = "Buttons"
-uilib.Buttons_4.Parent = uilib.Notif
-uilib.Buttons_4.Active = true
-uilib.Buttons_4.AnchorPoint = Vector2.new(0, 1)
-uilib.Buttons_4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Buttons_4.BackgroundTransparency = 1.000
-uilib.Buttons_4.BorderSizePixel = 0
-uilib.Buttons_4.Position = UDim2.new(0, 0, 1, 0)
-uilib.Buttons_4.Size = UDim2.new(1, 0, 0, 20)
-uilib.Buttons_4.ZIndex = 21
-uilib.Buttons_4.CanvasSize = UDim2.new(0, 0, 0, 0)
-uilib.Buttons_4.ScrollBarThickness = 0
-
-uilib.UIListLayout_11.Parent = uilib.Buttons_4
-uilib.UIListLayout_11.FillDirection = Enum.FillDirection.Horizontal
-uilib.UIListLayout_11.HorizontalAlignment = Enum.HorizontalAlignment.Right
-uilib.UIListLayout_11.SortOrder = Enum.SortOrder.LayoutOrder
-
-uilib.Button_8.Name = "Button"
-uilib.Button_8.Parent = uilib.Buttons_4
-uilib.Button_8.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-uilib.Button_8.Size = UDim2.new(0, 40, 0, 20)
-uilib.Button_8.Visible = false
-uilib.Button_8.ZIndex = 21
-uilib.Button_8.Font = Enum.Font.GothamBold
-uilib.Button_8.Text = "OK"
-uilib.Button_8.TextColor3 = Color3.fromRGB(255, 255, 255)
-uilib.Button_8.TextSize = 14.000
-uilib.Button_8.TextWrapped = true
-
-uilib.UICorner_60.CornerRadius = UDim.new(0, 4)
-uilib.UICorner_60.Parent = uilib.Button_8
+MLRemake.MLRemake.Name = "MLRemake"
+MLRemake.MLRemake.Parent = (gethui and gethui()) or (get_hidden_ui and get_hidden_ui()) or game.CoreGui
+
+MLRemake.Topbar.Name = "Topbar"
+MLRemake.Topbar.Parent = MLRemake.MLRemake
+MLRemake.Topbar.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+MLRemake.Topbar.BorderSizePixel = 0
+MLRemake.Topbar.Position = UDim2.new(0, 375, 0, 45)
+MLRemake.Topbar.Size = UDim2.new(0, 400, 0, 30)
+MLRemake.Topbar.ZIndex = 5
+
+MLRemake.Main.Name = "Main"
+MLRemake.Main.Parent = MLRemake.Topbar
+MLRemake.Main.AnchorPoint = Vector2.new(0.5, 0)
+MLRemake.Main.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+MLRemake.Main.BorderSizePixel = 0
+MLRemake.Main.ClipsDescendants = true
+MLRemake.Main.Position = UDim2.new(0.5, 0, 0, 30)
+MLRemake.Main.Size = UDim2.new(0, 400, 0, 490)
+MLRemake.Main.ZIndex = 0
+
+MLRemake.UICorner.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner.Parent = MLRemake.Main
+
+MLRemake.Navigator.Name = "Navigator"
+MLRemake.Navigator.Parent = MLRemake.Main
+MLRemake.Navigator.BackgroundColor3 = Color3.fromRGB(55, 55, 55)
+MLRemake.Navigator.BorderSizePixel = 0
+MLRemake.Navigator.Position = UDim2.new(0, -200, 0, 0)
+MLRemake.Navigator.Size = UDim2.new(0, 200, 1, 0)
+MLRemake.Navigator.ZIndex = 8
+
+MLRemake.UICorner_2.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_2.Parent = MLRemake.Navigator
+
+MLRemake.Buttons.Name = "Buttons"
+MLRemake.Buttons.Parent = MLRemake.Navigator
+MLRemake.Buttons.Active = true
+MLRemake.Buttons.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Buttons.BackgroundTransparency = 1.000
+MLRemake.Buttons.BorderSizePixel = 0
+MLRemake.Buttons.Size = UDim2.new(1, 0, 1, 0)
+MLRemake.Buttons.ZIndex = 8
+MLRemake.Buttons.CanvasSize = UDim2.new(0, 0, 0, 0)
+MLRemake.Buttons.ScrollBarThickness = 0
+
+MLRemake.UIListLayout.Parent = MLRemake.Buttons
+MLRemake.UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+
+MLRemake.Example.Name = "Example"
+MLRemake.Example.Parent = MLRemake.Buttons
+MLRemake.Example.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Example.BackgroundTransparency = 1.000
+MLRemake.Example.BorderSizePixel = 0
+MLRemake.Example.Size = UDim2.new(1, 0, 0, 30)
+MLRemake.Example.Visible = false
+MLRemake.Example.ZIndex = 8
+MLRemake.Example.AutoButtonColor = false
+MLRemake.Example.Font = Enum.Font.Gotham
+MLRemake.Example.Text = "Page"
+MLRemake.Example.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Example.TextSize = 14.000
+MLRemake.Example.TextTransparency = 0.400
+MLRemake.Example.TextXAlignment = Enum.TextXAlignment.Left
+
+MLRemake.UIPadding.Parent = MLRemake.Example
+MLRemake.UIPadding.PaddingLeft = UDim.new(0, 8)
+
+MLRemake.Selection.Name = "Selection"
+MLRemake.Selection.Parent = MLRemake.Example
+MLRemake.Selection.AnchorPoint = Vector2.new(0, 0.5)
+MLRemake.Selection.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+MLRemake.Selection.BackgroundTransparency = 0.500
+MLRemake.Selection.BorderSizePixel = 0
+MLRemake.Selection.Position = UDim2.new(0, -5, 0.5, 0)
+MLRemake.Selection.Size = UDim2.new(1, 1, 1, -5)
+MLRemake.Selection.Visible = false
+MLRemake.Selection.ZIndex = 8
+
+MLRemake.UICorner_3.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_3.Parent = MLRemake.Selection
+
+MLRemake.Line.Name = "Line"
+MLRemake.Line.Parent = MLRemake.Example
+MLRemake.Line.AnchorPoint = Vector2.new(0, 1)
+MLRemake.Line.BackgroundColor3 = Color3.fromRGB(75, 75, 75)
+MLRemake.Line.BorderSizePixel = 0
+MLRemake.Line.Position = UDim2.new(0, 0, 1, 0)
+MLRemake.Line.Size = UDim2.new(1, -8, 0, 1)
+MLRemake.Line.ZIndex = 8
+
+MLRemake.Icon.Name = "Icon"
+MLRemake.Icon.Parent = MLRemake.Example
+MLRemake.Icon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Icon.BackgroundTransparency = 1.000
+MLRemake.Icon.BorderSizePixel = 0
+MLRemake.Icon.Position = UDim2.new(0, -34, 0, 0)
+MLRemake.Icon.Size = UDim2.new(0, 30, 0, 30)
+MLRemake.Icon.Visible = false
+MLRemake.Icon.ZIndex = 8
+MLRemake.Icon.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png"
+
+MLRemake.Fill.Name = "Fill"
+MLRemake.Fill.Parent = MLRemake.Navigator
+MLRemake.Fill.AnchorPoint = Vector2.new(1, 0)
+MLRemake.Fill.BackgroundColor3 = Color3.fromRGB(55, 55, 55)
+MLRemake.Fill.BorderSizePixel = 0
+MLRemake.Fill.Position = UDim2.new(1, 0, 0, 0)
+MLRemake.Fill.Size = UDim2.new(0, 5, 1, 0)
+MLRemake.Fill.ZIndex = 7
+
+MLRemake.Line_2.Name = "Line"
+MLRemake.Line_2.Parent = MLRemake.Navigator
+MLRemake.Line_2.AnchorPoint = Vector2.new(1, 0)
+MLRemake.Line_2.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+MLRemake.Line_2.BorderSizePixel = 0
+MLRemake.Line_2.Position = UDim2.new(1, 0, 0, 0)
+MLRemake.Line_2.Size = UDim2.new(0, 1, 1, 0)
+MLRemake.Line_2.ZIndex = 7
+
+MLRemake.Title.Name = "Title"
+MLRemake.Title.Parent = MLRemake.Navigator
+MLRemake.Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Title.BackgroundTransparency = 1.000
+MLRemake.Title.BorderSizePixel = 0
+MLRemake.Title.Position = UDim2.new(0, 50, 0, 5)
+MLRemake.Title.Size = UDim2.new(1, -50, 0, 20)
+MLRemake.Title.ZIndex = 8
+MLRemake.Title.Font = Enum.Font.GothamSemibold
+MLRemake.Title.Text = "Material Lua"
+MLRemake.Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Title.TextSize = 16.000
+MLRemake.Title.TextXAlignment = Enum.TextXAlignment.Left
+
+MLRemake.Icon_2.Name = "Icon"
+MLRemake.Icon_2.Parent = MLRemake.Navigator
+MLRemake.Icon_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Icon_2.BorderSizePixel = 0
+MLRemake.Icon_2.Position = UDim2.new(0, 5, 0, 5)
+MLRemake.Icon_2.Size = UDim2.new(0, 40, 0, 40)
+MLRemake.Icon_2.ZIndex = 8
+MLRemake.Icon_2.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png"
+
+MLRemake.SubTitle.Name = "SubTitle"
+MLRemake.SubTitle.Parent = MLRemake.Navigator
+MLRemake.SubTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.SubTitle.BackgroundTransparency = 1.000
+MLRemake.SubTitle.BorderSizePixel = 0
+MLRemake.SubTitle.Position = UDim2.new(0, 50, 0, 28)
+MLRemake.SubTitle.Size = UDim2.new(1, -50, 0, 20)
+MLRemake.SubTitle.ZIndex = 8
+MLRemake.SubTitle.Font = Enum.Font.Gotham
+MLRemake.SubTitle.Text = "Remake Version"
+MLRemake.SubTitle.TextColor3 = Color3.fromRGB(150, 150, 150)
+MLRemake.SubTitle.TextSize = 14.000
+MLRemake.SubTitle.TextXAlignment = Enum.TextXAlignment.Left
+MLRemake.SubTitle.TextYAlignment = Enum.TextYAlignment.Top
+
+MLRemake.Pages.Name = "Pages"
+MLRemake.Pages.Parent = MLRemake.Main
+MLRemake.Pages.AnchorPoint = Vector2.new(0, 1)
+MLRemake.Pages.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Pages.BackgroundTransparency = 1.000
+MLRemake.Pages.BorderSizePixel = 0
+MLRemake.Pages.Position = UDim2.new(0, 0, 1, 0)
+MLRemake.Pages.Size = UDim2.new(1, 0, 1, -35)
+MLRemake.Pages.ZIndex = 0
+
+MLRemake.UIPadding_2.Parent = MLRemake.Pages
+MLRemake.UIPadding_2.PaddingBottom = UDim.new(0, 10)
+MLRemake.UIPadding_2.PaddingLeft = UDim.new(0, 10)
+MLRemake.UIPadding_2.PaddingRight = UDim.new(0, 10)
+MLRemake.UIPadding_2.PaddingTop = UDim.new(0, 10)
+
+MLRemake.Example_2.Name = "Example"
+MLRemake.Example_2.Parent = MLRemake.Pages
+MLRemake.Example_2.Active = true
+MLRemake.Example_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Example_2.BackgroundTransparency = 1.000
+MLRemake.Example_2.BorderSizePixel = 0
+MLRemake.Example_2.Size = UDim2.new(1, 0, 1, 0)
+MLRemake.Example_2.CanvasSize = UDim2.new(0, 0, 0, 0)
+MLRemake.Example_2.ScrollBarThickness = 0
+
+MLRemake.Button.Name = "Button"
+MLRemake.Button.Parent = MLRemake.Example_2
+MLRemake.Button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+MLRemake.Button.BorderSizePixel = 0
+MLRemake.Button.Size = UDim2.new(1, 0, 0, 30)
+MLRemake.Button.ZIndex = 2
+MLRemake.Button.AutoButtonColor = false
+MLRemake.Button.Font = Enum.Font.Gotham
+MLRemake.Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Button.TextSize = 14.000
+MLRemake.Button.TextXAlignment = Enum.TextXAlignment.Left
+
+MLRemake.UICorner_4.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_4.Parent = MLRemake.Button
+
+MLRemake.UIPadding_3.Parent = MLRemake.Button
+MLRemake.UIPadding_3.PaddingLeft = UDim.new(0, 8)
+MLRemake.UIPadding_3.PaddingRight = UDim.new(0, 10)
+
+MLRemake.Menu.Name = "Menu"
+MLRemake.Menu.Parent = MLRemake.Button
+MLRemake.Menu.AnchorPoint = Vector2.new(1, 0)
+MLRemake.Menu.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Menu.BackgroundTransparency = 1.000
+MLRemake.Menu.BorderSizePixel = 0
+MLRemake.Menu.Position = UDim2.new(1, 0, 0, 5)
+MLRemake.Menu.Size = UDim2.new(0, 20, 0, 20)
+MLRemake.Menu.Visible = false
+MLRemake.Menu.ZIndex = 3
+MLRemake.Menu.Image = "http://www.roblox.com/asset/?id=9147554930"
+
+MLRemake.UIListLayout_2.Parent = MLRemake.Example_2
+MLRemake.UIListLayout_2.SortOrder = Enum.SortOrder.LayoutOrder
+MLRemake.UIListLayout_2.Padding = UDim.new(0, 5)
+
+MLRemake.Toggle.Name = "Toggle"
+MLRemake.Toggle.Parent = MLRemake.Example_2
+MLRemake.Toggle.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+MLRemake.Toggle.BorderSizePixel = 0
+MLRemake.Toggle.Size = UDim2.new(1, 0, 0, 30)
+MLRemake.Toggle.ZIndex = 2
+MLRemake.Toggle.AutoButtonColor = false
+MLRemake.Toggle.Font = Enum.Font.Gotham
+MLRemake.Toggle.Text = "Toggle"
+MLRemake.Toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Toggle.TextSize = 14.000
+MLRemake.Toggle.TextXAlignment = Enum.TextXAlignment.Left
+
+MLRemake.UICorner_5.CornerRadius = UDim.new(0, 6)
+MLRemake.UICorner_5.Parent = MLRemake.Toggle
+
+MLRemake.UIPadding_4.Parent = MLRemake.Toggle
+MLRemake.UIPadding_4.PaddingLeft = UDim.new(0, 8)
+MLRemake.UIPadding_4.PaddingRight = UDim.new(0, 10)
+
+MLRemake.Toggle_2.Name = "Toggle"
+MLRemake.Toggle_2.Parent = MLRemake.Toggle
+MLRemake.Toggle_2.AnchorPoint = Vector2.new(1, 0.5)
+MLRemake.Toggle_2.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+MLRemake.Toggle_2.BorderSizePixel = 0
+MLRemake.Toggle_2.Position = UDim2.new(1, 0, 0, 15)
+MLRemake.Toggle_2.Size = UDim2.new(0, 32, 0, 16)
+MLRemake.Toggle_2.ZIndex = 2
+
+MLRemake.UICorner_6.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_6.Parent = MLRemake.Toggle_2
+
+MLRemake.Indicator.Name = "Indicator"
+MLRemake.Indicator.Parent = MLRemake.Toggle_2
+MLRemake.Indicator.AnchorPoint = Vector2.new(0, 0.5)
+MLRemake.Indicator.BackgroundColor3 = Color3.fromRGB(90, 90, 90)
+MLRemake.Indicator.Position = UDim2.new(0, 0, 0.5, 0)
+MLRemake.Indicator.Size = UDim2.new(0, 16, 0, 16)
+MLRemake.Indicator.ZIndex = 2
+
+MLRemake.UICorner_7.CornerRadius = UDim.new(0, 6)
+MLRemake.UICorner_7.Parent = MLRemake.Indicator
+
+MLRemake.Menu_2.Name = "Menu"
+MLRemake.Menu_2.Parent = MLRemake.Toggle
+MLRemake.Menu_2.AnchorPoint = Vector2.new(1, 0)
+MLRemake.Menu_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Menu_2.BackgroundTransparency = 1.000
+MLRemake.Menu_2.BorderSizePixel = 0
+MLRemake.Menu_2.Position = UDim2.new(1, 0, 0, 5)
+MLRemake.Menu_2.Size = UDim2.new(0, 20, 0, 20)
+MLRemake.Menu_2.Visible = false
+MLRemake.Menu_2.ZIndex = 3
+MLRemake.Menu_2.Image = "http://www.roblox.com/asset/?id=9147554930"
+
+MLRemake.Dropdown.Name = "Dropdown"
+MLRemake.Dropdown.Parent = MLRemake.Example_2
+MLRemake.Dropdown.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+MLRemake.Dropdown.Size = UDim2.new(1, 0, 0, 30)
+MLRemake.Dropdown.ZIndex = 2
+
+MLRemake.UIPadding_5.Parent = MLRemake.Dropdown
+MLRemake.UIPadding_5.PaddingLeft = UDim.new(0, 8)
+MLRemake.UIPadding_5.PaddingRight = UDim.new(0, 10)
+
+MLRemake.UICorner_8.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_8.Parent = MLRemake.Dropdown
+
+MLRemake.Label.Name = "Label"
+MLRemake.Label.Parent = MLRemake.Dropdown
+MLRemake.Label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Label.BackgroundTransparency = 1.000
+MLRemake.Label.BorderSizePixel = 0
+MLRemake.Label.Size = UDim2.new(1, 0, 0, 30)
+MLRemake.Label.ZIndex = 2
+MLRemake.Label.Font = Enum.Font.Gotham
+MLRemake.Label.Text = "Dropdown"
+MLRemake.Label.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Label.TextSize = 14.000
+MLRemake.Label.TextXAlignment = Enum.TextXAlignment.Left
+
+MLRemake.Option.Name = "Option"
+MLRemake.Option.Parent = MLRemake.Dropdown
+MLRemake.Option.AnchorPoint = Vector2.new(1, 0)
+MLRemake.Option.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Option.BackgroundTransparency = 1.000
+MLRemake.Option.BorderSizePixel = 0
+MLRemake.Option.Position = UDim2.new(1, -25, 0, 0)
+MLRemake.Option.Size = UDim2.new(0.25, 0, 0, 30)
+MLRemake.Option.ZIndex = 2
+MLRemake.Option.Font = Enum.Font.Gotham
+MLRemake.Option.Text = "Option"
+MLRemake.Option.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Option.TextSize = 14.000
+MLRemake.Option.TextXAlignment = Enum.TextXAlignment.Right
+
+MLRemake.Dropdown_2.Name = "Dropdown"
+MLRemake.Dropdown_2.Parent = MLRemake.Dropdown
+MLRemake.Dropdown_2.BackgroundColor3 = Color3.fromRGB(55, 55, 55)
+MLRemake.Dropdown_2.BorderSizePixel = 0
+MLRemake.Dropdown_2.ClipsDescendants = true
+MLRemake.Dropdown_2.Position = UDim2.new(0, -8, 0, 30)
+MLRemake.Dropdown_2.Size = UDim2.new(1, 18, 1, -30)
+MLRemake.Dropdown_2.ZIndex = 3
+
+MLRemake.UICorner_9.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_9.Parent = MLRemake.Dropdown_2
+
+MLRemake.UIPadding_6.Parent = MLRemake.Dropdown_2
+MLRemake.UIPadding_6.PaddingBottom = UDim.new(0, 5)
+MLRemake.UIPadding_6.PaddingLeft = UDim.new(0, 5)
+MLRemake.UIPadding_6.PaddingRight = UDim.new(0, 5)
+MLRemake.UIPadding_6.PaddingTop = UDim.new(0, 5)
+
+MLRemake.UIListLayout_3.Parent = MLRemake.Dropdown_2
+MLRemake.UIListLayout_3.SortOrder = Enum.SortOrder.LayoutOrder
+MLRemake.UIListLayout_3.Padding = UDim.new(0, 5)
+
+MLRemake.Option_2.Name = "Option"
+MLRemake.Option_2.Parent = MLRemake.Dropdown_2
+MLRemake.Option_2.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+MLRemake.Option_2.BorderSizePixel = 0
+MLRemake.Option_2.Size = UDim2.new(1, 0, 0, 30)
+MLRemake.Option_2.Visible = false
+MLRemake.Option_2.ZIndex = 3
+MLRemake.Option_2.AutoButtonColor = false
+MLRemake.Option_2.Font = Enum.Font.Gotham
+MLRemake.Option_2.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Option_2.TextSize = 14.000
+MLRemake.Option_2.TextXAlignment = Enum.TextXAlignment.Left
+
+MLRemake.UICorner_10.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_10.Parent = MLRemake.Option_2
+
+MLRemake.UIPadding_7.Parent = MLRemake.Option_2
+MLRemake.UIPadding_7.PaddingLeft = UDim.new(0, 8)
+
+MLRemake.Button_2.Name = "Button"
+MLRemake.Button_2.Parent = MLRemake.Dropdown
+MLRemake.Button_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Button_2.BackgroundTransparency = 1.000
+MLRemake.Button_2.BorderSizePixel = 0
+MLRemake.Button_2.Size = UDim2.new(1, 0, 0, 30)
+MLRemake.Button_2.ZIndex = 3
+MLRemake.Button_2.AutoButtonColor = false
+MLRemake.Button_2.Font = Enum.Font.SourceSans
+MLRemake.Button_2.Text = ""
+MLRemake.Button_2.TextColor3 = Color3.fromRGB(0, 0, 0)
+MLRemake.Button_2.TextSize = 14.000
+
+MLRemake.Fill_2.Name = "Fill"
+MLRemake.Fill_2.Parent = MLRemake.Dropdown
+MLRemake.Fill_2.BackgroundColor3 = Color3.fromRGB(55, 55, 55)
+MLRemake.Fill_2.BorderSizePixel = 0
+MLRemake.Fill_2.Position = UDim2.new(0, -8, 0, 30)
+MLRemake.Fill_2.Size = UDim2.new(1, 18, 0, 5)
+MLRemake.Fill_2.Visible = false
+MLRemake.Fill_2.ZIndex = 2
+
+MLRemake.RippleHolder.Name = "RippleHolder"
+MLRemake.RippleHolder.Parent = MLRemake.Dropdown
+MLRemake.RippleHolder.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.RippleHolder.BackgroundTransparency = 1.000
+MLRemake.RippleHolder.BorderSizePixel = 0
+MLRemake.RippleHolder.Position = UDim2.new(0, -8, 0, 0)
+MLRemake.RippleHolder.Size = UDim2.new(0, 380, 0, 30)
+MLRemake.RippleHolder.ZIndex = 2
+
+MLRemake.Indicator_2.Name = "Indicator"
+MLRemake.Indicator_2.Parent = MLRemake.Dropdown
+MLRemake.Indicator_2.AnchorPoint = Vector2.new(1, 0)
+MLRemake.Indicator_2.BackgroundColor3 = Color3.fromRGB(250, 170, 75)
+MLRemake.Indicator_2.Position = UDim2.new(1, 0, 0, 5)
+MLRemake.Indicator_2.Size = UDim2.new(0, 20, 0, 20)
+MLRemake.Indicator_2.ZIndex = 2
+
+MLRemake.UICorner_11.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_11.Parent = MLRemake.Indicator_2
+
+MLRemake.Menu_3.Name = "Menu"
+MLRemake.Menu_3.Parent = MLRemake.Dropdown
+MLRemake.Menu_3.AnchorPoint = Vector2.new(1, 0)
+MLRemake.Menu_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Menu_3.BackgroundTransparency = 1.000
+MLRemake.Menu_3.BorderSizePixel = 0
+MLRemake.Menu_3.Position = UDim2.new(1, 0, 0, 5)
+MLRemake.Menu_3.Size = UDim2.new(0, 20, 0, 20)
+MLRemake.Menu_3.Visible = false
+MLRemake.Menu_3.ZIndex = 3
+MLRemake.Menu_3.Image = "http://www.roblox.com/asset/?id=9147554930"
+
+MLRemake.TextBox.Parent = MLRemake.Example_2
+MLRemake.TextBox.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+MLRemake.TextBox.Size = UDim2.new(1, 0, 0, 30)
+MLRemake.TextBox.ZIndex = 2
+MLRemake.TextBox.ClearTextOnFocus = false
+MLRemake.TextBox.Font = Enum.Font.Gotham
+MLRemake.TextBox.PlaceholderText = "Text Box"
+MLRemake.TextBox.Text = ""
+MLRemake.TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.TextBox.TextSize = 14.000
+MLRemake.TextBox.TextXAlignment = Enum.TextXAlignment.Left
+
+MLRemake.UIPadding_8.Parent = MLRemake.TextBox
+MLRemake.UIPadding_8.PaddingLeft = UDim.new(0, 8)
+MLRemake.UIPadding_8.PaddingRight = UDim.new(0, 10)
+
+MLRemake.UICorner_12.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_12.Parent = MLRemake.TextBox
+
+MLRemake.Hidden.Name = "Hidden"
+MLRemake.Hidden.Parent = MLRemake.TextBox
+MLRemake.Hidden.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Hidden.BackgroundTransparency = 1.000
+MLRemake.Hidden.BorderSizePixel = 0
+MLRemake.Hidden.Size = UDim2.new(1, 0, 1, 0)
+MLRemake.Hidden.Visible = false
+MLRemake.Hidden.ZIndex = 2
+MLRemake.Hidden.ClearTextOnFocus = false
+MLRemake.Hidden.Font = Enum.Font.SourceSans
+MLRemake.Hidden.Text = ""
+MLRemake.Hidden.TextColor3 = Color3.fromRGB(0, 0, 0)
+MLRemake.Hidden.TextSize = 14.000
+
+MLRemake.Menu_4.Name = "Menu"
+MLRemake.Menu_4.Parent = MLRemake.TextBox
+MLRemake.Menu_4.AnchorPoint = Vector2.new(1, 0)
+MLRemake.Menu_4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Menu_4.BackgroundTransparency = 1.000
+MLRemake.Menu_4.BorderSizePixel = 0
+MLRemake.Menu_4.Position = UDim2.new(1, 0, 0, 5)
+MLRemake.Menu_4.Size = UDim2.new(0, 20, 0, 20)
+MLRemake.Menu_4.Visible = false
+MLRemake.Menu_4.ZIndex = 3
+MLRemake.Menu_4.Image = "http://www.roblox.com/asset/?id=9147554930"
+
+MLRemake.Label_2.Name = "Label"
+MLRemake.Label_2.Parent = MLRemake.Example_2
+MLRemake.Label_2.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+MLRemake.Label_2.Size = UDim2.new(1, 0, 0, 30)
+MLRemake.Label_2.ZIndex = 2
+MLRemake.Label_2.Font = Enum.Font.Gotham
+MLRemake.Label_2.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Label_2.TextSize = 14.000
+MLRemake.Label_2.TextXAlignment = Enum.TextXAlignment.Left
+
+MLRemake.UIPadding_9.Parent = MLRemake.Label_2
+MLRemake.UIPadding_9.PaddingLeft = UDim.new(0, 8)
+MLRemake.UIPadding_9.PaddingRight = UDim.new(0, 10)
+
+MLRemake.UICorner_13.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_13.Parent = MLRemake.Label_2
+
+MLRemake.Menu_5.Name = "Menu"
+MLRemake.Menu_5.Parent = MLRemake.Label_2
+MLRemake.Menu_5.AnchorPoint = Vector2.new(1, 0)
+MLRemake.Menu_5.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Menu_5.BackgroundTransparency = 1.000
+MLRemake.Menu_5.BorderSizePixel = 0
+MLRemake.Menu_5.Position = UDim2.new(1, 0, 0, 5)
+MLRemake.Menu_5.Size = UDim2.new(0, 20, 0, 20)
+MLRemake.Menu_5.Visible = false
+MLRemake.Menu_5.ZIndex = 3
+MLRemake.Menu_5.Image = "http://www.roblox.com/asset/?id=9147554930"
+
+MLRemake.Slider.Name = "Slider"
+MLRemake.Slider.Parent = MLRemake.Example_2
+MLRemake.Slider.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+MLRemake.Slider.Size = UDim2.new(1, 0, 0, 50)
+MLRemake.Slider.ZIndex = 2
+
+MLRemake.UIPadding_10.Parent = MLRemake.Slider
+MLRemake.UIPadding_10.PaddingLeft = UDim.new(0, 8)
+MLRemake.UIPadding_10.PaddingRight = UDim.new(0, 10)
+
+MLRemake.UICorner_14.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_14.Parent = MLRemake.Slider
+
+MLRemake.Label_3.Name = "Label"
+MLRemake.Label_3.Parent = MLRemake.Slider
+MLRemake.Label_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Label_3.BackgroundTransparency = 1.000
+MLRemake.Label_3.BorderSizePixel = 0
+MLRemake.Label_3.Size = UDim2.new(0.699999988, 0, 0, 30)
+MLRemake.Label_3.ZIndex = 2
+MLRemake.Label_3.Font = Enum.Font.Gotham
+MLRemake.Label_3.Text = "Slider"
+MLRemake.Label_3.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Label_3.TextSize = 14.000
+MLRemake.Label_3.TextXAlignment = Enum.TextXAlignment.Left
+
+MLRemake.Bar.Name = "Bar"
+MLRemake.Bar.Parent = MLRemake.Slider
+MLRemake.Bar.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+MLRemake.Bar.BorderSizePixel = 0
+MLRemake.Bar.Position = UDim2.new(0, 0, 0, 33)
+MLRemake.Bar.Size = UDim2.new(1, 0, 0, 4)
+MLRemake.Bar.ZIndex = 2
+
+MLRemake.Indicator_3.Name = "Indicator"
+MLRemake.Indicator_3.Parent = MLRemake.Bar
+MLRemake.Indicator_3.AnchorPoint = Vector2.new(0, 0.5)
+MLRemake.Indicator_3.BackgroundColor3 = Color3.fromRGB(90, 90, 90)
+MLRemake.Indicator_3.BorderSizePixel = 0
+MLRemake.Indicator_3.Position = UDim2.new(0, 0, 0.5, 0)
+MLRemake.Indicator_3.Size = UDim2.new(0, 6, 0, 16)
+MLRemake.Indicator_3.ZIndex = 2
+
+MLRemake.UICorner_15.CornerRadius = UDim.new(0, 3)
+MLRemake.UICorner_15.Parent = MLRemake.Indicator_3
+
+MLRemake.Slider_2.Name = "Slider"
+MLRemake.Slider_2.Parent = MLRemake.Bar
+MLRemake.Slider_2.AnchorPoint = Vector2.new(0, 0.5)
+MLRemake.Slider_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Slider_2.BackgroundTransparency = 1.000
+MLRemake.Slider_2.BorderSizePixel = 0
+MLRemake.Slider_2.Position = UDim2.new(0, 0, 0, 2)
+MLRemake.Slider_2.Size = UDim2.new(1, 0, 0, 24)
+MLRemake.Slider_2.ZIndex = 3
+MLRemake.Slider_2.AutoButtonColor = false
+MLRemake.Slider_2.Font = Enum.Font.SourceSans
+MLRemake.Slider_2.Text = ""
+MLRemake.Slider_2.TextColor3 = Color3.fromRGB(0, 0, 0)
+MLRemake.Slider_2.TextSize = 14.000
+
+MLRemake.Toggle_3.Name = "Toggle"
+MLRemake.Toggle_3.Parent = MLRemake.Slider
+MLRemake.Toggle_3.AnchorPoint = Vector2.new(1, 0.5)
+MLRemake.Toggle_3.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+MLRemake.Toggle_3.BorderSizePixel = 0
+MLRemake.Toggle_3.LayoutOrder = 1
+MLRemake.Toggle_3.Position = UDim2.new(1, 0, 0, 15)
+MLRemake.Toggle_3.Size = UDim2.new(0, 32, 0, 16)
+MLRemake.Toggle_3.ZIndex = 2
+
+MLRemake.UICorner_16.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_16.Parent = MLRemake.Toggle_3
+
+MLRemake.Indicator_4.Name = "Indicator"
+MLRemake.Indicator_4.Parent = MLRemake.Toggle_3
+MLRemake.Indicator_4.AnchorPoint = Vector2.new(0, 0.5)
+MLRemake.Indicator_4.BackgroundColor3 = Color3.fromRGB(90, 90, 90)
+MLRemake.Indicator_4.Position = UDim2.new(0, 0, 0.5, 0)
+MLRemake.Indicator_4.Size = UDim2.new(0, 16, 0, 16)
+MLRemake.Indicator_4.ZIndex = 2
+
+MLRemake.UICorner_17.CornerRadius = UDim.new(0, 6)
+MLRemake.UICorner_17.Parent = MLRemake.Indicator_4
+
+MLRemake.Button_3.Name = "Button"
+MLRemake.Button_3.Parent = MLRemake.Toggle_3
+MLRemake.Button_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Button_3.BackgroundTransparency = 1.000
+MLRemake.Button_3.BorderSizePixel = 0
+MLRemake.Button_3.Size = UDim2.new(1, 0, 1, 0)
+MLRemake.Button_3.ZIndex = 3
+MLRemake.Button_3.AutoButtonColor = false
+MLRemake.Button_3.Font = Enum.Font.SourceSans
+MLRemake.Button_3.Text = ""
+MLRemake.Button_3.TextColor3 = Color3.fromRGB(0, 0, 0)
+MLRemake.Button_3.TextSize = 14.000
+
+MLRemake.Input.Name = "Input"
+MLRemake.Input.Parent = MLRemake.Slider
+MLRemake.Input.AnchorPoint = Vector2.new(1, 0.5)
+MLRemake.Input.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+MLRemake.Input.Position = UDim2.new(1, -38, 0, 15)
+MLRemake.Input.Size = UDim2.new(0, 70, 0, 16)
+MLRemake.Input.ZIndex = 2
+MLRemake.Input.ClearTextOnFocus = false
+MLRemake.Input.Font = Enum.Font.Gotham
+MLRemake.Input.PlaceholderText = "Value"
+MLRemake.Input.Text = "0"
+MLRemake.Input.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Input.TextSize = 12.000
+
+MLRemake.UICorner_18.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_18.Parent = MLRemake.Input
+
+MLRemake.Menu_6.Name = "Menu"
+MLRemake.Menu_6.Parent = MLRemake.Slider
+MLRemake.Menu_6.AnchorPoint = Vector2.new(1, 0)
+MLRemake.Menu_6.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Menu_6.BackgroundTransparency = 1.000
+MLRemake.Menu_6.BorderSizePixel = 0
+MLRemake.Menu_6.Position = UDim2.new(1, 0, 0, 5)
+MLRemake.Menu_6.Size = UDim2.new(0, 20, 0, 20)
+MLRemake.Menu_6.Visible = false
+MLRemake.Menu_6.ZIndex = 3
+MLRemake.Menu_6.Image = "http://www.roblox.com/asset/?id=9147554930"
+
+MLRemake.Value.Name = "Value"
+MLRemake.Value.Parent = MLRemake.Slider
+MLRemake.Value.AnchorPoint = Vector2.new(1, 0)
+MLRemake.Value.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Value.BackgroundTransparency = 1.000
+MLRemake.Value.BorderSizePixel = 0
+MLRemake.Value.Position = UDim2.new(1, -115, 0, 0)
+MLRemake.Value.Size = UDim2.new(0, 70, 0, 30)
+MLRemake.Value.ZIndex = 2
+MLRemake.Value.Font = Enum.Font.Gotham
+MLRemake.Value.Text = "0"
+MLRemake.Value.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Value.TextSize = 14.000
+MLRemake.Value.TextXAlignment = Enum.TextXAlignment.Right
+
+MLRemake.ColorPicker.Name = "ColorPicker"
+MLRemake.ColorPicker.Parent = MLRemake.Example_2
+MLRemake.ColorPicker.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+MLRemake.ColorPicker.Size = UDim2.new(1, 0, 0, 30)
+MLRemake.ColorPicker.ZIndex = 2
+
+MLRemake.UIPadding_11.Parent = MLRemake.ColorPicker
+MLRemake.UIPadding_11.PaddingLeft = UDim.new(0, 8)
+MLRemake.UIPadding_11.PaddingRight = UDim.new(0, 10)
+
+MLRemake.UICorner_19.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_19.Parent = MLRemake.ColorPicker
+
+MLRemake.Label_4.Name = "Label"
+MLRemake.Label_4.Parent = MLRemake.ColorPicker
+MLRemake.Label_4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Label_4.BackgroundTransparency = 1.000
+MLRemake.Label_4.BorderSizePixel = 0
+MLRemake.Label_4.Size = UDim2.new(1, 0, 0, 30)
+MLRemake.Label_4.ZIndex = 2
+MLRemake.Label_4.Font = Enum.Font.Gotham
+MLRemake.Label_4.Text = "Color Picker"
+MLRemake.Label_4.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Label_4.TextSize = 14.000
+MLRemake.Label_4.TextXAlignment = Enum.TextXAlignment.Left
+
+MLRemake.Color.Name = "Color"
+MLRemake.Color.Parent = MLRemake.ColorPicker
+MLRemake.Color.AnchorPoint = Vector2.new(1, 0)
+MLRemake.Color.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Color.BackgroundTransparency = 1.000
+MLRemake.Color.BorderSizePixel = 0
+MLRemake.Color.Position = UDim2.new(1, -25, 0, 0)
+MLRemake.Color.Size = UDim2.new(0.25, 0, 0, 30)
+MLRemake.Color.ZIndex = 2
+MLRemake.Color.Font = Enum.Font.Gotham
+MLRemake.Color.Text = "255, 255, 255"
+MLRemake.Color.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Color.TextSize = 14.000
+MLRemake.Color.TextXAlignment = Enum.TextXAlignment.Right
+
+MLRemake.Picker.Name = "Picker"
+MLRemake.Picker.Parent = MLRemake.ColorPicker
+MLRemake.Picker.BackgroundColor3 = Color3.fromRGB(55, 55, 55)
+MLRemake.Picker.BorderSizePixel = 0
+MLRemake.Picker.ClipsDescendants = true
+MLRemake.Picker.Position = UDim2.new(0, -8, 0, 30)
+MLRemake.Picker.Size = UDim2.new(1, 18, 1, -30)
+MLRemake.Picker.ZIndex = 3
+
+MLRemake.UICorner_20.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_20.Parent = MLRemake.Picker
+
+MLRemake.UIPadding_12.Parent = MLRemake.Picker
+MLRemake.UIPadding_12.PaddingBottom = UDim.new(0, 5)
+MLRemake.UIPadding_12.PaddingLeft = UDim.new(0, 5)
+MLRemake.UIPadding_12.PaddingRight = UDim.new(0, 5)
+MLRemake.UIPadding_12.PaddingTop = UDim.new(0, 5)
+
+MLRemake.UIListLayout_4.Parent = MLRemake.Picker
+MLRemake.UIListLayout_4.SortOrder = Enum.SortOrder.LayoutOrder
+MLRemake.UIListLayout_4.Padding = UDim.new(0, 5)
+
+MLRemake.Hue.Name = "Hue"
+MLRemake.Hue.Parent = MLRemake.Picker
+MLRemake.Hue.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Hue.BackgroundTransparency = 1.000
+MLRemake.Hue.Size = UDim2.new(1, 0, 0, 20)
+MLRemake.Hue.ZIndex = 3
+
+MLRemake.Bar_2.Name = "Bar"
+MLRemake.Bar_2.Parent = MLRemake.Hue
+MLRemake.Bar_2.BackgroundColor3 = Color3.fromRGB(230, 230, 230)
+MLRemake.Bar_2.BorderSizePixel = 0
+MLRemake.Bar_2.Position = UDim2.new(0, 35, 0, 0)
+MLRemake.Bar_2.Size = UDim2.new(1, -70, 0, 20)
+MLRemake.Bar_2.ZIndex = 3
+
+MLRemake.UICorner_21.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_21.Parent = MLRemake.Bar_2
+
+MLRemake.UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 0, 0)), ColorSequenceKeypoint.new(0.16, Color3.fromRGB(255, 244, 0)), ColorSequenceKeypoint.new(0.28, Color3.fromRGB(81, 255, 0)), ColorSequenceKeypoint.new(0.50, Color3.fromRGB(0, 255, 255)), ColorSequenceKeypoint.new(0.66, Color3.fromRGB(0, 10, 255)), ColorSequenceKeypoint.new(0.75, Color3.fromRGB(127, 0, 255)), ColorSequenceKeypoint.new(0.85, Color3.fromRGB(255, 0, 229)), ColorSequenceKeypoint.new(0.90, Color3.fromRGB(255, 0, 153)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 0, 0))}
+MLRemake.UIGradient.Parent = MLRemake.Bar_2
+
+MLRemake.Slider_3.Name = "Slider"
+MLRemake.Slider_3.Parent = MLRemake.Bar_2
+MLRemake.Slider_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Slider_3.BackgroundTransparency = 1.000
+MLRemake.Slider_3.BorderSizePixel = 0
+MLRemake.Slider_3.Size = UDim2.new(1, 0, 1, 0)
+MLRemake.Slider_3.ZIndex = 3
+MLRemake.Slider_3.Font = Enum.Font.SourceSans
+MLRemake.Slider_3.Text = ""
+MLRemake.Slider_3.TextColor3 = Color3.fromRGB(0, 0, 0)
+MLRemake.Slider_3.TextSize = 14.000
+
+MLRemake.Indicator_5.Name = "Indicator"
+MLRemake.Indicator_5.Parent = MLRemake.Bar_2
+MLRemake.Indicator_5.AnchorPoint = Vector2.new(0, 0.5)
+MLRemake.Indicator_5.BackgroundColor3 = Color3.fromRGB(90, 90, 90)
+MLRemake.Indicator_5.BorderSizePixel = 0
+MLRemake.Indicator_5.Position = UDim2.new(0, 0, 0.5, 0)
+MLRemake.Indicator_5.Size = UDim2.new(0, 6, 0, 20)
+MLRemake.Indicator_5.ZIndex = 3
+
+MLRemake.UICorner_22.CornerRadius = UDim.new(0, 3)
+MLRemake.UICorner_22.Parent = MLRemake.Indicator_5
+
+MLRemake.Label_5.Name = "Label"
+MLRemake.Label_5.Parent = MLRemake.Hue
+MLRemake.Label_5.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+MLRemake.Label_5.Size = UDim2.new(0, 30, 0, 20)
+MLRemake.Label_5.ZIndex = 3
+MLRemake.Label_5.Font = Enum.Font.GothamBold
+MLRemake.Label_5.Text = "H"
+MLRemake.Label_5.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Label_5.TextSize = 14.000
+
+MLRemake.UICorner_23.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_23.Parent = MLRemake.Label_5
+
+MLRemake.UIPadding_13.Parent = MLRemake.Label_5
+MLRemake.UIPadding_13.PaddingLeft = UDim.new(0, 1)
+
+MLRemake.Value_2.Name = "Value"
+MLRemake.Value_2.Parent = MLRemake.Hue
+MLRemake.Value_2.AnchorPoint = Vector2.new(1, 0)
+MLRemake.Value_2.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+MLRemake.Value_2.Position = UDim2.new(1, 0, 0, 0)
+MLRemake.Value_2.Size = UDim2.new(0, 30, 0, 20)
+MLRemake.Value_2.ZIndex = 3
+MLRemake.Value_2.Font = Enum.Font.GothamBold
+MLRemake.Value_2.Text = "0"
+MLRemake.Value_2.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Value_2.TextSize = 14.000
+
+MLRemake.UICorner_24.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_24.Parent = MLRemake.Value_2
+
+MLRemake.UIPadding_14.Parent = MLRemake.Value_2
+MLRemake.UIPadding_14.PaddingLeft = UDim.new(0, 1)
+
+MLRemake.Saturation.Name = "Saturation"
+MLRemake.Saturation.Parent = MLRemake.Picker
+MLRemake.Saturation.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Saturation.BackgroundTransparency = 1.000
+MLRemake.Saturation.Size = UDim2.new(1, 0, 0, 20)
+MLRemake.Saturation.ZIndex = 3
+
+MLRemake.Bar_3.Name = "Bar"
+MLRemake.Bar_3.Parent = MLRemake.Saturation
+MLRemake.Bar_3.BackgroundColor3 = Color3.fromRGB(230, 230, 230)
+MLRemake.Bar_3.BorderSizePixel = 0
+MLRemake.Bar_3.Position = UDim2.new(0, 35, 0, 0)
+MLRemake.Bar_3.Size = UDim2.new(1, -70, 0, 20)
+MLRemake.Bar_3.ZIndex = 3
+
+MLRemake.UICorner_25.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_25.Parent = MLRemake.Bar_3
+
+MLRemake.UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 0, 0))}
+MLRemake.UIGradient_2.Parent = MLRemake.Bar_3
+
+MLRemake.Slider_4.Name = "Slider"
+MLRemake.Slider_4.Parent = MLRemake.Bar_3
+MLRemake.Slider_4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Slider_4.BackgroundTransparency = 1.000
+MLRemake.Slider_4.BorderSizePixel = 0
+MLRemake.Slider_4.Size = UDim2.new(1, 0, 1, 0)
+MLRemake.Slider_4.ZIndex = 3
+MLRemake.Slider_4.Font = Enum.Font.SourceSans
+MLRemake.Slider_4.Text = ""
+MLRemake.Slider_4.TextColor3 = Color3.fromRGB(0, 0, 0)
+MLRemake.Slider_4.TextSize = 14.000
+
+MLRemake.Indicator_6.Name = "Indicator"
+MLRemake.Indicator_6.Parent = MLRemake.Bar_3
+MLRemake.Indicator_6.AnchorPoint = Vector2.new(0, 0.5)
+MLRemake.Indicator_6.BackgroundColor3 = Color3.fromRGB(90, 90, 90)
+MLRemake.Indicator_6.BorderSizePixel = 0
+MLRemake.Indicator_6.Position = UDim2.new(0, 0, 0.5, 0)
+MLRemake.Indicator_6.Size = UDim2.new(0, 6, 0, 20)
+MLRemake.Indicator_6.ZIndex = 3
+
+MLRemake.UICorner_26.CornerRadius = UDim.new(0, 3)
+MLRemake.UICorner_26.Parent = MLRemake.Indicator_6
+
+MLRemake.Label_6.Name = "Label"
+MLRemake.Label_6.Parent = MLRemake.Saturation
+MLRemake.Label_6.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+MLRemake.Label_6.Size = UDim2.new(0, 30, 0, 20)
+MLRemake.Label_6.ZIndex = 3
+MLRemake.Label_6.Font = Enum.Font.GothamBold
+MLRemake.Label_6.Text = "S"
+MLRemake.Label_6.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Label_6.TextSize = 14.000
+
+MLRemake.UICorner_27.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_27.Parent = MLRemake.Label_6
+
+MLRemake.UIPadding_15.Parent = MLRemake.Label_6
+MLRemake.UIPadding_15.PaddingLeft = UDim.new(0, 1)
+
+MLRemake.Value_3.Name = "Value"
+MLRemake.Value_3.Parent = MLRemake.Saturation
+MLRemake.Value_3.AnchorPoint = Vector2.new(1, 0)
+MLRemake.Value_3.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+MLRemake.Value_3.Position = UDim2.new(1, 0, 0, 0)
+MLRemake.Value_3.Size = UDim2.new(0, 30, 0, 20)
+MLRemake.Value_3.ZIndex = 3
+MLRemake.Value_3.Font = Enum.Font.GothamBold
+MLRemake.Value_3.Text = "0"
+MLRemake.Value_3.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Value_3.TextSize = 14.000
+
+MLRemake.UICorner_28.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_28.Parent = MLRemake.Value_3
+
+MLRemake.UIPadding_16.Parent = MLRemake.Value_3
+MLRemake.UIPadding_16.PaddingLeft = UDim.new(0, 1)
+
+MLRemake.Value_4.Name = "Value"
+MLRemake.Value_4.Parent = MLRemake.Picker
+MLRemake.Value_4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Value_4.BackgroundTransparency = 1.000
+MLRemake.Value_4.Size = UDim2.new(1, 0, 0, 20)
+MLRemake.Value_4.ZIndex = 3
+
+MLRemake.Bar_4.Name = "Bar"
+MLRemake.Bar_4.Parent = MLRemake.Value_4
+MLRemake.Bar_4.BackgroundColor3 = Color3.fromRGB(230, 230, 230)
+MLRemake.Bar_4.BorderSizePixel = 0
+MLRemake.Bar_4.Position = UDim2.new(0, 35, 0, 0)
+MLRemake.Bar_4.Size = UDim2.new(1, -70, 0, 20)
+MLRemake.Bar_4.ZIndex = 3
+
+MLRemake.UICorner_29.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_29.Parent = MLRemake.Bar_4
+
+MLRemake.UIGradient_3.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(0, 0, 0)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 255, 255))}
+MLRemake.UIGradient_3.Parent = MLRemake.Bar_4
+
+MLRemake.Slider_5.Name = "Slider"
+MLRemake.Slider_5.Parent = MLRemake.Bar_4
+MLRemake.Slider_5.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Slider_5.BackgroundTransparency = 1.000
+MLRemake.Slider_5.BorderSizePixel = 0
+MLRemake.Slider_5.Size = UDim2.new(1, 0, 1, 0)
+MLRemake.Slider_5.ZIndex = 3
+MLRemake.Slider_5.Font = Enum.Font.SourceSans
+MLRemake.Slider_5.Text = ""
+MLRemake.Slider_5.TextColor3 = Color3.fromRGB(0, 0, 0)
+MLRemake.Slider_5.TextSize = 14.000
+
+MLRemake.Indicator_7.Name = "Indicator"
+MLRemake.Indicator_7.Parent = MLRemake.Bar_4
+MLRemake.Indicator_7.AnchorPoint = Vector2.new(1, 0.5)
+MLRemake.Indicator_7.BackgroundColor3 = Color3.fromRGB(90, 90, 90)
+MLRemake.Indicator_7.BorderSizePixel = 0
+MLRemake.Indicator_7.Position = UDim2.new(1, 0, 0.5, 0)
+MLRemake.Indicator_7.Size = UDim2.new(0, 6, 0, 20)
+MLRemake.Indicator_7.ZIndex = 3
+
+MLRemake.UICorner_30.CornerRadius = UDim.new(0, 3)
+MLRemake.UICorner_30.Parent = MLRemake.Indicator_7
+
+MLRemake.Label_7.Name = "Label"
+MLRemake.Label_7.Parent = MLRemake.Value_4
+MLRemake.Label_7.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+MLRemake.Label_7.Size = UDim2.new(0, 30, 0, 20)
+MLRemake.Label_7.ZIndex = 3
+MLRemake.Label_7.Font = Enum.Font.GothamBold
+MLRemake.Label_7.Text = "V"
+MLRemake.Label_7.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Label_7.TextSize = 14.000
+
+MLRemake.UICorner_31.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_31.Parent = MLRemake.Label_7
+
+MLRemake.UIPadding_17.Parent = MLRemake.Label_7
+MLRemake.UIPadding_17.PaddingLeft = UDim.new(0, 1)
+
+MLRemake.Value_5.Name = "Value"
+MLRemake.Value_5.Parent = MLRemake.Value_4
+MLRemake.Value_5.AnchorPoint = Vector2.new(1, 0)
+MLRemake.Value_5.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+MLRemake.Value_5.Position = UDim2.new(1, 0, 0, 0)
+MLRemake.Value_5.Size = UDim2.new(0, 30, 0, 20)
+MLRemake.Value_5.ZIndex = 3
+MLRemake.Value_5.Font = Enum.Font.GothamBold
+MLRemake.Value_5.Text = "1"
+MLRemake.Value_5.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Value_5.TextSize = 14.000
+
+MLRemake.UICorner_32.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_32.Parent = MLRemake.Value_5
+
+MLRemake.UIPadding_18.Parent = MLRemake.Value_5
+MLRemake.UIPadding_18.PaddingLeft = UDim.new(0, 1)
+
+MLRemake.Custom.Name = "Custom"
+MLRemake.Custom.Parent = MLRemake.Picker
+MLRemake.Custom.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Custom.BackgroundTransparency = 1.000
+MLRemake.Custom.Size = UDim2.new(1, 0, 0, 20)
+MLRemake.Custom.ZIndex = 3
+
+MLRemake.HEX.Name = "HEX"
+MLRemake.HEX.Parent = MLRemake.Custom
+MLRemake.HEX.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+MLRemake.HEX.Size = UDim2.new(0.333000004, -3, 1, 0)
+MLRemake.HEX.ZIndex = 3
+MLRemake.HEX.ClearTextOnFocus = false
+MLRemake.HEX.Font = Enum.Font.Gotham
+MLRemake.HEX.PlaceholderText = "HEX"
+MLRemake.HEX.Text = ""
+MLRemake.HEX.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.HEX.TextSize = 12.000
+
+MLRemake.UICorner_33.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_33.Parent = MLRemake.HEX
+
+MLRemake.RGB.Name = "RGB"
+MLRemake.RGB.Parent = MLRemake.Custom
+MLRemake.RGB.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+MLRemake.RGB.Position = UDim2.new(0.333000004, 3, 0, 0)
+MLRemake.RGB.Size = UDim2.new(0.333000004, -6, 1, 0)
+MLRemake.RGB.ZIndex = 3
+MLRemake.RGB.ClearTextOnFocus = false
+MLRemake.RGB.Font = Enum.Font.Gotham
+MLRemake.RGB.PlaceholderText = "RGB"
+MLRemake.RGB.Text = ""
+MLRemake.RGB.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.RGB.TextSize = 12.000
+
+MLRemake.UICorner_34.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_34.Parent = MLRemake.RGB
+
+MLRemake.Rainbow.Name = "Rainbow"
+MLRemake.Rainbow.Parent = MLRemake.Custom
+MLRemake.Rainbow.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+MLRemake.Rainbow.Position = UDim2.new(0.666999996, 3, 0, 0)
+MLRemake.Rainbow.Size = UDim2.new(0.333000004, -3, 0, 20)
+MLRemake.Rainbow.ZIndex = 3
+MLRemake.Rainbow.AutoButtonColor = false
+MLRemake.Rainbow.Font = Enum.Font.Gotham
+MLRemake.Rainbow.Text = ""
+MLRemake.Rainbow.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Rainbow.TextSize = 12.000
+
+MLRemake.UICorner_35.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_35.Parent = MLRemake.Rainbow
+
+MLRemake.RainbowText.Name = "RainbowText"
+MLRemake.RainbowText.Parent = MLRemake.Rainbow
+MLRemake.RainbowText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.RainbowText.BackgroundTransparency = 1.000
+MLRemake.RainbowText.BorderSizePixel = 0
+MLRemake.RainbowText.Size = UDim2.new(1, 0, 1, 0)
+MLRemake.RainbowText.ZIndex = 3
+MLRemake.RainbowText.Font = Enum.Font.Gotham
+MLRemake.RainbowText.Text = "Rainbow"
+MLRemake.RainbowText.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.RainbowText.TextSize = 12.000
+MLRemake.RainbowText.TextStrokeTransparency = 0.000
+
+MLRemake.UIGradient_4.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 0, 0)), ColorSequenceKeypoint.new(0.16, Color3.fromRGB(255, 244, 0)), ColorSequenceKeypoint.new(0.28, Color3.fromRGB(81, 255, 0)), ColorSequenceKeypoint.new(0.50, Color3.fromRGB(0, 255, 255)), ColorSequenceKeypoint.new(0.66, Color3.fromRGB(0, 10, 255)), ColorSequenceKeypoint.new(0.75, Color3.fromRGB(127, 0, 255)), ColorSequenceKeypoint.new(0.85, Color3.fromRGB(255, 0, 229)), ColorSequenceKeypoint.new(0.90, Color3.fromRGB(255, 0, 153)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 0, 0))}
+MLRemake.UIGradient_4.Offset = Vector2.new(-0.00999999978, 0.5)
+MLRemake.UIGradient_4.Rotation = 30
+MLRemake.UIGradient_4.Parent = MLRemake.RainbowText
+
+MLRemake.Button_4.Name = "Button"
+MLRemake.Button_4.Parent = MLRemake.ColorPicker
+MLRemake.Button_4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Button_4.BackgroundTransparency = 1.000
+MLRemake.Button_4.BorderSizePixel = 0
+MLRemake.Button_4.Size = UDim2.new(1, 0, 0, 30)
+MLRemake.Button_4.ZIndex = 3
+MLRemake.Button_4.AutoButtonColor = false
+MLRemake.Button_4.Font = Enum.Font.SourceSans
+MLRemake.Button_4.Text = ""
+MLRemake.Button_4.TextColor3 = Color3.fromRGB(0, 0, 0)
+MLRemake.Button_4.TextSize = 14.000
+
+MLRemake.Fill_3.Name = "Fill"
+MLRemake.Fill_3.Parent = MLRemake.ColorPicker
+MLRemake.Fill_3.BackgroundColor3 = Color3.fromRGB(55, 55, 55)
+MLRemake.Fill_3.BorderSizePixel = 0
+MLRemake.Fill_3.Position = UDim2.new(0, -8, 0, 30)
+MLRemake.Fill_3.Size = UDim2.new(1, 18, 0, 5)
+MLRemake.Fill_3.Visible = false
+MLRemake.Fill_3.ZIndex = 2
+
+MLRemake.Preview.Name = "Preview"
+MLRemake.Preview.Parent = MLRemake.ColorPicker
+MLRemake.Preview.AnchorPoint = Vector2.new(1, 0)
+MLRemake.Preview.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Preview.Position = UDim2.new(1, 0, 0, 5)
+MLRemake.Preview.Size = UDim2.new(0, 20, 0, 20)
+MLRemake.Preview.ZIndex = 2
+
+MLRemake.UICorner_36.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_36.Parent = MLRemake.Preview
+
+MLRemake.RippleHolder_2.Name = "RippleHolder"
+MLRemake.RippleHolder_2.Parent = MLRemake.ColorPicker
+MLRemake.RippleHolder_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.RippleHolder_2.BackgroundTransparency = 1.000
+MLRemake.RippleHolder_2.BorderSizePixel = 0
+MLRemake.RippleHolder_2.Position = UDim2.new(0, -8, 0, 0)
+MLRemake.RippleHolder_2.Size = UDim2.new(1, 18, 0, 30)
+MLRemake.RippleHolder_2.ZIndex = 2
+
+MLRemake.Menu_7.Name = "Menu"
+MLRemake.Menu_7.Parent = MLRemake.ColorPicker
+MLRemake.Menu_7.AnchorPoint = Vector2.new(1, 0)
+MLRemake.Menu_7.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Menu_7.BackgroundTransparency = 1.000
+MLRemake.Menu_7.BorderSizePixel = 0
+MLRemake.Menu_7.Position = UDim2.new(1, 0, 0, 5)
+MLRemake.Menu_7.Size = UDim2.new(0, 20, 0, 20)
+MLRemake.Menu_7.Visible = false
+MLRemake.Menu_7.ZIndex = 3
+MLRemake.Menu_7.Image = "http://www.roblox.com/asset/?id=9147554930"
+
+MLRemake.Keybind.Name = "Keybind"
+MLRemake.Keybind.Parent = MLRemake.Example_2
+MLRemake.Keybind.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+MLRemake.Keybind.BorderSizePixel = 0
+MLRemake.Keybind.Size = UDim2.new(1, 0, 0, 30)
+MLRemake.Keybind.ZIndex = 2
+MLRemake.Keybind.AutoButtonColor = false
+MLRemake.Keybind.Font = Enum.Font.Gotham
+MLRemake.Keybind.Text = "Keybind"
+MLRemake.Keybind.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Keybind.TextSize = 14.000
+MLRemake.Keybind.TextXAlignment = Enum.TextXAlignment.Left
+
+MLRemake.UICorner_37.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_37.Parent = MLRemake.Keybind
+
+MLRemake.UIPadding_19.Parent = MLRemake.Keybind
+MLRemake.UIPadding_19.PaddingLeft = UDim.new(0, 8)
+MLRemake.UIPadding_19.PaddingRight = UDim.new(0, 10)
+
+MLRemake.Bind_old.Name = "Bind_old"
+MLRemake.Bind_old.Parent = MLRemake.Keybind
+MLRemake.Bind_old.AnchorPoint = Vector2.new(1, 0)
+MLRemake.Bind_old.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Bind_old.BackgroundTransparency = 1.000
+MLRemake.Bind_old.BorderSizePixel = 0
+MLRemake.Bind_old.Position = UDim2.new(1, 0, 0, 0)
+MLRemake.Bind_old.Size = UDim2.new(0.349999994, 0, 1, 0)
+MLRemake.Bind_old.Visible = false
+MLRemake.Bind_old.ZIndex = 2
+MLRemake.Bind_old.Font = Enum.Font.Gotham
+MLRemake.Bind_old.Text = "Unknown"
+MLRemake.Bind_old.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Bind_old.TextSize = 14.000
+MLRemake.Bind_old.TextXAlignment = Enum.TextXAlignment.Right
+
+MLRemake.Menu_8.Name = "Menu"
+MLRemake.Menu_8.Parent = MLRemake.Keybind
+MLRemake.Menu_8.AnchorPoint = Vector2.new(1, 0)
+MLRemake.Menu_8.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Menu_8.BackgroundTransparency = 1.000
+MLRemake.Menu_8.BorderSizePixel = 0
+MLRemake.Menu_8.Position = UDim2.new(1, 0, 0, 5)
+MLRemake.Menu_8.Size = UDim2.new(0, 20, 0, 20)
+MLRemake.Menu_8.Visible = false
+MLRemake.Menu_8.ZIndex = 3
+MLRemake.Menu_8.Image = "http://www.roblox.com/asset/?id=9147554930"
+
+MLRemake.Bind.Name = "Bind"
+MLRemake.Bind.Parent = MLRemake.Keybind
+MLRemake.Bind.AnchorPoint = Vector2.new(1, 0.5)
+MLRemake.Bind.BackgroundColor3 = Color3.fromRGB(150, 150, 150)
+MLRemake.Bind.BorderSizePixel = 0
+MLRemake.Bind.Position = UDim2.new(1, 0, 0, 15)
+MLRemake.Bind.Size = UDim2.new(0, 80, 0, 20)
+MLRemake.Bind.ZIndex = 2
+
+MLRemake.UICorner_38.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_38.Parent = MLRemake.Bind
+
+MLRemake.Label_8.Name = "Label"
+MLRemake.Label_8.Parent = MLRemake.Bind
+MLRemake.Label_8.BackgroundColor3 = Color3.fromRGB(230, 230, 230)
+MLRemake.Label_8.Position = UDim2.new(0, 2, 0, 2)
+MLRemake.Label_8.Size = UDim2.new(1, -4, 0, 16)
+MLRemake.Label_8.ZIndex = 2
+MLRemake.Label_8.Font = Enum.Font.GothamBold
+MLRemake.Label_8.Text = "Unknown"
+MLRemake.Label_8.TextColor3 = Color3.fromRGB(0, 0, 0)
+MLRemake.Label_8.TextSize = 12.000
+
+MLRemake.UICorner_39.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_39.Parent = MLRemake.Label_8
+
+MLRemake.ChipSet.Name = "ChipSet"
+MLRemake.ChipSet.Parent = MLRemake.Example_2
+MLRemake.ChipSet.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+MLRemake.ChipSet.Size = UDim2.new(1, 0, 0, 30)
+MLRemake.ChipSet.ZIndex = 2
+
+MLRemake.UIPadding_20.Parent = MLRemake.ChipSet
+MLRemake.UIPadding_20.PaddingLeft = UDim.new(0, 8)
+MLRemake.UIPadding_20.PaddingRight = UDim.new(0, 10)
+
+MLRemake.UICorner_40.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_40.Parent = MLRemake.ChipSet
+
+MLRemake.Label_9.Name = "Label"
+MLRemake.Label_9.Parent = MLRemake.ChipSet
+MLRemake.Label_9.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Label_9.BackgroundTransparency = 1.000
+MLRemake.Label_9.BorderSizePixel = 0
+MLRemake.Label_9.Size = UDim2.new(1, 0, 0, 30)
+MLRemake.Label_9.ZIndex = 2
+MLRemake.Label_9.Font = Enum.Font.Gotham
+MLRemake.Label_9.Text = "Chip Set"
+MLRemake.Label_9.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Label_9.TextSize = 14.000
+MLRemake.Label_9.TextXAlignment = Enum.TextXAlignment.Left
+
+MLRemake.Dropdown_3.Name = "Dropdown"
+MLRemake.Dropdown_3.Parent = MLRemake.ChipSet
+MLRemake.Dropdown_3.BackgroundColor3 = Color3.fromRGB(55, 55, 55)
+MLRemake.Dropdown_3.BorderSizePixel = 0
+MLRemake.Dropdown_3.ClipsDescendants = true
+MLRemake.Dropdown_3.Position = UDim2.new(0, -8, 0, 30)
+MLRemake.Dropdown_3.Size = UDim2.new(1, 18, 1, -30)
+MLRemake.Dropdown_3.ZIndex = 3
+
+MLRemake.UICorner_41.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_41.Parent = MLRemake.Dropdown_3
+
+MLRemake.UIPadding_21.Parent = MLRemake.Dropdown_3
+MLRemake.UIPadding_21.PaddingBottom = UDim.new(0, 5)
+MLRemake.UIPadding_21.PaddingLeft = UDim.new(0, 5)
+MLRemake.UIPadding_21.PaddingRight = UDim.new(0, 5)
+MLRemake.UIPadding_21.PaddingTop = UDim.new(0, 5)
+
+MLRemake.UIListLayout_5.Parent = MLRemake.Dropdown_3
+MLRemake.UIListLayout_5.SortOrder = Enum.SortOrder.LayoutOrder
+MLRemake.UIListLayout_5.Padding = UDim.new(0, 5)
+
+MLRemake.Option_3.Name = "Option"
+MLRemake.Option_3.Parent = MLRemake.Dropdown_3
+MLRemake.Option_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Option_3.BackgroundTransparency = 1.000
+MLRemake.Option_3.BorderSizePixel = 0
+MLRemake.Option_3.Size = UDim2.new(1, 0, 0, 30)
+MLRemake.Option_3.Visible = false
+
+MLRemake.Button_5.Name = "Button"
+MLRemake.Button_5.Parent = MLRemake.Option_3
+MLRemake.Button_5.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+MLRemake.Button_5.BorderSizePixel = 0
+MLRemake.Button_5.Position = UDim2.new(0, 35, 0, 0)
+MLRemake.Button_5.Size = UDim2.new(1, -35, 1, 0)
+MLRemake.Button_5.ZIndex = 3
+MLRemake.Button_5.AutoButtonColor = false
+MLRemake.Button_5.Font = Enum.Font.Gotham
+MLRemake.Button_5.Text = "Option"
+MLRemake.Button_5.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Button_5.TextSize = 14.000
+MLRemake.Button_5.TextXAlignment = Enum.TextXAlignment.Left
+
+MLRemake.UICorner_42.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_42.Parent = MLRemake.Button_5
+
+MLRemake.UIPadding_22.Parent = MLRemake.Button_5
+MLRemake.UIPadding_22.PaddingLeft = UDim.new(0, 8)
+
+MLRemake.Enabled.Name = "Enabled"
+MLRemake.Enabled.Parent = MLRemake.Option_3
+MLRemake.Enabled.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+MLRemake.Enabled.Size = UDim2.new(0, 30, 0, 30)
+MLRemake.Enabled.ZIndex = 3
+MLRemake.Enabled.AutoButtonColor = false
+MLRemake.Enabled.Image = "rbxassetid://9122106066"
+
+MLRemake.UICorner_43.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_43.Parent = MLRemake.Enabled
+
+MLRemake.Menu_9.Name = "Menu"
+MLRemake.Menu_9.Parent = MLRemake.Option_3
+MLRemake.Menu_9.AnchorPoint = Vector2.new(1, 0)
+MLRemake.Menu_9.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Menu_9.BackgroundTransparency = 1.000
+MLRemake.Menu_9.BorderSizePixel = 0
+MLRemake.Menu_9.Position = UDim2.new(1, -5, 0, 5)
+MLRemake.Menu_9.Size = UDim2.new(0, 20, 0, 20)
+MLRemake.Menu_9.Visible = false
+MLRemake.Menu_9.ZIndex = 3
+MLRemake.Menu_9.Image = "http://www.roblox.com/asset/?id=9147554930"
+
+MLRemake.Button_6.Name = "Button"
+MLRemake.Button_6.Parent = MLRemake.ChipSet
+MLRemake.Button_6.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Button_6.BackgroundTransparency = 1.000
+MLRemake.Button_6.BorderSizePixel = 0
+MLRemake.Button_6.Size = UDim2.new(1, 0, 0, 30)
+MLRemake.Button_6.ZIndex = 3
+MLRemake.Button_6.AutoButtonColor = false
+MLRemake.Button_6.Font = Enum.Font.SourceSans
+MLRemake.Button_6.Text = ""
+MLRemake.Button_6.TextColor3 = Color3.fromRGB(0, 0, 0)
+MLRemake.Button_6.TextSize = 14.000
+
+MLRemake.Fill_4.Name = "Fill"
+MLRemake.Fill_4.Parent = MLRemake.ChipSet
+MLRemake.Fill_4.BackgroundColor3 = Color3.fromRGB(55, 55, 55)
+MLRemake.Fill_4.BorderSizePixel = 0
+MLRemake.Fill_4.Position = UDim2.new(0, -8, 0, 30)
+MLRemake.Fill_4.Size = UDim2.new(1, 18, 0, 5)
+MLRemake.Fill_4.Visible = false
+MLRemake.Fill_4.ZIndex = 2
+
+MLRemake.RippleHolder_3.Name = "RippleHolder"
+MLRemake.RippleHolder_3.Parent = MLRemake.ChipSet
+MLRemake.RippleHolder_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.RippleHolder_3.BackgroundTransparency = 1.000
+MLRemake.RippleHolder_3.BorderSizePixel = 0
+MLRemake.RippleHolder_3.Position = UDim2.new(0, -8, 0, 0)
+MLRemake.RippleHolder_3.Size = UDim2.new(0, 380, 0, 30)
+MLRemake.RippleHolder_3.ZIndex = 2
+
+MLRemake.Indicator_8.Name = "Indicator"
+MLRemake.Indicator_8.Parent = MLRemake.ChipSet
+MLRemake.Indicator_8.AnchorPoint = Vector2.new(1, 0)
+MLRemake.Indicator_8.BackgroundColor3 = Color3.fromRGB(250, 170, 75)
+MLRemake.Indicator_8.Position = UDim2.new(1, 0, 0, 5)
+MLRemake.Indicator_8.Size = UDim2.new(0, 20, 0, 20)
+MLRemake.Indicator_8.ZIndex = 2
+
+MLRemake.UICorner_44.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_44.Parent = MLRemake.Indicator_8
+
+MLRemake.Menu_10.Name = "Menu"
+MLRemake.Menu_10.Parent = MLRemake.ChipSet
+MLRemake.Menu_10.AnchorPoint = Vector2.new(1, 0)
+MLRemake.Menu_10.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Menu_10.BackgroundTransparency = 1.000
+MLRemake.Menu_10.BorderSizePixel = 0
+MLRemake.Menu_10.Position = UDim2.new(1, 0, 0, 5)
+MLRemake.Menu_10.Size = UDim2.new(0, 20, 0, 20)
+MLRemake.Menu_10.Visible = false
+MLRemake.Menu_10.ZIndex = 3
+MLRemake.Menu_10.Image = "http://www.roblox.com/asset/?id=9147554930"
+
+MLRemake.Table.Name = "Table"
+MLRemake.Table.Parent = MLRemake.Example_2
+MLRemake.Table.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+MLRemake.Table.Size = UDim2.new(1, 0, 0, 30)
+MLRemake.Table.ZIndex = 2
+
+MLRemake.UIPadding_23.Parent = MLRemake.Table
+MLRemake.UIPadding_23.PaddingLeft = UDim.new(0, 8)
+MLRemake.UIPadding_23.PaddingRight = UDim.new(0, 10)
+
+MLRemake.UICorner_45.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_45.Parent = MLRemake.Table
+
+MLRemake.Label_10.Name = "Label"
+MLRemake.Label_10.Parent = MLRemake.Table
+MLRemake.Label_10.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Label_10.BackgroundTransparency = 1.000
+MLRemake.Label_10.BorderSizePixel = 0
+MLRemake.Label_10.Size = UDim2.new(1, 0, 0, 30)
+MLRemake.Label_10.ZIndex = 2
+MLRemake.Label_10.Font = Enum.Font.Gotham
+MLRemake.Label_10.Text = "Table"
+MLRemake.Label_10.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Label_10.TextSize = 14.000
+MLRemake.Label_10.TextXAlignment = Enum.TextXAlignment.Left
+
+MLRemake.Dropdown_4.Name = "Dropdown"
+MLRemake.Dropdown_4.Parent = MLRemake.Table
+MLRemake.Dropdown_4.BackgroundColor3 = Color3.fromRGB(55, 55, 55)
+MLRemake.Dropdown_4.BorderSizePixel = 0
+MLRemake.Dropdown_4.ClipsDescendants = true
+MLRemake.Dropdown_4.Position = UDim2.new(0, -8, 0, 30)
+MLRemake.Dropdown_4.Size = UDim2.new(1, 18, 1, -30)
+MLRemake.Dropdown_4.ZIndex = 3
+
+MLRemake.UICorner_46.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_46.Parent = MLRemake.Dropdown_4
+
+MLRemake.UIPadding_24.Parent = MLRemake.Dropdown_4
+MLRemake.UIPadding_24.PaddingBottom = UDim.new(0, 5)
+MLRemake.UIPadding_24.PaddingLeft = UDim.new(0, 5)
+MLRemake.UIPadding_24.PaddingRight = UDim.new(0, 5)
+MLRemake.UIPadding_24.PaddingTop = UDim.new(0, 5)
+
+MLRemake.UIListLayout_6.Parent = MLRemake.Dropdown_4
+MLRemake.UIListLayout_6.SortOrder = Enum.SortOrder.LayoutOrder
+MLRemake.UIListLayout_6.Padding = UDim.new(0, 5)
+
+MLRemake.Info.Name = "Info"
+MLRemake.Info.Parent = MLRemake.Dropdown_4
+MLRemake.Info.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+MLRemake.Info.BorderSizePixel = 0
+MLRemake.Info.Size = UDim2.new(1, 0, 0, 30)
+MLRemake.Info.ZIndex = 3
+
+MLRemake.UIPadding_25.Parent = MLRemake.Info
+MLRemake.UIPadding_25.PaddingLeft = UDim.new(0, 8)
+
+MLRemake.UICorner_47.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_47.Parent = MLRemake.Info
+
+MLRemake.Key.Name = "Key"
+MLRemake.Key.Parent = MLRemake.Info
+MLRemake.Key.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Key.BackgroundTransparency = 1.000
+MLRemake.Key.BorderSizePixel = 0
+MLRemake.Key.Size = UDim2.new(0.5, 0, 0, 30)
+MLRemake.Key.ZIndex = 3
+MLRemake.Key.Font = Enum.Font.Gotham
+MLRemake.Key.Text = "Key"
+MLRemake.Key.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Key.TextSize = 14.000
+MLRemake.Key.TextXAlignment = Enum.TextXAlignment.Left
+
+MLRemake.Value_6.Name = "Value"
+MLRemake.Value_6.Parent = MLRemake.Info
+MLRemake.Value_6.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Value_6.BackgroundTransparency = 1.000
+MLRemake.Value_6.BorderSizePixel = 0
+MLRemake.Value_6.Position = UDim2.new(0.5, 0, 0, 0)
+MLRemake.Value_6.Size = UDim2.new(0.5, 0, 0, 30)
+MLRemake.Value_6.ZIndex = 3
+MLRemake.Value_6.Font = Enum.Font.Gotham
+MLRemake.Value_6.Text = "Value"
+MLRemake.Value_6.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Value_6.TextSize = 14.000
+MLRemake.Value_6.TextXAlignment = Enum.TextXAlignment.Left
+
+MLRemake.UIPadding_26.Parent = MLRemake.Value_6
+MLRemake.UIPadding_26.PaddingLeft = UDim.new(0, 8)
+
+MLRemake.Line_3.Name = "Line"
+MLRemake.Line_3.Parent = MLRemake.Info
+MLRemake.Line_3.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+MLRemake.Line_3.BorderSizePixel = 0
+MLRemake.Line_3.Position = UDim2.new(0.5, 0, 0, 5)
+MLRemake.Line_3.Size = UDim2.new(0, 1, 0, 20)
+MLRemake.Line_3.ZIndex = 3
+
+MLRemake.Button_7.Name = "Button"
+MLRemake.Button_7.Parent = MLRemake.Table
+MLRemake.Button_7.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Button_7.BackgroundTransparency = 1.000
+MLRemake.Button_7.BorderSizePixel = 0
+MLRemake.Button_7.Size = UDim2.new(1, 0, 0, 30)
+MLRemake.Button_7.ZIndex = 3
+MLRemake.Button_7.AutoButtonColor = false
+MLRemake.Button_7.Font = Enum.Font.SourceSans
+MLRemake.Button_7.Text = ""
+MLRemake.Button_7.TextColor3 = Color3.fromRGB(0, 0, 0)
+MLRemake.Button_7.TextSize = 14.000
+
+MLRemake.Fill_5.Name = "Fill"
+MLRemake.Fill_5.Parent = MLRemake.Table
+MLRemake.Fill_5.BackgroundColor3 = Color3.fromRGB(55, 55, 55)
+MLRemake.Fill_5.BorderSizePixel = 0
+MLRemake.Fill_5.Position = UDim2.new(0, -8, 0, 30)
+MLRemake.Fill_5.Size = UDim2.new(1, 18, 0, 5)
+MLRemake.Fill_5.Visible = false
+MLRemake.Fill_5.ZIndex = 2
+
+MLRemake.RippleHolder_4.Name = "RippleHolder"
+MLRemake.RippleHolder_4.Parent = MLRemake.Table
+MLRemake.RippleHolder_4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.RippleHolder_4.BackgroundTransparency = 1.000
+MLRemake.RippleHolder_4.BorderSizePixel = 0
+MLRemake.RippleHolder_4.Position = UDim2.new(0, -8, 0, 0)
+MLRemake.RippleHolder_4.Size = UDim2.new(0, 380, 0, 30)
+MLRemake.RippleHolder_4.ZIndex = 2
+
+MLRemake.Indicator_9.Name = "Indicator"
+MLRemake.Indicator_9.Parent = MLRemake.Table
+MLRemake.Indicator_9.AnchorPoint = Vector2.new(1, 0)
+MLRemake.Indicator_9.BackgroundColor3 = Color3.fromRGB(250, 170, 75)
+MLRemake.Indicator_9.Position = UDim2.new(1, 0, 0, 5)
+MLRemake.Indicator_9.Size = UDim2.new(0, 20, 0, 20)
+MLRemake.Indicator_9.ZIndex = 2
+
+MLRemake.UICorner_48.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_48.Parent = MLRemake.Indicator_9
+
+MLRemake.Menu_11.Name = "Menu"
+MLRemake.Menu_11.Parent = MLRemake.Table
+MLRemake.Menu_11.AnchorPoint = Vector2.new(1, 0)
+MLRemake.Menu_11.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Menu_11.BackgroundTransparency = 1.000
+MLRemake.Menu_11.BorderSizePixel = 0
+MLRemake.Menu_11.Position = UDim2.new(1, 0, 0, 5)
+MLRemake.Menu_11.Size = UDim2.new(0, 20, 0, 20)
+MLRemake.Menu_11.Visible = false
+MLRemake.Menu_11.ZIndex = 3
+MLRemake.Menu_11.Image = "http://www.roblox.com/asset/?id=9147554930"
+
+MLRemake.BackgroundDim.Name = "BackgroundDim"
+MLRemake.BackgroundDim.Parent = MLRemake.Main
+MLRemake.BackgroundDim.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+MLRemake.BackgroundDim.BackgroundTransparency = 1.000
+MLRemake.BackgroundDim.BorderSizePixel = 0
+MLRemake.BackgroundDim.Size = UDim2.new(1, 0, 1, 0)
+MLRemake.BackgroundDim.ZIndex = 7
+
+MLRemake.Banner.Name = "Banner"
+MLRemake.Banner.Parent = MLRemake.Main
+MLRemake.Banner.AnchorPoint = Vector2.new(0.5, 1)
+MLRemake.Banner.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+MLRemake.Banner.Position = UDim2.new(0.5, 0, 1, -10)
+MLRemake.Banner.Size = UDim2.new(1, -20, 0, 100)
+MLRemake.Banner.Visible = false
+MLRemake.Banner.ZIndex = 6
+
+MLRemake.UICorner_49.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_49.Parent = MLRemake.Banner
+
+MLRemake.Label_11.Name = "Label"
+MLRemake.Label_11.Parent = MLRemake.Banner
+MLRemake.Label_11.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+MLRemake.Label_11.BorderSizePixel = 0
+MLRemake.Label_11.Size = UDim2.new(1, 0, 1, 0)
+MLRemake.Label_11.ZIndex = 6
+MLRemake.Label_11.Font = Enum.Font.Gotham
+MLRemake.Label_11.Text = "Banner"
+MLRemake.Label_11.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Label_11.TextSize = 12.000
+MLRemake.Label_11.TextWrapped = true
+MLRemake.Label_11.TextXAlignment = Enum.TextXAlignment.Left
+MLRemake.Label_11.TextYAlignment = Enum.TextYAlignment.Top
+
+MLRemake.UIPadding_27.Parent = MLRemake.Label_11
+MLRemake.UIPadding_27.PaddingBottom = UDim.new(0, 5)
+MLRemake.UIPadding_27.PaddingLeft = UDim.new(0, 6)
+MLRemake.UIPadding_27.PaddingRight = UDim.new(0, 5)
+MLRemake.UIPadding_27.PaddingTop = UDim.new(0, 5)
+
+MLRemake.UICorner_50.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_50.Parent = MLRemake.Label_11
+
+MLRemake.UIPadding_28.Parent = MLRemake.Banner
+MLRemake.UIPadding_28.PaddingBottom = UDim.new(0, 30)
+MLRemake.UIPadding_28.PaddingLeft = UDim.new(0, 5)
+MLRemake.UIPadding_28.PaddingRight = UDim.new(0, 5)
+MLRemake.UIPadding_28.PaddingTop = UDim.new(0, 5)
+
+MLRemake.Buttons_2.Name = "Buttons"
+MLRemake.Buttons_2.Parent = MLRemake.Banner
+MLRemake.Buttons_2.Active = true
+MLRemake.Buttons_2.AnchorPoint = Vector2.new(0, 1)
+MLRemake.Buttons_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Buttons_2.BackgroundTransparency = 1.000
+MLRemake.Buttons_2.Position = UDim2.new(0, 0, 1, 25)
+MLRemake.Buttons_2.Size = UDim2.new(1, 0, 0, 20)
+MLRemake.Buttons_2.ZIndex = 6
+MLRemake.Buttons_2.CanvasSize = UDim2.new(0, 0, 0, 0)
+MLRemake.Buttons_2.ScrollBarThickness = 0
+
+MLRemake.Example_3.Name = "Example"
+MLRemake.Example_3.Parent = MLRemake.Buttons_2
+MLRemake.Example_3.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+MLRemake.Example_3.BorderSizePixel = 0
+MLRemake.Example_3.Size = UDim2.new(0, 40, 0, 20)
+MLRemake.Example_3.Visible = false
+MLRemake.Example_3.ZIndex = 6
+MLRemake.Example_3.AutoButtonColor = false
+MLRemake.Example_3.Font = Enum.Font.GothamBold
+MLRemake.Example_3.Text = "OK"
+MLRemake.Example_3.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Example_3.TextSize = 14.000
+
+MLRemake.UICorner_51.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_51.Parent = MLRemake.Example_3
+
+MLRemake.UIListLayout_7.Parent = MLRemake.Buttons_2
+MLRemake.UIListLayout_7.FillDirection = Enum.FillDirection.Horizontal
+MLRemake.UIListLayout_7.HorizontalAlignment = Enum.HorizontalAlignment.Right
+MLRemake.UIListLayout_7.SortOrder = Enum.SortOrder.LayoutOrder
+MLRemake.UIListLayout_7.Padding = UDim.new(0, 5)
+
+MLRemake.BackgroundDim2.Name = "BackgroundDim2"
+MLRemake.BackgroundDim2.Parent = MLRemake.Main
+MLRemake.BackgroundDim2.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+MLRemake.BackgroundDim2.BackgroundTransparency = 1.000
+MLRemake.BackgroundDim2.BorderSizePixel = 0
+MLRemake.BackgroundDim2.Size = UDim2.new(1, 0, 1, 0)
+MLRemake.BackgroundDim2.ZIndex = 3
+
+MLRemake.Tabs.Name = "Tabs"
+MLRemake.Tabs.Parent = MLRemake.Main
+MLRemake.Tabs.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+MLRemake.Tabs.BackgroundTransparency = 1.000
+MLRemake.Tabs.Position = UDim2.new(0, 10, 0, 10)
+MLRemake.Tabs.Size = UDim2.new(1, -20, 0, 25)
+MLRemake.Tabs.Visible = false
+
+MLRemake.UICorner_52.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_52.Parent = MLRemake.Tabs
+
+MLRemake.Buttons_3.Name = "Buttons"
+MLRemake.Buttons_3.Parent = MLRemake.Tabs
+MLRemake.Buttons_3.Active = true
+MLRemake.Buttons_3.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+MLRemake.Buttons_3.BackgroundTransparency = 1.000
+MLRemake.Buttons_3.BorderSizePixel = 0
+MLRemake.Buttons_3.Size = UDim2.new(1, 0, 1, 0)
+MLRemake.Buttons_3.ZIndex = 2
+MLRemake.Buttons_3.ScrollBarThickness = 0
+
+MLRemake.UIListLayout_8.Parent = MLRemake.Buttons_3
+MLRemake.UIListLayout_8.FillDirection = Enum.FillDirection.Horizontal
+MLRemake.UIListLayout_8.SortOrder = Enum.SortOrder.LayoutOrder
+MLRemake.UIListLayout_8.Padding = UDim.new(0, 5)
+
+MLRemake.Example_4.Name = "Example"
+MLRemake.Example_4.Parent = MLRemake.Buttons_3
+MLRemake.Example_4.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+MLRemake.Example_4.Size = UDim2.new(0, 72, 0, 25)
+MLRemake.Example_4.Visible = false
+MLRemake.Example_4.ZIndex = 2
+MLRemake.Example_4.Font = Enum.Font.Gotham
+MLRemake.Example_4.Text = "Tab"
+MLRemake.Example_4.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Example_4.TextSize = 14.000
+
+MLRemake.UICorner_53.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_53.Parent = MLRemake.Example_4
+
+MLRemake.ObjectMenu.Name = "ObjectMenu"
+MLRemake.ObjectMenu.Parent = MLRemake.Main
+MLRemake.ObjectMenu.AnchorPoint = Vector2.new(1, 0)
+MLRemake.ObjectMenu.BackgroundColor3 = Color3.fromRGB(230, 230, 230)
+MLRemake.ObjectMenu.BorderSizePixel = 0
+MLRemake.ObjectMenu.ClipsDescendants = true
+MLRemake.ObjectMenu.Position = UDim2.new(0, -10, 0, 0)
+MLRemake.ObjectMenu.Size = UDim2.new(0, 100, 0, 0)
+MLRemake.ObjectMenu.ZIndex = 4
+
+MLRemake.UIListLayout_9.Parent = MLRemake.ObjectMenu
+MLRemake.UIListLayout_9.SortOrder = Enum.SortOrder.LayoutOrder
+
+MLRemake.Example_5.Name = "Example"
+MLRemake.Example_5.Parent = MLRemake.ObjectMenu
+MLRemake.Example_5.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Example_5.BackgroundTransparency = 1.000
+MLRemake.Example_5.BorderSizePixel = 0
+MLRemake.Example_5.Size = UDim2.new(1, 0, 0, 30)
+MLRemake.Example_5.Visible = false
+MLRemake.Example_5.ZIndex = 4
+MLRemake.Example_5.Font = Enum.Font.Gotham
+MLRemake.Example_5.TextColor3 = Color3.fromRGB(0, 0, 0)
+MLRemake.Example_5.TextSize = 12.000
+MLRemake.Example_5.TextXAlignment = Enum.TextXAlignment.Left
+
+MLRemake.UIPadding_29.Parent = MLRemake.Example_5
+MLRemake.UIPadding_29.PaddingLeft = UDim.new(0, 10)
+
+MLRemake.UICorner_54.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_54.Parent = MLRemake.ObjectMenu
+
+MLRemake.UICorner_55.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_55.Parent = MLRemake.Topbar
+
+MLRemake.FillMain.Name = "FillMain"
+MLRemake.FillMain.Parent = MLRemake.Topbar
+MLRemake.FillMain.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+MLRemake.FillMain.BorderSizePixel = 0
+MLRemake.FillMain.Position = UDim2.new(0, 0, 1, 0)
+MLRemake.FillMain.Size = UDim2.new(1, 0, 0, 10)
+MLRemake.FillMain.ZIndex = 0
+
+MLRemake.FillTopbar.Name = "FillTopbar"
+MLRemake.FillTopbar.Parent = MLRemake.Topbar
+MLRemake.FillTopbar.AnchorPoint = Vector2.new(0, 1)
+MLRemake.FillTopbar.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+MLRemake.FillTopbar.BorderSizePixel = 0
+MLRemake.FillTopbar.Position = UDim2.new(0, 0, 1, 0)
+MLRemake.FillTopbar.Size = UDim2.new(1, 0, 0, 10)
+MLRemake.FillTopbar.ZIndex = 5
+
+MLRemake.Title_2.Name = "Title"
+MLRemake.Title_2.Parent = MLRemake.Topbar
+MLRemake.Title_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Title_2.BackgroundTransparency = 1.000
+MLRemake.Title_2.BorderSizePixel = 0
+MLRemake.Title_2.Size = UDim2.new(0, 346, 0, 30)
+MLRemake.Title_2.ZIndex = 6
+MLRemake.Title_2.Font = Enum.Font.Gotham
+MLRemake.Title_2.Text = "Material Lua"
+MLRemake.Title_2.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Title_2.TextSize = 16.000
+MLRemake.Title_2.TextXAlignment = Enum.TextXAlignment.Left
+
+MLRemake.UIPadding_30.Parent = MLRemake.Title_2
+MLRemake.UIPadding_30.PaddingLeft = UDim.new(0, 8)
+
+MLRemake.Minimize.Name = "Minimize"
+MLRemake.Minimize.Parent = MLRemake.Topbar
+MLRemake.Minimize.AnchorPoint = Vector2.new(1, 0)
+MLRemake.Minimize.BackgroundColor3 = Color3.fromRGB(150, 250, 150)
+MLRemake.Minimize.BorderSizePixel = 0
+MLRemake.Minimize.Position = UDim2.new(1, -5, 0, 5)
+MLRemake.Minimize.Size = UDim2.new(0, 20, 0, 20)
+MLRemake.Minimize.ZIndex = 6
+MLRemake.Minimize.AutoButtonColor = false
+MLRemake.Minimize.Font = Enum.Font.SourceSans
+MLRemake.Minimize.Text = ""
+MLRemake.Minimize.TextColor3 = Color3.fromRGB(0, 0, 0)
+MLRemake.Minimize.TextSize = 14.000
+
+MLRemake.UICorner_56.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_56.Parent = MLRemake.Minimize
+
+MLRemake.Menu_12.Name = "Menu"
+MLRemake.Menu_12.Parent = MLRemake.Topbar
+MLRemake.Menu_12.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Menu_12.BackgroundTransparency = 1.000
+MLRemake.Menu_12.BorderSizePixel = 0
+MLRemake.Menu_12.Position = UDim2.new(0, 3, 0, 3)
+MLRemake.Menu_12.Size = UDim2.new(0, 24, 0, 24)
+MLRemake.Menu_12.Visible = false
+MLRemake.Menu_12.ZIndex = 6
+MLRemake.Menu_12.AutoButtonColor = false
+MLRemake.Menu_12.Image = "rbxassetid://9087103499"
+
+MLRemake.Ripple.Name = "Ripple"
+MLRemake.Ripple.Parent = MLRemake.Topbar
+MLRemake.Ripple.AnchorPoint = Vector2.new(0.5, 0.5)
+MLRemake.Ripple.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+MLRemake.Ripple.BackgroundTransparency = 0.500
+MLRemake.Ripple.BorderSizePixel = 0
+MLRemake.Ripple.Size = UDim2.new(0, 100, 0, 100)
+MLRemake.Ripple.Visible = false
+MLRemake.Ripple.ZIndex = 5
+
+MLRemake.UICorner_57.CornerRadius = UDim.new(1, 0)
+MLRemake.UICorner_57.Parent = MLRemake.Ripple
+
+MLRemake.Focus.Name = "Focus"
+MLRemake.Focus.Parent = MLRemake.Topbar
+MLRemake.Focus.AnchorPoint = Vector2.new(0.5, 1)
+MLRemake.Focus.BackgroundColor3 = Color3.fromRGB(150, 150, 150)
+MLRemake.Focus.BorderSizePixel = 0
+MLRemake.Focus.Position = UDim2.new(0.5, 0, 1, 0)
+MLRemake.Focus.Size = UDim2.new(0, 0, 0, 1)
+MLRemake.Focus.Visible = false
+MLRemake.Focus.ZIndex = 5
+
+MLRemake.Overlay.Name = "Overlay"
+MLRemake.Overlay.Parent = MLRemake.Topbar
+MLRemake.Overlay.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+MLRemake.Overlay.BorderSizePixel = 0
+MLRemake.Overlay.Size = UDim2.new(1, 0, 1, 490)
+MLRemake.Overlay.Visible = false
+MLRemake.Overlay.ZIndex = 11
+
+MLRemake.UICorner_58.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_58.Parent = MLRemake.Overlay
+
+MLRemake.SubTitle_2.Name = "SubTitle"
+MLRemake.SubTitle_2.Parent = MLRemake.Topbar
+MLRemake.SubTitle_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.SubTitle_2.BackgroundTransparency = 1.000
+MLRemake.SubTitle_2.BorderSizePixel = 0
+MLRemake.SubTitle_2.Position = UDim2.new(0, 96, 0, 0)
+MLRemake.SubTitle_2.Size = UDim2.new(0, 275, 0, 30)
+MLRemake.SubTitle_2.ZIndex = 6
+MLRemake.SubTitle_2.Font = Enum.Font.Gotham
+MLRemake.SubTitle_2.Text = "Remake Version"
+MLRemake.SubTitle_2.TextColor3 = Color3.fromRGB(150, 150, 150)
+MLRemake.SubTitle_2.TextSize = 14.000
+MLRemake.SubTitle_2.TextXAlignment = Enum.TextXAlignment.Left
+MLRemake.SubTitle_2.TextYAlignment = Enum.TextYAlignment.Bottom
+
+MLRemake.UIPadding_31.Parent = MLRemake.SubTitle_2
+MLRemake.UIPadding_31.PaddingBottom = UDim.new(0, 6)
+MLRemake.UIPadding_31.PaddingLeft = UDim.new(0, 8)
+
+MLRemake.Notifications.Name = "Notifications"
+MLRemake.Notifications.Parent = MLRemake.MLRemake
+MLRemake.Notifications.AnchorPoint = Vector2.new(1, 1)
+MLRemake.Notifications.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Notifications.BackgroundTransparency = 1.000
+MLRemake.Notifications.BorderSizePixel = 0
+MLRemake.Notifications.Position = UDim2.new(1, -10, 1, -10)
+MLRemake.Notifications.Size = UDim2.new(0, 200, 1, -20)
+MLRemake.Notifications.Visible = false
+MLRemake.Notifications.ZIndex = 20
+
+MLRemake.UIListLayout_10.Parent = MLRemake.Notifications
+MLRemake.UIListLayout_10.SortOrder = Enum.SortOrder.LayoutOrder
+MLRemake.UIListLayout_10.VerticalAlignment = Enum.VerticalAlignment.Bottom
+MLRemake.UIListLayout_10.Padding = UDim.new(0, 10)
+
+MLRemake.Notif.Name = "Notif"
+MLRemake.Notif.Parent = MLRemake.Notifications
+MLRemake.Notif.AnchorPoint = Vector2.new(1, 1)
+MLRemake.Notif.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+MLRemake.Notif.BorderSizePixel = 0
+MLRemake.Notif.Position = UDim2.new(1, -10, 1, -10)
+MLRemake.Notif.Size = UDim2.new(0, 200, 0, 100)
+MLRemake.Notif.ZIndex = 20
+
+MLRemake.UICorner_59.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_59.Parent = MLRemake.Notif
+
+MLRemake.UIPadding_32.Parent = MLRemake.Notif
+MLRemake.UIPadding_32.PaddingBottom = UDim.new(0, 8)
+MLRemake.UIPadding_32.PaddingLeft = UDim.new(0, 8)
+MLRemake.UIPadding_32.PaddingRight = UDim.new(0, 8)
+MLRemake.UIPadding_32.PaddingTop = UDim.new(0, 8)
+
+MLRemake.Title_3.Name = "Title"
+MLRemake.Title_3.Parent = MLRemake.Notif
+MLRemake.Title_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Title_3.BackgroundTransparency = 1.000
+MLRemake.Title_3.BorderSizePixel = 0
+MLRemake.Title_3.Size = UDim2.new(1, 0, 0, 16)
+MLRemake.Title_3.ZIndex = 21
+MLRemake.Title_3.Font = Enum.Font.GothamSemibold
+MLRemake.Title_3.Text = "Material Lua Remake"
+MLRemake.Title_3.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Title_3.TextSize = 16.000
+MLRemake.Title_3.TextXAlignment = Enum.TextXAlignment.Left
+MLRemake.Title_3.TextYAlignment = Enum.TextYAlignment.Top
+
+MLRemake.Label_12.Name = "Label"
+MLRemake.Label_12.Parent = MLRemake.Notif
+MLRemake.Label_12.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Label_12.BackgroundTransparency = 1.000
+MLRemake.Label_12.BorderSizePixel = 0
+MLRemake.Label_12.Position = UDim2.new(0, 0, 0, 24)
+MLRemake.Label_12.Size = UDim2.new(1, 0, 1, -48)
+MLRemake.Label_12.ZIndex = 21
+MLRemake.Label_12.Font = Enum.Font.Gotham
+MLRemake.Label_12.Text = "Notification"
+MLRemake.Label_12.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Label_12.TextSize = 14.000
+MLRemake.Label_12.TextXAlignment = Enum.TextXAlignment.Left
+MLRemake.Label_12.TextYAlignment = Enum.TextYAlignment.Top
+
+MLRemake.Line_4.Name = "Line"
+MLRemake.Line_4.Parent = MLRemake.Notif
+MLRemake.Line_4.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+MLRemake.Line_4.BorderSizePixel = 0
+MLRemake.Line_4.Position = UDim2.new(0, 0, 0, 20)
+MLRemake.Line_4.Size = UDim2.new(1, 0, 0, 1)
+MLRemake.Line_4.ZIndex = 21
+
+MLRemake.Buttons_4.Name = "Buttons"
+MLRemake.Buttons_4.Parent = MLRemake.Notif
+MLRemake.Buttons_4.Active = true
+MLRemake.Buttons_4.AnchorPoint = Vector2.new(0, 1)
+MLRemake.Buttons_4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Buttons_4.BackgroundTransparency = 1.000
+MLRemake.Buttons_4.BorderSizePixel = 0
+MLRemake.Buttons_4.Position = UDim2.new(0, 0, 1, 0)
+MLRemake.Buttons_4.Size = UDim2.new(1, 0, 0, 20)
+MLRemake.Buttons_4.ZIndex = 21
+MLRemake.Buttons_4.CanvasSize = UDim2.new(0, 0, 0, 0)
+MLRemake.Buttons_4.ScrollBarThickness = 0
+
+MLRemake.UIListLayout_11.Parent = MLRemake.Buttons_4
+MLRemake.UIListLayout_11.FillDirection = Enum.FillDirection.Horizontal
+MLRemake.UIListLayout_11.HorizontalAlignment = Enum.HorizontalAlignment.Right
+MLRemake.UIListLayout_11.SortOrder = Enum.SortOrder.LayoutOrder
+
+MLRemake.Button_8.Name = "Button"
+MLRemake.Button_8.Parent = MLRemake.Buttons_4
+MLRemake.Button_8.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+MLRemake.Button_8.Size = UDim2.new(0, 40, 0, 20)
+MLRemake.Button_8.Visible = false
+MLRemake.Button_8.ZIndex = 21
+MLRemake.Button_8.Font = Enum.Font.GothamBold
+MLRemake.Button_8.Text = "OK"
+MLRemake.Button_8.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Button_8.TextSize = 14.000
+MLRemake.Button_8.TextWrapped = true
+
+MLRemake.UICorner_60.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_60.Parent = MLRemake.Button_8
 
 -- Module Scripts:
 
 local fake_module_scripts = {}
 
-do -- uilib.uilib.UI
-	local script = Instance.new('ModuleScript', uilib.uilib)
+do -- MLRemake.MLRemake.UI
+	local script = Instance.new('ModuleScript', MLRemake.MLRemake)
 	script.Name = "UI"
 	local function module_script()
 		-- shitty code !
@@ -2158,7 +2177,8 @@ do -- uilib.uilib.UI
 				Text = "Text Box",
 				Callback = nofunc,
 				Type = "Default",
-				ClearOnFocus = false
+				ClearOnFocus = false,
+				Center = false
 			},
 			Label = {
 				Text = "Label",
@@ -2969,6 +2989,7 @@ do -- uilib.uilib.UI
 				new.Parent = p or ex
 				new.Visible = true
 				new.Text = t.Text
+				new.TextXAlignment = Enum.TextXAlignment[(t.Center and "Center" or "Left")]
 				new.Activated:Connect(t.Callback)
 				
 				ui.Ripple(new)
@@ -3190,6 +3211,7 @@ do -- uilib.uilib.UI
 				new.Visible = true
 				new.PlaceholderText = t.Text
 				new.ClearTextOnFocus = t.ClearOnFocus
+				new.TextXAlignment = Enum.TextXAlignment[(t.Center and "Center" or "Left")]
 				hidden.ClearTextOnFocus = t.ClearOnFocus
 				new.Focused:Connect(function()
 					local cursor = new.CursorPosition
@@ -3250,6 +3272,8 @@ do -- uilib.uilib.UI
 				new.Parent = p or ex
 				new.Visible = true
 				new.Text = t.Text
+				new.TextXAlignment = Enum.TextXAlignment[(t.Center and "Center" or "Left")]
+				new.BackgroundTransparency = (t.Transparent and 1) or 0
 				local conn
 				conn = t.Event.Event:Connect(function(...)
 					local args = {...}
@@ -3301,6 +3325,16 @@ do -- uilib.uilib.UI
 		end
 		
 		do -- Slider
+			local function AddAffixes(value, t, ignore)
+				if t.ReturnAsPercent then
+					value = t.Max * (value / 100)
+				end
+				if t.ReturnAsAffixes or ignore then
+					value = (t.Prefix or "")..value..(t.Suffix or "")
+				end
+				return value
+			end
+			
 			local SLIDER_TWEEN_TIME = 0.05
 			local SLIDER_SET_TWEEN_TIME = 0.4
 			
@@ -3313,7 +3347,6 @@ do -- uilib.uilib.UI
 					local bar = s.Bar
 					local indicator = bar.Indicator
 					local max = t.Max or 100
-					local pre, suf = t.Prefix or "", t.Suffix or ""
 		
 					local pos = UDim2new(0, clamp(bar.AbsoluteSize.X / (max / value), 0, bar.AbsoluteSize.X), 0.5, 0)
 					if t.Tween then
@@ -3321,11 +3354,14 @@ do -- uilib.uilib.UI
 					else
 						indicator.Position = pos
 					end
-					local afv = pre..value..suf
-					s.Value.Text = afv
+					local afv = AddAffixes(value, t)
+					s.Value.Text = AddAffixes(value, t, true)
+					if s:FindFirstChild("Input") then
+						s.Input.Text = value
+					end
 					indicator.AnchorPoint = Vector2new(value / max, 0.5)
 					if t.Callback then
-						t.Callback((t.ReturnWithAffixes and afv) or (t.ReturnAsPercent and (value / max) * 100) or value)
+						t.Callback(afv)
 					end
 				end)
 			end
@@ -3357,7 +3393,8 @@ do -- uilib.uilib.UI
 						local value = Round((floor(indicator.Position.X.Offset / bar.AbsoluteSize.X * 1000) / 1000) * max, 0)
 						local percent = (value / max)
 						indicator.AnchorPoint = Vector2new(percent, 0.5)
-						s.Value.Text = pre..value..suf
+						
+						s.Value.Text = AddAffixes(value, t, true)
 		
 						lastvalue = value
 						lastpercent = percent
@@ -3382,6 +3419,7 @@ do -- uilib.uilib.UI
 				local bar = new.Bar 
 				local slider = bar.Indicator
 				local val = new.Value
+				local input = new.Input
 				new.Name = "Slider#"..id
 				new.Parent = p or ex
 				new.Visible = true
@@ -3398,7 +3436,8 @@ do -- uilib.uilib.UI
 				-- toggle stuff
 				if not t.Toggle then
 					toggle.Visible = false
-					val.Position = UDim2new(1, 0, 0, 15)
+					input.Position = UDim2new(1, 0, 0, 15)
+					val.Position = UDim2new(1, -77, 0, 0)
 				else
 					if t.Enabled then
 						indicator.Position = UDim2new(0.5, 0, 0.5, 0)
@@ -3415,27 +3454,27 @@ do -- uilib.uilib.UI
 				end
 				
 				t.Tween = true
-				val.FocusLost:Connect(function()
-					local a = val.Text:gsub("%a%p%s%c%x%z", "")
-					if a == "" then return end
+				input.FocusLost:Connect(function() -- notes so i dont forget
+					local a = input.Text:gsub("%a%p%s%c%x%z", "") -- Removes all letters (a), punctuation (p), spaces (s), hexadecimals (x), and null characters (z)
+					if a == "" then return end -- If all characters were removed, end thread
 					
-					local value = a:gsub("%D", "")
-					value = tonumber(value)
+					local value = a:gsub("%D", "") -- Removes all other characters except for numbers
+					value = tonumber(value) -- Convert to number
 					
-					if a:sub(#a, #a) == "%" then
+					if a:match("%%$") then -- Checks if last character is a %
 						value = max * (value / 100)
 					end
 					
 					value = clamp(value, min, max)
-					t.Callback(value)
 					ui.SetSliderValue(new, value, t)
 				end)
 				
 				-- slider stuff
 				ui.InitSlider(new, t, function(self, value, percent)
-					lastvalue = (t.ReturnWithAffixes and pre..value..suf) or (t.ReturnAsPercent and percent * 100) or value 
-					val.Text = value
-					t.Callback(lastvalue)
+					lastvalue = value
+					val.Text = AddAffixes(value, t, true)
+					input.Text = value
+					t.Callback(AddAffixes(value, t))
 				end)
 				
 				local a = {Destroyed = false}
@@ -3460,6 +3499,12 @@ do -- uilib.uilib.UI
 					if a.Destroyed then return end
 					max = value
 				end
+				function a:SetValue(value)
+					if a.Destroyed then return end
+					lastvalue = value
+					val.Text = AddAffixes(value, t)
+					t.Callback(value)
+				end
 				function a:GetMin()
 					if a.Destroyed then return end
 					return min
@@ -3479,17 +3524,19 @@ do -- uilib.uilib.UI
 		end
 		
 		do -- Color Picker
-			function ui.SetPickerPreview(s, color, tween)
+			function ui.SetPickerPreview(s, color, tween, toggled)
 				s.Color.Text = format("%s, %s, %s", floor(color.R * 255), floor(color.G * 255), floor(color.B * 255))
 				s.Preview.BackgroundColor3 = color
-				local hue, sat, val = color:ToHSV()
-				s.Picker.Saturation.Bar.UIGradient.Color = CSnew{
-					CSKnew(0, Color3new(val, val, val)),
-					CSKnew(1, fromHSV(hue, 1, 1))
-				}
-				ui.SetSliderValue(s.Picker.Hue, floor(hue * 360), {Tween = tween, Max = 360})
-				ui.SetSliderValue(s.Picker.Saturation, floor(sat * 100), {Tween = tween})
-				ui.SetSliderValue(s.Picker.Value, floor(val * 100), {Tween = tween})
+				if toggled then
+					local hue, sat, val = color:ToHSV()
+					s.Picker.Saturation.Bar.UIGradient.Color = CSnew{
+						CSKnew(0, Color3new(val, val, val)),
+						CSKnew(1, fromHSV(hue, 1, 1))
+					}
+					ui.SetSliderValue(s.Picker.Hue, floor(hue * 360), {Tween = tween, Max = 360})
+					ui.SetSliderValue(s.Picker.Saturation, floor(sat * 100), {Tween = tween})
+					ui.SetSliderValue(s.Picker.Value, floor(val * 100), {Tween = tween})
+				end
 			end
 			function ui.ColorPicker(t, p, ex)
 				ID += 1
@@ -3591,7 +3638,7 @@ do -- uilib.uilib.UI
 						if rgbenabled then
 							local c = fromHSV(tick() % 5 / 5, 1, 1)
 							t.Callback(c)
-							ui.SetPickerPreview(new, c, false)
+							ui.SetPickerPreview(new, c, false, toggled)
 						end
 						taskwait()
 					end
@@ -3729,8 +3776,11 @@ do -- uilib.uilib.UI
 				local amount = 0
 				local data = t.Options
 				
-				for _,_ in next, t.Options do
+				for i,v in next, t.Options do
 					amount += 1
+					if typeof(v) == "table" then
+						data[i] = v.Enabled
+					end
 				end
 				table.sort(t.Options, function(a,b)
 					return a < b
@@ -3834,8 +3884,11 @@ do -- uilib.uilib.UI
 					end)
 					data = value
 					amount = 0
-					for _,_ in next, value do
+					for i,v in next, value do
 						amount += 1
+						if typeof(v) == "table" then
+							data[i] = v.Enabled
+						end
 					end
 					t.Callback(value)
 					refresh()
@@ -3972,4 +4025,5 @@ do -- uilib.uilib.UI
 	library = module_script()
 end
 
+getgenv().MLRemake = library
 return library
