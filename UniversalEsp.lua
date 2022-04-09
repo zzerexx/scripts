@@ -860,7 +860,7 @@ function update()
 				end
 			elseif VISIBLE and v.Part then
 				local class = part.ClassName
-				if find(class, "Part") then
+				if find(class, "Part") or find(class, "Operation") then
 					cf, size = part.CFrame, part.Size / 2
 				elseif class == "Model" then
 					cf, size = part:GetBoundingBox()
