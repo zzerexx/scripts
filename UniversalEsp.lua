@@ -271,6 +271,15 @@ if ts then
 	From.LeftFoot = "LeftForeleg"
 	From.RightFoot = "RightForeleg"
 end
+local supportedparts = {
+	"CornerWedgePart",
+	"Model",
+	"NegateOperation",
+	"Part",
+	"TrussPart",
+	"UnionOperation",
+	"WedgePart"
+}
 local oldfuncs = {}
 
 function IsAlive(plr)
@@ -1228,12 +1237,12 @@ function esp:SetAll(option,value)
 end
 function esp.Label(part,options)
 	assert(typeof(part) == "Instance",("Universal Esp: bad argument to #1 'Label' (Instance expected, got %s)"):format(typeof(part)))
-	assert(find(part.ClassName, "Part") or part.ClassName == "Model",("Universal Esp: bad argument to #1 'Label' (Part or Model expected, got %s)"):format(part.ClassName))
+	assert(table.find(supportedparts, part.ClassName),("Universal Esp: bad argument to #1 'Label' (Part or Model expected, got %s)"):format(part.ClassName))
 	return Label(part, options or {})
 end
 function esp.Cham(part,options)
 	assert(typeof(part) == "Instance",("Universal Esp: bad argument to #1 'Cham' (Instance expected, got %s)"):format(typeof(part)))
-	assert(find(part.ClassName, "Part") or part.ClassName == "Model",("Universal Esp: bad argument to #1 'Cham' (Part or Model expected, got %s)"):format(part.ClassName))
+	assert(table.find(supportedparts, part.ClassName),("Universal Esp: bad argument to #1 'Cham' (Part or Model expected, got %s)"):format(part.ClassName))
 	return Cham(part, options or {})
 end
 function esp:GetObjects(a)
