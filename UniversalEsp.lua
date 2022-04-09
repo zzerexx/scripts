@@ -668,7 +668,7 @@ function Label(part,options)
 	local a,c,t = {Object = objects, Type = type, Part = part, Options = o, Destroyed = false, Id = ID}
 	function a:SetPart(p)
 		assert(typeof(p) == "Instance",("Universal Esp: bad argument #1 to 'SetPart' (Instance expected, got %s)"):format(typeof(p)))
-		assert(find(p.ClassName, "Part") or p.ClassName == "Model",("Universal Esp: bad argument to #1 'SetPart' (Part or Model expected, got %s)"):format(p.ClassName))
+		assert(table.find(supportedparts, part.ClassName),("Universal Esp: bad argument to #1 'SetPart' (Part or Model expected, got %s)"):format(p.ClassName))
 		a.Part = p
 		t.Part = p
 	end
@@ -721,7 +721,7 @@ function Cham(part,options)
 	local a,c,t = {Object = objects, Type = type, Part = part, Options = o, Destroyed = false, Id = ID}
 	function a:SetPart(p)
 		assert(typeof(p) == "Instance",("Universal Esp: bad argument #1 to 'SetPart' (Instance expected, got %s)"):format(typeof(p)))
-		assert(find(p.ClassName, "Part") or p.ClassName == "Model",("Universal Esp: bad argument to #1 'SetPart' (Part or Model expected, got %s)"):format(p.ClassName))
+		assert(table.find(supportedparts, part.ClassName),("Universal Esp: bad argument to #1 'SetPart' (Part or Model expected, got %s)"):format(p.ClassName))
 		a.Part = p
 		t.Part = p
 	end
