@@ -21,7 +21,7 @@ https://pastebin.com/raw/5zw0rLH9
 ```  
 [Documentation](https://github.com/zzerexx/scripts/blob/main/UniversalScriptAPI.md)  
 ### UI Version  
-Updated March 12, 2022  
+Updated April 11, 2022  
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua"))()
 ```  
@@ -42,6 +42,8 @@ Main Changes
 - (1.6.9) no longer detected on bad business
   
 UI Changes  
+- Updated to use [Material Lua Remake](https://github.com/zzerexx/scripts/blob/main/MaterialLuaRemakeDocs.md)
+  - Loading times are a lot slower, I'll try to fix this
 - Updated to utilize [Config Manager](https://github.com/zzerexx/scripts/blob/main/ConfigManagerDocs.md)
 - Executing Universal Esp and Aimbot simulataneously will now wait until the first ui loads
 - `Toggle Key` is easier to set with the keybind button
@@ -60,7 +62,7 @@ https://pastebin.com/raw/nwqE7v07
 ```  
 [Documentation](https://github.com/zzerexx/scripts/blob/main/UniversalScriptAPI.md)  
 ### UI Version  
-Updated March 12, 2022  
+Updated April 11, 2022  
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalAimbotUI.lua"))()
 ```  
@@ -69,11 +71,10 @@ Main Changes
 - no longer detected on bad business  
   
 UI Changes  
+- Updated to use [Material Lua Remake](https://github.com/zzerexx/scripts/blob/main/MaterialLuaRemakeDocs.md)
+  - Loading times are a lot slower, I'll try to fix this
 - Updated to utilize [Config Manager](https://github.com/zzerexx/scripts/blob/main/ConfigManagerDocs.md)
 - Executing Universal Esp and Aimbot simulataneously will now wait until the first ui loads
-- `Toggle Key` is easier to set with the keybind button
-- `UI Toggle Key` is now customizable with the keybind button
-- `UI Toggle Key` can be saved in configs
   
 ## NOTICE  
 ```
