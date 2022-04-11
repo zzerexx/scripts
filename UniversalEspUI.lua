@@ -118,15 +118,17 @@ end
 if UESP then
 	return
 end
-if OldInstance then
-	getgenv().OldInstance = nil
-end
+getgenv().OldInstance = nil
 getgenv().EspSettings.Names.OutlineThickness = 0 -- prevent error
 
+local function Load(file)
+	return loadstring(game:HttpGet(string.format("https://raw.githubusercontent.com/zzerexx/scripts/main/%s.lua", file)))()
+end
+
 local version = "v1.6.9"
-local esp = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEsp.lua"))()
-local cfg = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/ConfigManager.lua"))()
-local Material = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kinlei/MaterialLua/master/Module.lua"))()
+local esp = Load("UniversalEsp")
+local cfg = Load("ConfigManager")
+local Material = Load("MaterialLuaRemake")
 local UI = Material.Load({
 	Title = "Universal Esp",
 	Style = 3,
@@ -135,24 +137,52 @@ local UI = Material.Load({
 	Theme = "Dark"
 })
 local players = game:GetService("Players")
-function Banner(text)
-	UI.Banner({Text = text})
+
+local icons = {
+	['Boxes'] = "https://i.imgur.com/c62mH5p.png",
+	['Tracers'] = "https://i.imgur.com/MSNjSVv.png",
+	['Names'] = "https://i.imgur.com/HLiXuos.png",
+	['Skeletons'] = "https://i.imgur.com/kzwPzjl.png",
+	['Health Bars'] = "https://i.imgur.com/nD3lltT.png",
+	['Head Dots'] = "https://i.imgur.com/HGAgY9G.png",
+	['Look Tracers'] = "https://i.imgur.com/XZqC7pF.png",
+	['All'] = "https://i.imgur.com/JRo82rH.png",
+	['Mouse Visibility'] = "https://i.imgur.com/3FKHkB8.png",
+	['Other'] = "https://i.imgur.com/Lwl0iV7.png",
+	['Configs'] = "https://i.imgur.com/bcuIP5f.png",
+	['Players'] = "https://i.imgur.com/EB8OOKv.png",
+	['Statistics'] = "https://i.imgur.com/X0IblqN.png",
+	['Feedback'] = "https://i.imgur.com/FYbAIod.png"
+}
+for i,v in next, icons do
+	local folder = "UESP_Icons"
+	if not isfolder("UESP_Icons") then
+		makefolder("UESP_Icons")
+	end
+	local path = folder.."\\"..i..".png"
+	if not isfile(path) then
+		writefile(path, game:HttpGet(v))
+	end
 end
 
-local Boxes = UI.New({Title = "Boxes"})
-local Tracers = UI.New({Title = "Tracers"})
-local Names = UI.New({Title = "Names"})
-local Skeletons = UI.New({Title = "Skeletons"})
-local HealthBars = UI.New({Title = "Health Bars"})
-local HeadDots = UI.New({Title = "Head Dots"})
-local LookTracers = UI.New({Title = "Look Tracers"})
-local All = UI.New({Title = "All"})
-local MouseVisibility = UI.New({Title = "Mouse Visibility"})
-local Other = UI.New({Title = "Other"})
-local Configs = UI.New({Title = "Configs"})
-local Players = UI.New({Title = "Players"})
-local Stats = UI.New({Title = "Statistics"})
-local ui = OldInstance
+function page(title)
+	return UI.new({Title = title, ImageId = "UESP_Icons\\"..title..".png", ImageSize = Vector2.new(20, 20)})
+end
+
+local Boxes = page("Boxes")
+local Tracers = page("Tracers")
+local Names = page("Names")
+local Skeletons = page("Skeletons")
+local HealthBars = page("Health Bars")
+local HeadDots = page("Head Dots")
+local LookTracers = page("Look Tracers")
+local All = page("All")
+local MouseVisibility = page("Mouse Visibility")
+local Other = page("Other")
+local Configs = page("Configs")
+local Players = page("Players")
+local Stats = page("Statistics")
+local Feedback = page("Feedback")
 local ss = getgenv().EspSettings
 local loaded = false
 local conn1,conn2,conn3,conn4
@@ -185,31 +215,82 @@ for i,v in next, newsettings do
 	end
 end
 
+if not game:GetService("HttpService"):JSONDecode(readfile(listfiles("UESP")[1])).Data then
+	for _,v in next, listfiles("UESP") do
+		local data = game:GetService("HttpService"):JSONDecode(readfile(v))
+		for i2,v2 in next, data do
+			if typeof(v2) == "table" then
+				for i3,v3 in next, v2 do
+					if typeof(v3) == "table" and v3.R then
+						data[i2][i3] = Color3.new(v3.R, v3.G, v3.B)
+					end
+				end
+			end
+		end
+
+		writefile(v, cfg.Encode({
+			settings = data,
+			ui = {
+				ToggleKey = togglekey.Name,
+				AddToNew = addtonew
+			}
+		}))
+	end
+end
+
+local function save(a)
+	cfg.Save(a, {
+		settings = ss,
+		ui = {
+			ToggleKey = togglekey.Name,
+			AddToNew = addtonew
+		}
+	})
+end
+local function load(a)
+	local settings = ((a.Data ~= nil and a.Data.settings ~= nil and a.Data.settings) or a.settings ~= nil and a.settings) or a
+	for i,v in next, settings do
+		if typeof(v) == "table" then
+			for i2,v2 in next, v do
+				esp:Set(i, i2, v2)
+			end
+		else
+			esp:Set("Other", i, v)
+		end
+	end
+	task.spawn(function()
+		repeat task.wait(0.25) until esptogglebtn ~= nil and uitogglebtn ~= nil
+		local key = settings.ToggleKey
+		esptogglebtn:SetBind((typeof(key) == "EnumItem" and key) or Enum.KeyCode[key])
+		if a.Data ~= nil and a.Data.ui ~= nil then
+			local b,c = a.Data.ui.ToggleKey, a.Data.ui.AddToNew
+			if b then
+				togglekey = Enum.KeyCode[b]
+				uitogglebtn:SetBind(togglekey)
+			end
+			if c then
+				addtonew = c
+			end
+		end
+	end)
+end
+
+cfg.Init("UESP", {
+	settings = ss,
+	ui = {
+		ToggleKey = togglekey.Name,
+		AddToNew = addtonew
+	}
+}, load)
+
 function destroy()
 	conn1:Disconnect()
 	conn2:Disconnect()
 	conn3:Disconnect()
 	conn4:Disconnect()
 	esp:Destroy()
-	ui:Destroy()
+	UI.UI:Destroy()
 	getgenv().UESP = nil
-end
-local listening = false
-function Keybind(btn, text, f)
-	if not listening then
-		listening = true
-		btn:SetText(text..": ...")
-		local lol;lol = game:GetService("UserInputService").InputBegan:Connect(function(i)
-			local key = i.KeyCode
-			if listening and key.Name ~= "Unknown" then
-				btn:SetText(text..": "..key.Name)
-				listening = false
-				lol:Disconnect()
-				task.wait(0.1)
-				f(key)
-			end
-		end)
-	end
 end
 
 do -- Boxes
@@ -354,7 +435,8 @@ do -- Tracers
 		Callback = function(value)
 			esp:Set(type, "Origin", value)
 		end,
-		Options = {"Top","Center","Bottom","Mouse"}
+		Options = {"Top","Center","Bottom","Mouse"},
+		Def = s.Origin
 	})
 	Tracers.Slider({
 		Text = "Thickness",
@@ -421,12 +503,19 @@ do -- Names
 			esp:Set(type, "OutlineColor", value)
 		end
 	})
+	local def
+	for i,v in next, Drawing.Fonts do
+		if v == s.Font then
+			def = i
+		end
+	end
 	Names.Dropdown({
 		Text = "Font",
 		Callback = function(value)
 			esp:Set(type, "Font", Drawing.Fonts[value])
 		end,
-		Options = {"UI","System","Plex","Monospace"}
+		Options = {"UI","System","Plex","Monospace"},
+		Def = def
 	})
 	Names.Slider({
 		Text = "Text Size",
@@ -466,7 +555,7 @@ do -- Names
 		end,
 		Menu = {
 			Info = function()
-				Banner("This is the Distance measurement. For example, if this is 'studs' then it will show '100studs'")
+				UI.Banner("This is the Distance measurement. For example, if this is 'studs' then it will show '100studs'")
 			end
 		}
 	})
@@ -479,9 +568,10 @@ do -- Names
 			"Percentage",
 			"Value"
 		},
+		Def = s.HealthDataType,
 		Menu = {
 			Info = function()
-				Banner("This changes what the health shows.\nPercentage: [ 100% ] | Value: [ 100/100 ]")
+				UI.Banner("This changes what the health shows.\nPercentage: [ 100% ] | Value: [ 100/100 ]")
 			end
 		}
 	})
@@ -629,7 +719,8 @@ do -- HealthBars
 		Callback = function(value)
 			esp:Set(type, "Origin", value)
 		end,
-		Options = {"None","Left","Right"}
+		Options = {"None","Left","Right"},
+		Def = s.Origin
 	})
 	HealthBars.Toggle({
 		Text = "Outline Bar Only",
@@ -651,7 +742,7 @@ do -- HeadDots
 		Enabled = s.Enabled,
 		Menu = {
 			Info = function()
-				Banner("This works best on 70 camera fov! Anything higher can make the circle look larger when closer to the player.")
+				UI.Banner("This works best on 70 camera fov! Anything higher can make the circle look larger when closer to the player.")
 			end
 		}
 	})
@@ -731,7 +822,8 @@ do -- HeadDots
 		end,
 		Min = 5,
 		Max = 20,
-		Def = s.Scale * 10
+		Def = s.Scale * 10,
+		Suffix = "x"
 	})
 end
 
@@ -814,7 +906,8 @@ do -- LookTracers
 		end,
 		Min = 3,
 		Max = 25,
-		Def = s.Length
+		Def = s.Length,
+		Suffix = " studs"
 	})
 end
 
@@ -829,7 +922,7 @@ do -- All
 		Enabled = false,
 		Menu = {
 			Info = function()
-				Banner("Changes the 'Enabled' setting for all types.")
+				UI.Banner("Changes the 'Enabled' setting for all types.")
 			end
 		}
 	})
@@ -845,7 +938,7 @@ do -- All
 		Def = 10,
 		Menu = {
 			Info = function()
-				Banner("Changes the 'Transparency' setting for all types.")
+				UI.Banner("Changes the 'Transparency' setting for all types.")
 			end
 		}
 	})
@@ -859,7 +952,7 @@ do -- All
 		end,
 		Menu = {
 			Info = function()
-				Banner("Changes the 'Color' setting for all types.")
+				UI.Banner("Changes the 'Color' setting for all types.")
 			end
 		}
 	})
@@ -873,7 +966,7 @@ do -- All
 		Enabled = true,
 		Menu = {
 			Info = function()
-				Banner("Changes the 'Use Team Color' setting for all types.")
+				UI.Banner("Changes the 'Use Team Color' setting for all types.")
 			end
 		}
 	})
@@ -887,7 +980,7 @@ do -- All
 		Enabled = false,
 		Menu = {
 			Info = function()
-				Banner("Changes the 'RainbowColor' setting for all types.")
+				UI.Banner("Changes the 'RainbowColor' setting for all types.")
 			end
 		}
 	})
@@ -901,7 +994,7 @@ do -- All
 		Enabled = true,
 		Menu = {
 			Info = function()
-				Banner("Changes the 'Outline' setting for all types.")
+				UI.Banner("Changes the 'Outline' setting for all types.")
 			end
 		}
 	})
@@ -915,7 +1008,7 @@ do -- All
 		end,
 		Menu = {
 			Info = function()
-				Banner("Changes the 'OutlineColor' setting for all types.")
+				UI.Banner("Changes the 'OutlineColor' setting for all types.")
 			end
 		}
 	})
@@ -931,7 +1024,7 @@ do -- All
 		Def = 3,
 		Menu = {
 			Info = function()
-				Banner("Changes the 'OutlineThickness' setting for all types. (except for Names)")
+				UI.Banner("Changes the 'OutlineThickness' setting for all types. (except for Names)")
 			end
 		}
 	})
@@ -948,7 +1041,7 @@ do -- MouseVisibility
 		Enabled = s.Enabled,
 		Menu = {
 			Info = function()
-				Banner("Makes any drawing objects transparent when they are near your mouse.")
+				UI.Banner("Makes any drawing objects transparent when they are near your mouse.")
 			end
 		}
 	})
@@ -959,7 +1052,8 @@ do -- MouseVisibility
 		end,
 		Min = 10,
 		Max = 150,
-		Def = s.Radius
+		Def = s.Radius,
+		Suffix = " px"
 	})
 	MouseVisibility.Slider({
 		Text = "Transparency",
@@ -971,7 +1065,7 @@ do -- MouseVisibility
 		Def = s.Transparency * 10
 	})
 	local selected = s.Selected
-	MouseVisibility.DataTable({
+	MouseVisibility.ChipSet({
 		Text = "Selected",
 		Callback = function(value)
 			esp:Set(type, "Selected", value)
@@ -997,13 +1091,13 @@ do -- Other
 		end,
 		Enabled = ss.TeamCheck
 	})
-	esptogglebtn = Other.Button({
-		Text = "Esp Toggle Key: "..esp:Get("Other", "ToggleKey"),
-		Callback = function()
-			Keybind(esptogglebtn, "Esp Toggle Key", function(key)
-				esp:Set(type, "ToggleKey", key.Name)
-			end)
-		end
+	esptogglebtn = Other.Keybind({
+		Text = "Esp Toggle Key",
+		Callback = function(value)
+			esp:Set(type, "ToggleKey", value.Name)
+		end,
+		Def = Enum.KeyCode[esp:Get("Other", "ToggleKey")],
+		AllowMouse = false
 	})
 	Other.Slider({
 		Text = "Refresh Rate (ms)",
@@ -1015,7 +1109,7 @@ do -- Other
 		Def = ss.RefreshRate,
 		Menu = {
 			Info = function()
-				Banner("How fast the esp updates. This is in milliseconds.")
+				UI.Banner("How fast the esp updates. This is in milliseconds.")
 			end
 		}
 	})
@@ -1036,7 +1130,7 @@ do -- Other
 		Enabled = ss.FaceCamera,
 		Menu = {
 			Info = function()
-				Banner("Makes Boxes and Health Bars appear 2D.")
+				UI.Banner("Makes Boxes and Health Bars appear 2D.")
 			end
 		}
 	})
@@ -1048,7 +1142,7 @@ do -- Other
 		Enabled = ss.AlignPoints,
 		Menu = {
 			Info = function()
-				Banner("Further improves 2D effect. Only works while 'Face Camera' is enabled.\nNote that this may cause esp to have abnormal behavior when looking from certain angles.")
+				UI.Banner("Further improves 2D effect. Only works while 'Face Camera' is enabled.\nNote that this may cause esp to have abnormal behavior when looking from certain angles.")
 			end
 		}
 	})
@@ -1057,121 +1151,70 @@ do -- Other
 		Callback = destroy,
 		Menu = {
 			Info = function()
-				Banner("This will completely remove Universal Esp, including the UI.")
+				UI.Banner("This will completely remove Universal Esp, including the UI.")
 			end
 		}
 	})
 	Other.Button({
 		Text = "Load Performance Version",
 		Callback = function()
-			destroy()
-			loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspPerformance.lua"))()
+			UI.Banner({
+				Text = "Are you sure you want to load the Performance version?",
+				Callback = function(value)
+					if value == "Yes" then
+						destroy()
+						loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspPerformance.lua"))()
+					end
+				end,
+				Options = {"Yes", "No"}
+			})
 		end,
 		Menu = {
 			Info = function()
-				Banner("This will replace the current esp with an optimized version made for performance which can offer more fps. Note that this version does NOT have any customizability.")
+				UI.Banner("This will replace the current esp with an optimized version made for performance which can offer more fps. Note that this version does NOT have any customizability.")
 			end
 		}
 	})
 	Other.Button({
 		Text = "Load Safe Mode",
 		Callback = function()
-			destroy()
-			pcall(loadstring, (game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua")))
+			UI.Banner({
+				Text = "Are you sure you want to load the UI in Safe Mode??",
+				Callback = function(value)
+					if value == "Yes" then
+						destroy()
+						pcall(loadstring, (game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua")))
+					end
+				end,
+				Options = {"Yes", "No"}
+			})
 		end,
 		Menu = {
 			Info = function()
-				Banner("Re-loads the ui in Safe Mode. (prevents detection via script errors)")
+				UI.Banner("Re-loads the ui in Safe Mode. (prevents detection via script errors)")
 			end
 		}
+	})
+	Other.Label({
+		Text = "Made by zzerexx#3970 | "..version
+	})
+	uitogglebtn = Other.Keybind({
+		Text = "UI Toggle Key",
+		Callback = function(value)
+			togglekey = value
+		end,
+		Def = togglekey,
+		AllowMouse = false
 	})
 	Other.Button({
-		Text = "Credits",
+		Text = "Hide UI",
 		Callback = function()
-			Banner("Material UI Library created by twink marie\nUniversal Esp created by zzerexx#3970")
-		end,
-		Menu = {
-			Version = function()
-				Banner(version)
-			end
-		}
-	})
-	uitogglebtn = Other.Button({
-		Text = "UI Toggle Key: "..togglekey.Name,
-		Callback = function() 
-			Keybind(uitogglebtn, "UI Toggle Key", function(key)
-				togglekey = key
-			end)
+			UI.Toggle(false)
 		end
 	})
 end
 
 do -- Configs
-	if not game:GetService("HttpService"):JSONDecode(readfile(listfiles("UESP")[1])).Data then
-		for _,v in next, listfiles("UESP") do
-			local data = game:GetService("HttpService"):JSONDecode(readfile(v))
-			for i2,v2 in next, data do
-				if typeof(v2) == "table" then
-					for i3,v3 in next, v2 do
-						if typeof(v3) == "table" and v3.R then
-							data[i2][i3] = Color3.new(v3.R, v3.G, v3.B)
-						end
-					end
-				end
-			end
-
-			writefile(v, cfg.Encode({
-				settings = data,
-				ui = {
-					ToggleKey = togglekey.Name,
-					AddToNew = addtonew
-				}
-			}))
-		end
-	end
-
-	local function save(a)
-		cfg.Save(a, {
-			settings = ss,
-			ui = {
-				ToggleKey = togglekey.Name,
-				AddToNew = addtonew
-			}
-		})
-	end
-	local function load(a)
-		local settings = ((a.Data ~= nil and a.Data.settings ~= nil and a.Data.settings) or a.settings ~= nil and a.settings) or a
-		for i,v in next, settings do
-			if typeof(v) == "table" then
-				for i2,v2 in next, v do
-					esp:Set(i, i2, v2)
-				end
-			else
-				esp:Set("Other", i, v)
-			end
-		end
-		local key = settings.ToggleKey
-		esptogglebtn:SetText("Esp Toggle Key: "..((typeof(key) == "EnumItem" and key.Name) or key))
-		if a.Data ~= nil and a.Data.ui ~= nil then
-			local b,c = a.Data.ui.ToggleKey, a.Data.ui.AddToNew
-			if b then
-				togglekey = Enum.KeyCode[b]
-				uitogglebtn:SetText("UI Toggle Key: "..b)
-			end
-			if c then
-				addtonew = c
-			end
-		end
-	end
-
-	cfg.Init("UESP", {
-		settings = ss,
-		ui = {
-			ToggleKey = togglekey.Name,
-			AddToNew = addtonew
-		}
-	}, load)
-
 	local list
 	local function isempty(s)
 		return s:gsub(" ","") == ""
@@ -1194,10 +1237,10 @@ do -- Configs
 		Callback = function()
 			if not isempty(cfgname) then
 				save(cfgname)
-				Banner("Successfully created: "..cfgname)
+				UI.Banner("Successfully created: "..cfgname)
 				refresh()
 			else
-				Banner("Please enter a name for your config in the text box above.")
+				UI.Banner("Please enter a name for your config in the text box above.")
 			end 
 		end
 	})
@@ -1206,7 +1249,8 @@ do -- Configs
 		Callback = function(value)
 			selectedcfg = value
 		end,
-		Options = {}
+		Options = {},
+		Def = "Default"
 	})
 	refresh()
 	Configs.Button({
@@ -1216,7 +1260,7 @@ do -- Configs
 		end,
 		Menu = {
 			Info = function()
-				Banner("Your settings will not apply to the UI. (cuz im lazy)")
+				UI.Banner("Your settings will not apply to the UI. (cuz im lazy)")
 			end
 		}
 	})
@@ -1224,7 +1268,7 @@ do -- Configs
 		Text = "Overwrite Selected Config",
 		Callback = function()
 			save(selectedcfg)
-			Banner("Successfully overwritten: "..selectedcfg)
+			UI.Banner("Successfully overwritten: "..selectedcfg)
 		end
 	})
 	Configs.Button({
@@ -1232,10 +1276,10 @@ do -- Configs
 		Callback = function()
 			if cfg.Valid(selectedcfg) then
 				cfg.Delete(selectedcfg)
-				Banner("Successfully deleted: "..selectedcfg)
+				UI.Banner("Successfully deleted: "..selectedcfg)
 				refresh()
 			else
-				Banner(selectedcfg.." does not exist.")
+				UI.Banner(selectedcfg.." does not exist.")
 			end
 		end
 	})
@@ -1246,7 +1290,7 @@ do -- Configs
 		end,
 		Menu = {
 			Info = function()
-				Banner("This will overwrite your current default config!")
+				UI.Banner("This will overwrite your current default config!")
 			end
 		}
 	})
@@ -1257,13 +1301,14 @@ do -- Configs
 end
 
 do -- Players
-	local plr = ""
+	local plr = players.LocalPlayer.Name
 	local dd = Players.Dropdown({
 		Text = "Player List",
 		Callback = function(value)
 			plr = value
 		end,
-		Options = {}
+		Options = {},
+		Def = players.LocalPlayer.Name
 	})
 	local function update()
 		local t = {}
@@ -1283,14 +1328,14 @@ do -- Players
 		Text = "Add Esp",
 		Callback = function()
 			if not players:FindFirstChild(plr) then
-				Banner(plr.." is not in the game.")
+				UI.Banner(plr.." is not in the game.")
 				return
 			end
 			esp:Add(plr)
 		end,
 		Menu = {
 			Info = function()
-				Banner("Enter a username in the box above and press this to add esp to that player.")
+				UI.Banner("Adds esp to the selected player.")
 			end
 		}
 	})
@@ -1298,14 +1343,14 @@ do -- Players
 		Text = "Remove Esp",
 		Callback = function()
 			if not players:FindFirstChild(plr) then
-				Banner(plr.." is not in the game")
+				UI.Banner(plr.." is not in the game")
 				return
 			end
 			esp:Remove(plr)
 		end,
 		Menu = {
 			Info = function()
-				Banner("Enter a username in the box above and press this to remove esp from that player.")
+				UI.Banner("Removes esp from the selected player.")
 			end
 		}
 	})
@@ -1333,147 +1378,112 @@ do -- Players
 		Enabled = true,
 		Menu = {
 			Info = function()
-				Banner("Adds esp to players when they join the game.")
+				UI.Banner("Adds esp to players when they join the game.")
 			end
 		}
 	})
 end
 
 do -- Stats
-	local drawing = Stats.Button({
-		Text = "Drawing Objects: N/A",
-		Callback = function() end
+	local stats = Stats.Table({
+		Text = "Esp Statistics",
+		Key = "Type",
+		Value = "# of Objects",
+		ShowInfo = true,
+		Data = esp:GetTotalObjects()
 	})
-	local visible = Stats.Button({
-		Text = "Rendered Objects: N/A",
-		Callback = function() end
-	})
-	local destroyed = Stats.Button({
-		Text = "Destroyed Objects: N/A",
-		Callback = function() end
-	})
-	local boxes = Stats.Button({
-		Text = "Boxes: N/A",
-		Callback = function() end
-	})
-	local tracers = Stats.Button({
-		Text = "Tracers: N/A",
-		Callback = function() end
-	})
-	local names = Stats.Button({
-		Text = "Names: N/A",
-		Callback = function() end
-	})
-	local skeletons = Stats.Button({
-		Text = "Skeletons: N/A",
-		Callback = function() end
-	})
-	local healthbars = Stats.Button({
-		Text = "Health Bars: N/A",
-		Callback = function() end
-	})
-	local headdots = Stats.Button({
-		Text = "Head Dots: N/A",
-		Callback = function() end
-	})
-	local looktracers = Stats.Button({
-		Text = "Look Tracers: N/A",
-		Callback = function() end
-	})
-	local labels = Stats.Button({
-		Text = "Labels: N/A",
-		Callback = function() end
-	})
-	local chams = Stats.Button({
-		Text = "Chams: N/A",
-		Callback = function() end
-	})
-	local outlines = Stats.Button({
-		Text = "Outlines: N/A",
-		Callback = function() end
-	})
-
-	local bruhwtf = {
-		{
-			Text = "Drawing Objects: %s",
-			ValueName = "DrawingObjects",
-			Object = drawing
-		},
-		{
-			Text = "Visible Objects: %s",
-			ValueName = "VisibleObjects",
-			Object = visible
-		},
-		{
-			Text = "Destroyed Objects: %s",
-			ValueName = "DestroyedObjects",
-			Object = destroyed
-		},
-		{
-			Text = "Boxes: %s",
-			ValueName = "Boxes",
-			Object = boxes
-		},
-		{
-			Text = "Tracers: %s",
-			ValueName = "Tracers",
-			Object = tracers
-		},
-		{
-			Text = "Names: %s",
-			ValueName = "Names",
-			Object = names
-		},
-		{
-			Text = "Skeletons: %s",
-			ValueName = "Skeletons",
-			Object = skeletons
-		},
-		{
-			Text = "Health Bars: %s",
-			ValueName = "HealthBars",
-			Object = healthbars
-		},
-		{
-			Text = "Head Dots: %s",
-			ValueName = "HeadDots",
-			Object = headdots
-		},
-		{
-			Text = "Look Tracers: %s",
-			ValueName = "LookTracers",
-			Object = looktracers
-		},
-		{
-			Text = "Labels: %s",
-			ValueName = "Labels",
-			Object = labels
-		},
-		{
-			Text = "Chams: %s",
-			ValueName = "Chams",
-			Object = chams
-		},
-		{
-			Text = "Outlines: %s",
-			ValueName = "Outlines",
-			Object = outlines
-		}
-	}
 	Stats.Button({
 		Text = "Update Statistics",
 		Callback = function()
-			local data = esp:GetTotalObjects()
-			for _,v in next, bruhwtf do
-				v.Object:SetText((v.Text):format(data[v.ValueName]))
-			end
+			stats:SetData(esp:GetTotalObjects())
 		end
 	})
 end
 
-conn3 = game:GetService("UserInputService").InputBegan:Connect(function(i,gp)
+do -- Feedback
+	local Http = game:GetService("HttpService")
+	local request = request or http_request or (http and http.request) or nil
+	local errors = {
+		[2] = "The feedback system is receiving too many requests at the moment.",
+		[3] = "You are sending too many requests.",
+		[4] = "Your message contains @everyone or @here.",
+		[5] = "Your message contains a @user mention",
+		[8] = "Your message contains a discord invite.",
+		[11] = "Not receiving feedback at the moment."
+	}
+	if request then
+		local msg = nil
+		local sending = false
+		Feedback.TextBox({
+			Text = "Your message here",
+			Callback = function(value)
+				msg = value
+			end,
+			ClearOnFocus = false
+		})
+		Feedback.Button({
+			Text = "Send Feedback",
+			Callback = function()
+				if sending then UI.Banner("Please wait until your request has been completed.") end
+				sending = true
+				UI.Banner("Sending feedback...")
+
+				local req = request({
+					Url = "https://websec.services/ws/send/ZUC1hEr2taJ2a1NBGtPZ2VcKBYPf5YeebL801aC1",
+					Method = "POST",
+					Headers = {
+						['Content-Type'] = "application/json"
+					},
+					Body = Http:JSONEncode({
+						content = "",
+						embeds = {{
+							title = "Universal Esp Feedback",
+							description = string.format("`%s`", msg),
+							timestamp = DateTime.now():ToIsoDate(),
+							author = {
+								name = "Game: "..game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name,
+								url = "https://roblox.com/games/"..game.PlaceId
+							},
+							footer = {
+								text = "Exploit: <agent>"
+							}
+						}}
+					})
+				})
+
+				if not req.Success then
+					sending = false
+					UI.Banner("Failed to send feedback; Request failed")
+					return
+				end
+
+				local status = Http:JSONDecode(req.Body).status
+				UI.Banner((status == 10 and "Thank you for your feedback!") or ("Failed to send feedback;\n"..errors[status]))
+				sending = false
+			end,
+			Menu = {
+				Info = function()
+					UI.Banner("Sending feedback will also send the following information:\n- The name of the game that you're in\n- The name of the exploit you're currently using")
+				end
+			}
+		})
+		Feedback.Label({
+			Text = "Only use this for feedback and/or bug reporting.",
+			Center = true,
+			Transparent = true
+		})
+	else
+		Feedback.Label({
+			Text = "Your exploit doesn't support HTTP requests.",
+			Center = true,
+			Transparent = true
+		})
+	end
+end
+
+conn3 = game:GetService("UserInputService").InputBegan:Connect(function(i, gp)
 	if not gp and i.KeyCode == togglekey then
-		ui.Enabled = not ui.Enabled
+		UI.Toggle()
 	end
 end)
 conn4 = players.PlayerAdded:Connect(function(plr)
