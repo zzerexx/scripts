@@ -215,6 +215,7 @@ do -- Aimbot
 			aimbot:Set(type, "TargetPart", value)
 		end,
 		Options = {"Head", "UpperTorso", "Torso", "HumanoidRootPart"},
+		Def = ss.Aimbot.TargetPart,
 		Menu = {
 			Info = function()
 				UI.Banner("Some games don't have certain parts. For example, Arsenal doesn't have Torso, so you will have to select UpperTorso.")
@@ -254,7 +255,8 @@ do -- Aimbot
 		Callback = function(value)
 			aimbot:Set(type, "AimType", value)
 		end,
-		Options = {"Hold", "Toggle"}
+		Options = {"Hold", "Toggle"},
+		Def = ss.Aimbot.AimType
 	})
 end
 
@@ -358,7 +360,7 @@ do -- Settings
 		Max = 50,
 		Def = ss.RefreshRate
 	})
-	esptogglebtn = Settings.Keybind({
+	aimbottogglebtn = Settings.Keybind({
 		Text = "Aimbot Toggle Key",
 		Callback = function(value)
 			aimbot:Set(type, "ToggleKey", value.Name)
