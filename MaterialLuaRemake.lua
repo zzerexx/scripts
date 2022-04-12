@@ -2371,6 +2371,7 @@ do -- MLRemake.MLRemake.UI
 			local BANNER_TWEENINFO = TweenInfonew(0.45, sine, out)
 			local BANNER_VISIBLE = false
 			local LAST_BANNER = nil
+			local LAST_UI = nil
 			
 			local function show(a)
 				for _,v in next, a.Buttons:GetChildren() do
@@ -2412,6 +2413,9 @@ do -- MLRemake.MLRemake.UI
 				if LAST_BANNER and BANNER_VISIBLE then
 					hide(LAST_BANNER)
 				end
+				if LAST_UI ~= nil and LAST_UI ~= p then
+					ui.Dim2(false, LAST_UI)
+				end
 				
 				local new = banner:Clone()
 				new.Name = "Banner"
@@ -2421,6 +2425,7 @@ do -- MLRemake.MLRemake.UI
 				ui.Dim2(true, p)
 				BANNER_VISIBLE = true
 				LAST_BANNER = new
+				LAST_UI = p
 		
 				for _,v in next, t.Options do
 					local new2 = new.Buttons.Example:Clone()
@@ -2435,11 +2440,11 @@ do -- MLRemake.MLRemake.UI
 					
 					new2.Size = UDim2new(0, new2.TextBounds.X + 20, 0, 20)
 					new2.Activated:Connect(function()
-						t.Callback(v)
 						ui.Dim2(false, p)
 						BANNER_VISIBLE = false
 						LAST_BANNER = nil
 						hide(new)
+						t.Callback(v)
 					end)
 		
 					taskdelay(0.1, function()
@@ -2570,7 +2575,8 @@ do -- MLRemake.MLRemake.UI
 				taskdelay(0.5, function()
 					for _,v in next, o do
 						local pos = v.Position
-						v.Position = UDim2new(pos.X.Scale, pos.X.Offset - 32, pos.Y.Scale, pos.Y.Offset)
+						v.Position = UDim2new(pos.X.Scale, pos.X.Offset - 24, pos.Y.Scale, pos.Y.Offset)
+						-- old offset: 32
 					end
 				end)
 			end
@@ -3430,7 +3436,7 @@ do -- MLRemake.MLRemake.UI
 				ui.UpdateCanvasSize(p or ex)
 				
 				if t.Menu ~= nil then
-					ui.InitMenu(t.Menu, new, (t.Toggle and t.Enabled and {new.Value, new.Toggle}) or {new.Value})
+					ui.InitMenu(t.Menu, new, (t.Toggle and {val, input, toggle}) or {val, input})
 				end
 				
 				-- toggle stuff
