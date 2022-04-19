@@ -195,56 +195,66 @@ local MLRemake = {
 	Indicator_9 = Instance.new("Frame"),
 	UICorner_48 = Instance.new("UICorner"),
 	Menu_11 = Instance.new("ImageButton"),
-	BackgroundDim = Instance.new("Frame"),
-	Banner = Instance.new("Frame"),
+	ProgressBar = Instance.new("Frame"),
+	UIPadding_27 = Instance.new("UIPadding"),
 	UICorner_49 = Instance.new("UICorner"),
 	Label_11 = Instance.new("TextLabel"),
-	UIPadding_27 = Instance.new("UIPadding"),
+	Bar_5 = Instance.new("Frame"),
+	Progress = Instance.new("Frame"),
 	UICorner_50 = Instance.new("UICorner"),
+	Indicator_10 = Instance.new("Frame"),
+	Menu_12 = Instance.new("ImageButton"),
+	Value_7 = Instance.new("TextLabel"),
+	BackgroundDim = Instance.new("Frame"),
+	Banner = Instance.new("Frame"),
+	UICorner_51 = Instance.new("UICorner"),
+	Label_12 = Instance.new("TextLabel"),
 	UIPadding_28 = Instance.new("UIPadding"),
+	UICorner_52 = Instance.new("UICorner"),
+	UIPadding_29 = Instance.new("UIPadding"),
 	Buttons_2 = Instance.new("ScrollingFrame"),
 	Example_3 = Instance.new("TextButton"),
-	UICorner_51 = Instance.new("UICorner"),
+	UICorner_53 = Instance.new("UICorner"),
 	UIListLayout_7 = Instance.new("UIListLayout"),
 	BackgroundDim2 = Instance.new("Frame"),
 	Tabs = Instance.new("Frame"),
-	UICorner_52 = Instance.new("UICorner"),
+	UICorner_54 = Instance.new("UICorner"),
 	Buttons_3 = Instance.new("ScrollingFrame"),
 	UIListLayout_8 = Instance.new("UIListLayout"),
 	Example_4 = Instance.new("TextButton"),
-	UICorner_53 = Instance.new("UICorner"),
+	UICorner_55 = Instance.new("UICorner"),
 	ObjectMenu = Instance.new("Frame"),
 	UIListLayout_9 = Instance.new("UIListLayout"),
 	Example_5 = Instance.new("TextButton"),
-	UIPadding_29 = Instance.new("UIPadding"),
-	UICorner_54 = Instance.new("UICorner"),
-	UICorner_55 = Instance.new("UICorner"),
+	UIPadding_30 = Instance.new("UIPadding"),
+	UICorner_56 = Instance.new("UICorner"),
+	UICorner_57 = Instance.new("UICorner"),
 	FillMain = Instance.new("Frame"),
 	FillTopbar = Instance.new("Frame"),
 	Title_2 = Instance.new("TextLabel"),
-	UIPadding_30 = Instance.new("UIPadding"),
+	UIPadding_31 = Instance.new("UIPadding"),
 	Minimize = Instance.new("TextButton"),
-	UICorner_56 = Instance.new("UICorner"),
-	Menu_12 = Instance.new("ImageButton"),
+	UICorner_58 = Instance.new("UICorner"),
+	Menu_13 = Instance.new("ImageButton"),
 	Ripple = Instance.new("Frame"),
-	UICorner_57 = Instance.new("UICorner"),
+	UICorner_59 = Instance.new("UICorner"),
 	Focus = Instance.new("Frame"),
 	Overlay = Instance.new("Frame"),
-	UICorner_58 = Instance.new("UICorner"),
+	UICorner_60 = Instance.new("UICorner"),
 	SubTitle_2 = Instance.new("TextLabel"),
-	UIPadding_31 = Instance.new("UIPadding"),
+	UIPadding_32 = Instance.new("UIPadding"),
 	Notifications = Instance.new("Frame"),
 	UIListLayout_10 = Instance.new("UIListLayout"),
 	Notif = Instance.new("Frame"),
-	UICorner_59 = Instance.new("UICorner"),
-	UIPadding_32 = Instance.new("UIPadding"),
+	UICorner_61 = Instance.new("UICorner"),
+	UIPadding_33 = Instance.new("UIPadding"),
 	Title_3 = Instance.new("TextLabel"),
-	Label_12 = Instance.new("TextLabel"),
+	Label_13 = Instance.new("TextLabel"),
 	Line_4 = Instance.new("Frame"),
 	Buttons_4 = Instance.new("ScrollingFrame"),
 	UIListLayout_11 = Instance.new("UIListLayout"),
 	Button_8 = Instance.new("TextButton"),
-	UICorner_60 = Instance.new("UICorner"),
+	UICorner_62 = Instance.new("UICorner"),
 }
 local library
 
@@ -1683,6 +1693,87 @@ MLRemake.Menu_11.Visible = false
 MLRemake.Menu_11.ZIndex = 3
 MLRemake.Menu_11.Image = "http://www.roblox.com/asset/?id=9147554930"
 
+MLRemake.ProgressBar.Name = "ProgressBar"
+MLRemake.ProgressBar.Parent = MLRemake.Example_2
+MLRemake.ProgressBar.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+MLRemake.ProgressBar.Size = UDim2.new(1, 0, 0, 50)
+MLRemake.ProgressBar.ZIndex = 2
+
+MLRemake.UIPadding_27.Parent = MLRemake.ProgressBar
+MLRemake.UIPadding_27.PaddingLeft = UDim.new(0, 8)
+MLRemake.UIPadding_27.PaddingRight = UDim.new(0, 10)
+
+MLRemake.UICorner_49.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_49.Parent = MLRemake.ProgressBar
+
+MLRemake.Label_11.Name = "Label"
+MLRemake.Label_11.Parent = MLRemake.ProgressBar
+MLRemake.Label_11.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Label_11.BackgroundTransparency = 1.000
+MLRemake.Label_11.BorderSizePixel = 0
+MLRemake.Label_11.Size = UDim2.new(0.699999988, 0, 0, 30)
+MLRemake.Label_11.ZIndex = 2
+MLRemake.Label_11.Font = Enum.Font.Gotham
+MLRemake.Label_11.Text = "Progress Bar"
+MLRemake.Label_11.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Label_11.TextSize = 14.000
+MLRemake.Label_11.TextXAlignment = Enum.TextXAlignment.Left
+
+MLRemake.Bar_5.Name = "Bar"
+MLRemake.Bar_5.Parent = MLRemake.ProgressBar
+MLRemake.Bar_5.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+MLRemake.Bar_5.BorderSizePixel = 0
+MLRemake.Bar_5.Position = UDim2.new(0, 0, 0, 33)
+MLRemake.Bar_5.Size = UDim2.new(1, 0, 0, 4)
+MLRemake.Bar_5.ZIndex = 2
+
+MLRemake.Progress.Name = "Progress"
+MLRemake.Progress.Parent = MLRemake.Bar_5
+MLRemake.Progress.BackgroundColor3 = Color3.fromRGB(90, 90, 90)
+MLRemake.Progress.BorderSizePixel = 0
+MLRemake.Progress.Size = UDim2.new(0.5, 0, 1, 0)
+MLRemake.Progress.ZIndex = 2
+
+MLRemake.UICorner_50.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_50.Parent = MLRemake.Progress
+
+MLRemake.Indicator_10.Name = "Indicator"
+MLRemake.Indicator_10.Parent = MLRemake.Bar_5
+MLRemake.Indicator_10.AnchorPoint = Vector2.new(0, 0.5)
+MLRemake.Indicator_10.BackgroundColor3 = Color3.fromRGB(90, 90, 90)
+MLRemake.Indicator_10.BorderSizePixel = 0
+MLRemake.Indicator_10.Position = UDim2.new(0, 0, 0.5, 0)
+MLRemake.Indicator_10.Size = UDim2.new(0, 6, 0, 16)
+MLRemake.Indicator_10.Visible = false
+MLRemake.Indicator_10.ZIndex = 2
+
+MLRemake.Menu_12.Name = "Menu"
+MLRemake.Menu_12.Parent = MLRemake.ProgressBar
+MLRemake.Menu_12.AnchorPoint = Vector2.new(1, 0)
+MLRemake.Menu_12.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Menu_12.BackgroundTransparency = 1.000
+MLRemake.Menu_12.BorderSizePixel = 0
+MLRemake.Menu_12.Position = UDim2.new(1, 0, 0, 5)
+MLRemake.Menu_12.Size = UDim2.new(0, 20, 0, 20)
+MLRemake.Menu_12.Visible = false
+MLRemake.Menu_12.ZIndex = 3
+MLRemake.Menu_12.Image = "http://www.roblox.com/asset/?id=9147554930"
+
+MLRemake.Value_7.Name = "Value"
+MLRemake.Value_7.Parent = MLRemake.ProgressBar
+MLRemake.Value_7.AnchorPoint = Vector2.new(1, 0)
+MLRemake.Value_7.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Value_7.BackgroundTransparency = 1.000
+MLRemake.Value_7.BorderSizePixel = 0
+MLRemake.Value_7.Position = UDim2.new(1, 0, 0, 0)
+MLRemake.Value_7.Size = UDim2.new(0, 70, 0, 30)
+MLRemake.Value_7.ZIndex = 2
+MLRemake.Value_7.Font = Enum.Font.Gotham
+MLRemake.Value_7.Text = "0"
+MLRemake.Value_7.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Value_7.TextSize = 14.000
+MLRemake.Value_7.TextXAlignment = Enum.TextXAlignment.Right
+
 MLRemake.BackgroundDim.Name = "BackgroundDim"
 MLRemake.BackgroundDim.Parent = MLRemake.Main
 MLRemake.BackgroundDim.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
@@ -1700,37 +1791,37 @@ MLRemake.Banner.Size = UDim2.new(1, -20, 0, 100)
 MLRemake.Banner.Visible = false
 MLRemake.Banner.ZIndex = 6
 
-MLRemake.UICorner_49.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_49.Parent = MLRemake.Banner
+MLRemake.UICorner_51.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_51.Parent = MLRemake.Banner
 
-MLRemake.Label_11.Name = "Label"
-MLRemake.Label_11.Parent = MLRemake.Banner
-MLRemake.Label_11.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-MLRemake.Label_11.BorderSizePixel = 0
-MLRemake.Label_11.Size = UDim2.new(1, 0, 1, 0)
-MLRemake.Label_11.ZIndex = 6
-MLRemake.Label_11.Font = Enum.Font.Gotham
-MLRemake.Label_11.Text = "Banner"
-MLRemake.Label_11.TextColor3 = Color3.fromRGB(255, 255, 255)
-MLRemake.Label_11.TextSize = 12.000
-MLRemake.Label_11.TextWrapped = true
-MLRemake.Label_11.TextXAlignment = Enum.TextXAlignment.Left
-MLRemake.Label_11.TextYAlignment = Enum.TextYAlignment.Top
+MLRemake.Label_12.Name = "Label"
+MLRemake.Label_12.Parent = MLRemake.Banner
+MLRemake.Label_12.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+MLRemake.Label_12.BorderSizePixel = 0
+MLRemake.Label_12.Size = UDim2.new(1, 0, 1, 0)
+MLRemake.Label_12.ZIndex = 6
+MLRemake.Label_12.Font = Enum.Font.Gotham
+MLRemake.Label_12.Text = "Banner"
+MLRemake.Label_12.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Label_12.TextSize = 12.000
+MLRemake.Label_12.TextWrapped = true
+MLRemake.Label_12.TextXAlignment = Enum.TextXAlignment.Left
+MLRemake.Label_12.TextYAlignment = Enum.TextYAlignment.Top
 
-MLRemake.UIPadding_27.Parent = MLRemake.Label_11
-MLRemake.UIPadding_27.PaddingBottom = UDim.new(0, 5)
-MLRemake.UIPadding_27.PaddingLeft = UDim.new(0, 6)
-MLRemake.UIPadding_27.PaddingRight = UDim.new(0, 5)
-MLRemake.UIPadding_27.PaddingTop = UDim.new(0, 5)
-
-MLRemake.UICorner_50.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_50.Parent = MLRemake.Label_11
-
-MLRemake.UIPadding_28.Parent = MLRemake.Banner
-MLRemake.UIPadding_28.PaddingBottom = UDim.new(0, 30)
-MLRemake.UIPadding_28.PaddingLeft = UDim.new(0, 5)
+MLRemake.UIPadding_28.Parent = MLRemake.Label_12
+MLRemake.UIPadding_28.PaddingBottom = UDim.new(0, 5)
+MLRemake.UIPadding_28.PaddingLeft = UDim.new(0, 6)
 MLRemake.UIPadding_28.PaddingRight = UDim.new(0, 5)
 MLRemake.UIPadding_28.PaddingTop = UDim.new(0, 5)
+
+MLRemake.UICorner_52.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_52.Parent = MLRemake.Label_12
+
+MLRemake.UIPadding_29.Parent = MLRemake.Banner
+MLRemake.UIPadding_29.PaddingBottom = UDim.new(0, 30)
+MLRemake.UIPadding_29.PaddingLeft = UDim.new(0, 5)
+MLRemake.UIPadding_29.PaddingRight = UDim.new(0, 5)
+MLRemake.UIPadding_29.PaddingTop = UDim.new(0, 5)
 
 MLRemake.Buttons_2.Name = "Buttons"
 MLRemake.Buttons_2.Parent = MLRemake.Banner
@@ -1757,8 +1848,8 @@ MLRemake.Example_3.Text = "OK"
 MLRemake.Example_3.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Example_3.TextSize = 14.000
 
-MLRemake.UICorner_51.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_51.Parent = MLRemake.Example_3
+MLRemake.UICorner_53.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_53.Parent = MLRemake.Example_3
 
 MLRemake.UIListLayout_7.Parent = MLRemake.Buttons_2
 MLRemake.UIListLayout_7.FillDirection = Enum.FillDirection.Horizontal
@@ -1782,8 +1873,8 @@ MLRemake.Tabs.Position = UDim2.new(0, 10, 0, 10)
 MLRemake.Tabs.Size = UDim2.new(1, -20, 0, 25)
 MLRemake.Tabs.Visible = false
 
-MLRemake.UICorner_52.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_52.Parent = MLRemake.Tabs
+MLRemake.UICorner_54.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_54.Parent = MLRemake.Tabs
 
 MLRemake.Buttons_3.Name = "Buttons"
 MLRemake.Buttons_3.Parent = MLRemake.Tabs
@@ -1811,8 +1902,8 @@ MLRemake.Example_4.Text = "Tab"
 MLRemake.Example_4.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Example_4.TextSize = 14.000
 
-MLRemake.UICorner_53.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_53.Parent = MLRemake.Example_4
+MLRemake.UICorner_55.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_55.Parent = MLRemake.Example_4
 
 MLRemake.ObjectMenu.Name = "ObjectMenu"
 MLRemake.ObjectMenu.Parent = MLRemake.Main
@@ -1840,14 +1931,14 @@ MLRemake.Example_5.TextColor3 = Color3.fromRGB(0, 0, 0)
 MLRemake.Example_5.TextSize = 12.000
 MLRemake.Example_5.TextXAlignment = Enum.TextXAlignment.Left
 
-MLRemake.UIPadding_29.Parent = MLRemake.Example_5
-MLRemake.UIPadding_29.PaddingLeft = UDim.new(0, 10)
+MLRemake.UIPadding_30.Parent = MLRemake.Example_5
+MLRemake.UIPadding_30.PaddingLeft = UDim.new(0, 10)
 
-MLRemake.UICorner_54.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_54.Parent = MLRemake.ObjectMenu
+MLRemake.UICorner_56.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_56.Parent = MLRemake.ObjectMenu
 
-MLRemake.UICorner_55.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_55.Parent = MLRemake.Topbar
+MLRemake.UICorner_57.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_57.Parent = MLRemake.Topbar
 
 MLRemake.FillMain.Name = "FillMain"
 MLRemake.FillMain.Parent = MLRemake.Topbar
@@ -1879,8 +1970,8 @@ MLRemake.Title_2.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Title_2.TextSize = 16.000
 MLRemake.Title_2.TextXAlignment = Enum.TextXAlignment.Left
 
-MLRemake.UIPadding_30.Parent = MLRemake.Title_2
-MLRemake.UIPadding_30.PaddingLeft = UDim.new(0, 8)
+MLRemake.UIPadding_31.Parent = MLRemake.Title_2
+MLRemake.UIPadding_31.PaddingLeft = UDim.new(0, 8)
 
 MLRemake.Minimize.Name = "Minimize"
 MLRemake.Minimize.Parent = MLRemake.Topbar
@@ -1896,20 +1987,20 @@ MLRemake.Minimize.Text = ""
 MLRemake.Minimize.TextColor3 = Color3.fromRGB(0, 0, 0)
 MLRemake.Minimize.TextSize = 14.000
 
-MLRemake.UICorner_56.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_56.Parent = MLRemake.Minimize
+MLRemake.UICorner_58.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_58.Parent = MLRemake.Minimize
 
-MLRemake.Menu_12.Name = "Menu"
-MLRemake.Menu_12.Parent = MLRemake.Topbar
-MLRemake.Menu_12.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-MLRemake.Menu_12.BackgroundTransparency = 1.000
-MLRemake.Menu_12.BorderSizePixel = 0
-MLRemake.Menu_12.Position = UDim2.new(0, 3, 0, 3)
-MLRemake.Menu_12.Size = UDim2.new(0, 24, 0, 24)
-MLRemake.Menu_12.Visible = false
-MLRemake.Menu_12.ZIndex = 6
-MLRemake.Menu_12.AutoButtonColor = false
-MLRemake.Menu_12.Image = "rbxassetid://9087103499"
+MLRemake.Menu_13.Name = "Menu"
+MLRemake.Menu_13.Parent = MLRemake.Topbar
+MLRemake.Menu_13.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Menu_13.BackgroundTransparency = 1.000
+MLRemake.Menu_13.BorderSizePixel = 0
+MLRemake.Menu_13.Position = UDim2.new(0, 3, 0, 3)
+MLRemake.Menu_13.Size = UDim2.new(0, 24, 0, 24)
+MLRemake.Menu_13.Visible = false
+MLRemake.Menu_13.ZIndex = 6
+MLRemake.Menu_13.AutoButtonColor = false
+MLRemake.Menu_13.Image = "rbxassetid://9087103499"
 
 MLRemake.Ripple.Name = "Ripple"
 MLRemake.Ripple.Parent = MLRemake.Topbar
@@ -1921,8 +2012,8 @@ MLRemake.Ripple.Size = UDim2.new(0, 100, 0, 100)
 MLRemake.Ripple.Visible = false
 MLRemake.Ripple.ZIndex = 5
 
-MLRemake.UICorner_57.CornerRadius = UDim.new(1, 0)
-MLRemake.UICorner_57.Parent = MLRemake.Ripple
+MLRemake.UICorner_59.CornerRadius = UDim.new(1, 0)
+MLRemake.UICorner_59.Parent = MLRemake.Ripple
 
 MLRemake.Focus.Name = "Focus"
 MLRemake.Focus.Parent = MLRemake.Topbar
@@ -1942,8 +2033,8 @@ MLRemake.Overlay.Size = UDim2.new(1, 0, 1, 490)
 MLRemake.Overlay.Visible = false
 MLRemake.Overlay.ZIndex = 11
 
-MLRemake.UICorner_58.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_58.Parent = MLRemake.Overlay
+MLRemake.UICorner_60.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_60.Parent = MLRemake.Overlay
 
 MLRemake.SubTitle_2.Name = "SubTitle"
 MLRemake.SubTitle_2.Parent = MLRemake.Topbar
@@ -1960,9 +2051,9 @@ MLRemake.SubTitle_2.TextSize = 14.000
 MLRemake.SubTitle_2.TextXAlignment = Enum.TextXAlignment.Left
 MLRemake.SubTitle_2.TextYAlignment = Enum.TextYAlignment.Bottom
 
-MLRemake.UIPadding_31.Parent = MLRemake.SubTitle_2
-MLRemake.UIPadding_31.PaddingBottom = UDim.new(0, 6)
-MLRemake.UIPadding_31.PaddingLeft = UDim.new(0, 8)
+MLRemake.UIPadding_32.Parent = MLRemake.SubTitle_2
+MLRemake.UIPadding_32.PaddingBottom = UDim.new(0, 6)
+MLRemake.UIPadding_32.PaddingLeft = UDim.new(0, 8)
 
 MLRemake.Notifications.Name = "Notifications"
 MLRemake.Notifications.Parent = MLRemake.MLRemake
@@ -1989,14 +2080,14 @@ MLRemake.Notif.Position = UDim2.new(1, -10, 1, -10)
 MLRemake.Notif.Size = UDim2.new(0, 200, 0, 100)
 MLRemake.Notif.ZIndex = 20
 
-MLRemake.UICorner_59.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_59.Parent = MLRemake.Notif
+MLRemake.UICorner_61.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_61.Parent = MLRemake.Notif
 
-MLRemake.UIPadding_32.Parent = MLRemake.Notif
-MLRemake.UIPadding_32.PaddingBottom = UDim.new(0, 8)
-MLRemake.UIPadding_32.PaddingLeft = UDim.new(0, 8)
-MLRemake.UIPadding_32.PaddingRight = UDim.new(0, 8)
-MLRemake.UIPadding_32.PaddingTop = UDim.new(0, 8)
+MLRemake.UIPadding_33.Parent = MLRemake.Notif
+MLRemake.UIPadding_33.PaddingBottom = UDim.new(0, 8)
+MLRemake.UIPadding_33.PaddingLeft = UDim.new(0, 8)
+MLRemake.UIPadding_33.PaddingRight = UDim.new(0, 8)
+MLRemake.UIPadding_33.PaddingTop = UDim.new(0, 8)
 
 MLRemake.Title_3.Name = "Title"
 MLRemake.Title_3.Parent = MLRemake.Notif
@@ -2012,20 +2103,20 @@ MLRemake.Title_3.TextSize = 16.000
 MLRemake.Title_3.TextXAlignment = Enum.TextXAlignment.Left
 MLRemake.Title_3.TextYAlignment = Enum.TextYAlignment.Top
 
-MLRemake.Label_12.Name = "Label"
-MLRemake.Label_12.Parent = MLRemake.Notif
-MLRemake.Label_12.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-MLRemake.Label_12.BackgroundTransparency = 1.000
-MLRemake.Label_12.BorderSizePixel = 0
-MLRemake.Label_12.Position = UDim2.new(0, 0, 0, 24)
-MLRemake.Label_12.Size = UDim2.new(1, 0, 1, -48)
-MLRemake.Label_12.ZIndex = 21
-MLRemake.Label_12.Font = Enum.Font.Gotham
-MLRemake.Label_12.Text = "Notification"
-MLRemake.Label_12.TextColor3 = Color3.fromRGB(255, 255, 255)
-MLRemake.Label_12.TextSize = 14.000
-MLRemake.Label_12.TextXAlignment = Enum.TextXAlignment.Left
-MLRemake.Label_12.TextYAlignment = Enum.TextYAlignment.Top
+MLRemake.Label_13.Name = "Label"
+MLRemake.Label_13.Parent = MLRemake.Notif
+MLRemake.Label_13.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Label_13.BackgroundTransparency = 1.000
+MLRemake.Label_13.BorderSizePixel = 0
+MLRemake.Label_13.Position = UDim2.new(0, 0, 0, 24)
+MLRemake.Label_13.Size = UDim2.new(1, 0, 1, -48)
+MLRemake.Label_13.ZIndex = 21
+MLRemake.Label_13.Font = Enum.Font.Gotham
+MLRemake.Label_13.Text = "Notification"
+MLRemake.Label_13.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Label_13.TextSize = 14.000
+MLRemake.Label_13.TextXAlignment = Enum.TextXAlignment.Left
+MLRemake.Label_13.TextYAlignment = Enum.TextYAlignment.Top
 
 MLRemake.Line_4.Name = "Line"
 MLRemake.Line_4.Parent = MLRemake.Notif
@@ -2065,8 +2156,8 @@ MLRemake.Button_8.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Button_8.TextSize = 14.000
 MLRemake.Button_8.TextWrapped = true
 
-MLRemake.UICorner_60.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_60.Parent = MLRemake.Button_8
+MLRemake.UICorner_62.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_62.Parent = MLRemake.Button_8
 
 -- Module Scripts:
 
@@ -2195,7 +2286,7 @@ do -- MLRemake.MLRemake.UI
 				Prefix = "",
 				Suffix = "",
 				ReturnWithAffixes = false,
-				ReturnAsPercent = false,
+				Decimals = 0,
 				Toggle = false,
 				Enabled = false,
 				ToggleCallback = nofunc
@@ -2230,6 +2321,16 @@ do -- MLRemake.MLRemake.UI
 				Data = {
 					['Key'] = "Value"
 				}
+			},
+			ProgressBar = {
+				Text = "Progress Bar",
+				Event = bind,
+				Min = 0,
+				Max = 10,
+				Def = 5,
+				Prefix = "",
+				Suffix = "",
+				Percent = true,
 			}
 		}
 		
@@ -2420,6 +2521,7 @@ do -- MLRemake.MLRemake.UI
 				local new = banner:Clone()
 				new.Name = "Banner"
 				new.Label.Text = t.Text
+				new.Label.RichText = true
 				new.Parent = p or main
 		
 				ui.Dim2(true, p)
@@ -2580,15 +2682,27 @@ do -- MLRemake.MLRemake.UI
 					end
 				end)
 			end
+			local getcustomasset = getcustomasset or getsynasset or nil
+			function ui.GetAsset(asset)
+				if tonumber(asset) ~= nil then
+					asset = "rbxassetid://"..asset
+				elseif typeof(asset) == "string" and isfile and isfile(asset) and getcustomasset then
+					asset = getcustomasset(asset)
+				end
+				return asset
+			end
 			
 			function ui.Load(t)
 				UI_LOADED = false
 				ApplyDefaultProps("Load", t)
 				
 				local new = script.Parent:Clone()
+				
+				-- gui protection
+				local container = (gethui and gethui()) or (get_hidden_ui and get_hidden_ui()) or game.CoreGui
 				if getgenv then
 					if syn then syn.protect_gui(new) end
-					new.Parent = (gethui and gethui()) or (get_hidden_ui and get_hidden_ui()) or game.CoreGui
+					new.Parent = container
 					if OldInstance ~= nil then
 						OldInstance:Destroy()
 					end
@@ -2596,6 +2710,23 @@ do -- MLRemake.MLRemake.UI
 				else
 					new.Parent = game:GetService("Players").LocalPlayer.PlayerGui
 				end
+				
+				local hookmetamethod = hookmetamethod or (hookfunction and getrawmetatable and newcclosure and function(obj, method, f)
+					return hookfunction(getrawmetatable(obj)[method], newcclosure(f))
+				end) or nil
+				if hookmetamethod then
+					local old;old = hookmetamethod(game, "__namecall", function(...)
+						local args = {...}
+						if not checkcaller() and args[1] == uis and getnamecallmethod() == "GetFocusedTextBox" then
+							local box = old(...)
+							if box and box:IsDescendantOf(container) then
+								return nil
+							end
+						end
+						return old(...)
+					end)
+				end
+				
 				new.Name = "MATERIAL_"..t.Title
 		
 				local topbar = new.Topbar
@@ -2717,19 +2848,7 @@ do -- MLRemake.MLRemake.UI
 					navigator.Buttons.Position = UDim2new(0, 0, 0, 50)
 				end
 				if t.Icon ~= nil then
-					local img = t.Icon
-					local icon = navigator.Icon
-					if tonumber(img) ~= nil then
-						icon.Image = "rbxassetid://"..img
-					elseif type == "string" then
-						if img:find("rbxassetid://") then
-							icon.Image = img
-						elseif isfile(img) and (getcustomasset or getsynasset) then
-							icon.Image = (getcustomasset and getcustomasset(img)) or (getsynasset and getsynasset(img))
-						end
-					else
-						icon.Image = img
-					end
+					navigator.Icon.Image = ui.GetAsset(t.Icon)
 				else
 					navigator.Icon.Visible = false
 					navigator.Title.Position = UDim2new(0, 8, 0, 5)
@@ -2884,18 +3003,8 @@ do -- MLRemake.MLRemake.UI
 					
 					local img = t.ImageId or t.ImageID
 					if img ~= nil then
-						local type = typeof(img)
-						local icon = newnav.Icon
-						icon.Visible = true
-						if tonumber(img) ~= nil then
-							icon.Image = "rbxassetid://"..img
-						elseif type == "string" then
-							if img:find("rbxassetid://") then
-								icon.Image = img
-							elseif isfile(img) and (getcustomasset or getsynasset) then
-								icon.Image = (getcustomasset and getcustomasset(img)) or (getsynasset and getsynasset(img))
-							end
-						end
+						newnav.Icon.Visible = true
+						newnav.Icon.Image = ui.GetAsset(img)
 						newnav.UIPadding.PaddingLeft = UDim.new(0, 38)
 						
 						local size = t.ImageSize
@@ -2954,6 +3063,7 @@ do -- MLRemake.MLRemake.UI
 						ChipSet = newfunc("ChipSet"),
 						DataTable = newfunc("ChipSet"),
 						Table = newfunc("Table"),
+						ProgressBar = newfunc("ProgressBar"),
 						Remove = function()
 							newnav:Destroy()
 							newtab:Destroy()
@@ -3277,28 +3387,31 @@ do -- MLRemake.MLRemake.UI
 				new.Name = "Label#"..id
 				new.Parent = p or ex
 				new.Visible = true
-				new.Text = t.Text
 				new.TextXAlignment = Enum.TextXAlignment[(t.Center and "Center" or "Left")]
 				new.BackgroundTransparency = (t.Transparent and 1) or 0
-				local conn
-				conn = t.Event.Event:Connect(function(...)
+				new.RichText = true
+				
+				local function SetText(...) -- support multiple args to easily concatenate multiple strings
 					local args = {...}
 					for i,v in next, args do
 						args[i] = tostring(v)
-						print(typeof(args[i]))
 					end
-					
+		
 					local suc, str = pcall(function()
 						return table.concat(args, " ")
 					end)
-					
+		
 					if suc and str then
 						new.Text = str
+						
+						-- Resize accordingly
+						new.Size = UDim2new(1, 0, 0, clamp(new.TextBounds.Y + 16, 30, inf))
 					else
-						conn:Disconnect()
-						error("Failed to convert value to string on Label #"..id)
+						error("Failed to convert value(s) to string on Label #"..id)
 					end
-				end)
+				end
+				t.Event.Event:Connect(SetText)
+				SetText(t.Text)
 				
 				ui.UpdateCanvasSize(p or ex)
 				
@@ -3308,9 +3421,9 @@ do -- MLRemake.MLRemake.UI
 				
 				local a = {Destroyed = false}
 		
-				function a:SetText(text)
+				function a:SetText(...)
 					if a.Destroyed then return end
-					new.Text = text
+					SetText(...)
 				end
 				function a:GetText()
 					if a.Destroyed then return end
@@ -3331,9 +3444,10 @@ do -- MLRemake.MLRemake.UI
 		end
 		
 		do -- Slider
-			local function AddAffixes(value, t, ignore)
-				if t.ReturnAsPercent then
+			function ui.AddAffixes(value, t, ignore)
+				if t.ReturnAsPercent and false then -- removed
 					value = t.Max * (value / 100)
+					--value = (value - t.Min) / (t.Max - t.Min)
 				end
 				if t.ReturnAsAffixes or ignore then
 					value = (t.Prefix or "")..value..(t.Suffix or "")
@@ -3352,20 +3466,24 @@ do -- MLRemake.MLRemake.UI
 					if not t then t = {} end
 					local bar = s.Bar
 					local indicator = bar.Indicator
+					local min = math.max(t.Min or 0, 0)
 					local max = t.Max or 100
-		
-					local pos = UDim2new(0, clamp(bar.AbsoluteSize.X / (max / value), 0, bar.AbsoluteSize.X), 0.5, 0)
+					value = clamp(value, min, max)
+					
+					local percent = (value - min) / (max - min)
+					--local pos = UDim2new(0, clamp(bar.AbsoluteSize.X / percent, 0, bar.AbsoluteSize.X), 0.5, 0)
+					local pos = UDim2new(percent, 0, 0.5, 0)
 					if t.Tween then
 						indicator:TweenPosition(pos, "Out", "Sine", SLIDER_SET_TWEEN_TIME, true)
 					else
 						indicator.Position = pos
 					end
-					local afv = AddAffixes(value, t)
-					s.Value.Text = AddAffixes(value, t, true)
+					local afv = ui.AddAffixes(value, t)
+					s.Value.Text = ui.AddAffixes(value, t, true)
 					if s:FindFirstChild("Input") then
 						s.Input.Text = value
 					end
-					indicator.AnchorPoint = Vector2new(value / max, 0.5)
+					indicator.AnchorPoint = Vector2new(percent, 0.5)
 					if t.Callback then
 						t.Callback(afv)
 					end
@@ -3376,13 +3494,15 @@ do -- MLRemake.MLRemake.UI
 				local bar = s.Bar
 				local slider = bar.Slider
 				local indicator = bar.Indicator
+				local min = math.max(t.Min or 0, 0)
 				local max = t.Max or 100
+				local dec = t.Decimals or 0
 				local lastvalue = nil
 				local lastpercent = nil
 				
 				local pre, suf = t.Prefix or "", t.Suffix or ""
 				
-				local conn;conn = slider.MouseButton1Down:Connect(function()
+				return slider.MouseButton1Down:Connect(function()
 					mousedown = true
 					while true do
 						if not mousedown then break end
@@ -3391,16 +3511,17 @@ do -- MLRemake.MLRemake.UI
 						
 						indicator.Position = UDim2new(
 							0,
-							clamp(mouse.X - bar.AbsolutePosition.X, 0, bar.AbsoluteSize.X),
+							pos,
 							0.5,
 							0
 						)
 						--indicator:TweenPosition(UDim2new(0, pos, 0.5, 0), "Out", "Sine", SLIDER_TWEEN_TIME, true)
-						local value = Round((floor(indicator.Position.X.Offset / bar.AbsoluteSize.X * 1000) / 1000) * max, 0)
-						local percent = (value / max)
+						local value = Round(min + ((max - min) * (pos / bar.AbsoluteSize.X)), dec)
+						--old code local value = Round((floor(indicator.Position.X.Offset / bar.AbsoluteSize.X * 1000) / 1000) * max, dec)
+						local percent = (value - min) / (max - min)
 						indicator.AnchorPoint = Vector2new(percent, 0.5)
 						
-						s.Value.Text = AddAffixes(value, t, true)
+						s.Value.Text = ui.AddAffixes(value, t, true)
 		
 						lastvalue = value
 						lastpercent = percent
@@ -3415,8 +3536,10 @@ do -- MLRemake.MLRemake.UI
 				ApplyDefaultProps("Slider", t)
 				
 				local toggled = t.Enabled
-				local def, min, max = t.Def, t.Min, t.Max
-				local lastvalue = t.Def
+				local min = math.max(t.Min, 0)
+				local max = t.Max
+				local def = clamp(t.Def, min, max)
+				local lastvalue = def
 				local pre, suf = t.Prefix, t.Suffix
 				
 				local new = ex.Slider:Clone()
@@ -3430,7 +3553,7 @@ do -- MLRemake.MLRemake.UI
 				new.Parent = p or ex
 				new.Visible = true
 				new.Label.Text = t.Text
-				new.Value.Text = t.Def
+				new.Value.Text = def
 				
 				ui.SetSliderValue(new, def, t)
 				ui.UpdateCanvasSize(p or ex)
@@ -3464,24 +3587,30 @@ do -- MLRemake.MLRemake.UI
 					local a = input.Text:gsub("%a%p%s%c%x%z", "") -- Removes all letters (a), punctuation (p), spaces (s), hexadecimals (x), and null characters (z)
 					if a == "" then return end -- If all characters were removed, end thread
 					
-					local value = a:gsub("%D", "") -- Removes all other characters except for numbers
+					local value = a:gsub("[^%d{.}]", "") -- Removes all other characters except for numbers
 					value = tonumber(value) -- Convert to number
 					
 					if a:match("%%$") then -- Checks if last character is a %
-						value = max * (value / 100)
+						--value = max * (value / 100)
+						value = (1 - (value / 100)) * min + (value / 100) * max
 					end
 					
 					value = clamp(value, min, max)
 					ui.SetSliderValue(new, value, t)
+					lastvalue = value
 				end)
 				
 				-- slider stuff
-				ui.InitSlider(new, t, function(self, value, percent)
-					lastvalue = value
-					val.Text = AddAffixes(value, t, true)
-					input.Text = value
-					t.Callback(AddAffixes(value, t))
-				end)
+				local conn
+				local function init()
+					conn = ui.InitSlider(new, t, function(self, value, percent)
+						val.Text = ui.AddAffixes(value, t, true)
+						input.Text = value
+						t.Callback(ui.AddAffixes(value, t))
+						lastvalue = value
+					end)
+				end
+				init()
 				
 				local a = {Destroyed = false}
 		
@@ -3500,15 +3629,21 @@ do -- MLRemake.MLRemake.UI
 				function a:SetMin(value)
 					if a.Destroyed then return end
 					min = value
+					t.Min = value
+					conn:Disconnect()
+					init()
 				end
 				function a:SetMax(value)
 					if a.Destroyed then return end
 					max = value
+					t.Max = value
+					conn:Disconnect()
+					init()
 				end
 				function a:SetValue(value)
 					if a.Destroyed then return end
 					lastvalue = value
-					val.Text = AddAffixes(value, t)
+					val.Text = ui.AddAffixes(value, t)
 					t.Callback(value)
 				end
 				function a:GetMin()
@@ -3518,6 +3653,10 @@ do -- MLRemake.MLRemake.UI
 				function a:GetMax()
 					if a.Destroyed then return end
 					return max
+				end
+				function a:GetValue()
+					if a.Destroyed then return end
+					return lastvalue
 				end
 				function a:Destroy()
 					if a.Destroyed then return end
@@ -3539,6 +3678,7 @@ do -- MLRemake.MLRemake.UI
 						CSKnew(0, Color3new(val, val, val)),
 						CSKnew(1, fromHSV(hue, 1, 1))
 					}
+					warn(hue)
 					ui.SetSliderValue(s.Picker.Hue, floor(hue * 360), {Tween = tween, Max = 360})
 					ui.SetSliderValue(s.Picker.Saturation, floor(sat * 100), {Tween = tween})
 					ui.SetSliderValue(s.Picker.Value, floor(val * 100), {Tween = tween})
@@ -3586,17 +3726,17 @@ do -- MLRemake.MLRemake.UI
 				-- HSV bars
 				ui.InitSlider(picker.Hue, {Max = 360}, function(_, value, percent)
 					hue = percent
-					ui.SetPickerPreview(new, fromHSV(hue, sat, val), false)
+					ui.SetPickerPreview(new, fromHSV(hue, sat, val), false, toggled)
 					t.Callback(fromHSV(hue, sat, val))
 				end)
 				ui.InitSlider(picker.Saturation, {Max = 100}, function(_, _, percent)
 					sat = percent
-					ui.SetPickerPreview(new, fromHSV(hue, sat, val), false)
+					ui.SetPickerPreview(new, fromHSV(hue, sat, val), false, toggled)
 					t.Callback(fromHSV(hue, sat, val))
 				end)
 				ui.InitSlider(picker.Value, {Max = 100}, function(_, _, percent)
 					val = percent
-					ui.SetPickerPreview(new, fromHSV(hue, sat, val), false)
+					ui.SetPickerPreview(new, fromHSV(hue, sat, val), false, toggled)
 					t.Callback(fromHSV(hue, sat, val))
 				end)
 				
@@ -4014,6 +4154,88 @@ do -- MLRemake.MLRemake.UI
 				function a:GetData()
 					if a.Destroyed then return end
 					return data
+				end
+				function a:Destroy()
+					if a.Destroyed then return end
+					new:Destroy()
+					a.Destroyed = true
+				end
+		
+				return a
+			end
+		end
+		
+		do -- Progress Bar
+			function ui.ProgressBar(t, p, ex)
+				ID += 1
+				local id = ID
+				ApplyDefaultProps("ProgressBar", t)
+		
+				local def, min, max = t.Def, t.Min, t.Max
+				local lastvalue = t.Def
+				local pre, suf = t.Prefix, t.Suffix
+		
+				local new = ex.ProgressBar:Clone()
+				local bar = new.Bar 
+				local slider = bar.Indicator
+				local val = new.Value
+				new.Name = "ProgressBar#"..id
+				new.Parent = p or ex
+				new.Visible = true
+				new.Label.Text = t.Text
+				
+				local function SetValue(value)
+					local percent = (value - min) / (max - min)
+					bar.Progress:TweenSize(UDim2new(percent, 0, 1, 0), "Out", "Sine", 0.4, true)
+					val.Text = ui.AddAffixes((t.Percent and Round(percent * 100, 2)) or value, t, true)
+					lastvalue = value
+					
+					ui.Tween(bar.Progress, {BackgroundColor3 = (percent == 1 and fromRGB(250, 250, 250)) or fromRGB(90, 90, 90)}, TweenInfonew(0.5, sine, out))
+				end
+				t.Event.Event:Connect(SetValue)
+				
+				SetValue(def)
+				ui.UpdateCanvasSize(p or ex)
+		
+				if t.Menu ~= nil then
+					ui.InitMenu(t.Menu, new, (t.Toggle and {val}) or {val})
+				end
+				
+				local a = {Destroyed = false}
+		
+				function a:SetText(text)
+					if a.Destroyed then return end
+					new.Label.Text = text
+				end
+				function a:GetText()
+					if a.Destroyed then return end
+					return new.Label.Text
+				end
+				function a:GetId()
+					if a.Destroyed then return end
+					return id
+				end
+				function a:SetMin(value)
+					if a.Destroyed then return end
+					min = value
+					SetValue(lastvalue)
+				end
+				function a:SetMax(value)
+					if a.Destroyed then return end
+					max = value
+					SetValue(lastvalue)
+				end
+				function a:SetValue(value)
+					if a.Destroyed then return end
+					SetValue(value)
+				end
+				function a:GetMin()
+					if a.Destroyed then return end
+					return min
+				end
+				function a:GetMax()
+					if a.Destroyed then return end
+					return max
 				end
 				function a:Destroy()
 					if a.Destroyed then return end
