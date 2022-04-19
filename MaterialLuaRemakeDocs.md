@@ -2,19 +2,19 @@
 A UI library inspired by [Material Lua](https://github.com/Kinlei/MaterialLua).  
 This library has pretty much the exact same usage as Material Lua, but with a different look and a bit more utilities to work with.  
 
-*Last Updated: April 2, 2022*  
+*Last Updated: April 19, 2022*  
 
 # This ui library is not completely finished yet, however it is usable.  
 
 ---
 
 # Table of Contents  
-- [Loader](#loader)
+- [Loadstring](#loadstring)
 - [Replacer](#replacer)
 - [Material.Load](#materialload)
   - [UI.new](#uinew)
   - [UI.Banner](#uibanner)
-  - [UI.Notify (INCOMPLETE)](#uinotify)
+  - [UI.Notify (WIP)](#uinotify)
   - [UI.Toggle](#uitoggle)
   - [UI.OpenPage](#uiopenpage)
 - [Page Elements](#page-elements)
@@ -26,10 +26,11 @@ This library has pretty much the exact same usage as Material Lua, but with a di
   - [Page.Slider](#pageslider)
   - [Page.Color Picker](#pagecolorpicker)
   - [Page.Keybind](#pagekeybind)
-  - [Page.Chip Set / Data Table](#pagechipset)
+  - [Page.ChipSet / DataTable](#pagechipset)
   - [Page.Table](#pagetable)
+  - [Page.ProgressBar](#pageprogressbar)
 
-## Loader  
+## Loadstring  
 ```lua
 local Material = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/MaterialLuaRemake.lua"))()
 ```
@@ -346,6 +347,7 @@ local TextBox = Page.TextBox({
 |Callback|Function|nil|The Text Box's callback|
 |Type|String|Default|The Text Box's type.|
 |ClearOnFocus|Boolean|false|Determines if the Text Box clears on focus|
+|Center|Boolean|false|Determines if the Text Box's text is centered|
 
 ### Text Box Types
 |Types|Description|
@@ -374,7 +376,9 @@ Creates a new `Label` with `Options`.
 local Bind = Instance.new("BindableEvent")
 local Label = Page.Label({
     Text = "Label",
-    Event = Bind -- Use the INSTANCE, NOT the signal
+    Event = Bind, -- Use the INSTANCE, NOT the signal
+    Center = true,
+    Transparent = true
 })
 
 workspace.Part:GetPropertyChangedSignal("Position"):Connect(function()
@@ -387,7 +391,9 @@ end)
 |Name|Type|Default|Description|
 |:---|:---|:------|:----------|
 |Text|String|Label|The text shown on the Label|
-|Label|BindableEvent|nil|The Label's text can be updated by firing this BindableEvent|
+|Event|BindableEvent|nil|The Label's text can be updated by firing this BindableEvent|
+|Center|Boolean|false|Determines if the Label's text is centered|
+|Transparent|Boolean|false|Determines if the Label's background is transparent|
   
 ### Methods  
 |Method|Description|
@@ -414,8 +420,7 @@ local Slider = Page.Slider({
     end,
     Min = 0,
     Max = 123789,
-    Def = 0,
-    ReturnAsPercent = true
+    Def = 0
 })
 ```
 
@@ -430,7 +435,7 @@ local Slider = Page.Slider({
 |Prefix|String|nil|Displayed at the front of the value (ex: $5)|
 |Suffix|String|nil|Displayed at the end of the value (ex: 5$)|
 |ReturnWithAffixes|Boolean|false|Determines if the return values include the prefixes/suffixes|
-|ReturnAsPercent|Boolean|false|Determines if the return values are percentages<br />This will override ReturnWithAffixes.|
+|Decimals|Number|0|Determines how many decimal places the number has.<br />ex. 2 will return numbers like 1.23|
 |Toggle|Boolean|false|If enabled, a Toggle will be shown on the Slider|
 |Enabled|Boolean|false|Determines if the Toggle is enabled by default or not.<br />Toggle must be enabled for this to work|
 |ToggleCallback|Function|nil|The Toggle's callback|
@@ -613,3 +618,46 @@ local Table = Page.Table({
 |void SetData(table Bind)|Sets the Table's data|
 |table GetData()|Returns the Table's data|
 |void Destroy()|Destroys the Table|
+
+---
+
+## Page.ProgressBar  
+```js
+<Slider> Page.ProgressBar(<table> Options)
+```
+Creates a new `ProgressBar` with `Options`.  
+
+### Example  
+```lua
+local Slider = Page.ProgressBar({
+    Text = "Progress Bar",
+    Event = bind, -- use the INSTANCE, NOT the signal
+    Min = 0,
+    Max = 100,
+    Def = 0
+})
+```
+
+### Options  
+|Name|Type|Default|Description|
+|:---|:---|:------|:----------|
+|Text|String|Progress Bar|The text shown on the Progress Bar|
+|Callback|Function|nil|The Progress Bar's callback|
+|Min|Number|0|The Progress Bar's minimum value|
+|Max|Number|10|The Progress Bar's maximum value|
+|Def|Number|5|The Progress Bar's default value|
+|Prefix|String|nil|Displayed at the front of the value (ex: $5)|
+|Suffix|String|nil|Displayed at the end of the value (ex: 5$)|
+|Percent|Boolean|true|Determines if the progress bar displays a percentage|
+  
+### Methods  
+|Method|Description|
+|:-----|:----------|
+|void SetText(string Text)|Sets the Progress Bar's text|
+|string GetText()|Returns the Progress Bar's text|
+|number GetId()|Returns the Progress Bar's Id|
+|void SetMin(number Min)|Sets the Progress Bar's minimum value|
+|void SetMax(number Max)|Sets the Progress Bar's maximum value|
+|number GetMin()|Returns the Progress Bar's minimum value|
+|number GetMax()|Returns the Progress Bar's maximum value|
+|void Destroy()|Destroys the Progress Bar|
