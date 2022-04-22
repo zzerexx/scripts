@@ -25,6 +25,13 @@ if not EspSettings then
 				LookTracers = true
 			}
 		},
+		Highlights = {
+			Enabled = false,
+			Players = {}, -- put player usernames into this table to 'highlight' them
+			Transparency = 1,
+			Color = Color3.fromRGB(255, 150, 0),
+			AlwaysOnTop = true
+		},
 		Boxes = {
 			Enabled = true,
 			Transparency = 1,
