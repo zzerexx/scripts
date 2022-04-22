@@ -4,8 +4,8 @@ my cool scripts
 ---
   
 # Universal Esp  
-Updated March 5, 2022  
-v1.6.9  
+Updated April 21, 2022  
+v1.6.10  
 - Box Esp  
 - Tracers  
 - Name Esp  
@@ -21,7 +21,7 @@ https://pastebin.com/raw/5zw0rLH9
 ```  
 [Documentation](https://github.com/zzerexx/scripts/blob/main/UniversalScriptAPI.md)  
 ### UI Version  
-Updated April 11, 2022  
+Updated April 21, 2022  
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua"))()
 ```  
@@ -33,24 +33,14 @@ Supports `SetFunction` and `ResetFunction` for compatibility!
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspPerformance.lua"))()
 ```  
   
-## Update v1.6.9  
+## Update v1.6.10  
 Main Changes  
-- (1.6.7) Added `FaceCamera`; makes Boxes and Health Bars appear 2D [Preview](https://streamable.com/glsw2f)
-  - This can make the esp look weird from certain perspectives
-- (1.6.8) Added `AlignPoints`; further improves 2D effect, only works while `FaceCamera` is enabled
-  - This may cause esp to have abnormal behavior when looking from certain angles
-- (1.6.9) no longer detected on bad business
+- Added `Highlights`; allows for separate esp settings for specific players  
   
 UI Changes  
 - Updated to use [Material Lua Remake](https://github.com/zzerexx/scripts/blob/main/MaterialLuaRemakeDocs.md)
-  - Loading times are a lot slower, I'll try to fix this
-- Updated to utilize [Config Manager](https://github.com/zzerexx/scripts/blob/main/ConfigManagerDocs.md)
+- Updated to use [Config Manager](https://github.com/zzerexx/scripts/blob/main/ConfigManagerDocs.md)
 - Executing Universal Esp and Aimbot simulataneously will now wait until the first ui loads
-- `Toggle Key` is easier to set with the keybind button
-- `UI Toggle Key` is now customizable with the keybind button
-- `UI Toggle Key` can be saved in configs
-- `Add esp to players upon joining` can be saved in configs
-- Added `Safe Mode`; prevents script error detections (recommended on games like bad business)
   
 ---
   
@@ -72,8 +62,7 @@ Main Changes
   
 UI Changes  
 - Updated to use [Material Lua Remake](https://github.com/zzerexx/scripts/blob/main/MaterialLuaRemakeDocs.md)
-  - Loading times are a lot slower, I'll try to fix this
-- Updated to utilize [Config Manager](https://github.com/zzerexx/scripts/blob/main/ConfigManagerDocs.md)
+- Updated to use [Config Manager](https://github.com/zzerexx/scripts/blob/main/ConfigManagerDocs.md)
 - Executing Universal Esp and Aimbot simulataneously will now wait until the first ui loads
   
 ## NOTICE  
