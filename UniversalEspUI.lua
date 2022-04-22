@@ -125,7 +125,7 @@ local function Load(file)
 	return loadstring(game:HttpGet(string.format("https://raw.githubusercontent.com/zzerexx/scripts/main/%s.lua", file)))()
 end
 
-local version = "v1.6.9"
+local version = "v1.6.10"
 local esp = Load("UniversalEsp")
 local cfg = Load("ConfigManager")
 local Material = Load("MaterialLuaRemake")
@@ -200,7 +200,14 @@ local newsettings = {
 	},
 	HeadDots = {
 		Scale = 1
-	}
+	},
+	Highlights = {
+		Enabled = false,
+		Players = {},
+		Transparency = 1,
+		Color = Color3.fromRGB(255, 150, 0),
+		AlwaysOnTop = true
+	},
 }
 for i,v in next, newsettings do
 	if ss[i] == nil then
@@ -293,6 +300,26 @@ function destroy()
 	getgenv().UESP = nil
 end
 
+do -- new ui notification
+	task.delay(3, function()
+		local file = "UESP_AskAgain#1.txt"
+		if not isfile(file) then
+			writefile(file, "yes")
+		end
+		if readfile(file) == "yes" then
+			UI.Banner({
+				Text = "Hello! As you can tell, there's a new UI. I made it myself and would like to receive some feedback. Please go to the <b>Feedback</b> page to send any suggestions and/or bug reports!\n\n<font color='rgb(255, 150, 0)'>Click <b>Dont ask again</b> if you wish to not receive this notification again.</font>",
+				Options = {"OK", "Dont ask again"},
+				Callback = function(value)
+					if value == "Dont ask again" then
+						writefile(file, "no")
+					end
+				end
+			})
+		end
+	end)
+end
+
 do -- Boxes
 	local type = "Boxes"
 	local s = ss[type]
@@ -306,11 +333,12 @@ do -- Boxes
 	Boxes.Slider({
 		Text = "Transparency",
 		Callback = function(value)
-			esp:Set(type, "Transparency", value / 10)
+			esp:Set(type, "Transparency", value)
 		end,
 		Min = 0,
-		Max = 10,
-		Def = s.Transparency * 10
+		Max = 1,
+		Def = s.Transparency,
+		Decimals = 2
 	})
 	Boxes.ColorPicker({
 		Text = "Color",
@@ -354,7 +382,8 @@ do -- Boxes
 		end,
 		Min = 1,
 		Max = 5,
-		Def = s.OutlineThickness
+		Def = s.OutlineThickness,
+		Decimals = 2
 	})
 	Boxes.Slider({
 		Text = "Thickness",
@@ -363,7 +392,8 @@ do -- Boxes
 		end,
 		Min = 1,
 		Max = 5,
-		Def = s.Thickness
+		Def = s.Thickness,
+		Decimals = 2
 	})
 end
 
@@ -380,11 +410,12 @@ do -- Tracers
 	Tracers.Slider({
 		Text = "Transparency",
 		Callback = function(value)
-			esp:Set(type, "Transparency", value / 10)
+			esp:Set(type, "Transparency", value)
 		end,
 		Min = 0,
-		Max = 10,
-		Def = s.Transparency * 10
+		Max = 1,
+		Def = s.Transparency,
+		Decimals = 2
 	})
 	Tracers.ColorPicker({
 		Text = "Color",
@@ -428,7 +459,8 @@ do -- Tracers
 		end,
 		Min = 1,
 		Max = 5,
-		Def = s.OutlineThickness
+		Def = s.OutlineThickness,
+		Decimals = 2
 	})
 	Tracers.Dropdown({
 		Text = "Origin",
@@ -445,7 +477,8 @@ do -- Tracers
 		end,
 		Min = 1,
 		Max = 5,
-		Def = s.Thickness
+		Def = s.Thickness,
+		Decimals = 2
 	})
 end
 
@@ -462,11 +495,12 @@ do -- Names
 	Names.Slider({
 		Text = "Transparency",
 		Callback = function(value)
-			esp:Set(type, "Transparency", value / 10)
+			esp:Set(type, "Transparency", value)
 		end,
 		Min = 0,
-		Max = 10,
-		Def = s.Transparency * 10
+		Max = 1,
+		Def = s.Transparency,
+		Decimals = 2
 	})
 	Names.ColorPicker({
 		Text = "Color",
@@ -590,11 +624,12 @@ do -- Skeletons
 	Skeletons.Slider({
 		Text = "Transparency",
 		Callback = function(value)
-			esp:Set(type, "Transparency", value / 10)
+			esp:Set(type, "Transparency", value)
 		end,
 		Min = 0,
-		Max = 10,
-		Def = s.Transparency * 10
+		Max = 1,
+		Def = s.Transparency,
+		Decimals = 2
 	})
 	Skeletons.ColorPicker({
 		Text = "Color",
@@ -638,7 +673,8 @@ do -- Skeletons
 		end,
 		Min = 1,
 		Max = 5,
-		Def = s.OutlineThickness
+		Def = s.OutlineThickness,
+		Decimals = 2
 	})
 	Skeletons.Slider({
 		Text = "Thickness",
@@ -647,7 +683,8 @@ do -- Skeletons
 		end,
 		Min = 1,
 		Max = 5,
-		Def = s.Thickness
+		Def = s.Thickness,
+		Decimals = 2
 	})
 end
 
@@ -664,11 +701,12 @@ do -- HealthBars
 	HealthBars.Slider({
 		Text = "Transparency",
 		Callback = function(value)
-			esp:Set(type, "Transparency", value / 10)
+			esp:Set(type, "Transparency", value)
 		end,
 		Min = 0,
-		Max = 10,
-		Def = s.Transparency * 10
+		Max = 1,
+		Def = s.Transparency,
+		Decimals = 2
 	})
 	HealthBars.ColorPicker({
 		Text = "Color",
@@ -712,7 +750,8 @@ do -- HealthBars
 		end,
 		Min = 1,
 		Max = 5,
-		Def = s.OutlineThickness
+		Def = s.OutlineThickness,
+		Decimals = 2
 	})
 	HealthBars.Dropdown({
 		Text = "Origin",
@@ -749,11 +788,12 @@ do -- HeadDots
 	HeadDots.Slider({
 		Text = "Transparency",
 		Callback = function(value)
-			esp:Set(type, "Transparency", value / 10)
+			esp:Set(type, "Transparency", value)
 		end,
 		Min = 0,
-		Max = 10,
-		Def = s.Transparency * 10
+		Max = 1,
+		Def = s.Transparency,
+		Decimals = 2
 	})
 	HeadDots.ColorPicker({
 		Text = "Color",
@@ -797,7 +837,8 @@ do -- HeadDots
 		end,
 		Min = 1,
 		Max = 5,
-		Def = s.OutlineThickness
+		Def = s.OutlineThickness,
+		Decimals = 2
 	})
 	HeadDots.Slider({
 		Text = "Thickness",
@@ -806,7 +847,8 @@ do -- HeadDots
 		end,
 		Min = 1,
 		Max = 5,
-		Def = s.Thickness
+		Def = s.Thickness,
+		Decimals = 2
 	})
 	HeadDots.Toggle({
 		Text = "Filled",
@@ -840,11 +882,12 @@ do -- LookTracers
 	LookTracers.Slider({
 		Text = "Transparency",
 		Callback = function(value)
-			esp:Set(type, "Transparency", value / 10)
+			esp:Set(type, "Transparency", value)
 		end,
 		Min = 0,
-		Max = 10,
-		Def = s.Transparency * 10
+		Max = 1,
+		Def = s.Transparency,
+		Decimals = 2
 	})
 	LookTracers.ColorPicker({
 		Text = "Color",
@@ -888,7 +931,8 @@ do -- LookTracers
 		end,
 		Min = 1,
 		Max = 5,
-		Def = s.OutlineThickness
+		Def = s.OutlineThickness,
+		Decimals = 2
 	})
 	LookTracers.Slider({
 		Text = "Thickness",
@@ -897,7 +941,8 @@ do -- LookTracers
 		end,
 		Min = 1,
 		Max = 5,
-		Def = s.Thickness
+		Def = s.Thickness,
+		Decimals = 2
 	})
 	LookTracers.Slider({
 		Text = "Length",
@@ -930,12 +975,13 @@ do -- All
 		Text = "Transparency (All)",
 		Callback = function(value)
 			if loaded then
-				esp:SetAll("Transparency", value / 10)
+				esp:SetAll("Transparency", value)
 			end
 		end,
 		Min = 0,
-		Max = 10,
-		Def = 10,
+		Max = 1,
+		Def = 1,
+		Decimals = 2,
 		Menu = {
 			Info = function()
 				UI.Banner("Changes the 'Transparency' setting for all types.")
@@ -1058,11 +1104,12 @@ do -- MouseVisibility
 	MouseVisibility.Slider({
 		Text = "Transparency",
 		Callback = function(value)
-			esp:Set(type, "Transparency", value / 10)
+			esp:Set(type, "Transparency", value)
 		end,
 		Min = 0,
-		Max = 10,
-		Def = s.Transparency * 10
+		Max = 1,
+		Def = s.Transparency,
+		Decimals = 2
 	})
 	local selected = s.Selected
 	MouseVisibility.ChipSet({
@@ -1195,9 +1242,6 @@ do -- Other
 			end
 		}
 	})
-	Other.Label({
-		Text = "Made by zzerexx#3970 | "..version
-	})
 	uitogglebtn = Other.Keybind({
 		Text = "UI Toggle Key",
 		Callback = function(value)
@@ -1211,6 +1255,11 @@ do -- Other
 		Callback = function()
 			UI.Toggle(false)
 		end
+	})
+	Other.Label({
+		Text = "Made by zzerexx#3970 | "..version,
+		Center = true,
+		Transparent = true
 	})
 end
 
@@ -1324,35 +1373,32 @@ do -- Players
 	conn1 = players.PlayerAdded:Connect(update)
 	conn2 = players.PlayerRemoving:Connect(update)
 
+	Players.Label({
+		Text = "━━ Esp Manager ━━",
+		Center = true,
+		Transparent = true
+	})
 	Players.Button({
-		Text = "Add Esp",
+		Text = "Add esp to the selected player",
 		Callback = function()
 			if not players:FindFirstChild(plr) then
 				UI.Banner(plr.." is not in the game.")
 				return
 			end
+
 			esp:Add(plr)
-		end,
-		Menu = {
-			Info = function()
-				UI.Banner("Adds esp to the selected player.")
-			end
-		}
+		end
 	})
 	Players.Button({
-		Text = "Remove Esp",
+		Text = "Remove esp from the selected player",
 		Callback = function()
 			if not players:FindFirstChild(plr) then
 				UI.Banner(plr.." is not in the game")
 				return
 			end
+
 			esp:Remove(plr)
-		end,
-		Menu = {
-			Info = function()
-				UI.Banner("Removes esp from the selected player.")
-			end
-		}
+		end
 	})
 	Players.Button({
 		Text = "Add esp to all players",
@@ -1381,6 +1427,80 @@ do -- Players
 				UI.Banner("Adds esp to players when they join the game.")
 			end
 		}
+	})
+
+	local type = "Highlights"
+	local s = ss[type]
+	Players.Label({
+		Text = "━━ Highlights ━━",
+		Center = true,
+		Transparent = true
+	})
+	Players.Toggle({
+		Text = "Highlights",
+		Callback = function(value)
+			esp:Set(type, "Enabled", value)
+		end,
+		Enabled = s.Enabled
+	})
+	Players.Slider({
+		Text = "Highlights: Transparency",
+		Callback = function(value)
+			esp:Set(type, "Transparency", value)
+		end,
+		Min = 0,
+		Max = 1,
+		Def = s.Transparency,
+		Decimals = 2
+	})
+	Players.ColorPicker({
+		Text = "Highlights: Color",
+		Callback = function(value)
+			esp:Set(type, "Color", value)
+		end,
+		Def = s.Color
+	})
+	Players.Toggle({
+		Text = "Highlights: Always On Top",
+		Callback = function(value)
+			esp:Set(type, "AlwaysOnTop", value)
+		end,
+		Enabled = s.AlwaysOnTop
+	})
+	Players.Button({
+		Text = "Highlight the selected player",
+		Callback = function()
+			if not players:FindFirstChild(plr) then
+				UI.Banner(plr.." is not in the game.")
+				return
+			end
+
+			local t = esp:Get("Highlights", "Players")
+			if table.find(t, plr) then
+				UI.Banner(plr.." is already highlighted")
+				return
+			end
+			table.insert(t, plr)
+			esp:Set("Highlights", "Players", t)
+		end
+	})
+	Players.Button({
+		Text = "Un-highlight the selected player",
+		Callback = function()
+			if not players:FindFirstChild(plr) then
+				UI.Banner(plr.." is not in the game.")
+				return
+			end
+
+			local t = esp:Get("Highlights", "Players")
+			local index = table.find(t, plr)
+			if not index then
+				UI.Banner(plr.." is not highlighted")
+				return
+			end
+			table.remove(t, index)
+			esp:Set("Highlights", "Players", t)
+		end
 	})
 end
 
