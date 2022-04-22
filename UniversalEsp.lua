@@ -1,6 +1,6 @@
 --[[
-v1.6.9 Changes
-- no longer detected on bad business
+v1.6.10 Changes
+- Added Highlights; allows for separate esp settings for specific players
 ]]
 
 if not EspSettings then
@@ -25,6 +25,13 @@ if not EspSettings then
 				HeadDots = true,
 				LookTracers = true
 			}
+		},
+		Highlights = {
+			Enabled = false,
+			Players = {}, -- put player usernames into this table to 'highlight' them
+			Transparency = 1,
+			Color = Color3.fromRGB(255, 150, 0),
+			AlwaysOnTop = true
 		},
 		Boxes = {
 			Enabled = true,
@@ -116,7 +123,7 @@ if not EspSettings then
 	}
 end
 
-if EspSettings.AlignPoints == nil then
+if EspSettings.Highlights == nil then
 	local bind = Instance.new("BindableFunction")
 	bind.OnInvoke = function()
 		setclipboard("https://pastebin.com/raw/5zw0rLH9")
@@ -142,7 +149,7 @@ end
 local ZIndexEnabled = pcall(function()
 	local a = Drawing.new("Square")
 	a.Visible = false
-	task.delay(0.1,function()
+	task.delay(0.1, function()
 		a:Remove()
 	end)
 	a.ZIndex = 1
@@ -158,6 +165,7 @@ local Drawingnew = Drawing.new
 local Fonts = Drawing.Fonts
 local tableinsert = table.insert
 local tablesort = table.sort
+local tablefind = table.find
 local WorldToViewportPoint = camera.WorldToViewportPoint
 local CFramenew = CFrame.new
 local Vector2new = Vector2.new 
@@ -177,7 +185,7 @@ local FindFirstChild = game.FindFirstChild
 local GetMouseLocation = uis.GetMouseLocation
 
 local GameId = game.GameId
-local ss, mousevis = getgenv().EspSettings, getgenv().EspSettings.MouseVisibility
+local ss, mousevis, highlights = getgenv().EspSettings, getgenv().EspSettings.MouseVisibility, getgenv().EspSettings.Highlights
 local OBJECTS, VISIBLE, ID, OUTLINES = {}, true, 0, true
 --[[local bodyparts = {
 	"Head","UpperTorso","LowerTorso","LeftUpperArm","LeftLowerArm","LeftHand","RightUpperArm","RightLowerArm","RightHand","LeftUpperLeg","LeftLowerLeg","LeftFoot","RightUpperLeg","RightLowerLeg","RightFoot",
@@ -201,6 +209,17 @@ local zindex = {
 	['LookTracers'] = 3,
 	['Labels'] = 5,
 	['Chams'] = 0
+}
+local zindex_ontop = { -- zindex for always on top objects
+	['Boxes'] = 12,
+	['Tracers'] = 13,
+	['Names'] = 16,
+	['Skeletons'] = 12,
+	['HealthBars'] = 14,
+	['HeadDots'] = 13,
+	['LookTracers'] = 13,
+	['Labels'] = 15,
+	['Chams'] = 10
 }
 local Base = {
 	"Enabled",
@@ -289,40 +308,10 @@ function IsAlive(plr)
 	end
 	return false
 end
-do
-	if getchar then
-		IsAlive = function(plr)
-			return getchar(plr) ~= nil
-		end
-	end
-	if ts then
-		IsAlive = function(plr)
-			return characters:GetCharacter(plr) ~= nil
-		end
-	end
-end
-oldfuncs.alive = IsAlive
 
 function GetChar(plr)
 	return plr.Character
 end
-do
-	if getchar then
-		GetChar = function(plr)
-			local a = getchar(plr)
-			if a ~= nil then
-				return a.torso.Parent
-			end
-			return nil
-		end
-	end
-	if ts then
-		GetChar = function(plr)
-			return characters:GetCharacter(plr)
-		end
-	end
-end
-oldfuncs.character = GetChar
 
 function GetHealth(plr)
 	local a = FindFirstChild(plr.Character or game, "Humanoid")
@@ -331,42 +320,10 @@ function GetHealth(plr)
 	end
 	return {100,100}
 end
-do
-	if gethealth then
-		GetHealth = function(plr)
-			return {mathfloor(gethealth(plr, plr)), 100}
-		end
-	end
-	if ts then
-		GetHealth = function(plr)
-			local a = characters:GetCharacter(plr)
-			local hp = FindFirstChild(a, "Health")
-			if hp then
-				return {mathfloor(hp.Value), mathfloor(hp.MaxHealth.Value)}
-			end
-			return {100,100}
-		end
-	end
-	if GameId == gids.arsenal then
-		GetHealth = function(plr)
-			local a = plr.NRPBS
-			return {mathfloor(a.Health.Value), mathfloor(a.MaxHealth.Value)}
-		end
-	end
-end
-oldfuncs.health = GetHealth
 
 function GetTeam(plr)
 	return plr.Team
 end
-do
-	if ts then
-		GetTeam = function(plr)
-			return teams:GetPlayerTeam(plr, plr)
-		end
-	end
-end
-oldfuncs.team = GetTeam
 
 function IsFFA()
 	local t = {}
@@ -380,19 +337,67 @@ function IsFFA()
 	end
 	return #t == 1
 end
-do
-	if GameId == gids.arsenal then
+
+do -- compatibility
+	if getchar then -- phantom forces
+		IsAlive = function(plr)
+			return getchar(plr) ~= nil
+		end
+		GetChar = function(plr)
+			local a = getchar(plr)
+			if a ~= nil then
+				return a.torso.Parent
+			end
+			return nil
+		end
+		GetHealth = function(plr)
+			return {mathfloor(gethealth(plr, plr)), 100}
+		end
+	end
+	
+	if ts then -- bad business
+		IsAlive = function(plr)
+			return characters:GetCharacter(plr) ~= nil
+		end
+		GetChar = function(plr)
+			return characters:GetCharacter(plr)
+		end
+		GetHealth = function(plr)
+			local a = characters:GetCharacter(plr)
+			local hp = FindFirstChild(a, "Health")
+			if hp then
+				return {mathfloor(hp.Value), mathfloor(hp.MaxHealth.Value)}
+			end
+			return {100, 100}
+		end
+		GetTeam = function(plr)
+			return teams:GetPlayerTeam(plr, plr)
+		end
+	end
+
+	if GameId == gids.arsenal then -- arsenal
+		GetHealth = function(plr)
+			local a = plr.NRPBS
+			return {mathfloor(a.Health.Value), mathfloor(a.MaxHealth.Value)}
+		end
 		local ffa = game:GetService("ReplicatedStorage"):WaitForChild("wkspc"):WaitForChild("FFA")
 		IsFFA = function()
 			return ffa.Value
 		end
 	end
 end
+
+oldfuncs.alive = IsAlive
+oldfuncs.character = GetChar
+oldfuncs.health = GetHealth
+oldfuncs.team = GetTeam
 oldfuncs.ffa = IsFFA
 
-function ApplyZIndex(obj,name)
+----
+
+function ApplyZIndex(obj,name,ontop)
 	if ZIndexEnabled then
-		local idx = zindex[name]
+		local idx = (ontop and zindex_ontop[name]) or zindex[name]
 		for i,v in next, obj do
 			v.ZIndex = (find(i, "Outline") and idx - 1) or idx
 		end
@@ -892,12 +897,18 @@ function update()
 				if plr and IsAlive(plr) and s and s.Enabled then
 					SetProp(obj, "Visible", render)
 					if s.Enabled and inViewport and render then
-						local color =		(s.RainbowColor and fromHSV(tick() % 5 / 5, 1, 1)) or
+						local highlight = highlights.Enabled and tablefind(highlights.Players, plr.Name)
+						local color =		(highlight and highlights.Color) or
+											 (s.RainbowColor and fromHSV(tick() % 5 / 5, 1, 1)) or
 											 (ts and team == "Omega" and omega or team == "Beta" and beta) or
 											 (s.UseTeamColor and teamcolor) or
 											 s.Color
-						local transparency = (mousevis.Enabled and mousemag <= mousevis.Radius and mousevis.Selected[type] and mousevis.Transparency) or s.Transparency
-						
+						local transparency = (mousevis.Enabled and mousemag <= mousevis.Radius and mousevis.Selected[type] and mousevis.Transparency) or
+											 (highlight and highlights.Transparency) or
+											 s.Transparency
+						--
+
+						ApplyZIndex(obj, type, highlight and highlights.AlwaysOnTop)
 						SetProp(obj, "Transparency", transparency)
 						SetProp(obj, "Color", color)
 						if type == "Boxes" then
@@ -1236,7 +1247,7 @@ function esp:SetAll(option,value)
 	end
 end
 function esp.Label(part,options)
-	assert(typeof(part) == "Instance",("Universal Esp: bad argument to #1 'Label' (Instance expected, got %s)"):format(typeof(part)))
+	assert(typeof(part) == "Instance", ("Universal Esp: bad argument to #1 'Label' (Instance expected, got %s)"):format(typeof(part)))
 	assert(table.find(supportedparts, part.ClassName),("Universal Esp: bad argument to #1 'Label' (Part or Model expected, got %s)"):format(part.ClassName))
 	return Label(part, options or {})
 end
