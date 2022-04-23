@@ -4,7 +4,7 @@ my cool scripts
 ---
   
 # Universal Esp  
-Updated April 21, 2022  
+Updated April 23, 2022  
 v1.6.10  
 - Box Esp  
 - Tracers  
@@ -36,6 +36,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/
 ## Update v1.6.10  
 Main Changes  
 - Added `Highlights`; allows for separate esp settings for specific players  
+- Fixed esp not running when using an exploit without ZIndex on drawing objects
   
 UI Changes  
 - Updated to use [Material Lua Remake](https://github.com/zzerexx/scripts/blob/main/MaterialLuaRemakeDocs.md)
