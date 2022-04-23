@@ -1,6 +1,7 @@
 --[[
 v1.6.10 Changes
 - Added Highlights; allows for separate esp settings for specific players
+- Fixed esp not running when using an exploit without ZIndex on drawing objects
 ]]
 
 if not EspSettings then
@@ -421,8 +422,9 @@ function Box(plr)
 
 	local type = "Boxes"
 	local objects = {
-		Box = Drawingnew("Quad"),
-		Outline = Drawingnew("Quad")
+		Outline = Drawingnew("Quad"),
+		Box = Drawingnew("Quad")
+		
 	}
 	SetProp(objects, "Visible", false)
 	SetProp(objects, "Filled", false)
@@ -441,8 +443,9 @@ function Tracer(plr)
 
 	local type = "Tracers"
 	local objects = {
-		Tracer = Drawingnew("Line"),
-		Outline = Drawingnew("Line")
+		Outline = Drawingnew("Line"),
+		Tracer = Drawingnew("Line")
+		
 	}
 	SetProp(objects, "Visible", false)
 	ApplyZIndex(objects, type)
@@ -480,21 +483,6 @@ function Skeleton(plr)
 
 	local type = "Skeletons"
 	local objects = (ts and {
-		Chest = Drawingnew("Line"),
-		Hips = Drawingnew("Line"),
-		LeftArm = Drawingnew("Line"),
-		LeftForearm = Drawingnew("Line"),
-		LeftHand = Drawingnew("Line"),
-		RightArm = Drawingnew("Line"),
-		RightForearm = Drawingnew("Line"),
-		RightHand = Drawingnew("Line"),
-		LeftLeg = Drawingnew("Line"),
-		LeftForeleg = Drawingnew("Line"),
-		LeftFoot = Drawingnew("Line"),
-		RightLeg = Drawingnew("Line"),
-		RightForeleg = Drawingnew("Line"),
-		RightFoot = Drawingnew("Line"),
-
 		ChestOutline = Drawingnew("Line"),
 		HipsOutline = Drawingnew("Line"),
 		LeftArmOutline = Drawingnew("Line"),
@@ -508,24 +496,24 @@ function Skeleton(plr)
 		LeftFootOutline = Drawingnew("Line"),
 		RightLegOutline = Drawingnew("Line"),
 		RightForelegOutline = Drawingnew("Line"),
-		RightFootOutline = Drawingnew("Line")
+		RightFootOutline = Drawingnew("Line"),
+
+		Chest = Drawingnew("Line"),
+		Hips = Drawingnew("Line"),
+		LeftArm = Drawingnew("Line"),
+		LeftForearm = Drawingnew("Line"),
+		LeftHand = Drawingnew("Line"),
+		RightArm = Drawingnew("Line"),
+		RightForearm = Drawingnew("Line"),
+		RightHand = Drawingnew("Line"),
+		LeftLeg = Drawingnew("Line"),
+		LeftForeleg = Drawingnew("Line"),
+		LeftFoot = Drawingnew("Line"),
+		RightLeg = Drawingnew("Line"),
+		RightForeleg = Drawingnew("Line"),
+		RightFoot = Drawingnew("Line")
 	}) or { -- 42 objects btw
 		-- R15
-		UpperTorso = Drawingnew("Line"),
-		LowerTorso = Drawingnew("Line"),
-		LeftUpperArm = Drawingnew("Line"),
-		LeftLowerArm = Drawingnew("Line"),
-		LeftHand = Drawingnew("Line"),
-		RightUpperArm = Drawingnew("Line"),
-		RightLowerArm = Drawingnew("Line"),
-		RightHand = Drawingnew("Line"),
-		LeftUpperLeg = Drawingnew("Line"),
-		LeftLowerLeg = Drawingnew("Line"),
-		LeftFoot = Drawingnew("Line"),
-		RightUpperLeg = Drawingnew("Line"),
-		RightLowerLeg = Drawingnew("Line"),
-		RightFoot = Drawingnew("Line"),
-
 		UpperTorsoOutline = Drawingnew("Line"),
 		LowerTorsoOutline = Drawingnew("Line"),
 		LeftUpperArmOutline = Drawingnew("Line"),
@@ -540,18 +528,33 @@ function Skeleton(plr)
 		RightUpperLegOutline = Drawingnew("Line"),
 		RightLowerLegOutline = Drawingnew("Line"),
 		RightFootOutline = Drawingnew("Line"),
-		-- R6
-		Torso = Drawingnew("Line"),
-		["Left Arm"] = Drawingnew("Line"),
-		["Right Arm"] = Drawingnew("Line"),
-		["Left Leg"] = Drawingnew("Line"),
-		["Right Leg"] = Drawingnew("Line"),
 
+		UpperTorso = Drawingnew("Line"),
+		LowerTorso = Drawingnew("Line"),
+		LeftUpperArm = Drawingnew("Line"),
+		LeftLowerArm = Drawingnew("Line"),
+		LeftHand = Drawingnew("Line"),
+		RightUpperArm = Drawingnew("Line"),
+		RightLowerArm = Drawingnew("Line"),
+		RightHand = Drawingnew("Line"),
+		LeftUpperLeg = Drawingnew("Line"),
+		LeftLowerLeg = Drawingnew("Line"),
+		LeftFoot = Drawingnew("Line"),
+		RightUpperLeg = Drawingnew("Line"),
+		RightLowerLeg = Drawingnew("Line"),
+		RightFoot = Drawingnew("Line"),
+		-- R6
 		TorsoOutline = Drawingnew("Line"),
 		["Left ArmOutline"] = Drawingnew("Line"),
 		["Right ArmOutline"] = Drawingnew("Line"),
 		["Left LegOutline"] = Drawingnew("Line"),
-		["Right LegOutline"] = Drawingnew("Line")
+		["Right LegOutline"] = Drawingnew("Line"),
+
+		Torso = Drawingnew("Line"),
+		["Left Arm"] = Drawingnew("Line"),
+		["Right Arm"] = Drawingnew("Line"),
+		["Left Leg"] = Drawingnew("Line"),
+		["Right Leg"] = Drawingnew("Line")
 	}
 	SetProp(objects, "Visible", false)
 	ApplyZIndex(objects, type)
@@ -570,15 +573,15 @@ function HealthBar(plr)
 
 	local type = "HealthBars"
 	local objects = {
-		Bar = Drawingnew("Quad"),
-		Outline = Drawingnew("Quad")
+		Outline = Drawingnew("Quad"),
+		Bar = Drawingnew("Quad")
 	}
 	SetProp(objects, "Visible", false)
 	SetProp(objects, "Thickness", 1)
 	objects.Bar.Filled = true
 	objects.Outline.Filled = false
 	ApplyZIndex(objects, type)
-	objects.Outline.ZIndex = 2
+	if ZIndexEnabled then objects.Outline.ZIndex = 2 end
 	local a = {Object = objects, Type = type, Player = plr, Destroyed = false, Id = ID}
 	function a:Remove()
 		if a.Destroyed then return end
@@ -593,8 +596,8 @@ function HeadDot(plr)
 
 	local type = "HeadDots"
 	local objects = {
-		Dot = Drawingnew("Circle"),
-		Outline = Drawingnew("Circle")
+		Outline = Drawingnew("Circle"),
+		Dot = Drawingnew("Circle")
 	}
 	SetProp(objects, "Visible", false)
 	ApplyZIndex(objects, type)
@@ -612,8 +615,8 @@ function LookTracer(plr)
 
 	local type = "LookTracers"
 	local objects = {
-		Tracer = Drawingnew("Line"),
-		Outline = Drawingnew("Line")
+		Outline = Drawingnew("Line"),
+		Tracer = Drawingnew("Line")
 	}
 	SetProp(objects, "Visible", false)
 	ApplyZIndex(objects, type)
@@ -921,8 +924,8 @@ function update()
 							box.PointD = Vector2new(brx, bry)
 
 							if OUTLINES then
-								out.Visible = s.Outline and box.Visible
-								if s.Outline then
+								out.Visible = ZIndexEnabled and s.Outline and box.Visible
+								if ZIndexEnabled and s.Outline then
 									out.Color = s.OutlineColor
 									out.Thickness = s.Thickness + s.OutlineThickness
 									out.PointA = box.PointA
@@ -946,8 +949,8 @@ function update()
 							end
 
 							if OUTLINES then
-								out.Visible = outline and tracer.Visible
-								if outline then
+								out.Visible = ZIndexEnabled and outline and tracer.Visible
+								if ZIndexEnabled and outline then
 									out.Color = s.OutlineColor
 									out.Thickness = thickness + s.OutlineThickness
 									out.From = from
@@ -1002,8 +1005,8 @@ function update()
 									if find(i2, "Outline") then
 										local name = i2:gsub("Outline","")
 										local v3 = obj[name]
-										v2.Visible = outline and v3.Visible
-										if v2.Visible then
+										v2.Visible = ZIndexEnabled and outline and v3.Visible
+										if ZIndexEnabled and v2.Visible then
 											v2.Color = s.OutlineColor
 											v2.Thickness = thickness + othickness
 											v2.From = v3.From
@@ -1051,8 +1054,8 @@ function update()
 							)
 	
 							if OUTLINES then
-								out.Visible = outline and bar.Visible
-								if outline then
+								out.Visible = ZIndexEnabled and outline and bar.Visible
+								if ZIndexEnabled and outline then
 									out.Color = s.OutlineColor
 									out.Thickness = s.OutlineThickness
 									out.PointA = (baronly and bar.PointA) or Vector2new(brx, bry + 5)
@@ -1074,8 +1077,8 @@ function update()
 								dot.Radius = radius
 
 								if OUTLINES then
-									out.Visible = outline and dot.Visible
-									if outline then
+									out.Visible = ZIndexEnabled and outline and dot.Visible
+									if ZIndexEnabled and outline  then
 										out.Color = s.OutlineColor
 										out.Thickness = (filled and thickness + (s.OutlineThickness - 1)) or thickness + s.OutlineThickness
 										out.Position = pos
@@ -1097,8 +1100,8 @@ function update()
 								tracer.To = to
 
 								if OUTLINES then
-									out.Visible = outline and tracer.Visible
-									if outline then
+									out.Visible = ZIndexEnabled and outline and tracer.Visible
+									if ZIndexEnabled and outline then
 										out.Color = s.OutlineColor
 										out.Thickness = thickness + s.OutlineThickness
 										out.From = from
