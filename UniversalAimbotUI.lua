@@ -129,28 +129,6 @@ for i,v in next, newsettings do
 	end
 end
 
-if not game:GetService("HttpService"):JSONDecode(readfile(listfiles("UAIM")[1])).Data then
-	for _,v in next, listfiles("UAIM") do
-		local data = game:GetService("HttpService"):JSONDecode(readfile(v))
-		for i2,v2 in next, data do
-			if typeof(v2) == "table" then
-				for i3,v3 in next, v2 do
-					if typeof(v3) == "table" and v3.R then
-						data[i2][i3] = Color3.new(v3.R, v3.G, v3.B)
-					end
-				end
-			end
-		end
-
-		writefile(v, cfg.Encode({
-			settings = data,
-			ui = {
-				ToggleKey = togglekey.Name
-			}
-		}))
-	end
-end
-
 local function save(a)
 	cfg.Save(a, {
 		settings = ss,
