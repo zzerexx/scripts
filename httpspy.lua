@@ -13,6 +13,13 @@ local methodcolors = {
 	DELETE = "red"
 }
 local hooks = {}
+local hooked = {
+	HttpGet = false,
+	HttpGetAsync = false,
+	HttpPost = false,
+	HttpPostAsync = false,
+	request = false
+}
 local loaded = false
 
 local BLOCK_WEBHOOKS = false
@@ -52,7 +59,7 @@ local function hook(func, name, method, requestfunc)
 	local old;old = hookfunction(func, requestfunc and function(data)
 		local blocked = isblocked(data.Url)
 		if not PAUSED then
-			prefix(blocked and "BLOCKED" or "ALLOWED", blocked and "red" or "green")
+			prefix(blocked and "BLOCKED" or "ALLOWED", blocked and "red" or "light green")
 			prefix(data.Method, methodcolors[data.Method])
 			nameprefix(name, data.Method)
 			print(" | "..data.Url.."\n")
@@ -70,7 +77,7 @@ local function hook(func, name, method, requestfunc)
 	end or function(self, url)
 		local blocked = isblocked(url)
 		if not PAUSED then
-			prefix(blocked and "BLOCKED" or "ALLOWED", blocked and "red" or "green")
+			prefix(blocked and "BLOCKED" or "ALLOWED", blocked and "red" or "light green")
 			prefix(method, methodcolors[method])
 			nameprefix(name, method)
 			print(" | "..url.."\n")
@@ -81,6 +88,7 @@ local function hook(func, name, method, requestfunc)
 		return old(self, url)
 	end)
 	hooks[func] = old
+	return old
 end
 local loading = false
 local function start()
@@ -90,38 +98,54 @@ local function start()
 	prefix("http spy by zzerexx#3970", "cyan", true) prefix("v1.0.0", "cyan", true, true) print("\n")
 
 	prefix("controls", "cyan", true, true)
-	prefix("-", "green") prefix("focus on the roblox window to use these controls", "yellow", true, true)
+	prefix("-", "light green") prefix("focus on the roblox window to use these controls", "yellow", true, true)
 	prefix("!", "red") prefix("toggling any of the settings will clear your logs", "yellow", true, true)
 
 	prefix("CTRL + 1", "light green", true)  print("         clear logs\n")
-	prefix("CTRL + 2", "light green", true)  print("         pause/resume log        ") prefix(PAUSED and "PAUSED" or "RUNNING", PAUSED and "red" or "green") print("\n")
-	prefix("CTRL + 3", "light green", true)  print("         block discord webhooks  ") prefix(BLOCK_WEBHOOKS and "YES" or "NO", BLOCK_WEBHOOKS and "green" or "red") print("\n")
-	prefix("CTRL + 4", "light green", true)  print("         block all requests      ") prefix(BLOCK_REQUESTS and "YES" or "NO", BLOCK_REQUESTS and "green" or "red") print("\n")
+	prefix("CTRL + 2", "light green", true)  print("         pause/resume log        ") prefix(PAUSED and "PAUSED" or "RUNNING", PAUSED and "red" or "light green", false, true)
+	prefix("CTRL + 3", "light green", true)  print("         block discord webhooks  ") prefix(BLOCK_WEBHOOKS and "YES" or "NO", BLOCK_WEBHOOKS and "light green" or "red", false, true)
+	prefix("CTRL + 4", "light green", true)  print("         block all requests      ") prefix(BLOCK_REQUESTS and "YES" or "NO", BLOCK_REQUESTS and "light green" or "red", false, true)
 	prefix("CTRL + BACKSPACE", "light green", true)  print(" unload http spy\n\n")
+
+	prefix("request methods", "cyan", true, true)
+	prefix("-", "light green") prefix("these are the methods that will be logged", "yellow", true, true)
+	prefix("-", "light green") prefix("some methods may not work due to your exploit", "yellow", true, true)
+	prefix("HttpGet", "light green", true) print("       ") prefix(hooked.HttpGet       and "YES" or "NO", hooked.HttpGet       and "light green" or "red", false, true)
+	prefix("HttpGetAsync", "light green", true) print("  ") prefix(hooked.HttpGetAsync  and "YES" or "NO", hooked.HttpGetAsync  and "light green" or "red", false, true)
+	prefix("HttpPost", "light green", true) print("      ") prefix(hooked.HttpPost      and "YES" or "NO", hooked.HttpPost      and "light green" or "red", false, true)
+	prefix("HttpPostAsync", "light green", true) print(" ") prefix(hooked.HttpPostAsync and "YES" or "NO", hooked.HttpPostAsync and "light green" or "red", false, true)
+	prefix("request", "light green", true) print("       ") prefix(hooked.request       and "YES" or "NO", hooked.request       and "light green" or "red", false, true) print("\n")
 	
 	prefix("request log", "cyan", true, true)
 	loading = false
 end
 
 rconsolename("Http Spy // zzerexx#3970")
-start()
 
-hook(game.HttpGet, "HttpGet", "GET", false)
-hook(game.HttpGetAsync, "HttpGetAsync", "GET", false)
-hook(game.HttpPost, "HttpPost", "POST", false)
-hook(game.HttpPostAsync, "HttpPostAsync", "POST", false)
-if syn then
-	hook(syn.request, "syn.request", "", true)
-end
-if http then
-	hook(http.request, "http.request", "", true)
-end
-for _,v in next, {"request", "http_request"} do
-	if getgenv()[v] then
-		hook(getgenv()[v], v, "", true)
+local suc, err = pcall(function()
+	hooked.HttpGet = hook(game.HttpGet, "HttpGet", "GET", false)
+	hooked.HttpGetAsync = hook(game.HttpGetAsync, "HttpGetAsync", "GET", false)
+	hooked.HttpPost = hook(game.HttpPost, "HttpPost", "POST", false)
+	hooked.HttpPostAsync = hook(game.HttpPostAsync, "HttpPostAsync", "POST", false)
+	local a
+	if syn then
+		a = hook(syn.request, "syn.request", "", true)
 	end
+	if http then
+		a = hook(http.request, "http.request", "", true)
+	end
+	for _,v in next, {"request", "http_request"} do
+		if getgenv()[v] then
+			a = hook(getgenv()[v], v, "", true)
+		end
+	end
+	hooked.request = a
+end)
+if not suc then
+	prefix("an error occurred while trying to load http spy: "..err, "red", true, true)
 end
-loaded = true
+
+start()
 
 local CTRL_DOWN = false
 uis.InputBegan:Connect(function(i, gp)
@@ -164,3 +188,4 @@ uis.InputEnded:Connect(function(i, gp)
 		end
 	end
 end)
+loaded = true
