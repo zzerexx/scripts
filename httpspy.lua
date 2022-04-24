@@ -87,7 +87,7 @@ local function start()
 	if loading then return end
 	loading = true
 	rconsoleclear()
-	prefix("http spy by zzerexx#3970", "cyan", true) prefix("v1.0.0", "cyan") print("\n")
+	prefix("http spy by zzerexx#3970", "cyan", true) prefix("v1.0.0", "cyan", true, true) print("\n")
 
 	prefix("controls", "cyan", true, true)
 	prefix("-", "green") prefix("focus on the roblox window to use these controls", "yellow", true, true)
