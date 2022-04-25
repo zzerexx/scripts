@@ -431,8 +431,8 @@ do -- syn library
 	
 	define("is_beta", function()
 		return false
-	end)
-	define("request", request)
+	end, t)
+	define("request", request, t)
 
 	local c = crypt
 	local crypt = {}
