@@ -1,8 +1,11 @@
 assert(import, "you are not using script ware")
 
-local hash = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/HashLib.lua"))() -- for sha3-384
-local hashalgs = {"md2","md5","sha1","sha256","sha384","sha512","sha3-224","sha3-256","sha3-512","haval","ripemd128","ripemd160","ripemd256","ripemd320"}
-local hashlibalgs = {"md5","sha1","sha224","sha256","sha512-224","sha512-256","sha384","sha512","sha3-224","sha3-256","sha3-384","sha3-512","hmac"}
+local hash = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/HashLib.lua"))()
+local hashlibalgs = {"sha1", "sha224"}
+local hashalgs = {
+	"md5", "sha1", "sha224", "sha256", "sha384", "sha512", "sha3-256", "sha3-384", "sha3-512",
+	"md2", "haval", "ripemd128", "ripemd160", "ripemd256", "ripemd320"
+}
 local version = "v2.15.5"
 local consolecolor, colors = "white", {
 	['black'] = "black",
@@ -407,11 +410,29 @@ do -- syn library
 	define("queue_on_teleport", queue_on_teleport, t)
 
 	local Protected = {}
+	do -- 
+		local old;old = hookmetamethod(game, "__namecall", function(...)
+			local args = {...}
+			if not checkcaller() and getnamecallmethod() == "FindFirstChild" and args[1] == game and args[3] == true then
+				for i,_ in next, Protected do
+					if i.Name == args[2] then
+						return nil
+					end
+				end
+			end
+			return old(...)
+		end)
+	end
 	define("protect_gui", function(obj)
 		assert(typeof(obj) == "Instance", "bad argument #1 to 'protect_gui' (Instance expected, got "..typeof(obj)..")")
+		local p = obj.parent
+		if p then
+			Protected[obj] = p
+		end
+
 		obj.Parent = gethui()
 		task.spawn(function()
-			local conn;conn = obj.AncestryChanged:Connect(function(_,p)
+			local conn;conn = obj.AncestryChanged:Connect(function(_, p)
 				-- most scripts parent it to coregui right after protecting (cuz thats how ur supposed to use it)
 				task.wait()
 				obj.Parent = gethui()
@@ -439,7 +460,7 @@ do -- syn library
 	define("encrypt", c.encrypt, crypt)
 	define("decrypt", c.decrypt, crypt)
 	define("hash", function(data)
-		return c.hash(data, "sha384")
+		return c.hash(data, "sha384"):lower()
 	end, crypt)
 	define("derive", function(_, len)
 		return c.generatebytes(len)
@@ -469,13 +490,15 @@ do -- syn library
 	end, custom)
 	define("hash", function(alg, data)
 		alg = alg:lower():gsub("_", "-")
-		local a,b = table.find(hashalgs, alg), table.find(hashlibalgs, alg)
-		assert(a or b,"bad argument #1 to 'hash' (non-existant hash algorithm)")
-		if a then
-			return crypt.hash(data, alg):lower()
-		elseif b then
-			alg = alg:gsub("-","_")
-			return hash[alg](data)
+
+		local HashLib = table.find(hashlibalgs, alg)
+		local SwLib = table.find(hashalgs, alg)
+		assert(HashLib or SwLib, "bad argument to 'hash' (non-existant hash algorithm)")
+		if HashLib then -- using hash lib for 'sha1' and 'sha224' cuz they return the same thing when using the built-in hash function
+			return hash[alg:gsub("-", "_")](data)
+		end
+		if SwLib then
+			return c.hash(data, alg):lower()
 		end
 	end, custom)
 	define("custom", custom, crypt)
