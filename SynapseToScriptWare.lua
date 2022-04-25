@@ -403,8 +403,8 @@ do -- syn library
 	define("set_thread_identity", setidentity, t)
 	define("get_thread_identity", getidentity, t)
 
-	define("write_clipboard", setclipboard)
-	define("queue_on_teleport", queue_on_teleport)
+	define("write_clipboard", setclipboard, t)
+	define("queue_on_teleport", queue_on_teleport, t)
 
 	local Protected = {}
 	define("protect_gui", function(obj)
@@ -443,7 +443,7 @@ do -- syn library
 	end, crypt)
 	define("derive", function(_, len)
 		return c.generatebytes(len)
-	end)
+	end, t)
 	define("random", c.generatekey, crypt)
 
 	local base64 = {}
@@ -480,6 +480,7 @@ do -- syn library
 	end, custom)
 	define("custom", custom, crypt)
 	define("crypt", crypt, t)
+	define("crypto", crypt, t)
 
 	define("websocket", WebSocket, t)
 
@@ -506,8 +507,6 @@ do -- syn library
 
 	define("syn", t)
 end
-
-define("crypto", syn.crypt, syn)
 
 define("ror", bit.rrotate, bit)
 define("rol", bit.lrotate, bit)
