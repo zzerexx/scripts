@@ -478,6 +478,7 @@ do -- syn library
 			return hash[alg](data)
 		end
 	end, custom)
+	define("custom", custom, t)
 	define("crypt", crypt, t)
 
 	define("websocket", WebSocket, t)
