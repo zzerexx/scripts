@@ -1,8 +1,9 @@
 --[[
-v1.6.10 Changes
-- Added Highlights; allows for separate esp settings for specific players
-- Fixed esp not running when using an exploit without ZIndex on drawing objects
+v1.6.11 Changes
+- no longer crashes on bad business
 ]]
+
+local VERSION = "v1.6.11"
 
 if not EspSettings then
 	getgenv().EspSettings = {
@@ -357,6 +358,7 @@ do -- compatibility
 	end
 	
 	if ts then -- bad business
+		hookfunction(PluginManager, error)
 		IsAlive = function(plr)
 			return characters:GetCharacter(plr) ~= nil
 		end
@@ -1205,7 +1207,7 @@ for _,v in next, players:GetPlayers() do
 end
 local conn4 = players.PlayerAdded:Connect(doshit)
 
-local esp = {}
+local esp = {Version = VERSION}
 local destroyed = false
 
 function ValidType(type)
