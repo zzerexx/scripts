@@ -4,8 +4,8 @@ my cool scripts
 ---
   
 # Universal Esp  
-Updated April 23, 2022  
-v1.6.10  
+Updated April 25, 2022  
+v1.6.11  
 - Box Esp  
 - Tracers  
 - Name Esp  
@@ -26,17 +26,16 @@ Updated April 21, 2022
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua"))()
 ```  
 ### Performance Version  
-Updated March 5, 2022  
+Updated April 25, 2022  
 Boxes, Names, zero customizability, optimized asf  
 Supports `SetFunction` and `ResetFunction` for compatibility!  
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspPerformance.lua"))()
 ```  
   
-## Update v1.6.10  
+## Update v1.6.11  
 Main Changes  
-- Added `Highlights`; allows for separate esp settings for specific players  
-- Fixed esp not running when using an exploit without ZIndex on drawing objects
+- no longer crashes on bad business
   
 UI Changes  
 - Updated to use [Material Lua Remake](https://github.com/zzerexx/scripts/blob/main/MaterialLuaRemakeDocs.md)
@@ -46,8 +45,8 @@ UI Changes
 ---
   
 # Universal Aimbot  
-Updated March 5, 2022  
-v1.1.14  
+Updated April 25, 2022  
+v1.1.15  
 ```
 https://pastebin.com/raw/nwqE7v07
 ```  
@@ -57,9 +56,9 @@ Updated April 11, 2022
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalAimbotUI.lua"))()
 ```  
-## Update v1.1.14  
+## Update v1.1.15  
 Main Changes  
-- no longer detected on bad business  
+- no longer crashes on bad business  
   
 UI Changes  
 - Updated to use [Material Lua Remake](https://github.com/zzerexx/scripts/blob/main/MaterialLuaRemakeDocs.md)
