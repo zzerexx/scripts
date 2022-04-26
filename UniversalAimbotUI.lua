@@ -57,7 +57,7 @@ local function Load(file)
 	return loadstring(game:HttpGet(string.format("https://raw.githubusercontent.com/zzerexx/scripts/main/%s.lua", file)))()
 end
 
-local version = "v1.1.13"
+local version = "v1.1.15"
 local aimbot = Load("UniversalAimbot")
 local cfg = Load("ConfigManager")
 local Material = Load("MaterialLuaRemake")
