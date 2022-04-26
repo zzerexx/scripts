@@ -132,7 +132,7 @@ local function Load(file)
 	return loadstring(game:HttpGet(string.format("https://raw.githubusercontent.com/zzerexx/scripts/main/%s.lua", file)))()
 end
 
-local version = "v1.6.10"
+local version = "v1.6.11"
 local esp = Load("UniversalEsp")
 local cfg = Load("ConfigManager")
 local Material = Load("MaterialLuaRemake")
