@@ -66,6 +66,7 @@ elseif GameId == gids.bb then
 			teams = ts.Teams
 		end
 	end
+	hookfunction(PluginManager, error)
 end
 local oldfuncs = {}
 
