@@ -3895,7 +3895,7 @@ do -- MLRemake.MLRemake.UI
 				function a:SetBind(value)
 					if a.Destroyed then return end
 					keybind = value
-					new.Bind.Label.Text = value.Name
+					ui.SetBindLabel(new, value)
 					t.Callback(value)
 				end
 				function a:GetBind()
@@ -3924,9 +3924,6 @@ do -- MLRemake.MLRemake.UI
 				
 				for i,v in next, t.Options do
 					amount += 1
-					if typeof(v) == "table" then
-						data[i] = v.Enabled
-					end
 				end
 				table.sort(t.Options, function(a,b)
 					return a < b
@@ -3964,9 +3961,16 @@ do -- MLRemake.MLRemake.UI
 							new2.Button.Text = i
 							local function activated()
 								enabled = not enabled
+								data[i] = enabled
 								new2.Enabled.Image = (enabled and ENABLED_IMAGE) or DISABLED_IMAGE
 								ui.UpdateCanvasSize(p or ex)
-								t.Callback(data)
+								local a = data
+								for i,v in next, data do
+									if typeof(v) == "table" then
+										a[i] = v.Enabled
+									end
+								end
+								t.Callback(t)
 							end
 							new2.Enabled.Activated:Connect(activated)
 							new2.Button.Activated:Connect(activated)
@@ -4032,9 +4036,6 @@ do -- MLRemake.MLRemake.UI
 					amount = 0
 					for i,v in next, value do
 						amount += 1
-						if typeof(v) == "table" then
-							data[i] = v.Enabled
-						end
 					end
 					t.Callback(value)
 					refresh()
