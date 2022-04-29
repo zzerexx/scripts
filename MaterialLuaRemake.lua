@@ -3970,7 +3970,7 @@ do -- MLRemake.MLRemake.UI
 										a[i] = v.Enabled
 									end
 								end
-								t.Callback(t)
+								t.Callback(a)
 							end
 							new2.Enabled.Activated:Connect(activated)
 							new2.Button.Activated:Connect(activated)
@@ -4007,7 +4007,13 @@ do -- MLRemake.MLRemake.UI
 				
 				ui.UpdateCanvasSize(p or ex)
 				ui.Ripple(new.Button, new.RippleHolder)
-				t.Callback(data)
+				local aa = data
+				for i,v in next, data do
+					if typeof(v) == "table" then
+						aa[i] = v.Enabled
+					end
+				end
+				t.Callback(aa)
 				
 				if t.Menu ~= nil then
 					ui.InitMenu(t.Menu, new, {new.Indicator})
