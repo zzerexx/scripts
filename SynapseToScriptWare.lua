@@ -1,12 +1,17 @@
 assert(import, "you are not using script ware")
 
+local _, version;_, version = xpcall(function()
+	return game:GetService("HttpService"):JSONDecode(game:HttpGet("https://api.whatexploitsare.online/logs/Synapse/1"))[1]['1']['exploit_version']
+end, function()
+	version = "2.15.6d"
+end)
+
 local hash = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/HashLib.lua"))()
 local hashlibalgs = {"sha1", "sha224"}
 local hashalgs = {
 	"md5", "sha1", "sha224", "sha256", "sha384", "sha512", "sha3-256", "sha3-384", "sha3-512",
 	"md2", "haval", "ripemd128", "ripemd160", "ripemd256", "ripemd320"
 }
-local version = "v2.15.5"
 local consolecolor, colors = "white", {
 	['black'] = "black",
 	['blue'] = "blue",
@@ -82,11 +87,12 @@ do -- hooks
 	local headers = game:GetService("HttpService"):JSONDecode(request({Url = "https://httpbin.org/get"}).Body).headers
 	local Fingerprint = headers['Sw-Fingerprint']
 	local UserIdentifier = headers['Sw-User-Identifier']
+	local UserAgent = "synx/"..version
 	local oldr;oldr = hookfunction(request, function(options)
 		local h = options.Headers or {}
 		h['Syn-Fingerprint'] = SWHWID or Fingerprint
 		h['Syn-User-Identifier'] = SWUID or UserIdentifier
-		h['User-Agent'] = "synx/"..version
+		h['User-Agent'] = UserAgent
 		return oldr({
 			Url = options.Url,
 			Method = options.Method or "GET",
@@ -95,6 +101,8 @@ do -- hooks
 			Body = options.Body or ""
 		})
 	end)
+	hookfunction(http_request, request)
+	hookfunction(http.request, request)
 
 	--[[ -- unused since its useless, but its cool ig
 	local oldd;oldd = hookfunction(Drawing.new, function(class) -- same drawing object functionality
@@ -166,7 +174,7 @@ do -- hooks
 				s.DecompileTimeout = timeout
 			end
 		end
-		local name = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
+		local name = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name:gsub("%s%z", "_")
 		return olds(game, s, name)
 	end)
 
@@ -183,6 +191,17 @@ do -- hooks
 
 	hookfunction(identifyexecutor, function()
 		return "Synapse X", version
+	end)
+
+	local oldg;oldg = hookfunction(getconnections, function(signal)
+		local a = oldg(signal)
+		for i,v in next, a do
+			local thread = v.Thread
+			if thread then
+				a[i].State = thread -- scriptware uses .Thread instead of .State
+			end
+		end
+		return a
 	end)
 end
 
@@ -237,8 +256,8 @@ do -- syn_
 	define("syn_getreg", getreg)
 	define("syn_getgc", getgc)
 	define("syn_getinstances", getinstances)
-	define("syn_context_set", setidentity)
 	define("syn_context_get", getidentity)
+	define("syn_context_set", setidentity)
 	define("syn_setfflag", setfflag)
 	define("syn_dumpstring", dumpstring)
 	define("syn_islclosure", islclosure)
@@ -276,10 +295,11 @@ do -- misc
 	define("gbmt", function()
 		return oldmt
 	end)
-	define("getpropvalue", function(obj,prop)
-		return obj[prop]
+	define("getpropvalue", function(obj, prop)
+		return cloneref(obj)[prop]
 	end)
-	define("setpropvalue", function(obj,prop,value)
+	define("setpropvalue", function(obj, prop, value)
+		obj = cloneref(obj)
 		local conn1 = obj:GetPropertyChangedSignal(prop)
 		local conn2 = obj.Changed
 		connection(conn1, false)
@@ -288,10 +308,10 @@ do -- misc
 		connection(conn1, true)
 		connection(conn2, true)
 	end)
-	define("getstates", getallthreads)
+	define("getstates", getallthreads) -- scriptware uses the term 'thread' instead of 'state'
 	define("getstateenv", gettenv)
-	define("getinstancefromstate", function(state)
-		return gettenv(state).script
+	define("getinstancefromstate", function(thread)
+		return gettenv(thread).script
 	end)
 	define("is_redirection_enabled", function()
 		return false
@@ -380,8 +400,8 @@ end
 do -- unavailable (this is only to put them into the environment, they dont actually do anything)
 	local funcs = {
 		"getlocal",
-		"setlocal",
 		"getlocals",
+		"setlocal",
 		"getcallstack",
 		"isuntouched",
 		"setuntouched",
@@ -403,26 +423,13 @@ do -- syn library
 	define("cache_invalidate", cache.invalidate, t)
 	define("is_cached", cache.iscached, t)
 
-	define("set_thread_identity", setidentity, t)
 	define("get_thread_identity", getidentity, t)
+	define("set_thread_identity", setidentity, t)
 
 	define("write_clipboard", setclipboard, t)
 	define("queue_on_teleport", queue_on_teleport, t)
 
 	local Protected = {}
-	do -- 
-		local old;old = hookmetamethod(game, "__namecall", function(...)
-			local args = {...}
-			if not checkcaller() and getnamecallmethod() == "FindFirstChild" and args[1] == game and args[3] == true then
-				for i,_ in next, Protected do
-					if i.Name == args[2] then
-						return nil
-					end
-				end
-			end
-			return old(...)
-		end)
-	end
 	define("protect_gui", function(obj)
 		assert(typeof(obj) == "Instance", "bad argument #1 to 'protect_gui' (Instance expected, got "..typeof(obj)..")")
 		local p = obj.parent
