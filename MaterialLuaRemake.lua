@@ -72,119 +72,127 @@ local MLRemake = {
 	Indicator_3 = Instance.new("Frame"),
 	UICorner_15 = Instance.new("UICorner"),
 	Slider_2 = Instance.new("TextButton"),
-	Toggle_3 = Instance.new("Frame"),
+	Progress = Instance.new("Frame"),
 	UICorner_16 = Instance.new("UICorner"),
-	Indicator_4 = Instance.new("Frame"),
+	Toggle_3 = Instance.new("Frame"),
 	UICorner_17 = Instance.new("UICorner"),
+	Indicator_4 = Instance.new("Frame"),
+	UICorner_18 = Instance.new("UICorner"),
 	Button_3 = Instance.new("TextButton"),
 	Input = Instance.new("TextBox"),
-	UICorner_18 = Instance.new("UICorner"),
+	UICorner_19 = Instance.new("UICorner"),
 	Menu_6 = Instance.new("ImageButton"),
 	Value = Instance.new("TextLabel"),
 	ColorPicker = Instance.new("Frame"),
 	UIPadding_11 = Instance.new("UIPadding"),
-	UICorner_19 = Instance.new("UICorner"),
+	UICorner_20 = Instance.new("UICorner"),
 	Label_4 = Instance.new("TextLabel"),
 	Color = Instance.new("TextLabel"),
 	Picker = Instance.new("Frame"),
-	UICorner_20 = Instance.new("UICorner"),
+	UICorner_21 = Instance.new("UICorner"),
 	UIPadding_12 = Instance.new("UIPadding"),
 	UIListLayout_4 = Instance.new("UIListLayout"),
 	Hue = Instance.new("Frame"),
 	Bar_2 = Instance.new("Frame"),
-	UICorner_21 = Instance.new("UICorner"),
+	UICorner_22 = Instance.new("UICorner"),
 	UIGradient = Instance.new("UIGradient"),
 	Slider_3 = Instance.new("TextButton"),
 	Indicator_5 = Instance.new("Frame"),
-	UICorner_22 = Instance.new("UICorner"),
-	Label_5 = Instance.new("TextLabel"),
 	UICorner_23 = Instance.new("UICorner"),
+	Progress_2 = Instance.new("Frame"),
+	UICorner_24 = Instance.new("UICorner"),
+	Label_5 = Instance.new("TextLabel"),
+	UICorner_25 = Instance.new("UICorner"),
 	UIPadding_13 = Instance.new("UIPadding"),
 	Value_2 = Instance.new("TextLabel"),
-	UICorner_24 = Instance.new("UICorner"),
+	UICorner_26 = Instance.new("UICorner"),
 	UIPadding_14 = Instance.new("UIPadding"),
 	Saturation = Instance.new("Frame"),
 	Bar_3 = Instance.new("Frame"),
-	UICorner_25 = Instance.new("UICorner"),
+	UICorner_27 = Instance.new("UICorner"),
 	UIGradient_2 = Instance.new("UIGradient"),
 	Slider_4 = Instance.new("TextButton"),
 	Indicator_6 = Instance.new("Frame"),
-	UICorner_26 = Instance.new("UICorner"),
+	UICorner_28 = Instance.new("UICorner"),
+	Progress_3 = Instance.new("Frame"),
+	UICorner_29 = Instance.new("UICorner"),
 	Label_6 = Instance.new("TextLabel"),
-	UICorner_27 = Instance.new("UICorner"),
+	UICorner_30 = Instance.new("UICorner"),
 	UIPadding_15 = Instance.new("UIPadding"),
 	Value_3 = Instance.new("TextLabel"),
-	UICorner_28 = Instance.new("UICorner"),
+	UICorner_31 = Instance.new("UICorner"),
 	UIPadding_16 = Instance.new("UIPadding"),
 	Value_4 = Instance.new("Frame"),
 	Bar_4 = Instance.new("Frame"),
-	UICorner_29 = Instance.new("UICorner"),
+	UICorner_32 = Instance.new("UICorner"),
 	UIGradient_3 = Instance.new("UIGradient"),
 	Slider_5 = Instance.new("TextButton"),
 	Indicator_7 = Instance.new("Frame"),
-	UICorner_30 = Instance.new("UICorner"),
+	UICorner_33 = Instance.new("UICorner"),
+	Progress_4 = Instance.new("Frame"),
+	UICorner_34 = Instance.new("UICorner"),
 	Label_7 = Instance.new("TextLabel"),
-	UICorner_31 = Instance.new("UICorner"),
+	UICorner_35 = Instance.new("UICorner"),
 	UIPadding_17 = Instance.new("UIPadding"),
 	Value_5 = Instance.new("TextLabel"),
-	UICorner_32 = Instance.new("UICorner"),
+	UICorner_36 = Instance.new("UICorner"),
 	UIPadding_18 = Instance.new("UIPadding"),
 	Custom = Instance.new("Frame"),
 	HEX = Instance.new("TextBox"),
-	UICorner_33 = Instance.new("UICorner"),
+	UICorner_37 = Instance.new("UICorner"),
 	RGB = Instance.new("TextBox"),
-	UICorner_34 = Instance.new("UICorner"),
+	UICorner_38 = Instance.new("UICorner"),
 	Rainbow = Instance.new("TextButton"),
-	UICorner_35 = Instance.new("UICorner"),
+	UICorner_39 = Instance.new("UICorner"),
 	RainbowText = Instance.new("TextLabel"),
 	UIGradient_4 = Instance.new("UIGradient"),
 	Button_4 = Instance.new("TextButton"),
 	Fill_3 = Instance.new("Frame"),
 	Preview = Instance.new("Frame"),
-	UICorner_36 = Instance.new("UICorner"),
+	UICorner_40 = Instance.new("UICorner"),
 	RippleHolder_2 = Instance.new("Frame"),
 	Menu_7 = Instance.new("ImageButton"),
 	Keybind = Instance.new("TextButton"),
-	UICorner_37 = Instance.new("UICorner"),
+	UICorner_41 = Instance.new("UICorner"),
 	UIPadding_19 = Instance.new("UIPadding"),
 	Bind_old = Instance.new("TextLabel"),
 	Menu_8 = Instance.new("ImageButton"),
 	Bind = Instance.new("Frame"),
-	UICorner_38 = Instance.new("UICorner"),
+	UICorner_42 = Instance.new("UICorner"),
 	Label_8 = Instance.new("TextLabel"),
-	UICorner_39 = Instance.new("UICorner"),
+	UICorner_43 = Instance.new("UICorner"),
 	ChipSet = Instance.new("Frame"),
 	UIPadding_20 = Instance.new("UIPadding"),
-	UICorner_40 = Instance.new("UICorner"),
+	UICorner_44 = Instance.new("UICorner"),
 	Label_9 = Instance.new("TextLabel"),
 	Dropdown_3 = Instance.new("Frame"),
-	UICorner_41 = Instance.new("UICorner"),
+	UICorner_45 = Instance.new("UICorner"),
 	UIPadding_21 = Instance.new("UIPadding"),
 	UIListLayout_5 = Instance.new("UIListLayout"),
 	Option_3 = Instance.new("Frame"),
 	Button_5 = Instance.new("TextButton"),
-	UICorner_42 = Instance.new("UICorner"),
+	UICorner_46 = Instance.new("UICorner"),
 	UIPadding_22 = Instance.new("UIPadding"),
 	Enabled = Instance.new("ImageButton"),
-	UICorner_43 = Instance.new("UICorner"),
+	UICorner_47 = Instance.new("UICorner"),
 	Menu_9 = Instance.new("ImageButton"),
 	Button_6 = Instance.new("TextButton"),
 	Fill_4 = Instance.new("Frame"),
 	RippleHolder_3 = Instance.new("Frame"),
 	Indicator_8 = Instance.new("Frame"),
-	UICorner_44 = Instance.new("UICorner"),
+	UICorner_48 = Instance.new("UICorner"),
 	Menu_10 = Instance.new("ImageButton"),
 	Table = Instance.new("Frame"),
 	UIPadding_23 = Instance.new("UIPadding"),
-	UICorner_45 = Instance.new("UICorner"),
+	UICorner_49 = Instance.new("UICorner"),
 	Label_10 = Instance.new("TextLabel"),
 	Dropdown_4 = Instance.new("Frame"),
-	UICorner_46 = Instance.new("UICorner"),
+	UICorner_50 = Instance.new("UICorner"),
 	UIPadding_24 = Instance.new("UIPadding"),
 	UIListLayout_6 = Instance.new("UIListLayout"),
 	Info = Instance.new("Frame"),
 	UIPadding_25 = Instance.new("UIPadding"),
-	UICorner_47 = Instance.new("UICorner"),
+	UICorner_51 = Instance.new("UICorner"),
 	Key = Instance.new("TextLabel"),
 	Value_6 = Instance.new("TextLabel"),
 	UIPadding_26 = Instance.new("UIPadding"),
@@ -193,60 +201,60 @@ local MLRemake = {
 	Fill_5 = Instance.new("Frame"),
 	RippleHolder_4 = Instance.new("Frame"),
 	Indicator_9 = Instance.new("Frame"),
-	UICorner_48 = Instance.new("UICorner"),
+	UICorner_52 = Instance.new("UICorner"),
 	Menu_11 = Instance.new("ImageButton"),
 	ProgressBar = Instance.new("Frame"),
 	UIPadding_27 = Instance.new("UIPadding"),
-	UICorner_49 = Instance.new("UICorner"),
+	UICorner_53 = Instance.new("UICorner"),
 	Label_11 = Instance.new("TextLabel"),
 	Bar_5 = Instance.new("Frame"),
-	Progress = Instance.new("Frame"),
-	UICorner_50 = Instance.new("UICorner"),
+	Progress_5 = Instance.new("Frame"),
+	UICorner_54 = Instance.new("UICorner"),
 	Indicator_10 = Instance.new("Frame"),
 	Menu_12 = Instance.new("ImageButton"),
 	Value_7 = Instance.new("TextLabel"),
 	BackgroundDim = Instance.new("Frame"),
 	Banner = Instance.new("Frame"),
-	UICorner_51 = Instance.new("UICorner"),
+	UICorner_55 = Instance.new("UICorner"),
 	Label_12 = Instance.new("TextLabel"),
 	UIPadding_28 = Instance.new("UIPadding"),
-	UICorner_52 = Instance.new("UICorner"),
+	UICorner_56 = Instance.new("UICorner"),
 	UIPadding_29 = Instance.new("UIPadding"),
 	Buttons_2 = Instance.new("ScrollingFrame"),
 	Example_3 = Instance.new("TextButton"),
-	UICorner_53 = Instance.new("UICorner"),
+	UICorner_57 = Instance.new("UICorner"),
 	UIListLayout_7 = Instance.new("UIListLayout"),
 	BackgroundDim2 = Instance.new("Frame"),
 	Tabs = Instance.new("Frame"),
-	UICorner_54 = Instance.new("UICorner"),
+	UICorner_58 = Instance.new("UICorner"),
 	Buttons_3 = Instance.new("ScrollingFrame"),
 	UIListLayout_8 = Instance.new("UIListLayout"),
 	Example_4 = Instance.new("TextButton"),
-	UICorner_55 = Instance.new("UICorner"),
+	UICorner_59 = Instance.new("UICorner"),
 	ObjectMenu = Instance.new("Frame"),
 	UIListLayout_9 = Instance.new("UIListLayout"),
 	Example_5 = Instance.new("TextButton"),
 	UIPadding_30 = Instance.new("UIPadding"),
-	UICorner_56 = Instance.new("UICorner"),
-	UICorner_57 = Instance.new("UICorner"),
+	UICorner_60 = Instance.new("UICorner"),
+	UICorner_61 = Instance.new("UICorner"),
 	FillMain = Instance.new("Frame"),
 	FillTopbar = Instance.new("Frame"),
 	Title_2 = Instance.new("TextLabel"),
 	UIPadding_31 = Instance.new("UIPadding"),
 	Minimize = Instance.new("TextButton"),
-	UICorner_58 = Instance.new("UICorner"),
+	UICorner_62 = Instance.new("UICorner"),
 	Menu_13 = Instance.new("ImageButton"),
 	Ripple = Instance.new("Frame"),
-	UICorner_59 = Instance.new("UICorner"),
+	UICorner_63 = Instance.new("UICorner"),
 	Focus = Instance.new("Frame"),
 	Overlay = Instance.new("Frame"),
-	UICorner_60 = Instance.new("UICorner"),
+	UICorner_64 = Instance.new("UICorner"),
 	SubTitle_2 = Instance.new("TextLabel"),
 	UIPadding_32 = Instance.new("UIPadding"),
 	Notifications = Instance.new("Frame"),
 	UIListLayout_10 = Instance.new("UIListLayout"),
 	Notif = Instance.new("Frame"),
-	UICorner_61 = Instance.new("UICorner"),
+	UICorner_65 = Instance.new("UICorner"),
 	UIPadding_33 = Instance.new("UIPadding"),
 	Title_3 = Instance.new("TextLabel"),
 	Label_13 = Instance.new("TextLabel"),
@@ -254,7 +262,7 @@ local MLRemake = {
 	Buttons_4 = Instance.new("ScrollingFrame"),
 	UIListLayout_11 = Instance.new("UIListLayout"),
 	Button_8 = Instance.new("TextButton"),
-	UICorner_62 = Instance.new("UICorner"),
+	UICorner_66 = Instance.new("UICorner"),
 }
 local library
 
@@ -807,6 +815,17 @@ MLRemake.Slider_2.Text = ""
 MLRemake.Slider_2.TextColor3 = Color3.fromRGB(0, 0, 0)
 MLRemake.Slider_2.TextSize = 14.000
 
+MLRemake.Progress.Name = "Progress"
+MLRemake.Progress.Parent = MLRemake.Bar
+MLRemake.Progress.BackgroundColor3 = Color3.fromRGB(90, 90, 90)
+MLRemake.Progress.BorderSizePixel = 0
+MLRemake.Progress.Size = UDim2.new(0.5, 0, 1, 0)
+MLRemake.Progress.Visible = false
+MLRemake.Progress.ZIndex = 2
+
+MLRemake.UICorner_16.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_16.Parent = MLRemake.Progress
+
 MLRemake.Toggle_3.Name = "Toggle"
 MLRemake.Toggle_3.Parent = MLRemake.Slider
 MLRemake.Toggle_3.AnchorPoint = Vector2.new(1, 0.5)
@@ -817,8 +836,8 @@ MLRemake.Toggle_3.Position = UDim2.new(1, 0, 0, 15)
 MLRemake.Toggle_3.Size = UDim2.new(0, 32, 0, 16)
 MLRemake.Toggle_3.ZIndex = 2
 
-MLRemake.UICorner_16.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_16.Parent = MLRemake.Toggle_3
+MLRemake.UICorner_17.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_17.Parent = MLRemake.Toggle_3
 
 MLRemake.Indicator_4.Name = "Indicator"
 MLRemake.Indicator_4.Parent = MLRemake.Toggle_3
@@ -828,8 +847,8 @@ MLRemake.Indicator_4.Position = UDim2.new(0, 0, 0.5, 0)
 MLRemake.Indicator_4.Size = UDim2.new(0, 16, 0, 16)
 MLRemake.Indicator_4.ZIndex = 2
 
-MLRemake.UICorner_17.CornerRadius = UDim.new(0, 6)
-MLRemake.UICorner_17.Parent = MLRemake.Indicator_4
+MLRemake.UICorner_18.CornerRadius = UDim.new(0, 6)
+MLRemake.UICorner_18.Parent = MLRemake.Indicator_4
 
 MLRemake.Button_3.Name = "Button"
 MLRemake.Button_3.Parent = MLRemake.Toggle_3
@@ -858,8 +877,8 @@ MLRemake.Input.Text = "0"
 MLRemake.Input.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Input.TextSize = 12.000
 
-MLRemake.UICorner_18.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_18.Parent = MLRemake.Input
+MLRemake.UICorner_19.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_19.Parent = MLRemake.Input
 
 MLRemake.Menu_6.Name = "Menu"
 MLRemake.Menu_6.Parent = MLRemake.Slider
@@ -898,8 +917,8 @@ MLRemake.UIPadding_11.Parent = MLRemake.ColorPicker
 MLRemake.UIPadding_11.PaddingLeft = UDim.new(0, 8)
 MLRemake.UIPadding_11.PaddingRight = UDim.new(0, 10)
 
-MLRemake.UICorner_19.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_19.Parent = MLRemake.ColorPicker
+MLRemake.UICorner_20.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_20.Parent = MLRemake.ColorPicker
 
 MLRemake.Label_4.Name = "Label"
 MLRemake.Label_4.Parent = MLRemake.ColorPicker
@@ -938,8 +957,8 @@ MLRemake.Picker.Position = UDim2.new(0, -8, 0, 30)
 MLRemake.Picker.Size = UDim2.new(1, 18, 1, -30)
 MLRemake.Picker.ZIndex = 3
 
-MLRemake.UICorner_20.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_20.Parent = MLRemake.Picker
+MLRemake.UICorner_21.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_21.Parent = MLRemake.Picker
 
 MLRemake.UIPadding_12.Parent = MLRemake.Picker
 MLRemake.UIPadding_12.PaddingBottom = UDim.new(0, 5)
@@ -966,8 +985,8 @@ MLRemake.Bar_2.Position = UDim2.new(0, 35, 0, 0)
 MLRemake.Bar_2.Size = UDim2.new(1, -70, 0, 20)
 MLRemake.Bar_2.ZIndex = 3
 
-MLRemake.UICorner_21.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_21.Parent = MLRemake.Bar_2
+MLRemake.UICorner_22.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_22.Parent = MLRemake.Bar_2
 
 MLRemake.UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 0, 0)), ColorSequenceKeypoint.new(0.16, Color3.fromRGB(255, 244, 0)), ColorSequenceKeypoint.new(0.28, Color3.fromRGB(81, 255, 0)), ColorSequenceKeypoint.new(0.50, Color3.fromRGB(0, 255, 255)), ColorSequenceKeypoint.new(0.66, Color3.fromRGB(0, 10, 255)), ColorSequenceKeypoint.new(0.75, Color3.fromRGB(127, 0, 255)), ColorSequenceKeypoint.new(0.85, Color3.fromRGB(255, 0, 229)), ColorSequenceKeypoint.new(0.90, Color3.fromRGB(255, 0, 153)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 0, 0))}
 MLRemake.UIGradient.Parent = MLRemake.Bar_2
@@ -993,8 +1012,19 @@ MLRemake.Indicator_5.Position = UDim2.new(0, 0, 0.5, 0)
 MLRemake.Indicator_5.Size = UDim2.new(0, 6, 0, 20)
 MLRemake.Indicator_5.ZIndex = 3
 
-MLRemake.UICorner_22.CornerRadius = UDim.new(0, 3)
-MLRemake.UICorner_22.Parent = MLRemake.Indicator_5
+MLRemake.UICorner_23.CornerRadius = UDim.new(0, 3)
+MLRemake.UICorner_23.Parent = MLRemake.Indicator_5
+
+MLRemake.Progress_2.Name = "Progress"
+MLRemake.Progress_2.Parent = MLRemake.Bar_2
+MLRemake.Progress_2.BackgroundColor3 = Color3.fromRGB(90, 90, 90)
+MLRemake.Progress_2.BorderSizePixel = 0
+MLRemake.Progress_2.Size = UDim2.new(0.5, 0, 1, 0)
+MLRemake.Progress_2.Visible = false
+MLRemake.Progress_2.ZIndex = 2
+
+MLRemake.UICorner_24.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_24.Parent = MLRemake.Progress_2
 
 MLRemake.Label_5.Name = "Label"
 MLRemake.Label_5.Parent = MLRemake.Hue
@@ -1006,8 +1036,8 @@ MLRemake.Label_5.Text = "H"
 MLRemake.Label_5.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Label_5.TextSize = 14.000
 
-MLRemake.UICorner_23.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_23.Parent = MLRemake.Label_5
+MLRemake.UICorner_25.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_25.Parent = MLRemake.Label_5
 
 MLRemake.UIPadding_13.Parent = MLRemake.Label_5
 MLRemake.UIPadding_13.PaddingLeft = UDim.new(0, 1)
@@ -1024,8 +1054,8 @@ MLRemake.Value_2.Text = "0"
 MLRemake.Value_2.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Value_2.TextSize = 14.000
 
-MLRemake.UICorner_24.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_24.Parent = MLRemake.Value_2
+MLRemake.UICorner_26.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_26.Parent = MLRemake.Value_2
 
 MLRemake.UIPadding_14.Parent = MLRemake.Value_2
 MLRemake.UIPadding_14.PaddingLeft = UDim.new(0, 1)
@@ -1045,8 +1075,8 @@ MLRemake.Bar_3.Position = UDim2.new(0, 35, 0, 0)
 MLRemake.Bar_3.Size = UDim2.new(1, -70, 0, 20)
 MLRemake.Bar_3.ZIndex = 3
 
-MLRemake.UICorner_25.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_25.Parent = MLRemake.Bar_3
+MLRemake.UICorner_27.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_27.Parent = MLRemake.Bar_3
 
 MLRemake.UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 0, 0))}
 MLRemake.UIGradient_2.Parent = MLRemake.Bar_3
@@ -1072,8 +1102,19 @@ MLRemake.Indicator_6.Position = UDim2.new(0, 0, 0.5, 0)
 MLRemake.Indicator_6.Size = UDim2.new(0, 6, 0, 20)
 MLRemake.Indicator_6.ZIndex = 3
 
-MLRemake.UICorner_26.CornerRadius = UDim.new(0, 3)
-MLRemake.UICorner_26.Parent = MLRemake.Indicator_6
+MLRemake.UICorner_28.CornerRadius = UDim.new(0, 3)
+MLRemake.UICorner_28.Parent = MLRemake.Indicator_6
+
+MLRemake.Progress_3.Name = "Progress"
+MLRemake.Progress_3.Parent = MLRemake.Bar_3
+MLRemake.Progress_3.BackgroundColor3 = Color3.fromRGB(90, 90, 90)
+MLRemake.Progress_3.BorderSizePixel = 0
+MLRemake.Progress_3.Size = UDim2.new(0.5, 0, 1, 0)
+MLRemake.Progress_3.Visible = false
+MLRemake.Progress_3.ZIndex = 2
+
+MLRemake.UICorner_29.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_29.Parent = MLRemake.Progress_3
 
 MLRemake.Label_6.Name = "Label"
 MLRemake.Label_6.Parent = MLRemake.Saturation
@@ -1085,8 +1126,8 @@ MLRemake.Label_6.Text = "S"
 MLRemake.Label_6.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Label_6.TextSize = 14.000
 
-MLRemake.UICorner_27.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_27.Parent = MLRemake.Label_6
+MLRemake.UICorner_30.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_30.Parent = MLRemake.Label_6
 
 MLRemake.UIPadding_15.Parent = MLRemake.Label_6
 MLRemake.UIPadding_15.PaddingLeft = UDim.new(0, 1)
@@ -1103,8 +1144,8 @@ MLRemake.Value_3.Text = "0"
 MLRemake.Value_3.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Value_3.TextSize = 14.000
 
-MLRemake.UICorner_28.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_28.Parent = MLRemake.Value_3
+MLRemake.UICorner_31.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_31.Parent = MLRemake.Value_3
 
 MLRemake.UIPadding_16.Parent = MLRemake.Value_3
 MLRemake.UIPadding_16.PaddingLeft = UDim.new(0, 1)
@@ -1124,8 +1165,8 @@ MLRemake.Bar_4.Position = UDim2.new(0, 35, 0, 0)
 MLRemake.Bar_4.Size = UDim2.new(1, -70, 0, 20)
 MLRemake.Bar_4.ZIndex = 3
 
-MLRemake.UICorner_29.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_29.Parent = MLRemake.Bar_4
+MLRemake.UICorner_32.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_32.Parent = MLRemake.Bar_4
 
 MLRemake.UIGradient_3.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(0, 0, 0)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 255, 255))}
 MLRemake.UIGradient_3.Parent = MLRemake.Bar_4
@@ -1151,8 +1192,19 @@ MLRemake.Indicator_7.Position = UDim2.new(1, 0, 0.5, 0)
 MLRemake.Indicator_7.Size = UDim2.new(0, 6, 0, 20)
 MLRemake.Indicator_7.ZIndex = 3
 
-MLRemake.UICorner_30.CornerRadius = UDim.new(0, 3)
-MLRemake.UICorner_30.Parent = MLRemake.Indicator_7
+MLRemake.UICorner_33.CornerRadius = UDim.new(0, 3)
+MLRemake.UICorner_33.Parent = MLRemake.Indicator_7
+
+MLRemake.Progress_4.Name = "Progress"
+MLRemake.Progress_4.Parent = MLRemake.Bar_4
+MLRemake.Progress_4.BackgroundColor3 = Color3.fromRGB(90, 90, 90)
+MLRemake.Progress_4.BorderSizePixel = 0
+MLRemake.Progress_4.Size = UDim2.new(0.5, 0, 1, 0)
+MLRemake.Progress_4.Visible = false
+MLRemake.Progress_4.ZIndex = 2
+
+MLRemake.UICorner_34.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_34.Parent = MLRemake.Progress_4
 
 MLRemake.Label_7.Name = "Label"
 MLRemake.Label_7.Parent = MLRemake.Value_4
@@ -1164,8 +1216,8 @@ MLRemake.Label_7.Text = "V"
 MLRemake.Label_7.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Label_7.TextSize = 14.000
 
-MLRemake.UICorner_31.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_31.Parent = MLRemake.Label_7
+MLRemake.UICorner_35.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_35.Parent = MLRemake.Label_7
 
 MLRemake.UIPadding_17.Parent = MLRemake.Label_7
 MLRemake.UIPadding_17.PaddingLeft = UDim.new(0, 1)
@@ -1182,8 +1234,8 @@ MLRemake.Value_5.Text = "1"
 MLRemake.Value_5.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Value_5.TextSize = 14.000
 
-MLRemake.UICorner_32.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_32.Parent = MLRemake.Value_5
+MLRemake.UICorner_36.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_36.Parent = MLRemake.Value_5
 
 MLRemake.UIPadding_18.Parent = MLRemake.Value_5
 MLRemake.UIPadding_18.PaddingLeft = UDim.new(0, 1)
@@ -1207,8 +1259,8 @@ MLRemake.HEX.Text = ""
 MLRemake.HEX.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.HEX.TextSize = 12.000
 
-MLRemake.UICorner_33.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_33.Parent = MLRemake.HEX
+MLRemake.UICorner_37.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_37.Parent = MLRemake.HEX
 
 MLRemake.RGB.Name = "RGB"
 MLRemake.RGB.Parent = MLRemake.Custom
@@ -1223,8 +1275,8 @@ MLRemake.RGB.Text = ""
 MLRemake.RGB.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.RGB.TextSize = 12.000
 
-MLRemake.UICorner_34.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_34.Parent = MLRemake.RGB
+MLRemake.UICorner_38.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_38.Parent = MLRemake.RGB
 
 MLRemake.Rainbow.Name = "Rainbow"
 MLRemake.Rainbow.Parent = MLRemake.Custom
@@ -1238,8 +1290,8 @@ MLRemake.Rainbow.Text = ""
 MLRemake.Rainbow.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Rainbow.TextSize = 12.000
 
-MLRemake.UICorner_35.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_35.Parent = MLRemake.Rainbow
+MLRemake.UICorner_39.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_39.Parent = MLRemake.Rainbow
 
 MLRemake.RainbowText.Name = "RainbowText"
 MLRemake.RainbowText.Parent = MLRemake.Rainbow
@@ -1289,8 +1341,8 @@ MLRemake.Preview.Position = UDim2.new(1, 0, 0, 5)
 MLRemake.Preview.Size = UDim2.new(0, 20, 0, 20)
 MLRemake.Preview.ZIndex = 2
 
-MLRemake.UICorner_36.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_36.Parent = MLRemake.Preview
+MLRemake.UICorner_40.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_40.Parent = MLRemake.Preview
 
 MLRemake.RippleHolder_2.Name = "RippleHolder"
 MLRemake.RippleHolder_2.Parent = MLRemake.ColorPicker
@@ -1326,8 +1378,8 @@ MLRemake.Keybind.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Keybind.TextSize = 14.000
 MLRemake.Keybind.TextXAlignment = Enum.TextXAlignment.Left
 
-MLRemake.UICorner_37.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_37.Parent = MLRemake.Keybind
+MLRemake.UICorner_41.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_41.Parent = MLRemake.Keybind
 
 MLRemake.UIPadding_19.Parent = MLRemake.Keybind
 MLRemake.UIPadding_19.PaddingLeft = UDim.new(0, 8)
@@ -1370,8 +1422,8 @@ MLRemake.Bind.Position = UDim2.new(1, 0, 0, 15)
 MLRemake.Bind.Size = UDim2.new(0, 80, 0, 20)
 MLRemake.Bind.ZIndex = 2
 
-MLRemake.UICorner_38.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_38.Parent = MLRemake.Bind
+MLRemake.UICorner_42.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_42.Parent = MLRemake.Bind
 
 MLRemake.Label_8.Name = "Label"
 MLRemake.Label_8.Parent = MLRemake.Bind
@@ -1384,8 +1436,8 @@ MLRemake.Label_8.Text = "Unknown"
 MLRemake.Label_8.TextColor3 = Color3.fromRGB(0, 0, 0)
 MLRemake.Label_8.TextSize = 12.000
 
-MLRemake.UICorner_39.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_39.Parent = MLRemake.Label_8
+MLRemake.UICorner_43.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_43.Parent = MLRemake.Label_8
 
 MLRemake.ChipSet.Name = "ChipSet"
 MLRemake.ChipSet.Parent = MLRemake.Example_2
@@ -1397,8 +1449,8 @@ MLRemake.UIPadding_20.Parent = MLRemake.ChipSet
 MLRemake.UIPadding_20.PaddingLeft = UDim.new(0, 8)
 MLRemake.UIPadding_20.PaddingRight = UDim.new(0, 10)
 
-MLRemake.UICorner_40.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_40.Parent = MLRemake.ChipSet
+MLRemake.UICorner_44.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_44.Parent = MLRemake.ChipSet
 
 MLRemake.Label_9.Name = "Label"
 MLRemake.Label_9.Parent = MLRemake.ChipSet
@@ -1422,8 +1474,8 @@ MLRemake.Dropdown_3.Position = UDim2.new(0, -8, 0, 30)
 MLRemake.Dropdown_3.Size = UDim2.new(1, 18, 1, -30)
 MLRemake.Dropdown_3.ZIndex = 3
 
-MLRemake.UICorner_41.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_41.Parent = MLRemake.Dropdown_3
+MLRemake.UICorner_45.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_45.Parent = MLRemake.Dropdown_3
 
 MLRemake.UIPadding_21.Parent = MLRemake.Dropdown_3
 MLRemake.UIPadding_21.PaddingBottom = UDim.new(0, 5)
@@ -1457,8 +1509,8 @@ MLRemake.Button_5.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Button_5.TextSize = 14.000
 MLRemake.Button_5.TextXAlignment = Enum.TextXAlignment.Left
 
-MLRemake.UICorner_42.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_42.Parent = MLRemake.Button_5
+MLRemake.UICorner_46.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_46.Parent = MLRemake.Button_5
 
 MLRemake.UIPadding_22.Parent = MLRemake.Button_5
 MLRemake.UIPadding_22.PaddingLeft = UDim.new(0, 8)
@@ -1471,8 +1523,8 @@ MLRemake.Enabled.ZIndex = 3
 MLRemake.Enabled.AutoButtonColor = false
 MLRemake.Enabled.Image = "rbxassetid://9122106066"
 
-MLRemake.UICorner_43.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_43.Parent = MLRemake.Enabled
+MLRemake.UICorner_47.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_47.Parent = MLRemake.Enabled
 
 MLRemake.Menu_9.Name = "Menu"
 MLRemake.Menu_9.Parent = MLRemake.Option_3
@@ -1525,8 +1577,8 @@ MLRemake.Indicator_8.Position = UDim2.new(1, 0, 0, 5)
 MLRemake.Indicator_8.Size = UDim2.new(0, 20, 0, 20)
 MLRemake.Indicator_8.ZIndex = 2
 
-MLRemake.UICorner_44.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_44.Parent = MLRemake.Indicator_8
+MLRemake.UICorner_48.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_48.Parent = MLRemake.Indicator_8
 
 MLRemake.Menu_10.Name = "Menu"
 MLRemake.Menu_10.Parent = MLRemake.ChipSet
@@ -1550,8 +1602,8 @@ MLRemake.UIPadding_23.Parent = MLRemake.Table
 MLRemake.UIPadding_23.PaddingLeft = UDim.new(0, 8)
 MLRemake.UIPadding_23.PaddingRight = UDim.new(0, 10)
 
-MLRemake.UICorner_45.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_45.Parent = MLRemake.Table
+MLRemake.UICorner_49.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_49.Parent = MLRemake.Table
 
 MLRemake.Label_10.Name = "Label"
 MLRemake.Label_10.Parent = MLRemake.Table
@@ -1575,8 +1627,8 @@ MLRemake.Dropdown_4.Position = UDim2.new(0, -8, 0, 30)
 MLRemake.Dropdown_4.Size = UDim2.new(1, 18, 1, -30)
 MLRemake.Dropdown_4.ZIndex = 3
 
-MLRemake.UICorner_46.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_46.Parent = MLRemake.Dropdown_4
+MLRemake.UICorner_50.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_50.Parent = MLRemake.Dropdown_4
 
 MLRemake.UIPadding_24.Parent = MLRemake.Dropdown_4
 MLRemake.UIPadding_24.PaddingBottom = UDim.new(0, 5)
@@ -1598,8 +1650,8 @@ MLRemake.Info.ZIndex = 3
 MLRemake.UIPadding_25.Parent = MLRemake.Info
 MLRemake.UIPadding_25.PaddingLeft = UDim.new(0, 8)
 
-MLRemake.UICorner_47.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_47.Parent = MLRemake.Info
+MLRemake.UICorner_51.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_51.Parent = MLRemake.Info
 
 MLRemake.Key.Name = "Key"
 MLRemake.Key.Parent = MLRemake.Info
@@ -1678,8 +1730,8 @@ MLRemake.Indicator_9.Position = UDim2.new(1, 0, 0, 5)
 MLRemake.Indicator_9.Size = UDim2.new(0, 20, 0, 20)
 MLRemake.Indicator_9.ZIndex = 2
 
-MLRemake.UICorner_48.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_48.Parent = MLRemake.Indicator_9
+MLRemake.UICorner_52.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_52.Parent = MLRemake.Indicator_9
 
 MLRemake.Menu_11.Name = "Menu"
 MLRemake.Menu_11.Parent = MLRemake.Table
@@ -1703,8 +1755,8 @@ MLRemake.UIPadding_27.Parent = MLRemake.ProgressBar
 MLRemake.UIPadding_27.PaddingLeft = UDim.new(0, 8)
 MLRemake.UIPadding_27.PaddingRight = UDim.new(0, 10)
 
-MLRemake.UICorner_49.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_49.Parent = MLRemake.ProgressBar
+MLRemake.UICorner_53.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_53.Parent = MLRemake.ProgressBar
 
 MLRemake.Label_11.Name = "Label"
 MLRemake.Label_11.Parent = MLRemake.ProgressBar
@@ -1727,15 +1779,15 @@ MLRemake.Bar_5.Position = UDim2.new(0, 0, 0, 33)
 MLRemake.Bar_5.Size = UDim2.new(1, 0, 0, 4)
 MLRemake.Bar_5.ZIndex = 2
 
-MLRemake.Progress.Name = "Progress"
-MLRemake.Progress.Parent = MLRemake.Bar_5
-MLRemake.Progress.BackgroundColor3 = Color3.fromRGB(90, 90, 90)
-MLRemake.Progress.BorderSizePixel = 0
-MLRemake.Progress.Size = UDim2.new(0.5, 0, 1, 0)
-MLRemake.Progress.ZIndex = 2
+MLRemake.Progress_5.Name = "Progress"
+MLRemake.Progress_5.Parent = MLRemake.Bar_5
+MLRemake.Progress_5.BackgroundColor3 = Color3.fromRGB(90, 90, 90)
+MLRemake.Progress_5.BorderSizePixel = 0
+MLRemake.Progress_5.Size = UDim2.new(0.5, 0, 1, 0)
+MLRemake.Progress_5.ZIndex = 2
 
-MLRemake.UICorner_50.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_50.Parent = MLRemake.Progress
+MLRemake.UICorner_54.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_54.Parent = MLRemake.Progress_5
 
 MLRemake.Indicator_10.Name = "Indicator"
 MLRemake.Indicator_10.Parent = MLRemake.Bar_5
@@ -1791,8 +1843,8 @@ MLRemake.Banner.Size = UDim2.new(1, -20, 0, 100)
 MLRemake.Banner.Visible = false
 MLRemake.Banner.ZIndex = 6
 
-MLRemake.UICorner_51.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_51.Parent = MLRemake.Banner
+MLRemake.UICorner_55.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_55.Parent = MLRemake.Banner
 
 MLRemake.Label_12.Name = "Label"
 MLRemake.Label_12.Parent = MLRemake.Banner
@@ -1814,8 +1866,8 @@ MLRemake.UIPadding_28.PaddingLeft = UDim.new(0, 6)
 MLRemake.UIPadding_28.PaddingRight = UDim.new(0, 5)
 MLRemake.UIPadding_28.PaddingTop = UDim.new(0, 5)
 
-MLRemake.UICorner_52.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_52.Parent = MLRemake.Label_12
+MLRemake.UICorner_56.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_56.Parent = MLRemake.Label_12
 
 MLRemake.UIPadding_29.Parent = MLRemake.Banner
 MLRemake.UIPadding_29.PaddingBottom = UDim.new(0, 30)
@@ -1848,8 +1900,8 @@ MLRemake.Example_3.Text = "OK"
 MLRemake.Example_3.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Example_3.TextSize = 14.000
 
-MLRemake.UICorner_53.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_53.Parent = MLRemake.Example_3
+MLRemake.UICorner_57.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_57.Parent = MLRemake.Example_3
 
 MLRemake.UIListLayout_7.Parent = MLRemake.Buttons_2
 MLRemake.UIListLayout_7.FillDirection = Enum.FillDirection.Horizontal
@@ -1873,8 +1925,8 @@ MLRemake.Tabs.Position = UDim2.new(0, 10, 0, 10)
 MLRemake.Tabs.Size = UDim2.new(1, -20, 0, 25)
 MLRemake.Tabs.Visible = false
 
-MLRemake.UICorner_54.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_54.Parent = MLRemake.Tabs
+MLRemake.UICorner_58.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_58.Parent = MLRemake.Tabs
 
 MLRemake.Buttons_3.Name = "Buttons"
 MLRemake.Buttons_3.Parent = MLRemake.Tabs
@@ -1902,8 +1954,8 @@ MLRemake.Example_4.Text = "Tab"
 MLRemake.Example_4.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Example_4.TextSize = 14.000
 
-MLRemake.UICorner_55.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_55.Parent = MLRemake.Example_4
+MLRemake.UICorner_59.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_59.Parent = MLRemake.Example_4
 
 MLRemake.ObjectMenu.Name = "ObjectMenu"
 MLRemake.ObjectMenu.Parent = MLRemake.Main
@@ -1934,11 +1986,11 @@ MLRemake.Example_5.TextXAlignment = Enum.TextXAlignment.Left
 MLRemake.UIPadding_30.Parent = MLRemake.Example_5
 MLRemake.UIPadding_30.PaddingLeft = UDim.new(0, 10)
 
-MLRemake.UICorner_56.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_56.Parent = MLRemake.ObjectMenu
+MLRemake.UICorner_60.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_60.Parent = MLRemake.ObjectMenu
 
-MLRemake.UICorner_57.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_57.Parent = MLRemake.Topbar
+MLRemake.UICorner_61.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_61.Parent = MLRemake.Topbar
 
 MLRemake.FillMain.Name = "FillMain"
 MLRemake.FillMain.Parent = MLRemake.Topbar
@@ -1987,8 +2039,8 @@ MLRemake.Minimize.Text = ""
 MLRemake.Minimize.TextColor3 = Color3.fromRGB(0, 0, 0)
 MLRemake.Minimize.TextSize = 14.000
 
-MLRemake.UICorner_58.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_58.Parent = MLRemake.Minimize
+MLRemake.UICorner_62.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_62.Parent = MLRemake.Minimize
 
 MLRemake.Menu_13.Name = "Menu"
 MLRemake.Menu_13.Parent = MLRemake.Topbar
@@ -2012,8 +2064,8 @@ MLRemake.Ripple.Size = UDim2.new(0, 100, 0, 100)
 MLRemake.Ripple.Visible = false
 MLRemake.Ripple.ZIndex = 5
 
-MLRemake.UICorner_59.CornerRadius = UDim.new(1, 0)
-MLRemake.UICorner_59.Parent = MLRemake.Ripple
+MLRemake.UICorner_63.CornerRadius = UDim.new(1, 0)
+MLRemake.UICorner_63.Parent = MLRemake.Ripple
 
 MLRemake.Focus.Name = "Focus"
 MLRemake.Focus.Parent = MLRemake.Topbar
@@ -2033,8 +2085,8 @@ MLRemake.Overlay.Size = UDim2.new(1, 0, 1, 490)
 MLRemake.Overlay.Visible = false
 MLRemake.Overlay.ZIndex = 11
 
-MLRemake.UICorner_60.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_60.Parent = MLRemake.Overlay
+MLRemake.UICorner_64.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_64.Parent = MLRemake.Overlay
 
 MLRemake.SubTitle_2.Name = "SubTitle"
 MLRemake.SubTitle_2.Parent = MLRemake.Topbar
@@ -2080,8 +2132,8 @@ MLRemake.Notif.Position = UDim2.new(1, -10, 1, -10)
 MLRemake.Notif.Size = UDim2.new(0, 200, 0, 100)
 MLRemake.Notif.ZIndex = 20
 
-MLRemake.UICorner_61.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_61.Parent = MLRemake.Notif
+MLRemake.UICorner_65.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_65.Parent = MLRemake.Notif
 
 MLRemake.UIPadding_33.Parent = MLRemake.Notif
 MLRemake.UIPadding_33.PaddingBottom = UDim.new(0, 8)
@@ -2156,8 +2208,8 @@ MLRemake.Button_8.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Button_8.TextSize = 14.000
 MLRemake.Button_8.TextWrapped = true
 
-MLRemake.UICorner_62.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_62.Parent = MLRemake.Button_8
+MLRemake.UICorner_66.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_66.Parent = MLRemake.Button_8
 
 -- Module Scripts:
 
@@ -2167,7 +2219,7 @@ do -- MLRemake.MLRemake.UI
 	local script = Instance.new('ModuleScript', MLRemake.MLRemake)
 	script.Name = "UI"
 	local function module_script()
-		-- shitty code !
+		-- this shit is so messy ong
 		
 		local uis = game:GetService("UserInputService")
 		local ts = game:GetService("TweenService")
@@ -2275,7 +2327,8 @@ do -- MLRemake.MLRemake.UI
 				Text = "Label",
 				Event = bind,
 				Center = false,
-				Transparent = false
+				Transparent = false,
+				Font = Enum.Font.Gotham
 			},
 			Slider = {
 				Text = "Slider",
@@ -2289,7 +2342,8 @@ do -- MLRemake.MLRemake.UI
 				Decimals = 0,
 				Toggle = false,
 				Enabled = false,
-				ToggleCallback = nofunc
+				ToggleCallback = nofunc,
+				Filled = false
 			},
 			ColorPicker = {
 				Text = "Color Picker",
@@ -2335,6 +2389,13 @@ do -- MLRemake.MLRemake.UI
 		}
 		
 		topbar.Visible = false
+		
+		task.spawn(function()
+			game:GetService("ContentProvider"):PreloadAsync({
+				"rbxassetid://9122106066", -- chipset enabled img
+				"rbxassetid://9122119502", -- chipset disabled img
+			})
+		end)
 		
 		function CheckInvalidProps(a, b)
 			for i,v in next, defaults[a] do
@@ -2800,11 +2861,7 @@ do -- MLRemake.MLRemake.UI
 					for _,info in next, t do
 						if info ~= nil then
 							for i,v in next, info do
-								local Object = v[1]
-								local Property = v[2]
-								local Value = v[3]
-		
-								Object[Property] = Value
+								-- a
 							end
 						end
 					end
@@ -2881,6 +2938,7 @@ do -- MLRemake.MLRemake.UI
 					tabs.Visible = false
 					pages.Size = UDim2new(1, 0, 1, 0)
 				elseif STYLE == 4 then
+					topbar.Position = UDim2new(0, topbar.Position.X.Offset - (NAV_SIZE / 2), 0, topbar.Position.Y.Offset)
 					menubtn.Visible = false
 					banner.Size = UDim2new(1, -20 - NAV_SIZE, 0, 100)
 					UI_SIZE_X += NAV_SIZE
@@ -2950,12 +3008,23 @@ do -- MLRemake.MLRemake.UI
 				
 				local UI = {}
 				
+				local PageOpened = Instance.new("BindableEvent")
+				
 				local PAGE_INDEX = 0
 				local OPEN_PAGE_INFO = TweenInfonew(0.2, sine, out)
+				local OPEN_COUNT = {}
 				function UI.OpenPage(t)
+					if not string.match(t, "^PAGE_") then
+						t = "PAGE_"..t
+					end
+					if not OPEN_COUNT[t] then
+						OPEN_COUNT[t] = 1
+					else
+						OPEN_COUNT[t] += 1
+					end
 					for _,v in next, pages:GetChildren() do
 						if v:IsA("ScrollingFrame") then
-							v.Visible = (v.Name == t and true) or (v.Name == "PAGE_"..t and true) or false
+							v.Visible = (v.Name == t) or (v.Name == "PAGE_"..t) or false
 						end
 					end
 					for _,v in next, pagebtns:GetChildren() do
@@ -2964,6 +3033,7 @@ do -- MLRemake.MLRemake.UI
 							ui.Tween(v, {TextTransparency = (v.Name == t and 0) or 0.4}, OPEN_PAGE_INFO)
 						end
 					end
+					PageOpened:Fire(t:split("_")[2], OPEN_COUNT[t])
 				end
 				function UI.new(t)
 					local title = "Page"
@@ -3089,6 +3159,7 @@ do -- MLRemake.MLRemake.UI
 		
 				UI.New = UI.new
 				UI.UI = new
+				UI.PageOpened = PageOpened.Event
 				
 				return UI
 			end
@@ -3115,7 +3186,7 @@ do -- MLRemake.MLRemake.UI
 					ui.InitMenu(t.Menu, new, {})
 				end
 				
-				local a = {Destroyed = false}
+				local a = {Destroyed = false, Object = new}
 				
 				function a:SetText(text)
 					if a.Destroyed then return end
@@ -3172,7 +3243,7 @@ do -- MLRemake.MLRemake.UI
 					ui.InitMenu(t.Menu, new, {new.Toggle})
 				end
 				
-				local a = {Destroyed = false}
+				local a = {Destroyed = false, Object = new}
 				
 				function a:SetText(text)
 					if a.Destroyed then return end
@@ -3278,7 +3349,7 @@ do -- MLRemake.MLRemake.UI
 					ui.InitMenu(t.Menu, new, {new.Option, new.Indicator})
 				end
 				
-				local a = {Destroyed = false}
+				local a = {Destroyed = false, Object = new}
 		
 				function a:SetText(text)
 					if a.Destroyed then return end
@@ -3353,7 +3424,7 @@ do -- MLRemake.MLRemake.UI
 					ui.InitMenu(t.Menu, new, {})
 				end
 				
-				local a = {Destroyed = false}
+				local a = {Destroyed = false, Object = new}
 		
 				function a:SetText(text)
 					if a.Destroyed then return end
@@ -3390,6 +3461,7 @@ do -- MLRemake.MLRemake.UI
 				new.TextXAlignment = Enum.TextXAlignment[(t.Center and "Center" or "Left")]
 				new.BackgroundTransparency = (t.Transparent and 1) or 0
 				new.RichText = true
+				new.Font = t.Font or Enum.Font[t.Font]
 				
 				local function SetText(...) -- support multiple args to easily concatenate multiple strings
 					local args = {...}
@@ -3419,7 +3491,7 @@ do -- MLRemake.MLRemake.UI
 					ui.InitMenu(t.Menu, new, {})
 				end
 				
-				local a = {Destroyed = false}
+				local a = {Destroyed = false, Object = new}
 		
 				function a:SetText(...)
 					if a.Destroyed then return end
@@ -3466,6 +3538,7 @@ do -- MLRemake.MLRemake.UI
 					if not t then t = {} end
 					local bar = s.Bar
 					local indicator = bar.Indicator
+					local progress = bar.Progress
 					local min = math.max(t.Min or 0, 0)
 					local max = t.Max or 100
 					value = clamp(value, min, max)
@@ -3475,9 +3548,14 @@ do -- MLRemake.MLRemake.UI
 					local pos = UDim2new(percent, 0, 0.5, 0)
 					if t.Tween then
 						indicator:TweenPosition(pos, "Out", "Sine", SLIDER_SET_TWEEN_TIME, true)
+						progress:TweenSize(UDim2new(percent, 0, 1, 0), "Out", "Sine", SLIDER_SET_TWEEN_TIME, true)
 					else
 						indicator.Position = pos
+						progress.Size = UDim2new(percent, 0, 1, 0)
 					end
+					
+					ui.Tween(bar.Progress, {BackgroundColor3 = (percent == 1 and fromRGB(250, 250, 250)) or fromRGB(90, 90, 90)}, TweenInfonew(0.5, sine, out)) -- Tween bar progress color to white when at 100%
+					
 					local afv = ui.AddAffixes(value, t)
 					s.Value.Text = ui.AddAffixes(value, t, true)
 					if s:FindFirstChild("Input") then
@@ -3521,6 +3599,9 @@ do -- MLRemake.MLRemake.UI
 						local percent = (value - min) / (max - min)
 						indicator.AnchorPoint = Vector2new(percent, 0.5)
 						
+						bar.Progress.Size = UDim2new(percent, 0, 1, 0)
+						ui.Tween(bar.Progress, {BackgroundColor3 = (percent == 1 and fromRGB(250, 250, 250)) or fromRGB(90, 90, 90)}, TweenInfonew(0.5, sine, out)) -- Tween bar progress color to white when at 100%
+						
 						s.Value.Text = ui.AddAffixes(value, t, true)
 		
 						lastvalue = value
@@ -3555,6 +3636,9 @@ do -- MLRemake.MLRemake.UI
 				new.Label.Text = t.Text
 				new.Value.Text = def
 				
+				bar.Indicator.Visible = not t.Filled
+				bar.Progress.Visible = t.Filled
+				
 				ui.SetSliderValue(new, def, t)
 				ui.UpdateCanvasSize(p or ex)
 				
@@ -3587,7 +3671,7 @@ do -- MLRemake.MLRemake.UI
 					local a = input.Text:gsub("%a%p%s%c%x%z", "") -- Removes all letters (a), punctuation (p), spaces (s), hexadecimals (x), and null characters (z)
 					if a == "" then return end -- If all characters were removed, end thread
 					
-					local value = a:gsub("[^%d{.}]", "") -- Removes all other characters except for numbers
+					local value = a:gsub("[^%d{.}]", "") -- Removes all other characters except for numbers AND decimal points ({.} keeps the decimals)
 					value = tonumber(value) -- Convert to number
 					
 					if a:match("%%$") then -- Checks if last character is a %
@@ -3612,7 +3696,7 @@ do -- MLRemake.MLRemake.UI
 				end
 				init()
 				
-				local a = {Destroyed = false}
+				local a = {Destroyed = false, Object = new}
 		
 				function a:SetText(text)
 					if a.Destroyed then return end
@@ -3790,7 +3874,7 @@ do -- MLRemake.MLRemake.UI
 					end
 				end)
 				
-				local a = {Destroyed = false}
+				local a = {Destroyed = false, Object = new}
 		
 				function a:SetText(text)
 					if a.Destroyed then return end
@@ -3878,7 +3962,7 @@ do -- MLRemake.MLRemake.UI
 					ui.InitMenu(t.Menu, new, {new.Bind})
 				end
 				
-				local a = {Destroyed = false}
+				local a = {Destroyed = false, Object = new}
 		
 				function a:SetText(text)
 					if a.Destroyed then return end
@@ -4019,7 +4103,7 @@ do -- MLRemake.MLRemake.UI
 					ui.InitMenu(t.Menu, new, {new.Indicator})
 				end
 				
-				local a = {Destroyed = false}
+				local a = {Destroyed = false, Object = new}
 		
 				function a:SetText(text)
 					if a.Destroyed then return end
@@ -4132,7 +4216,7 @@ do -- MLRemake.MLRemake.UI
 					ui.InitMenu(t.Menu, new, {new.Option, new.Indicator})
 				end
 		
-				local a = {Destroyed = false}
+				local a = {Destroyed = false, Object = new}
 		
 				function a:SetText(text)
 					if a.Destroyed then return end
@@ -4208,7 +4292,7 @@ do -- MLRemake.MLRemake.UI
 					ui.InitMenu(t.Menu, new, (t.Toggle and {val}) or {val})
 				end
 				
-				local a = {Destroyed = false}
+				local a = {Destroyed = false, Object = new}
 		
 				function a:SetText(text)
 					if a.Destroyed then return end
