@@ -1,8 +1,9 @@
 # Material Lua Remake  
 A UI library inspired by [Material Lua](https://github.com/Kinlei/MaterialLua).  
 This library has pretty much the exact same usage as Material Lua, but with a different look and a bit more utilities to work with.  
+*this is not meant to resemble a Material-style*  
 
-*Last Updated: April 19, 2022*  
+*Last Updated: May 7, 2022*  
 
 # This ui library is not completely finished yet, however it is usable.  
 
@@ -17,6 +18,7 @@ This library has pretty much the exact same usage as Material Lua, but with a di
   - [UI.Notify (WIP)](#uinotify)
   - [UI.Toggle](#uitoggle)
   - [UI.OpenPage](#uiopenpage)
+  - [UI.PageOpened](#uipageopened)
 - [Page Elements](#page-elements)
   - [Page.Button](#pagebutton)
   - [Page.Toggle](#pagetoggle)
@@ -213,6 +215,29 @@ UI.OpenPage("Page 1")
 
 ---
 
+## UI.PageOpened  
+```js
+<RBXScriptSignal> UI.PageOpened
+```
+Fires when a page is opened.  
+
+### Example  
+```lua
+UI.PageOpened:Connect(function(page, count)
+    if page == "Page1" and count == 1 then
+        UI.Banner("whatever you want to say when the page is opened for the first time")
+    end
+end)
+```
+
+### Parameters  
+|Parameter|Type|Description|
+|:--------|:---|:----------|
+|1|String|The page that was opened|
+|2|Number|The amount of times that page has been opened|
+
+---
+
 # Page Elements  
 
 ## Page.Button  
@@ -394,6 +419,7 @@ end)
 |Event|BindableEvent|nil|The Label's text can be updated by firing this BindableEvent|
 |Center|Boolean|false|Determines if the Label's text is centered|
 |Transparent|Boolean|false|Determines if the Label's background is transparent|
+|Font|EnumItem|Enum.Font.Gotham|The font shown on the Label|
   
 ### Methods  
 |Method|Description|
@@ -439,6 +465,7 @@ local Slider = Page.Slider({
 |Toggle|Boolean|false|If enabled, a Toggle will be shown on the Slider|
 |Enabled|Boolean|false|Determines if the Toggle is enabled by default or not.<br />Toggle must be enabled for this to work|
 |ToggleCallback|Function|nil|The Toggle's callback|
+|Filled|Boolean|false|If enabled, the indicator will be hidden and the style of the Slider will be similar to the Progress Bar|
   
 ### Methods  
 |Method|Description|
