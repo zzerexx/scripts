@@ -228,7 +228,7 @@ page.Button({
 		local json = http:JSONEncode(t)
 		json = json:gsub("%{", "{\n") -- Add new lines after the opening curly bracket
 		json = json:gsub("%}", "\n}") -- Add new lines before the closing curly bracket
-		json = json:gsub('"(Syntax_)', '    "Syntax_') -- Add indents before every key
+		json = json:gsub('"(Syntax_)', '\t"Syntax_') -- Add indents before every key
 		json = json:gsub(":", ": ") -- Add a space after every colon
 		json = json:gsub('("),', '",\n') -- Add new lines after every key
 		setclipboard(json)
