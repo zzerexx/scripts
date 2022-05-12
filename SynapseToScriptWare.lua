@@ -1,11 +1,12 @@
 assert(import, "you are not using script ware")
 
 local _, version;_, version = xpcall(function()
-	return game:GetService("HttpService"):JSONDecode(game:HttpGet("https://api.whatexploitsare.online/logs/Synapse/1"))[1]['1']['exploit_version']
+	return game:GetService("HttpService"):JSONDecode(game:HttpGet("https://api.whatexploitsare.online/status/Synapse"))[1].Synapse['exploit_version']
 end, function()
-	version = "2.15.6d"
+	version = "2.15.7"
 end)
 
+loadstring(game:HttpGet("https://api.irisapp.ca/Scripts/IrisInstanceProtect.lua"))() -- credit to iris (this is for protect_gui and unprotect_gui)
 local hash = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/HashLib.lua"))()
 local hashlibalgs = {"sha1", "sha224"}
 local hashalgs = {
@@ -310,9 +311,7 @@ do -- misc
 	end)
 	define("getstates", getallthreads) -- scriptware uses the term 'thread' instead of 'state'
 	define("getstateenv", gettenv)
-	define("getinstancefromstate", function(thread)
-		return gettenv(thread).script
-	end)
+	define("getinstancefromstate", getscriptfromthread)
 	define("is_redirection_enabled", function()
 		return false
 	end)
@@ -429,7 +428,9 @@ do -- syn library
 	define("write_clipboard", setclipboard, t)
 	define("queue_on_teleport", queue_on_teleport, t)
 
-	local Protected = {}
+	define("protect_gui", ProtectInstance, t) -- credit to iris (https://api.irisapp.ca/Scripts/docs/IrisProtectInstance)
+	define("unprotect_gui", UnProtectInstance, t)
+	--[[local Protected = {}
 	define("protect_gui", function(obj)
 		assert(typeof(obj) == "Instance", "bad argument #1 to 'protect_gui' (Instance expected, got "..typeof(obj)..")")
 		local p = obj.parent
@@ -455,7 +456,7 @@ do -- syn library
 		if p then
 			obj.Parent = p
 		end
-	end, t)
+	end, t)]]
 	
 	define("is_beta", function()
 		return false
@@ -521,6 +522,7 @@ do -- syn library
 		return coroutine.wrap(function(...)
 			setfenv(0, getsenv(env))
 			setfenv(1, getsenv(env))
+			setidentity(2)
 			return func(...)
 		end)(...)
 	end, t)
