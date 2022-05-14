@@ -756,15 +756,18 @@ local function WSYFL_fake_script() -- Spotify.LocalScript
 	----
 	
 	local function MakeRequest(token, url, method)
-		local data = request({
+		local t = {
 			Url = "https://api.spotify.com/v1/"..url,
 			Method = method and method:upper() or "GET",
 			Headers = {
 				['Authorization'] = "Bearer "..(token or usertoken),
 				['Content-Type'] = "application/json"
-			},
-			Body = ""
-		})
+			}
+		}
+		if method ~= "GET" then
+			t.Body = ""
+		end
+		local data = request(t)
 		
 		local body = data.Body
 		if body.error then
