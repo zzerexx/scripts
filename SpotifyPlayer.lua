@@ -623,7 +623,7 @@ Pause_2.Image = "rbxassetid://9607545382"
 
 -- Scripts:
 
-local function LYTZQN_fake_script() -- Main.SmoothDrag 
+local function PGKPH_fake_script() -- Main.SmoothDrag 
 	local script = Instance.new('LocalScript', Main)
 
 	local uis = game:GetService("UserInputService")
@@ -671,8 +671,8 @@ local function LYTZQN_fake_script() -- Main.SmoothDrag
 	
 	SmoothDrag(script.Parent)
 end
-coroutine.wrap(LYTZQN_fake_script)()
-local function WSYFL_fake_script() -- Spotify.LocalScript 
+coroutine.wrap(PGKPH_fake_script)()
+local function ESGXI_fake_script() -- Spotify.LocalScript 
 	local script = Instance.new('LocalScript', Spotify)
 
 	if SPOTIFY then SPOTIFY() end
@@ -764,9 +764,6 @@ local function WSYFL_fake_script() -- Spotify.LocalScript
 				['Content-Type'] = "application/json"
 			}
 		}
-		if method ~= "GET" then
-			t.Body = ""
-		end
 		local data = request(t)
 		
 		local body = data.Body
@@ -1100,4 +1097,4 @@ local function WSYFL_fake_script() -- Spotify.LocalScript
 		task.wait(INTERVAL)
 	end
 end
-coroutine.wrap(WSYFL_fake_script)()
+coroutine.wrap(ESGXI_fake_script)()
