@@ -59,6 +59,73 @@ local Next_2 = Instance.new("ImageButton")
 local UIPadding_8 = Instance.new("UIPadding")
 local Play_2 = Instance.new("ImageButton")
 local Pause_2 = Instance.new("ImageButton")
+local Positions = Instance.new("ImageButton")
+local PositionMain = Instance.new("Frame")
+local Label_4 = Instance.new("TextLabel")
+local Close_2 = Instance.new("TextButton")
+local Options = Instance.new("ScrollingFrame")
+local UIGridLayout = Instance.new("UIGridLayout")
+local TopLeft = Instance.new("TextButton")
+local Window = Instance.new("Frame")
+local Position = Instance.new("Frame")
+local TopCenter = Instance.new("TextButton")
+local Window_2 = Instance.new("Frame")
+local Position_2 = Instance.new("Frame")
+local TopRight = Instance.new("TextButton")
+local Window_3 = Instance.new("Frame")
+local Position_3 = Instance.new("Frame")
+local BottomLeft = Instance.new("TextButton")
+local Window_4 = Instance.new("Frame")
+local Position_4 = Instance.new("Frame")
+local BottomCenter = Instance.new("TextButton")
+local Window_5 = Instance.new("Frame")
+local Position_5 = Instance.new("Frame")
+local BottomRight = Instance.new("TextButton")
+local Window_6 = Instance.new("Frame")
+local Position_6 = Instance.new("Frame")
+local CenterLeft = Instance.new("TextButton")
+local Window_7 = Instance.new("Frame")
+local Position_7 = Instance.new("Frame")
+local Center = Instance.new("TextButton")
+local Window_8 = Instance.new("Frame")
+local Position_8 = Instance.new("Frame")
+local CenterRight = Instance.new("TextButton")
+local Window_9 = Instance.new("Frame")
+local Position_9 = Instance.new("Frame")
+local BottomLeftMini = Instance.new("TextButton")
+local Window_10 = Instance.new("Frame")
+local Position_10 = Instance.new("Frame")
+local BottomCenterMini = Instance.new("TextButton")
+local Window_11 = Instance.new("Frame")
+local Position_11 = Instance.new("Frame")
+local BottomRightMini = Instance.new("TextButton")
+local Window_12 = Instance.new("Frame")
+local Position_12 = Instance.new("Frame")
+local CenterLeftMini = Instance.new("TextButton")
+local Window_13 = Instance.new("Frame")
+local Position_13 = Instance.new("Frame")
+local CenterMini = Instance.new("TextButton")
+local Window_14 = Instance.new("Frame")
+local Position_14 = Instance.new("Frame")
+local CenterRightMini = Instance.new("TextButton")
+local Window_15 = Instance.new("Frame")
+local Position_15 = Instance.new("Frame")
+local SettingsMain = Instance.new("Frame")
+local Label_5 = Instance.new("TextLabel")
+local Close_3 = Instance.new("TextButton")
+local Options_2 = Instance.new("ScrollingFrame")
+local UIListLayout = Instance.new("UIListLayout")
+local TextBox = Instance.new("Frame")
+local Label_6 = Instance.new("TextLabel")
+local UIPadding_9 = Instance.new("UIPadding")
+local Line = Instance.new("Frame")
+local Box = Instance.new("TextBox")
+local Button_2 = Instance.new("Frame")
+local Label_7 = Instance.new("TextLabel")
+local UIPadding_10 = Instance.new("UIPadding")
+local Line_2 = Instance.new("Frame")
+local Button_3 = Instance.new("TextButton")
+local Settings = Instance.new("ImageButton")
 
 if syn then
 	syn.protect_gui(Spotify)
@@ -372,8 +439,6 @@ ArtistCover.Position = UDim2.new(0, 100, 0, 40)
 ArtistCover.Size = UDim2.new(1, -100, 0, 60)
 ArtistCover.AutoButtonColor = false
 ArtistCover.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png"
-ArtistCover.ImageRectOffset = Vector2.new(35, 35)
-ArtistCover.ImageRectSize = Vector2.new(190, 190)
 ArtistCover.ScaleType = Enum.ScaleType.Crop
 
 UIGradient.Rotation = 270
@@ -390,8 +455,6 @@ ArtistCover_2.Size = UDim2.new(1, 0, 1, 0)
 ArtistCover_2.Visible = false
 ArtistCover_2.ZIndex = 10
 ArtistCover_2.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png"
-ArtistCover_2.ImageRectOffset = Vector2.new(35, 35)
-ArtistCover_2.ImageRectSize = Vector2.new(190, 190)
 ArtistCover_2.ScaleType = Enum.ScaleType.Crop
 
 Token.Name = "Token"
@@ -543,12 +606,14 @@ MiniView.BorderSizePixel = 0
 MiniView.Position = UDim2.new(0, 35, 1, 0)
 MiniView.Size = UDim2.new(0, 255, 0, 30)
 MiniView.Visible = false
+MiniView.ZIndex = 2
 
 SongCover.Name = "SongCover"
 SongCover.Parent = MiniView
 SongCover.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
 SongCover.BorderSizePixel = 0
 SongCover.Size = UDim2.new(0, 30, 0, 30)
+SongCover.ZIndex = 2
 SongCover.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png"
 
 Title_2.Name = "Title"
@@ -558,6 +623,7 @@ Title_2.BackgroundTransparency = 1.000
 Title_2.BorderSizePixel = 0
 Title_2.Position = UDim2.new(0, 30, 0, 0)
 Title_2.Size = UDim2.new(0, 160, 0, 16)
+Title_2.ZIndex = 2
 Title_2.Font = Enum.Font.Gotham
 Title_2.Text = "Song Title"
 Title_2.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -574,6 +640,7 @@ Artist_2.BackgroundTransparency = 1.000
 Artist_2.BorderSizePixel = 0
 Artist_2.Position = UDim2.new(0, 30, 0, 16)
 Artist_2.Size = UDim2.new(0, 160, 0, 14)
+Artist_2.ZIndex = 2
 Artist_2.Font = Enum.Font.Gotham
 Artist_2.Text = "Artist"
 Artist_2.TextColor3 = Color3.fromRGB(150, 150, 150)
@@ -591,6 +658,7 @@ Next_2.BackgroundTransparency = 1.000
 Next_2.BorderSizePixel = 0
 Next_2.Position = UDim2.new(1, 0, 0.5, 0)
 Next_2.Size = UDim2.new(0, 20, 0, 20)
+Next_2.ZIndex = 2
 Next_2.AutoButtonColor = false
 Next_2.Image = "rbxassetid://9607545497"
 Next_2.ImageColor3 = Color3.fromRGB(170, 170, 170)
@@ -607,6 +675,7 @@ Play_2.BorderSizePixel = 0
 Play_2.Position = UDim2.new(1, -25, 0.5, 0)
 Play_2.Size = UDim2.new(0, 30, 0, 30)
 Play_2.Visible = false
+Play_2.ZIndex = 2
 Play_2.AutoButtonColor = false
 Play_2.Image = "rbxassetid://9622475855"
 
@@ -618,12 +687,692 @@ Pause_2.BackgroundTransparency = 1.000
 Pause_2.BorderSizePixel = 0
 Pause_2.Position = UDim2.new(1, -25, 0.5, 0)
 Pause_2.Size = UDim2.new(0, 30, 0, 30)
+Pause_2.ZIndex = 2
 Pause_2.AutoButtonColor = false
 Pause_2.Image = "rbxassetid://9607545382"
 
+Positions.Name = "Positions"
+Positions.Parent = Main
+Positions.AnchorPoint = Vector2.new(1, 0)
+Positions.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Positions.BackgroundTransparency = 1.000
+Positions.BorderSizePixel = 0
+Positions.Position = UDim2.new(1, -35, 0, 0)
+Positions.Size = UDim2.new(0, 30, 0, 30)
+Positions.Image = "rbxassetid://9634569804"
+
+PositionMain.Name = "PositionMain"
+PositionMain.Parent = Main
+PositionMain.AnchorPoint = Vector2.new(0.5, 0.5)
+PositionMain.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+PositionMain.BorderSizePixel = 0
+PositionMain.Position = UDim2.new(0.5, 0, 0.5, 0)
+PositionMain.Size = UDim2.new(0, 300, 0, 200)
+PositionMain.Visible = false
+PositionMain.ZIndex = 21
+
+Label_4.Name = "Label"
+Label_4.Parent = PositionMain
+Label_4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Label_4.BackgroundTransparency = 1.000
+Label_4.BorderSizePixel = 0
+Label_4.Size = UDim2.new(1, 0, 0, 25)
+Label_4.ZIndex = 22
+Label_4.Font = Enum.Font.GothamBold
+Label_4.Text = "UI Position"
+Label_4.TextColor3 = Color3.fromRGB(255, 255, 255)
+Label_4.TextSize = 14.000
+
+Close_2.Name = "Close"
+Close_2.Parent = PositionMain
+Close_2.AnchorPoint = Vector2.new(1, 0)
+Close_2.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+Close_2.BorderColor3 = Color3.fromRGB(27, 42, 53)
+Close_2.BorderSizePixel = 0
+Close_2.Position = UDim2.new(1, 0, 0, 0)
+Close_2.Size = UDim2.new(0, 25, 0, 25)
+Close_2.ZIndex = 22
+Close_2.Font = Enum.Font.GothamBold
+Close_2.Text = "X"
+Close_2.TextColor3 = Color3.fromRGB(255, 255, 255)
+Close_2.TextSize = 14.000
+
+Options.Name = "Options"
+Options.Parent = PositionMain
+Options.Active = true
+Options.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Options.BackgroundTransparency = 1.000
+Options.BorderSizePixel = 0
+Options.Position = UDim2.new(0, 0, 0, 25)
+Options.Size = UDim2.new(1, 0, 1, -25)
+Options.CanvasSize = UDim2.new(0, 0, 0, 500)
+Options.ScrollBarThickness = 0
+
+UIGridLayout.Parent = Options
+UIGridLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UIGridLayout.CellPadding = UDim2.new(0, 0, 0, 0)
+
+TopLeft.Name = "TopLeft"
+TopLeft.Parent = Options
+TopLeft.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+TopLeft.BorderSizePixel = 0
+TopLeft.LayoutOrder = 1
+TopLeft.Size = UDim2.new(0, 200, 0, 50)
+TopLeft.ZIndex = 22
+TopLeft.Font = Enum.Font.SourceSans
+TopLeft.Text = ""
+TopLeft.TextColor3 = Color3.fromRGB(0, 0, 0)
+TopLeft.TextSize = 14.000
+
+Window.Name = "Window"
+Window.Parent = TopLeft
+Window.AnchorPoint = Vector2.new(0.5, 0.5)
+Window.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+Window.BorderColor3 = Color3.fromRGB(30, 215, 96)
+Window.BorderSizePixel = 0
+Window.Position = UDim2.new(0.5, 0, 0.5, 0)
+Window.Size = UDim2.new(0, 90, 0, 90)
+Window.ZIndex = 22
+
+Position.Name = "Position"
+Position.Parent = Window
+Position.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+Position.BorderSizePixel = 0
+Position.Position = UDim2.new(0, 5, 0, 5)
+Position.Size = UDim2.new(0, 30, 0, 25)
+Position.ZIndex = 23
+
+TopCenter.Name = "TopCenter"
+TopCenter.Parent = Options
+TopCenter.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+TopCenter.BorderSizePixel = 0
+TopCenter.LayoutOrder = 2
+TopCenter.Size = UDim2.new(0, 200, 0, 50)
+TopCenter.ZIndex = 22
+TopCenter.Font = Enum.Font.SourceSans
+TopCenter.Text = ""
+TopCenter.TextColor3 = Color3.fromRGB(0, 0, 0)
+TopCenter.TextSize = 14.000
+
+Window_2.Name = "Window"
+Window_2.Parent = TopCenter
+Window_2.AnchorPoint = Vector2.new(0.5, 0.5)
+Window_2.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+Window_2.BorderColor3 = Color3.fromRGB(30, 215, 96)
+Window_2.BorderSizePixel = 0
+Window_2.Position = UDim2.new(0.5, 0, 0.5, 0)
+Window_2.Size = UDim2.new(0, 90, 0, 90)
+Window_2.ZIndex = 22
+
+Position_2.Name = "Position"
+Position_2.Parent = Window_2
+Position_2.AnchorPoint = Vector2.new(0.5, 0)
+Position_2.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+Position_2.BorderSizePixel = 0
+Position_2.Position = UDim2.new(0.5, 0, 0, 5)
+Position_2.Size = UDim2.new(0, 30, 0, 25)
+Position_2.ZIndex = 23
+
+TopRight.Name = "TopRight"
+TopRight.Parent = Options
+TopRight.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+TopRight.BorderSizePixel = 0
+TopRight.LayoutOrder = 3
+TopRight.Size = UDim2.new(0, 200, 0, 50)
+TopRight.ZIndex = 22
+TopRight.Font = Enum.Font.SourceSans
+TopRight.Text = ""
+TopRight.TextColor3 = Color3.fromRGB(0, 0, 0)
+TopRight.TextSize = 14.000
+
+Window_3.Name = "Window"
+Window_3.Parent = TopRight
+Window_3.AnchorPoint = Vector2.new(0.5, 0.5)
+Window_3.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+Window_3.BorderColor3 = Color3.fromRGB(30, 215, 96)
+Window_3.BorderSizePixel = 0
+Window_3.Position = UDim2.new(0.5, 0, 0.5, 0)
+Window_3.Size = UDim2.new(0, 90, 0, 90)
+Window_3.ZIndex = 22
+
+Position_3.Name = "Position"
+Position_3.Parent = Window_3
+Position_3.AnchorPoint = Vector2.new(1, 0)
+Position_3.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+Position_3.BorderSizePixel = 0
+Position_3.Position = UDim2.new(1, -5, 0, 5)
+Position_3.Size = UDim2.new(0, 30, 0, 25)
+Position_3.ZIndex = 23
+
+BottomLeft.Name = "BottomLeft"
+BottomLeft.Parent = Options
+BottomLeft.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+BottomLeft.BorderSizePixel = 0
+BottomLeft.LayoutOrder = 7
+BottomLeft.Size = UDim2.new(0, 200, 0, 50)
+BottomLeft.ZIndex = 22
+BottomLeft.Font = Enum.Font.SourceSans
+BottomLeft.Text = ""
+BottomLeft.TextColor3 = Color3.fromRGB(0, 0, 0)
+BottomLeft.TextSize = 14.000
+
+Window_4.Name = "Window"
+Window_4.Parent = BottomLeft
+Window_4.AnchorPoint = Vector2.new(0.5, 0.5)
+Window_4.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+Window_4.BorderColor3 = Color3.fromRGB(30, 215, 96)
+Window_4.BorderSizePixel = 0
+Window_4.Position = UDim2.new(0.5, 0, 0.5, 0)
+Window_4.Size = UDim2.new(0, 90, 0, 90)
+Window_4.ZIndex = 22
+
+Position_4.Name = "Position"
+Position_4.Parent = Window_4
+Position_4.AnchorPoint = Vector2.new(0, 1)
+Position_4.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+Position_4.BorderSizePixel = 0
+Position_4.Position = UDim2.new(0, 5, 1, -5)
+Position_4.Size = UDim2.new(0, 30, 0, 25)
+Position_4.ZIndex = 23
+
+BottomCenter.Name = "BottomCenter"
+BottomCenter.Parent = Options
+BottomCenter.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+BottomCenter.BorderSizePixel = 0
+BottomCenter.LayoutOrder = 8
+BottomCenter.Size = UDim2.new(0, 200, 0, 50)
+BottomCenter.ZIndex = 22
+BottomCenter.Font = Enum.Font.SourceSans
+BottomCenter.Text = ""
+BottomCenter.TextColor3 = Color3.fromRGB(0, 0, 0)
+BottomCenter.TextSize = 14.000
+
+Window_5.Name = "Window"
+Window_5.Parent = BottomCenter
+Window_5.AnchorPoint = Vector2.new(0.5, 0.5)
+Window_5.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+Window_5.BorderColor3 = Color3.fromRGB(30, 215, 96)
+Window_5.BorderSizePixel = 0
+Window_5.Position = UDim2.new(0.5, 0, 0.5, 0)
+Window_5.Size = UDim2.new(0, 90, 0, 90)
+Window_5.ZIndex = 22
+
+Position_5.Name = "Position"
+Position_5.Parent = Window_5
+Position_5.AnchorPoint = Vector2.new(0.5, 1)
+Position_5.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+Position_5.BorderSizePixel = 0
+Position_5.Position = UDim2.new(0.5, 0, 1, -5)
+Position_5.Size = UDim2.new(0, 30, 0, 25)
+Position_5.ZIndex = 23
+
+BottomRight.Name = "BottomRight"
+BottomRight.Parent = Options
+BottomRight.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+BottomRight.BorderSizePixel = 0
+BottomRight.LayoutOrder = 9
+BottomRight.Size = UDim2.new(0, 200, 0, 50)
+BottomRight.ZIndex = 22
+BottomRight.Font = Enum.Font.SourceSans
+BottomRight.Text = ""
+BottomRight.TextColor3 = Color3.fromRGB(0, 0, 0)
+BottomRight.TextSize = 14.000
+
+Window_6.Name = "Window"
+Window_6.Parent = BottomRight
+Window_6.AnchorPoint = Vector2.new(0.5, 0.5)
+Window_6.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+Window_6.BorderColor3 = Color3.fromRGB(30, 215, 96)
+Window_6.BorderSizePixel = 0
+Window_6.Position = UDim2.new(0.5, 0, 0.5, 0)
+Window_6.Size = UDim2.new(0, 90, 0, 90)
+Window_6.ZIndex = 22
+
+Position_6.Name = "Position"
+Position_6.Parent = Window_6
+Position_6.AnchorPoint = Vector2.new(1, 1)
+Position_6.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+Position_6.BorderSizePixel = 0
+Position_6.Position = UDim2.new(1, -5, 1, -5)
+Position_6.Size = UDim2.new(0, 30, 0, 25)
+Position_6.ZIndex = 23
+
+CenterLeft.Name = "CenterLeft"
+CenterLeft.Parent = Options
+CenterLeft.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+CenterLeft.BorderSizePixel = 0
+CenterLeft.LayoutOrder = 4
+CenterLeft.Size = UDim2.new(0, 200, 0, 50)
+CenterLeft.ZIndex = 22
+CenterLeft.Font = Enum.Font.SourceSans
+CenterLeft.Text = ""
+CenterLeft.TextColor3 = Color3.fromRGB(0, 0, 0)
+CenterLeft.TextSize = 14.000
+
+Window_7.Name = "Window"
+Window_7.Parent = CenterLeft
+Window_7.AnchorPoint = Vector2.new(0.5, 0.5)
+Window_7.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+Window_7.BorderColor3 = Color3.fromRGB(30, 215, 96)
+Window_7.BorderSizePixel = 0
+Window_7.Position = UDim2.new(0.5, 0, 0.5, 0)
+Window_7.Size = UDim2.new(0, 90, 0, 90)
+Window_7.ZIndex = 22
+
+Position_7.Name = "Position"
+Position_7.Parent = Window_7
+Position_7.AnchorPoint = Vector2.new(0, 0.5)
+Position_7.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+Position_7.BorderSizePixel = 0
+Position_7.Position = UDim2.new(0, 5, 0.5, 0)
+Position_7.Size = UDim2.new(0, 30, 0, 25)
+Position_7.ZIndex = 23
+
+Center.Name = "Center"
+Center.Parent = Options
+Center.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+Center.BorderSizePixel = 0
+Center.LayoutOrder = 5
+Center.Size = UDim2.new(0, 200, 0, 50)
+Center.ZIndex = 22
+Center.Font = Enum.Font.SourceSans
+Center.Text = ""
+Center.TextColor3 = Color3.fromRGB(0, 0, 0)
+Center.TextSize = 14.000
+
+Window_8.Name = "Window"
+Window_8.Parent = Center
+Window_8.AnchorPoint = Vector2.new(0.5, 0.5)
+Window_8.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+Window_8.BorderColor3 = Color3.fromRGB(30, 215, 96)
+Window_8.Position = UDim2.new(0.5, 0, 0.5, 0)
+Window_8.Size = UDim2.new(0, 90, 0, 90)
+Window_8.ZIndex = 22
+
+Position_8.Name = "Position"
+Position_8.Parent = Window_8
+Position_8.AnchorPoint = Vector2.new(0.5, 0.5)
+Position_8.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+Position_8.BorderSizePixel = 0
+Position_8.Position = UDim2.new(0.5, 0, 0.5, 0)
+Position_8.Size = UDim2.new(0, 30, 0, 25)
+Position_8.ZIndex = 23
+
+CenterRight.Name = "CenterRight"
+CenterRight.Parent = Options
+CenterRight.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+CenterRight.BorderSizePixel = 0
+CenterRight.LayoutOrder = 5
+CenterRight.Size = UDim2.new(0, 200, 0, 50)
+CenterRight.ZIndex = 22
+CenterRight.Font = Enum.Font.SourceSans
+CenterRight.Text = ""
+CenterRight.TextColor3 = Color3.fromRGB(0, 0, 0)
+CenterRight.TextSize = 14.000
+
+Window_9.Name = "Window"
+Window_9.Parent = CenterRight
+Window_9.AnchorPoint = Vector2.new(0.5, 0.5)
+Window_9.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+Window_9.BorderColor3 = Color3.fromRGB(30, 215, 96)
+Window_9.BorderSizePixel = 0
+Window_9.Position = UDim2.new(0.5, 0, 0.5, 0)
+Window_9.Size = UDim2.new(0, 90, 0, 90)
+Window_9.ZIndex = 22
+
+Position_9.Name = "Position"
+Position_9.Parent = Window_9
+Position_9.AnchorPoint = Vector2.new(1, 0.5)
+Position_9.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+Position_9.BorderSizePixel = 0
+Position_9.Position = UDim2.new(1, -5, 0.5, 0)
+Position_9.Size = UDim2.new(0, 30, 0, 25)
+Position_9.ZIndex = 23
+
+BottomLeftMini.Name = "BottomLeftMini"
+BottomLeftMini.Parent = Options
+BottomLeftMini.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+BottomLeftMini.BorderSizePixel = 0
+BottomLeftMini.LayoutOrder = 13
+BottomLeftMini.Size = UDim2.new(0, 200, 0, 50)
+BottomLeftMini.ZIndex = 22
+BottomLeftMini.Font = Enum.Font.SourceSans
+BottomLeftMini.Text = ""
+BottomLeftMini.TextColor3 = Color3.fromRGB(0, 0, 0)
+BottomLeftMini.TextSize = 14.000
+
+Window_10.Name = "Window"
+Window_10.Parent = BottomLeftMini
+Window_10.AnchorPoint = Vector2.new(0.5, 0.5)
+Window_10.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+Window_10.BorderColor3 = Color3.fromRGB(30, 215, 96)
+Window_10.BorderSizePixel = 0
+Window_10.Position = UDim2.new(0.5, 0, 0.5, 0)
+Window_10.Size = UDim2.new(0, 90, 0, 90)
+Window_10.ZIndex = 22
+
+Position_10.Name = "Position"
+Position_10.Parent = Window_10
+Position_10.AnchorPoint = Vector2.new(0, 1)
+Position_10.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+Position_10.BorderSizePixel = 0
+Position_10.Position = UDim2.new(0, 5, 1, -5)
+Position_10.Size = UDim2.new(0, 30, 0, 10)
+Position_10.ZIndex = 23
+
+BottomCenterMini.Name = "BottomCenterMini"
+BottomCenterMini.Parent = Options
+BottomCenterMini.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+BottomCenterMini.BorderSizePixel = 0
+BottomCenterMini.LayoutOrder = 14
+BottomCenterMini.Size = UDim2.new(0, 200, 0, 50)
+BottomCenterMini.ZIndex = 22
+BottomCenterMini.Font = Enum.Font.SourceSans
+BottomCenterMini.Text = ""
+BottomCenterMini.TextColor3 = Color3.fromRGB(0, 0, 0)
+BottomCenterMini.TextSize = 14.000
+
+Window_11.Name = "Window"
+Window_11.Parent = BottomCenterMini
+Window_11.AnchorPoint = Vector2.new(0.5, 0.5)
+Window_11.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+Window_11.BorderColor3 = Color3.fromRGB(30, 215, 96)
+Window_11.BorderSizePixel = 0
+Window_11.Position = UDim2.new(0.5, 0, 0.5, 0)
+Window_11.Size = UDim2.new(0, 90, 0, 90)
+Window_11.ZIndex = 22
+
+Position_11.Name = "Position"
+Position_11.Parent = Window_11
+Position_11.AnchorPoint = Vector2.new(0.5, 1)
+Position_11.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+Position_11.BorderSizePixel = 0
+Position_11.Position = UDim2.new(0.5, 0, 1, -5)
+Position_11.Size = UDim2.new(0, 30, 0, 10)
+Position_11.ZIndex = 23
+
+BottomRightMini.Name = "BottomRightMini"
+BottomRightMini.Parent = Options
+BottomRightMini.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+BottomRightMini.BorderSizePixel = 0
+BottomRightMini.LayoutOrder = 15
+BottomRightMini.Size = UDim2.new(0, 200, 0, 50)
+BottomRightMini.ZIndex = 22
+BottomRightMini.Font = Enum.Font.SourceSans
+BottomRightMini.Text = ""
+BottomRightMini.TextColor3 = Color3.fromRGB(0, 0, 0)
+BottomRightMini.TextSize = 14.000
+
+Window_12.Name = "Window"
+Window_12.Parent = BottomRightMini
+Window_12.AnchorPoint = Vector2.new(0.5, 0.5)
+Window_12.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+Window_12.BorderColor3 = Color3.fromRGB(30, 215, 96)
+Window_12.BorderSizePixel = 0
+Window_12.Position = UDim2.new(0.5, 0, 0.5, 0)
+Window_12.Size = UDim2.new(0, 90, 0, 90)
+Window_12.ZIndex = 22
+
+Position_12.Name = "Position"
+Position_12.Parent = Window_12
+Position_12.AnchorPoint = Vector2.new(1, 1)
+Position_12.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+Position_12.BorderSizePixel = 0
+Position_12.Position = UDim2.new(1, -5, 1, -5)
+Position_12.Size = UDim2.new(0, 30, 0, 10)
+Position_12.ZIndex = 23
+
+CenterLeftMini.Name = "CenterLeftMini"
+CenterLeftMini.Parent = Options
+CenterLeftMini.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+CenterLeftMini.BorderSizePixel = 0
+CenterLeftMini.LayoutOrder = 10
+CenterLeftMini.Size = UDim2.new(0, 200, 0, 50)
+CenterLeftMini.ZIndex = 22
+CenterLeftMini.Font = Enum.Font.SourceSans
+CenterLeftMini.Text = ""
+CenterLeftMini.TextColor3 = Color3.fromRGB(0, 0, 0)
+CenterLeftMini.TextSize = 14.000
+
+Window_13.Name = "Window"
+Window_13.Parent = CenterLeftMini
+Window_13.AnchorPoint = Vector2.new(0.5, 0.5)
+Window_13.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+Window_13.BorderColor3 = Color3.fromRGB(30, 215, 96)
+Window_13.BorderSizePixel = 0
+Window_13.Position = UDim2.new(0.5, 0, 0.5, 0)
+Window_13.Size = UDim2.new(0, 90, 0, 90)
+Window_13.ZIndex = 22
+
+Position_13.Name = "Position"
+Position_13.Parent = Window_13
+Position_13.AnchorPoint = Vector2.new(0, 0.5)
+Position_13.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+Position_13.BorderSizePixel = 0
+Position_13.Position = UDim2.new(0, 5, 0.5, 0)
+Position_13.Size = UDim2.new(0, 30, 0, 10)
+Position_13.ZIndex = 23
+
+CenterMini.Name = "CenterMini"
+CenterMini.Parent = Options
+CenterMini.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+CenterMini.BorderSizePixel = 0
+CenterMini.LayoutOrder = 11
+CenterMini.Size = UDim2.new(0, 200, 0, 50)
+CenterMini.ZIndex = 22
+CenterMini.Font = Enum.Font.SourceSans
+CenterMini.Text = ""
+CenterMini.TextColor3 = Color3.fromRGB(0, 0, 0)
+CenterMini.TextSize = 14.000
+
+Window_14.Name = "Window"
+Window_14.Parent = CenterMini
+Window_14.AnchorPoint = Vector2.new(0.5, 0.5)
+Window_14.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+Window_14.BorderColor3 = Color3.fromRGB(30, 215, 96)
+Window_14.BorderSizePixel = 0
+Window_14.Position = UDim2.new(0.5, 0, 0.5, 0)
+Window_14.Size = UDim2.new(0, 90, 0, 90)
+Window_14.ZIndex = 22
+
+Position_14.Name = "Position"
+Position_14.Parent = Window_14
+Position_14.AnchorPoint = Vector2.new(0.5, 0.5)
+Position_14.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+Position_14.BorderSizePixel = 0
+Position_14.Position = UDim2.new(0.5, 0, 0.5, 0)
+Position_14.Size = UDim2.new(0, 30, 0, 10)
+Position_14.ZIndex = 23
+
+CenterRightMini.Name = "CenterRightMini"
+CenterRightMini.Parent = Options
+CenterRightMini.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+CenterRightMini.BorderSizePixel = 0
+CenterRightMini.LayoutOrder = 12
+CenterRightMini.Size = UDim2.new(0, 200, 0, 50)
+CenterRightMini.ZIndex = 22
+CenterRightMini.Font = Enum.Font.SourceSans
+CenterRightMini.Text = ""
+CenterRightMini.TextColor3 = Color3.fromRGB(0, 0, 0)
+CenterRightMini.TextSize = 14.000
+
+Window_15.Name = "Window"
+Window_15.Parent = CenterRightMini
+Window_15.AnchorPoint = Vector2.new(0.5, 0.5)
+Window_15.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+Window_15.BorderColor3 = Color3.fromRGB(30, 215, 96)
+Window_15.BorderSizePixel = 0
+Window_15.Position = UDim2.new(0.5, 0, 0.5, 0)
+Window_15.Size = UDim2.new(0, 90, 0, 90)
+Window_15.ZIndex = 22
+
+Position_15.Name = "Position"
+Position_15.Parent = Window_15
+Position_15.AnchorPoint = Vector2.new(1, 0.5)
+Position_15.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+Position_15.BorderSizePixel = 0
+Position_15.Position = UDim2.new(1, -5, 0.5, 0)
+Position_15.Size = UDim2.new(0, 30, 0, 10)
+Position_15.ZIndex = 23
+
+SettingsMain.Name = "SettingsMain"
+SettingsMain.Parent = Main
+SettingsMain.AnchorPoint = Vector2.new(0.5, 0.5)
+SettingsMain.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+SettingsMain.BorderSizePixel = 0
+SettingsMain.Position = UDim2.new(0.5, 0, 0.5, 0)
+SettingsMain.Size = UDim2.new(0, 300, 0, 200)
+SettingsMain.Visible = false
+SettingsMain.ZIndex = 21
+
+Label_5.Name = "Label"
+Label_5.Parent = SettingsMain
+Label_5.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Label_5.BackgroundTransparency = 1.000
+Label_5.BorderSizePixel = 0
+Label_5.Size = UDim2.new(1, 0, 0, 25)
+Label_5.ZIndex = 22
+Label_5.Font = Enum.Font.GothamBold
+Label_5.Text = "Settings"
+Label_5.TextColor3 = Color3.fromRGB(255, 255, 255)
+Label_5.TextSize = 14.000
+
+Close_3.Name = "Close"
+Close_3.Parent = SettingsMain
+Close_3.AnchorPoint = Vector2.new(1, 0)
+Close_3.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+Close_3.BorderColor3 = Color3.fromRGB(27, 42, 53)
+Close_3.BorderSizePixel = 0
+Close_3.Position = UDim2.new(1, 0, 0, 0)
+Close_3.Size = UDim2.new(0, 25, 0, 25)
+Close_3.ZIndex = 22
+Close_3.Font = Enum.Font.GothamBold
+Close_3.Text = "X"
+Close_3.TextColor3 = Color3.fromRGB(255, 255, 255)
+Close_3.TextSize = 14.000
+
+Options_2.Name = "Options"
+Options_2.Parent = SettingsMain
+Options_2.Active = true
+Options_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Options_2.BackgroundTransparency = 1.000
+Options_2.BorderSizePixel = 0
+Options_2.Position = UDim2.new(0, 0, 0, 25)
+Options_2.Size = UDim2.new(1, 0, 1, -25)
+Options_2.CanvasSize = UDim2.new(0, 0, 0, 300)
+Options_2.ScrollBarThickness = 0
+
+UIListLayout.Parent = Options_2
+UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+
+TextBox.Name = "TextBox"
+TextBox.Parent = Options_2
+TextBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextBox.BackgroundTransparency = 1.000
+TextBox.BorderSizePixel = 0
+TextBox.Size = UDim2.new(1, 0, 0, 25)
+TextBox.Visible = false
+TextBox.ZIndex = 22
+
+Label_6.Name = "Label"
+Label_6.Parent = TextBox
+Label_6.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Label_6.BackgroundTransparency = 1.000
+Label_6.BorderSizePixel = 0
+Label_6.Size = UDim2.new(0, 200, 0, 25)
+Label_6.ZIndex = 22
+Label_6.Font = Enum.Font.Gotham
+Label_6.TextColor3 = Color3.fromRGB(255, 255, 255)
+Label_6.TextSize = 14.000
+Label_6.TextXAlignment = Enum.TextXAlignment.Left
+
+UIPadding_9.Parent = Label_6
+UIPadding_9.PaddingLeft = UDim.new(0, 5)
+
+Line.Name = "Line"
+Line.Parent = TextBox
+Line.AnchorPoint = Vector2.new(0, 1)
+Line.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+Line.BorderSizePixel = 0
+Line.Position = UDim2.new(0, 5, 1, 0)
+Line.Size = UDim2.new(1, -110, 0, 1)
+Line.Visible = false
+Line.ZIndex = 22
+
+Box.Name = "Box"
+Box.Parent = TextBox
+Box.AnchorPoint = Vector2.new(1, 0)
+Box.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+Box.BorderSizePixel = 0
+Box.Position = UDim2.new(1, 0, 0, 0)
+Box.Size = UDim2.new(0, 100, 0, 25)
+Box.ZIndex = 22
+Box.Font = Enum.Font.Gotham
+Box.PlaceholderText = "TextBox"
+Box.Text = ""
+Box.TextColor3 = Color3.fromRGB(255, 255, 255)
+Box.TextSize = 14.000
+
+Button_2.Name = "Button"
+Button_2.Parent = Options_2
+Button_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Button_2.BackgroundTransparency = 1.000
+Button_2.BorderSizePixel = 0
+Button_2.Size = UDim2.new(1, 0, 0, 25)
+Button_2.Visible = false
+Button_2.ZIndex = 22
+
+Label_7.Name = "Label"
+Label_7.Parent = Button_2
+Label_7.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Label_7.BackgroundTransparency = 1.000
+Label_7.BorderSizePixel = 0
+Label_7.Size = UDim2.new(0, 200, 0, 25)
+Label_7.ZIndex = 22
+Label_7.Font = Enum.Font.Gotham
+Label_7.TextColor3 = Color3.fromRGB(255, 255, 255)
+Label_7.TextSize = 14.000
+Label_7.TextXAlignment = Enum.TextXAlignment.Left
+
+UIPadding_10.Parent = Label_7
+UIPadding_10.PaddingLeft = UDim.new(0, 5)
+
+Line_2.Name = "Line"
+Line_2.Parent = Button_2
+Line_2.AnchorPoint = Vector2.new(0, 1)
+Line_2.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+Line_2.BorderSizePixel = 0
+Line_2.Position = UDim2.new(0, 5, 1, 0)
+Line_2.Size = UDim2.new(1, -110, 0, 1)
+Line_2.Visible = false
+Line_2.ZIndex = 22
+
+Button_3.Name = "Button"
+Button_3.Parent = Button_2
+Button_3.AnchorPoint = Vector2.new(1, 0)
+Button_3.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+Button_3.BorderSizePixel = 0
+Button_3.Position = UDim2.new(1, 0, 0, 0)
+Button_3.Size = UDim2.new(0, 100, 0, 25)
+Button_3.ZIndex = 22
+Button_3.Font = Enum.Font.Gotham
+Button_3.Text = "Activate"
+Button_3.TextColor3 = Color3.fromRGB(255, 255, 255)
+Button_3.TextSize = 14.000
+
+Settings.Name = "Settings"
+Settings.Parent = Main
+Settings.AnchorPoint = Vector2.new(1, 0)
+Settings.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Settings.BackgroundTransparency = 1.000
+Settings.BorderSizePixel = 0
+Settings.Position = UDim2.new(1, -70, 0, 0)
+Settings.Size = UDim2.new(0, 30, 0, 30)
+Settings.Image = "rbxassetid://9622863785"
+
 -- Scripts:
 
-local function PGKPH_fake_script() -- Main.SmoothDrag 
+local function POFZOUR_fake_script() -- Main.SmoothDrag 
 	local script = Instance.new('LocalScript', Main)
 
 	local uis = game:GetService("UserInputService")
@@ -671,8 +1420,8 @@ local function PGKPH_fake_script() -- Main.SmoothDrag
 	
 	SmoothDrag(script.Parent)
 end
-coroutine.wrap(PGKPH_fake_script)()
-local function ESGXI_fake_script() -- Spotify.LocalScript 
+coroutine.wrap(POFZOUR_fake_script)()
+local function QRYB_fake_script() -- Spotify.LocalScript 
 	local script = Instance.new('LocalScript', Spotify)
 
 	if SPOTIFY then SPOTIFY() end
@@ -715,8 +1464,11 @@ local function ESGXI_fake_script() -- Spotify.LocalScript
 	local tokenmain = main.TokenMain
 	local error = main.ErrorBox
 	local mini = main.MiniView
+	local posmain = main.PositionMain
+	local settingsmain = main.SettingsMain
 	
 	-- set properties cuz gui to lua bad
+	script.Parent.IgnoreGuiInset = true
 	cover.AutoButtonColor = false
 	artistcover.AutoButtonColor = false
 	title.TextTruncate = Enum.TextTruncate.AtEnd
@@ -758,12 +1510,15 @@ local function ESGXI_fake_script() -- Spotify.LocalScript
 	local function MakeRequest(token, url, method)
 		local t = {
 			Url = "https://api.spotify.com/v1/"..url,
-			Method = method and method:upper() or "GET",
+			Method = method ~= nil and method:upper() or "GET",
 			Headers = {
 				['Authorization'] = "Bearer "..(token or usertoken),
 				['Content-Type'] = "application/json"
 			}
 		}
+		if method == "POST" then
+			t.Body = ""
+		end
 		local data = request(t)
 		
 		local body = data.Body
@@ -963,6 +1718,18 @@ local function ESGXI_fake_script() -- Spotify.LocalScript
 	end)
 	main.Token.Activated:Connect(function()
 		tokenmain.Visible = not tokenmain.Visible
+		posmain.Visible = false
+		settingsmain.Visible = false
+	end)
+	main.Positions.Activated:Connect(function()
+		posmain.Visible = not posmain.Visible
+		tokenmain.Visible = false
+		settingsmain.Visible = false
+	end)
+	main.Settings.Activated:Connect(function()
+		settingsmain.Visible = not settingsmain.Visible
+		tokenmain.Visible = false
+		posmain.Visible = false
 	end)
 	
 	title.MouseEnter:Connect(function()
@@ -998,7 +1765,7 @@ local function ESGXI_fake_script() -- Spotify.LocalScript
 			artistcover.ArtistCover.Visible = true
 			artistcover.ArtistCover.Image = artistcover.Image
 			artistcover.ArtistCover:TweenSize(UDim2.new(0, 300, 0, 300), "Out", "Quart", 0.3, true)
-		end
+		end 
 	end)
 	artistcover.MouseButton1Up:Connect(function()
 		if not tokenmain.Visible then
@@ -1028,6 +1795,90 @@ local function ESGXI_fake_script() -- Spotify.LocalScript
 		tokenmain.Input.Text = ""
 	end)
 	
+	local positions = {
+		TopLeft = UDim2.new(0, 10, 0, 46),
+		TopCenter = UDim2.new(0.5, -150, 0, 10),
+		TopRight = UDim2.new(1, -310, 0, 46),
+		CenterLeft = UDim2.new(0, 10, 0.5, -100),
+		Center = UDim2.new(0.5, -150, 0.5, -100),
+		CenterRight = UDim2.new(1, -310, 0.5, -100),
+		BottomLeft = UDim2.new(0, 10, 1, -210),
+		BottomCenter = UDim2.new(0.5, -150, 1, -210),
+		BottomRight = UDim2.new(1, -310, 1, -210),
+		
+		CenterLeftMini = UDim2.new(0, 10, 0.5, -50),
+		CenterMini = UDim2.new(0.5, -150, 0.5, -50),
+		CenterRightMini = UDim2.new(1, -310, 0.5, -50),
+		BottomLeftMini = UDim2.new(0, 10, 1, -50),
+		BottomCenterMini = UDim2.new(0.5, -150, 1, -50),
+		BottomRightMini = UDim2.new(1, -310, 1, -50)
+	}
+	local options = posmain.Options
+	posmain.Close.Activated:Connect(function()
+		posmain.Visible = false
+	end)
+	for _,v in next, options:GetChildren() do
+		if v:IsA("TextButton") then
+			v.Activated:Connect(function()
+				for _,v2 in next, options:GetChildren() do
+					if v2:IsA("TextButton") then
+						v2.Window.BorderSizePixel = 0
+					end
+				end
+				v.Window.BorderSizePixel = 1
+				
+				main.Position = positions[v.Name]
+			end)
+		end
+	end
+	
+	local optionss = settingsmain.Options
+	local function newtextbox(t)
+		local new = optionss.TextBox:Clone()
+		new.Parent = optionss
+		new.Visible = true
+		new.Name = t.Text
+		new.Label.Text = t.Text
+		new.Box.PlaceholderText = t.Placeholder
+		new.Box.FocusLost:Connect(function()
+			t.Callback(new, new.Box.Text)
+		end)
+	end
+	local function newbutton(t)
+		local new = optionss.Button:Clone()
+		new.Parent = optionss
+		new.Visible = true
+		new.Name = t.Text
+		new.Label.Text = t.Text
+		new.Button.Text = t.ButtonText or "Activate"
+		new.Button.Activated:Connect(function()
+			t.Callback(new)
+		end)
+	end
+	
+	settingsmain.Close.Activated:Connect(function()
+		settingsmain.Visible = false
+	end)
+	
+	newtextbox({
+		Text = "Request Interval (ms)",
+		Placeholder = "100",
+		Callback = function(self, text)
+			INTERVAL = text:gsub("%D", "") / 1000
+			self.Box.Text = INTERVAL * 1000
+		end
+	})
+	newbutton({
+		Text = "Close Spotify Player",
+		ButtonText = "Close",
+		Callback = function()
+			if SPOTIFY then
+				SPOTIFY()
+				getgenv().SPOTIFY = nil
+			end
+		end
+	})
+	
 	controls.Shuffle.Activated:Connect(function()
 		shuffle = not shuffle
 		Shuffle(shuffle)
@@ -1054,8 +1905,8 @@ local function ESGXI_fake_script() -- Spotify.LocalScript
 			if not seeking then break end
 			
 			local pos = math.clamp(mouse.X - bar.AbsolutePosition.X, 0, bar.AbsoluteSize.X)
-			local value = (100 * (pos / bar.AbsoluteSize.X))
-			local percent = value / 100
+			local value = (10 * (pos / bar.AbsoluteSize.X))
+			local percent = value / 10
 			bar.Value.Size = UDim2.new(percent, 0, 1, 0)
 			playback.Current.TextColor3 = green
 			playback.Current.Text = convertms(math.floor(durationms * percent))
@@ -1094,7 +1945,7 @@ local function ESGXI_fake_script() -- Spotify.LocalScript
 			SetControlsPreview(state)
 		end
 		
-		task.wait(INTERVAL)
+		task.wait(INTERVAL or 0.1)
 	end
 end
-coroutine.wrap(ESGXI_fake_script)()
+coroutine.wrap(QRYB_fake_script)()
