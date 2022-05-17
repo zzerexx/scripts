@@ -1,3 +1,13 @@
+local Scripts = { -- my guis
+	SynapseXI = 9651949832,
+	KrnlInternal = 9651942519,
+	CBSpectatorViewer = 9651945189,
+	CustomOutput = 9651951940,
+	Keystrokes = 9651923967,
+	WaypointManager = 8724458646,
+	SpotifyPlayer = 9651793707
+}
+
 local function LoadScript(x)
 	if x:IsA("Script") then
 		xpcall(coroutine.wrap(function()
@@ -28,6 +38,9 @@ local function LoadScript(x)
 	end
 end
 local function LoadGui(id, objectname)
+	if typeof(id) == "string" and Scripts[id] then
+		id = Scripts[id]
+	end
 	local success, object = xpcall(function()
 		return game:GetObjects("rbxassetid://"..id)[1]
 	end, warn)
