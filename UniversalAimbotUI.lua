@@ -2,10 +2,12 @@ repeat
 	task.wait(0.5)
 until not UESP_LOADING
 getgenv().UAIM_LOADING = true
-if not AimbotSettings then
+if not getgenv().AimbotSettings then
 	getgenv().AimbotSettings = {
 		TeamCheck = true, -- Press ] to toggle
 		VisibleCheck = true,
+		IgnoreTransparency = true, -- if enabled, visible check will automatically filter transparent objects
+		IgnoredTransparency = 0.5, -- all parts with a transparency greater than this will be ignored (IgnoreTransparency has to be enabled)
 		RefreshRate = 10, -- how fast the aimbot updates (milliseconds)
 		Keybind = "MouseButton2",
 		ToggleKey = "RightShift",
@@ -27,7 +29,7 @@ if not AimbotSettings then
 			Strength = 55, -- 1% - 100%
 			SlowSensitivity = true,
 			SlowFactor = 1.75, -- 1% - 10%
-			RequireMovement = true,
+			RequireMovement = true
 		},
 		FovCircle = {
 			Enabled = true,
@@ -41,10 +43,12 @@ if not AimbotSettings then
 			Enabled = false,
 			Delay = 60, -- how long it waits before clicking (milliseconds)
 			Spam = true, -- for semi-auto weapons
+			ClicksPerSecond = 10 -- set this to 0 to get anything higher than 37 cps
 		},
+		Priority = {},
 		Whitelisted = {}, -- Username or User ID
 		WhitelistFriends = true, -- Automatically adds friends to the whitelist
-		Ignore = nil -- Raycast Ignore
+		Ignore = {} -- Raycast Ignore
 	}
 end
 
@@ -57,27 +61,30 @@ local function Load(file)
 	return loadstring(game:HttpGet(string.format("https://raw.githubusercontent.com/zzerexx/scripts/main/%s.lua", file)))()
 end
 
-local version = "v1.1.15"
-local aimbot = Load("UniversalAimbot")
-local cfg = Load("ConfigManager")
-local Material = Load("MaterialLuaRemake")
-local UI = Material.Load({
-	Title = "Universal Aimbot",
-	Style = 3,
-	SizeX = 400,
-	SizeY = 535,
-	Theme = "Dark"
-})
-local players = game:GetService("Players")
-
+local UI
+--[[ old icons
 local icons = {
+	['UI'] = "https://i.imgur.com/xW3CaYL.png",
 	['Aimbot'] = "https://i.imgur.com/Bcaku7A.png",
 	['Aim Assist'] = "https://i.imgur.com/Bcaku7A.png",
 	['Settings'] = "https://i.imgur.com/6uJAQON.png",
 	['Fov Circle'] = "https://i.imgur.com/HGAgY9G.png",
 	['Trigger Bot'] = "https://i.imgur.com/ePrh1aW.png",
+	['Players'] = "https://i.imgur.com/EB8OOKv.png",
 	['Other'] = "https://i.imgur.com/Lwl0iV7.png",
 	['Configs'] = "https://i.imgur.com/bcuIP5f.png",
+	['Feedback'] = "https://i.imgur.com/FYbAIod.png"
+}]]
+local icons = {
+	['UI'] = "https://i.imgur.com/xW3CaYL.png",
+	['Aimbot'] = "https://i.imgur.com/cPAL549.png",
+	['Aim Assist'] = "https://i.imgur.com/KbhgUWz.png",
+	['Settings'] = "https://i.imgur.com/ENNQDl3.png",
+	['Fov Circle'] = "https://i.imgur.com/FwxEP7R.png",
+	['Trigger Bot'] = "https://i.imgur.com/4ighciz.png",
+	['Players'] = "https://i.imgur.com/rSSostV.png",
+	['Other'] = "https://i.imgur.com/2HCDHHU.png",
+	['Configs'] = "https://i.imgur.com/AAiWa00.png",
 	['Feedback'] = "https://i.imgur.com/FYbAIod.png"
 }
 for i,v in next, icons do
@@ -95,11 +102,28 @@ function page(title)
 	return UI.new({Title = title, ImageId = "UAIM_Icons\\"..title..".png", ImageSize = Vector2.new(20, 20)})
 end
 
+local version = "v1.1.16"
+local aimbot = Load("UniversalAimbot")
+local cfg = Load("ConfigManager")
+local Material = Load("MaterialLuaRemake")
+UI = Material.Load({
+	Title = "Universal Aimbot",
+	SubTitle = "zzerexx was here",
+	Icon = "UAIM_Icons\\UI.png",
+	ShowInNavigator = true,
+	Style = 3,
+	SizeX = 400,
+	SizeY = 535,
+	Theme = "Dark"
+})
+local players = game:GetService("Players")
+
 local Aimbot = page("Aimbot")
 local Assist = page("Aim Assist")
 local Settings = page("Settings")
 local Fov = page("Fov Circle")
 local Trigger = page("Trigger Bot")
+local Players = page("Players")
 local Other = page("Other")
 local Configs = page("Configs")
 local Feedback = page("Feedback")
@@ -110,6 +134,7 @@ local togglekey = Enum.KeyCode.RightControl
 local aimbottogglebtn, uitogglebtn
 
 local newsettings = {
+	IgnoreTransparency = true,
 	TriggerBot = {
 		Delay = 60,
 		Spam = true,
@@ -176,6 +201,51 @@ function destroy()
 	aimbot:Destroy()
 	UI.UI:Destroy()
 	getgenv().UAIM = nil
+end
+local script = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalAimbotUI.lua"))
+function reload(safemode)
+	destroy()
+	task.wait(0.5)
+	if safemode then
+		pcall(script)
+	else
+		script()
+	end
+end
+
+do -- new icons notification
+	task.delay(3, function()
+		if readfile("UAIM_Icons\\Aimbot.png") == game:HttpGet("https://i.imgur.com/Bcaku7A.png") then
+			UI.Banner({
+				Text = "There are new UI icons available! Would you like to use the new icons instead?",
+				Callback = function(value)
+					if value == "Yes" then
+						delfolder("UAIM_Icons")
+						for i,v in next, icons do
+							local folder = "UAIM_Icons"
+							if not isfolder("UAIM_Icons") then
+								makefolder("UAIM_Icons")
+							end
+							local path = folder.."\\"..i..".png"
+							if not isfile(path) then
+								writefile(path, game:HttpGet(v))
+							end
+						end
+						UI.Banner({
+							Text = "Successfully added new icons! Would you like to re-load the UI to apply?",
+							Callback = function(value)
+								if value == "Yes" then
+									reload()
+								end
+							end,
+							Options = {"Yes", "No"}
+						})
+					end
+				end,
+				Options = {"Yes", "No"}
+			})
+		end
+	end)
 end
 
 do -- Aimbot
@@ -254,7 +324,8 @@ do -- Aim Assist
 		end,
 		Min = 0,
 		Max = 50,
-		Def = ss.AimAssist.MinFov
+		Def = ss.AimAssist.MinFov,
+		Suffix = " px"
 	})
 	Assist.Slider({
 		Text = "Maximum Fov",
@@ -263,7 +334,14 @@ do -- Aim Assist
 		end,
 		Min = 0,
 		Max = 200,
-		Def = ss.AimAssist.MaxFov
+		Def = ss.AimAssist.MaxFov,
+		Suffix = " px"
+	})
+	Assist.Button({
+		Text = "What is Maximum and Minimum Fov?",
+		Callback = function()
+			UI.Banner("Enable <b>Show Fov</b> for some visualization.<br />Maximum Fov is basically the same as your usual fov circle. Minimum Fov is similar. Basically, players within the Maximum Fov AND NOT within the Minimum Fov will be targeted. The Minimum Fov makes Aim Assist not lock on to targets directly, therefore giving the <i>aim assist effect.</i>")
+		end
 	})
 	Assist.Toggle({
 		Text = "Dynamic Fov",
@@ -273,7 +351,7 @@ do -- Aim Assist
 		Enabled = ss.AimAssist.DynamicFov
 	})
 	Assist.Toggle({
-		Text = "Show Fov",
+		Text = "Show Minimum and Maximum Fov",
 		Callback = function(value)
 			aimbot:Set(type, "ShowFov", value)
 		end,
@@ -282,7 +360,7 @@ do -- Aim Assist
 	Assist.Slider({
 		Text = "Strength",
 		Callback = function(value)
-			aimbot:Set(type,"Strength",value)
+			aimbot:Set(type, "Strength",value)
 		end,
 		Min = 1,
 		Max = 100,
@@ -298,18 +376,19 @@ do -- Aim Assist
 	Assist.Slider({
 		Text = "Slow Factor",
 		Callback = function(value)
-			aimbot:Set(type,"SlowFactor",value / 10)
+			aimbot:Set(type, "SlowFactor", value)
 		end,
-		Min = 10,
-		Max = 100,
-		Def = ss.AimAssist.SlowFactor * 10
+		Min = 1,
+		Max = 10,
+		Def = ss.AimAssist.SlowFactor,
+		Decimals = 2
 	})
 	Assist.Toggle({
 		Text = "Require Movement",
 		Callback = function(value)
 			aimbot:Set(type, "RequireMovement", value)
 		end,
-		Enabled = true
+		Enabled = ss.AimAssist.RequireMovement
 	})
 end
 
@@ -329,6 +408,28 @@ do -- Settings
 		end,
 		Enabled = ss.VisibleCheck
 	})
+	Settings.Toggle({
+		Text = "Ignore Transparency",
+		Callback = function(value)
+			aimbot:Set(type, "IgnoreTransparency", value)
+		end,
+		Enabled = ss.IgnoreTransparency
+	})
+	Settings.Slider({
+		Text = "Ignored Transparency",
+		Callback = function(value)
+			aimbot:Set(type, "IgnoredTransparency", value)
+		end,
+		Min = 0,
+		Max = 1,
+		Def = ss.IgnoredTransparency,
+		Decimals = 2,
+		Menu = {
+			Info = function()
+				UI.Banner("Any parts that have a transparency greater than this number will be ignored.\n<b>IgnoreTransparency</b> must be enabled for this to work.")
+			end
+		}
+	})
 	Settings.Slider({
 		Text = "Refresh Rate",
 		Callback = function(value)
@@ -336,14 +437,23 @@ do -- Settings
 		end,
 		Min = 0,
 		Max = 50,
-		Def = ss.RefreshRate
+		Def = ss.RefreshRate,
+		Suffix = " ms"
+	})
+	Settings.Keybind({
+		Text = "Keybind",
+		Callback = function(value)
+			aimbot:Set(type, "Keybind", value.Name)
+		end,
+		Def = Enum.UserInputType[aimbot:Get(type, "Keybind")] or Enum.KeyCode[aimbot:Get(type, "Keybind")],
+		AllowMouse = true
 	})
 	aimbottogglebtn = Settings.Keybind({
-		Text = "Aimbot Toggle Key",
+		Text = "Toggle Key",
 		Callback = function(value)
 			aimbot:Set(type, "ToggleKey", value.Name)
 		end,
-		Def = Enum.KeyCode[aimbot:Get("Other", "ToggleKey")],
+		Def = Enum.KeyCode[aimbot:Get(type, "ToggleKey")],
 		AllowMouse = false
 	})
 	Settings.Slider({
@@ -353,7 +463,8 @@ do -- Settings
 		end,
 		Min = 0,
 		Max = 2000,
-		Def = ss.MaximumDistance
+		Def = ss.MaximumDistance,
+		Suffix = " studs"
 	})
 	Settings.Toggle({
 		Text = "Always Active",
@@ -392,16 +503,18 @@ do -- Fov Circle
 		end,
 		Min = 0,
 		Max = 500,
-		Def = ss.FovCircle.Radius
+		Def = ss.FovCircle.Radius,
+		Suffix = " px"
 	})
 	Fov.Slider({
 		Text = "Transparency",
 		Callback = function(value)
-			aimbot:Set(type, "Transparency", value / 10)
+			aimbot:Set(type, "Transparency", value)
 		end,
 		Min = 0,
-		Max = 10,
-		Def = ss.FovCircle.Transparency * 10
+		Max = 1,
+		Def = ss.FovCircle.Transparency,
+		Decimals = 2
 	})
 	Fov.ColorPicker({
 		Text = "Color",
@@ -462,11 +575,11 @@ do -- Trigger Bot
 	})
 end
 
-do -- Other
+do -- Players
 	local type = "Other"
 	local list = getgenv().AimbotSettings.Whitelisted
 	local plr = players.LocalPlayer.Name
-	local dd = Other.Dropdown({
+	local dd = Players.Dropdown({
 		Text = "Player List",
 		Callback = function(value)
 			plr = value
@@ -487,7 +600,12 @@ do -- Other
 	update()
 	conn1 = players.PlayerAdded:Connect(update)
 	conn2 = players.PlayerRemoving:Connect(update)
-	Other.Button({
+	Players.Label({
+		Text = "━━ Whitelist ━━",
+		Center = true,
+		Transparent = true
+	})
+	Players.Button({
 		Text = "Add Player to Whitelist",
 		Callback = function()
 			if plr == "" then
@@ -499,7 +617,7 @@ do -- Other
 			table.insert(list, plr)
 		end
 	})
-	Other.Button({
+	Players.Button({
 		Text = "Remove Player from Whitelist",
 		Callback = function()
 			if plr == nil then
@@ -511,7 +629,7 @@ do -- Other
 			table.remove(list, table.find(list, plr))
 		end
 	})
-	Other.Toggle({
+	Players.Toggle({
 		Text = "Whitelist Friends",
 		Callback = function(value)
 			aimbot:Set(type, "WhitelistFriends", value)
@@ -523,6 +641,55 @@ do -- Other
 			end
 		}
 	})
+
+	Players.Label({
+		Text = "━━ Priority ━━",
+		Center = true,
+		Transparent = true
+	})
+	Players.Button({
+		Text = "Prioritize the selected player",
+		Callback = function()
+			if not players:FindFirstChild(plr) then
+				UI.Banner(plr.." is not in the game.")
+				return
+			end
+
+			local t = aimbot:Get(type, "Priority")
+			if table.find(t, plr) then
+				UI.Banner(plr.." is already prioritized")
+				return
+			end
+			table.insert(t, plr)
+			aimbot:Set(type, "Priority", t)
+		end,
+		Menu = {
+			Info = function()
+				UI.Banner("If a prioritized player is within the fov circle, aimbot will always target the prioritized player, regardless if they are further away or not.")
+			end
+		}
+	})
+	Players.Button({
+		Text = "De-prioritize the selected player",
+		Callback = function()
+			if not players:FindFirstChild(plr) then
+				UI.Banner(plr.." is not in the game.")
+				return
+			end
+
+			local t = aimbot:Get(type, "Priority")
+			local index = table.find(t, plr)
+			if not index then
+				UI.Banner(plr.." is not prioritized")
+				return
+			end
+			table.remove(t, index)
+			aimbot:Set(type, "Priority", t)
+		end
+	})
+end
+
+do -- Other
 	Other.Button({
 		Text = "Destroy Aimbot",
 		Callback = destroy,
@@ -533,13 +700,35 @@ do -- Other
 		}
 	})
 	Other.Button({
-		Text = "Credits",
+		Text = "Re-Load UI",
 		Callback = function()
-			UI.Banner("Material UI Library created by twink marie\nUniversal Aimbot created by zzerexx#3970")
+			UI.Banner({
+				Text = "Are you sure you want to re-load the UI?",
+				Callback = function(value)
+					if value == "Yes" then
+						reload()
+					end
+				end,
+				Options = {"Yes", "No"}
+			})
+		end
+	})
+	Other.Button({
+		Text = "Load Safe Mode",
+		Callback = function()
+			UI.Banner({
+				Text = "Are you sure you want to load the UI in Safe Mode?",
+				Callback = function(value)
+					if value == "Yes" then
+						reload(true)
+					end
+				end,
+				Options = {"Yes", "No"}
+			})
 		end,
 		Menu = {
-			Version = function()
-				UI.Banner(version)
+			Info = function()
+				UI.Banner("Re-loads the ui in Safe Mode. (prevents detection via script errors)\nNote that this <b>does not</b> prevent <i>all</i> detections.")
 			end
 		}
 	})
@@ -550,6 +739,17 @@ do -- Other
 		end,
 		Def = togglekey,
 		AllowMouse = false
+	})
+	Other.Button({
+		Text = "Hide UI",
+		Callback = function()
+			UI.Toggle(false)
+		end
+	})
+	Other.Label({
+		Text = "Made by zzerexx#3970 | "..version,
+		Center = true,
+		Transparent = true
 	})
 end
 
@@ -668,7 +868,7 @@ do -- Feedback
 				UI.Banner("Sending feedback...")
 
 				local req = request({
-					Url = "https://websec.services/ws/send/ZUC1hEr2taJ2a1NBGtPZ2VcKBYPf5YeebL801aC1",
+					Url = "https://websec.services/send/628d301f5db848748d1e31b1",
 					Method = "POST",
 					Headers = {
 						['Content-Type'] = "application/json"
@@ -697,7 +897,8 @@ do -- Feedback
 				end
 
 				local status = Http:JSONDecode(req.Body).status
-				UI.Banner((status == 10 and "Thank you for your feedback!") or ("Failed to send feedback;\n"..errors[status]))
+				UI.Banner(status == 0 and "Thank you for your feedback!" or "Failed to send feedback")
+				--UI.Banner((status == 10 and "Thank you for your feedback!") or ("Failed to send feedback;\n"..errors[status]))
 				sending = false
 			end,
 			Menu = {
