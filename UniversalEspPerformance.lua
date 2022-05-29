@@ -43,13 +43,14 @@ local gids = { -- game ids
 	['pft'] = 115272207, -- pf test place
 	['pfu'] = 1256867479, -- pf unstable branch
 	['bb'] = 1168263273,
+	['rp'] = 2162282815, -- rush point
 }
 local zindex = {
 	['Boxes'] = 1,
 	['Names'] = 2
 }
-local omega, beta, black = fromRGB(255,116,38), fromRGB(38,125,255), fromRGB(0,0,0)
-local getchar, gethealth, ts, characters, teams
+local white, black = fromRGB(255,255,255), fromRGB(0,0,0)
+local getchar, gethealth, ts, characters, teams, rp
 if GameId == (gids.pf or gids.pft or gids.pfu) then
 	for _,v in next, getgc(true) do
 		if typeof(v) == "table" and rawget(v, "getbodyparts") then
@@ -66,95 +67,62 @@ elseif GameId == gids.bb then
 			teams = ts.Teams
 		end
 	end
-	hookfunction(PluginManager, error)
+elseif GameId == gids.rp then
+	-- CREDIT TO THIS DUDE FOR CRASH FIX https://v3rmillion.net/showthread.php?pid=8248169#pid8248169
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/Github-Account-39021832/Rush-Point-Fix-Crash/main/src.lua"))()
+	for _,v in next, getgc(true) do
+		if typeof(v) == "table" and rawget(v, "GetAllCharacters") then
+			rp = v -- unused
+		end
+	end
 end
 local oldfuncs = {}
 
 function IsAlive(plr)
+	if plr.ClassName == "Model" then
+		return true
+	end
+
 	local humanoid = FindFirstChild(plr.Character or game, "Humanoid")
 	if humanoid and humanoid.Health > 0 then
 		return true
 	end
 	return false
 end
-do
-	if getchar then
-		IsAlive = function(plr)
-			return getchar(plr) ~= nil
-		end
-	end
-	if ts then
-		IsAlive = function(plr)
-			return characters:GetCharacter(plr) ~= nil
-		end
-	end
-end
-oldfuncs.alive = IsAlive
 
 function GetChar(plr)
+	if plr.ClassName == "Model" then
+		return plr
+	end
 	return plr.Character
 end
-do
-	if getchar then
-		GetChar = function(plr)
-			local a = getchar(plr)
-			if a ~= nil then
-				return a.torso.Parent
-			end
-			return nil
-		end
-	end
-	if ts then
-		GetChar = function(plr)
-			return characters:GetCharacter(plr)
-		end
-	end
-end
-oldfuncs.character = GetChar
 
 function GetHealth(plr)
+	if plr.ClassName == "Model" then
+		local a = plr.Humanoid
+		return {mathfloor(a.Health), mathfloor(a.MaxHealth)}
+	end
+
 	local a = FindFirstChild(plr.Character or game, "Humanoid")
 	if a then
 		return {mathfloor(a.Health), mathfloor(a.MaxHealth)}
 	end
 	return {100,100}
 end
-do
-	if gethealth then
-		GetHealth = function(plr)
-			return {mathfloor(gethealth(plr, plr)), 100}
-		end
-	end
-	if ts then
-		GetHealth = function(plr)
-			local a = characters:GetCharacter(plr)
-			local hp = FindFirstChild(a, "Health")
-			if hp then
-				return {mathfloor(hp.Value), mathfloor(hp.MaxHealth.Value)}
-			end
-			return {100,100}
-		end
-	end
-	if GameId == gids.arsenal then
-		GetHealth = function(plr)
-			local a = plr.NRPBS
-			return {mathfloor(a.Health.Value), mathfloor(a.MaxHealth.Value)}
-		end
-	end
-end
-oldfuncs.health = GetHealth
 
 function GetTeam(plr)
+	if plr.ClassName == "Model" then
+		return "NPC"
+	end
 	return plr.Team
 end
-do
-	if ts then
-		GetTeam = function(plr)
-			return teams:GetPlayerTeam(plr, plr)
-		end
+
+function GetTeamColor(plr)
+	if plr.ClassName == "Model" then
+		return npcs.Color
 	end
+	return plr.TeamColor.Color
 end
-oldfuncs.team = GetTeam
 
 function IsFFA()
 	local t = {}
@@ -168,15 +136,113 @@ function IsFFA()
 	end
 	return #t == 1
 end
-do
-	if GameId == gids.arsenal then
+
+do -- compatibility
+	if getchar then -- phantom forces
+		IsAlive = function(plr)
+			return getchar(plr) ~= nil
+		end
+		GetChar = function(plr)
+			local a = getchar(plr)
+			if a ~= nil then
+				return a.torso.Parent
+			end
+			return nil
+		end
+		GetHealth = function(plr)
+			return {mathfloor(gethealth(plr, plr)), 100}
+		end
+	end
+	
+	if ts then -- bad business
+		local teamcolors = {
+			Omega = fromRGB(255,116,38),
+			Beta = fromRGB(38,125,255)
+		}
+		hookfunction(PluginManager, error)
+		IsAlive = function(plr)
+			return characters:GetCharacter(plr) ~= nil
+		end
+		GetChar = function(plr)
+			return characters:GetCharacter(plr)
+		end
+		GetHealth = function(plr)
+			local a = characters:GetCharacter(plr)
+			local hp = FindFirstChild(a, "Health")
+			if hp then
+				return {mathfloor(hp.Value), mathfloor(hp.MaxHealth.Value)}
+			end
+			return {100, 100}
+		end
+		GetTeam = function(plr)
+			return teams:GetPlayerTeam(plr, plr)
+		end
+		GetTeamColor = function(plr)
+			local team = GetTeam(plr)
+			return (team and teamcolors[team]) or white
+		end
+	end
+
+	if GameId == gids.arsenal then -- arsenal
+		GetHealth = function(plr)
+			local a = plr.NRPBS
+			return {mathfloor(a.Health.Value), mathfloor(a.MaxHealth.Value)}
+		end
 		local ffa = game:GetService("ReplicatedStorage"):WaitForChild("wkspc"):WaitForChild("FFA")
 		IsFFA = function()
 			return ffa.Value
 		end
 	end
+
+	if rp then -- rush point
+		--[[ -- function method (shitty asf)
+		local getallchars = rp.GetAllCharacters
+		GetChar = function(plr)
+			for _,v in next, getallchars() do
+				if v.Name == plr.Name then
+					return v
+				end
+			end
+		end
+		]]
+		local mapfolder = workspace:WaitForChild("MapFolder")
+		local playerfolder = mapfolder:WaitForChild("Players")
+		local gamestats = mapfolder:WaitForChild("GameStats")
+		GetChar = function(plr)
+			return FindFirstChild(playerfolder, plr.Name)
+		end
+		IsAlive = GetChar
+		GetTeam = function(plr)
+			local char = GetChar(plr)
+			if char and FindFirstChild(char, "Team") then
+				return char.Team.Value
+			end
+			return nil
+		end
+		GetTeamColor = function(plr)
+			local char = GetChar(plr)
+			return (char and FindFirstChild(char, "Outline") and char.Outline.OutlineColor) or white
+		end
+		IsFFA = function()
+			return gamestats.GameMode.Value == "Deathmatch"
+		end
+	end
 end
+
+oldfuncs.alive = IsAlive
+oldfuncs.character = GetChar
+oldfuncs.health = GetHealth
+oldfuncs.team = GetTeam
 oldfuncs.ffa = IsFFA
+
+----
+
+function ternary(condition,val1,val2)
+	if condition then
+		return val1
+	end
+	return val2
+end
 
 function ApplyZIndex(obj,name)
 	if ZIndexEnabled then
@@ -191,27 +257,44 @@ function SetProp(obj,prop,value)
 		v[prop] = value
 	end
 end
-function ternary(condition,val1,val2)
-	if condition then
-		return val1
+local Object = {
+	Boxes = function()
+		return {
+			Outline = Drawingnew("Quad"),
+			Box = Drawingnew("Quad")
+		}
+	end,
+	Names = function()
+		return {
+			Name = Drawingnew("Text"),
+			Data = Drawingnew("Text")
+		}
 	end
-	return val2
+}
+function NewObject(type)
+	local obj = Object[type]()
+	SetProp(obj, "Visible", false)
+	ApplyZIndex(obj, type)
+	return obj
 end
-function Box(plr)
+function NewCharacterObject(objs, type, plr)
 	ID += 1
 
-	local type = "Boxes"
-	local objects = {
-		Box = Drawingnew("Quad"),
-		Outline = Drawingnew("Quad")
+	return {
+		Object = objs,
+		Type = type,
+		Player = plr,
+		NPC = plr.ClassName ~= "Player",
+		Destroyed = false,
+		Id = ID
 	}
-	SetProp(objects, "Visible", false)
+end
+
+function Box(plr)
+	local type = "Boxes"
+	local objects = NewObject(type)
 	SetProp(objects, "Filled", false)
-	objects.Box.Thickness = 1
-	objects.Outline.Thickness = 3
-	ApplyZIndex(objects, type)
-	objects.Outline.ZIndex = 0
-	local a = {Object = objects, Type = type, Player = plr, Destroyed = false, Id = ID}
+	local a = NewCharacterObject(objects, type, plr)
 	function a:Remove()
 		if a.Destroyed then return end
 		objects.Box:Remove()
@@ -221,20 +304,13 @@ function Box(plr)
 	OBJECTS[ID] = a
 end
 function Name(plr)
-	ID += 1
-
 	local type = "Names"
-	local objects = {
-		Name = Drawingnew("Text"),
-		Data = Drawingnew("Text")
-	}
-	SetProp(objects, "Visible", false)
+	local objects = NewObject(type)
 	SetProp(objects, "Center", true)
 	SetProp(objects, "Outline", true)
 	SetProp(objects, "OutlineColor", black)
 	SetProp(objects, "Font", Fonts.UI)
-	ApplyZIndex(objects, type)
-	local a = {Object = objects, Type = type, Player = plr, Destroyed = false, Id = ID}
+	local a = NewCharacterObject(objects, type, plr)
 	function a:Remove()
 		if a.Destroyed then return end
 		objects.Name:Remove()
@@ -294,11 +370,8 @@ function update()
 				if plr and IsAlive(plr) then
 					SetProp(obj, "Visible", render)
 					if inViewport and render then
-						local color = (ts and team == "Omega" and omega or team == "Beta" and beta) or teamcolor
-						local transparency = (mousemag <= 75 and 0.35) or 1
-						
-						SetProp(obj, "Transparency", transparency)
-						SetProp(obj, "Color", color)
+						SetProp(obj, "Transparency", (mousemag <= 50 and 0.15) or 1)
+						SetProp(obj, "Color", teamcolor)
 						if type == "Boxes" then
 							local box, out = obj.Box, obj.Outline
 
@@ -377,6 +450,8 @@ function esp:SetFunction(a,f)
 		GetHealth = f
 	elseif a == "team" then
 		GetTeam = f
+	elseif a == "teamcolor" then
+		GetTeamColor = f
 	elseif a == "ffa" then
 		IsFFA = f
 	end
@@ -394,6 +469,8 @@ function esp:ResetFunction(a)
 		GetHealth = f
 	elseif a == "team" then
 		GetTeam = f
+	elseif a == "teamcolor" then
+		GetTeamColor = f
 	elseif a == "ffa" then
 		IsFFA = f
 	end
