@@ -540,6 +540,8 @@ do -- syn library
 	define("syn", t)
 end
 
+setreadonly(syn, true)
+
 define("ror", bit.rrotate, bit)
 define("rol", bit.lrotate, bit)
 define("tohex", function(a)
