@@ -192,7 +192,7 @@ F9 to toggle
 ---
   
 # Synapse to Script-Ware  
-Updated February 27, 2022  
+Updated May 29, 2022  
 Allows you to use Synapse functions on Script-Ware!  
   
 **Loader**  
@@ -207,6 +207,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/
 # Synapse to Krnl
 Updated January 3, 2022  
 Allows you to use Synapse functions on Krnl!  
+OUTDATED ASF  
   
 **Loader**  
 ```lua
