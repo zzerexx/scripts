@@ -4,8 +4,8 @@ my cool scripts
 ---
   
 # Universal Esp  
-Updated April 25, 2022  
-v1.6.11  
+Updated May 28, 2022  
+v1.6.12  
 - Box Esp  
 - Tracers  
 - Name Esp  
@@ -19,51 +19,48 @@ v1.6.11
 ```
 https://pastebin.com/raw/5zw0rLH9
 ```  
-[Documentation](https://github.com/zzerexx/scripts/blob/main/UniversalScriptAPI.md)  
+[Documentation](https://zzerexx.gitbook.io/universal-script-api)  
 ### UI Version  
-Updated April 21, 2022  
+Updated May 28, 2022  
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua"))()
 ```  
 ### Performance Version  
-Updated April 25, 2022  
+Updated May 28, 2022  
 Boxes, Names, zero customizability, optimized asf  
 Supports `SetFunction` and `ResetFunction` for compatibility!  
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspPerformance.lua"))()
 ```  
   
-## Update v1.6.11  
+## Update v1.6.12  
 Main Changes  
-- no longer crashes on bad business
-  
-UI Changes  
-- Updated to use [Material Lua Remake](https://github.com/zzerexx/scripts/blob/main/MaterialLuaRemakeDocs.md)
-- Updated to use [Config Manager](https://github.com/zzerexx/scripts/blob/main/ConfigManagerDocs.md)
-- Executing Universal Esp and Aimbot simulataneously will now wait until the first ui loads
+- Added support for Rush Point
+- Added esp support for NPC characters (any models with a humanoid) (must use `esp:Add()`)
+- Added GetTeamColor function
+- new documentation [here](https://zzerexx.gitbook.io/universal-script-api)
+- and other fixes im too lazy to write
   
 ---
   
 # Universal Aimbot  
-Updated April 25, 2022  
-v1.1.15  
+Updated May 28, 2022  
+v1.1.16  
 ```
 https://pastebin.com/raw/nwqE7v07
 ```  
-[Documentation](https://github.com/zzerexx/scripts/blob/main/UniversalScriptAPI.md)  
+[Documentation](https://zzerexx.gitbook.io/universal-script-api)  
 ### UI Version  
-Updated April 11, 2022  
+Updated May 28, 2022  
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalAimbotUI.lua"))()
 ```  
-## Update v1.1.15  
+## Update v1.1.16  
 Main Changes  
-- no longer crashes on bad business  
-  
-UI Changes  
-- Updated to use [Material Lua Remake](https://github.com/zzerexx/scripts/blob/main/MaterialLuaRemakeDocs.md)
-- Updated to use [Config Manager](https://github.com/zzerexx/scripts/blob/main/ConfigManagerDocs.md)
-- Executing Universal Esp and Aimbot simulataneously will now wait until the first ui loads
+- Added the ability to prioritize players (players who are prioritized will always be targeted first)
+- Added IgnoredTransparency which allows you to change the transparency that are ignored by IgnoreTransparency
+- Added support for Rush Point 
+- new documentation [here](https://zzerexx.gitbook.io/universal-script-api)
   
 ## NOTICE  
 ```
