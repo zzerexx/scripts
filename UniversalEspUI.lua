@@ -32,6 +32,20 @@ if not EspSettings then
 			Color = Color3.fromRGB(255, 150, 0),
 			AlwaysOnTop = true
 		},
+		NPC = {
+			Color = Color3.fromRGB(150,150,150),
+			Transparency = 1,
+			RainbowColor = false,
+			Overrides = {
+				Boxes = true,
+				Tracers = true,
+				Names = true,
+				Skeletons = true,
+				HealthBars = true,
+				HeadDots = true,
+				LookTracers = true
+			}
+		},
 		Boxes = {
 			Enabled = true,
 			Transparency = 1,
@@ -132,20 +146,10 @@ local function Load(file)
 	return loadstring(game:HttpGet(string.format("https://raw.githubusercontent.com/zzerexx/scripts/main/%s.lua", file)))()
 end
 
-local version = "v1.6.11"
-local esp = Load("UniversalEsp")
-local cfg = Load("ConfigManager")
-local Material = Load("MaterialLuaRemake")
-local UI = Material.Load({
-	Title = "Universal Esp",
-	Style = 3,
-	SizeX = 400,
-	SizeY = 535,
-	Theme = "Dark"
-})
-local players = game:GetService("Players")
-
+local UI
+--[[ old icons
 local icons = {
+	['UI'] = "https://i.imgur.com/xW3CaYL.png",
 	['Boxes'] = "https://i.imgur.com/c62mH5p.png",
 	['Tracers'] = "https://i.imgur.com/MSNjSVv.png",
 	['Names'] = "https://i.imgur.com/HLiXuos.png",
@@ -158,8 +162,27 @@ local icons = {
 	['Other'] = "https://i.imgur.com/Lwl0iV7.png",
 	['Configs'] = "https://i.imgur.com/bcuIP5f.png",
 	['Players'] = "https://i.imgur.com/EB8OOKv.png",
+	['NPC'] = "",
 	['Statistics'] = "https://i.imgur.com/X0IblqN.png",
 	['Feedback'] = "https://i.imgur.com/FYbAIod.png"
+}]]
+local icons = {
+	['UI'] = "https://i.imgur.com/xW3CaYL.png",
+	['Boxes'] = "https://i.imgur.com/xSNPrjN.png",
+	['Tracers'] = "https://i.imgur.com/oshO9nY.png",
+	['Names'] = "https://i.imgur.com/dtVPsyX.png",
+	['Skeletons'] = "https://i.imgur.com/HL57Z76.png",
+	['Health Bars'] = "https://i.imgur.com/cPnbeKo.png",
+	['Head Dots'] = "https://i.imgur.com/AWvYuRI.png",
+	['Look Tracers'] = "https://i.imgur.com/GSBE57c.png",
+	['All'] = "https://i.imgur.com/ChRDF9E.png",
+	['Mouse Visibility'] = "https://i.imgur.com/YtB9EMq.png",
+	['Other'] = "https://i.imgur.com/2HCDHHU.png",
+	['Configs'] = "https://i.imgur.com/AAiWa00.png",
+	['Players'] = "https://i.imgur.com/rSSostV.png",
+	['NPC'] = "https://i.imgur.com/vnQqvnZ.png",
+	['Statistics'] = "https://i.imgur.com/l12YZmJ.png",
+	['Feedback'] = "https://i.imgur.com/rnLY3CC.png"
 }
 for i,v in next, icons do
 	local folder = "UESP_Icons"
@@ -176,6 +199,22 @@ function page(title)
 	return UI.new({Title = title, ImageId = "UESP_Icons\\"..title..".png", ImageSize = Vector2.new(20, 20)})
 end
 
+local version = "v1.6.12"
+local esp = Load("UniversalEsp")
+local cfg = Load("ConfigManager")
+local Material = Load("MaterialLuaRemake")
+UI = Material.Load({
+	Title = "Universal Esp",
+	SubTitle = "zzerexx was here",
+	Icon = "UESP_Icons\\UI.png",
+	ShowInNavigator = true,
+	Style = 3,
+	SizeX = 400,
+	SizeY = 535,
+	Theme = "Dark"
+})
+local players = game:GetService("Players")
+
 local Boxes = page("Boxes")
 local Tracers = page("Tracers")
 local Names = page("Names")
@@ -188,6 +227,7 @@ local MouseVisibility = page("Mouse Visibility")
 local Other = page("Other")
 local Configs = page("Configs")
 local Players = page("Players")
+local NPC = page("NPC")
 local Stats = page("Statistics")
 local Feedback = page("Feedback")
 local ss = getgenv().EspSettings
@@ -214,6 +254,20 @@ local newsettings = {
 		Transparency = 1,
 		Color = Color3.fromRGB(255, 150, 0),
 		AlwaysOnTop = true
+	},
+	NPC = {
+		Color = Color3.fromRGB(150,150,150),
+		Transparency = 1,
+		RainbowColor = false,
+		Overrides = {
+			Boxes = true,
+			Tracers = true,
+			Names = true,
+			Skeletons = true,
+			HealthBars = true,
+			HeadDots = true,
+			LookTracers = true
+		}
 	},
 }
 for i,v in next, newsettings do
@@ -283,22 +337,47 @@ function destroy()
 	UI.UI:Destroy()
 	getgenv().UESP = nil
 end
+local script = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua"))
+function reload(safemode)
+	destroy()
+	task.wait(0.5)
+	if safemode then
+		pcall(script)
+	else
+		script()
+	end
+end
 
-do -- new ui notification
+do -- new icons notification
 	task.delay(3, function()
-		local file = "UESP_AskAgain#1.txt"
-		if not isfile(file) then
-			writefile(file, "yes")
-		end
-		if readfile(file) == "yes" then
+		if readfile("UESP_Icons\\Boxes.png") == game:HttpGet("https://i.imgur.com/c62mH5p.png") then
 			UI.Banner({
-				Text = "Hello! As you can tell, there's a new UI. I made it myself and would like to receive some feedback. Please go to the <b>Feedback</b> page to send any suggestions and/or bug reports!\n\n<font color='rgb(255, 150, 0)'>Click <b>Dont ask again</b> if you wish to not receive this notification again.</font>",
-				Options = {"OK", "Dont ask again"},
+				Text = "There are new UI icons available! Would you like to use the new icons instead?",
 				Callback = function(value)
-					if value == "Dont ask again" then
-						writefile(file, "no")
+					if value == "Yes" then
+						delfolder("UESP_Icons")
+						for i,v in next, icons do
+							local folder = "UESP_Icons"
+							if not isfolder("UESP_Icons") then
+								makefolder("UESP_Icons")
+							end
+							local path = folder.."\\"..i..".png"
+							if not isfile(path) then
+								writefile(path, game:HttpGet(v))
+							end
+						end
+						UI.Banner({
+							Text = "Successfully added new icons! Would you like to re-load the UI to apply?",
+							Callback = function(value)
+								if value == "Yes" then
+									reload()
+								end
+							end,
+							Options = {"Yes", "No"}
+						})
 					end
-				end
+				end,
+				Options = {"Yes", "No"}
 			})
 		end
 	end)
@@ -367,7 +446,8 @@ do -- Boxes
 		Min = 1,
 		Max = 5,
 		Def = s.OutlineThickness,
-		Decimals = 2
+		Decimals = 2,
+		Suffix = " px"
 	})
 	Boxes.Slider({
 		Text = "Thickness",
@@ -377,7 +457,8 @@ do -- Boxes
 		Min = 1,
 		Max = 5,
 		Def = s.Thickness,
-		Decimals = 2
+		Decimals = 2,
+		Suffix = " px"
 	})
 end
 
@@ -444,7 +525,8 @@ do -- Tracers
 		Min = 1,
 		Max = 5,
 		Def = s.OutlineThickness,
-		Decimals = 2
+		Decimals = 2,
+		Suffix = " px"
 	})
 	Tracers.Dropdown({
 		Text = "Origin",
@@ -462,7 +544,8 @@ do -- Tracers
 		Min = 1,
 		Max = 5,
 		Def = s.Thickness,
-		Decimals = 2
+		Decimals = 2,
+		Suffix = " px"
 	})
 end
 
@@ -589,7 +672,7 @@ do -- Names
 		Def = s.HealthDataType,
 		Menu = {
 			Info = function()
-				UI.Banner("This changes what the health shows.\nPercentage: [ 100% ] | Value: [ 100/100 ]")
+				UI.Banner("This changes the format the health is shown in.\nPercentage: [ 100% ] | Value: [ 100/100 ]")
 			end
 		}
 	})
@@ -658,7 +741,8 @@ do -- Skeletons
 		Min = 1,
 		Max = 5,
 		Def = s.OutlineThickness,
-		Decimals = 2
+		Decimals = 2,
+		Suffix = " px"
 	})
 	Skeletons.Slider({
 		Text = "Thickness",
@@ -668,7 +752,8 @@ do -- Skeletons
 		Min = 1,
 		Max = 5,
 		Def = s.Thickness,
-		Decimals = 2
+		Decimals = 2,
+		Suffix = " px"
 	})
 end
 
@@ -735,7 +820,8 @@ do -- HealthBars
 		Min = 1,
 		Max = 5,
 		Def = s.OutlineThickness,
-		Decimals = 2
+		Decimals = 2,
+		Suffix = " px"
 	})
 	HealthBars.Dropdown({
 		Text = "Origin",
@@ -822,7 +908,8 @@ do -- HeadDots
 		Min = 1,
 		Max = 5,
 		Def = s.OutlineThickness,
-		Decimals = 2
+		Decimals = 2,
+		Suffix = " px"
 	})
 	HeadDots.Slider({
 		Text = "Thickness",
@@ -832,7 +919,8 @@ do -- HeadDots
 		Min = 1,
 		Max = 5,
 		Def = s.Thickness,
-		Decimals = 2
+		Decimals = 2,
+		Suffix = " px"
 	})
 	HeadDots.Toggle({
 		Text = "Filled",
@@ -842,13 +930,14 @@ do -- HeadDots
 		Enabled = s.Filled
 	})
 	HeadDots.Slider({
-		Text = "Scale (divided by 10)",
+		Text = "Scale",
 		Callback = function(value)
-			esp:Set(type, "Scale", value / 10)
+			esp:Set(type, "Scale", value)
 		end,
-		Min = 5,
-		Max = 20,
-		Def = s.Scale * 10,
+		Min = 0.5,
+		Max = 2,
+		Def = s.Scale,
+		Decimals = 2,
 		Suffix = "x"
 	})
 end
@@ -1052,6 +1141,7 @@ do -- All
 		Min = 1,
 		Max = 5,
 		Def = 3,
+		Suffix = " px",
 		Menu = {
 			Info = function()
 				UI.Banner("Changes the 'OutlineThickness' setting for all types. (except for Names)")
@@ -1131,13 +1221,14 @@ do -- Other
 		AllowMouse = false
 	})
 	Other.Slider({
-		Text = "Refresh Rate (ms)",
+		Text = "Refresh Rate",
 		Callback = function(value)
 			esp:Set(type, "RefreshRate", value)
 		end,
 		Min = 0,
 		Max = 50,
 		Def = ss.RefreshRate,
+		Suffix = " ms",
 		Menu = {
 			Info = function()
 				UI.Banner("How fast the esp updates. This is in milliseconds.")
@@ -1150,8 +1241,9 @@ do -- Other
 			esp:Set(type, "MaximumDistance", value)
 		end,
 		Min = 50,
-		Max = 1000,
-		Def = ss.MaximumDistance
+		Max = 2000,
+		Def = ss.MaximumDistance,
+		Suffix = " studs"
 	})
 	Other.Toggle({
 		Text = "Face Camera",
@@ -1207,14 +1299,27 @@ do -- Other
 		}
 	})
 	Other.Button({
+		Text = "Re-Load UI",
+		Callback = function()
+			UI.Banner({
+				Text = "Are you sure you want to re-load the UI?",
+				Callback = function(value)
+					if value == "Yes" then
+						reload()
+					end
+				end,
+				Options = {"Yes", "No"}
+			})
+		end
+	})
+	Other.Button({
 		Text = "Load Safe Mode",
 		Callback = function()
 			UI.Banner({
-				Text = "Are you sure you want to load the UI in Safe Mode??",
+				Text = "Are you sure you want to load the UI in Safe Mode?",
 				Callback = function(value)
 					if value == "Yes" then
-						destroy()
-						pcall(loadstring, (game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua")))
+						reload(true)
 					end
 				end,
 				Options = {"Yes", "No"}
@@ -1222,7 +1327,7 @@ do -- Other
 		end,
 		Menu = {
 			Info = function()
-				UI.Banner("Re-loads the ui in Safe Mode. (prevents detection via script errors)")
+				UI.Banner("Re-loads the ui in Safe Mode. (prevents detection via script errors)\nNote that this <b>does not</b> prevent <i>all</i> detections.")
 			end
 		}
 	})
@@ -1488,6 +1593,80 @@ do -- Players
 	})
 end
 
+do -- NPC
+	local type = "NPC"
+	local s = ss[type]
+
+	NPC.Button({
+		Text = "Add esp to all NPCs",
+		Callback = function()
+			for _,v in next, workspace:GetDescendants() do
+				local model = v:FindFirstAncestorOfClass("Model")
+				if v:IsA("Humanoid") and model and not players:GetPlayerFromCharacter(model) then
+					esp:Add(model)
+				end
+			end
+		end
+	})
+	NPC.Button({
+		Text = "Remove esp from all NPCs",
+		Callback = function()
+			for _,v in next, workspace:GetDescendants() do
+				local model = v:FindFirstAncestorOfClass("Model")
+				if v:IsA("Humanoid") and model and not players:GetPlayerFromCharacter(model) then
+					esp:Remove(model)
+				end
+			end
+		end
+	})
+
+	NPC.ColorPicker({
+		Text = "Color",
+		Callback = function(value)
+			esp:Set(type, "Color", value)
+		end,
+		Def = s.Color
+	})
+	NPC.Slider({
+		Text = "Transparency",
+		Callback = function(value)
+			esp:Set(type, "Transparency", value)
+		end,
+		Min = 0,
+		Max = 1,
+		Def = s.Transparency,
+		Decimals = 2
+	})
+	NPC.Toggle({
+		Text = "Rainbow Color",
+		Callback = function(value)
+			esp:Set(type, "RainbowColor", value)
+		end,
+		Enabled = s.RainbowColor
+	})
+	local o = s.Overrides
+	NPC.ChipSet({
+		Text = "Overrides",
+		Callback = function(value)
+			esp:Set(type, "Overrides", value)
+		end,
+		Options = {
+			Boxes = o.Boxes,
+			Tracers = o.Tracers,
+			Names = o.Names,
+			Skeletons = o.Skeletons,
+			HealthBars = o.HealthBars,
+			HeadDots = o.HeadDots,
+			LookTracers = o.LookTracers
+		},
+		Menu = {
+			Info = function()
+				UI.Banner("If a type is enabled, the options above will be used instead. Otherwise, it will use the corresponding type's option.")
+			end
+		}
+	})
+end
+
 do -- Stats
 	local stats = Stats.Table({
 		Text = "Esp Statistics",
@@ -1533,7 +1712,7 @@ do -- Feedback
 				UI.Banner("Sending feedback...")
 
 				local req = request({
-					Url = "https://websec.services/ws/send/ZUC1hEr2taJ2a1NBGtPZ2VcKBYPf5YeebL801aC1",
+					Url = "https://websec.services/send/628d301f5db848748d1e31b1",
 					Method = "POST",
 					Headers = {
 						['Content-Type'] = "application/json"
@@ -1562,7 +1741,8 @@ do -- Feedback
 				end
 
 				local status = Http:JSONDecode(req.Body).status
-				UI.Banner((status == 10 and "Thank you for your feedback!") or ("Failed to send feedback;\n"..errors[status]))
+				UI.Banner(status == 0 and "Thank you for your feedback!" or "Failed to send feedback")
+				--UI.Banner((status == 10 and "Thank you for your feedback!") or ("Failed to send feedback;\n"..errors[status]))
 				sending = false
 			end,
 			Menu = {
