@@ -1,3 +1,10 @@
+# DEPRECATION NOTICE
+This documentation is now ***deprecated***.  
+I've created a better place for this and future documentation on GitBook.  
+You can find them [here](https://zzerexx.gitbook.io/home).  
+
+---
+
 # Table of Contents  
 - [Universal Script API](#universal-script-api)
   - [Loading Universal Script](#loading-universal-script)
