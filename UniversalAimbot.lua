@@ -1,15 +1,18 @@
 --[[
-v1.1.15 Changes
-- no longer crashes on bad business
+v1.1.16 Changes
+- Added the ability to prioritize players (players who are prioritized will always be targeted first)
+- Added IgnoredTransparency which allows you to change the transparency that are ignored by IgnoreTransparency
+- Added support for Rush Point
 ]]
 
-local VERSION = "v1.1.15"
+local VERSION = "v1.1.16"
 
 if not getgenv().AimbotSettings then
 	getgenv().AimbotSettings = {
 		TeamCheck = true, -- Press ] to toggle
 		VisibleCheck = true,
 		IgnoreTransparency = true, -- if enabled, visible check will automatically filter transparent objects
+		IgnoredTransparency = 0.5, -- all parts with a transparency greater than this will be ignored (IgnoreTransparency has to be enabled)
 		RefreshRate = 10, -- how fast the aimbot updates (milliseconds)
 		Keybind = "MouseButton2",
 		ToggleKey = "RightShift",
@@ -47,15 +50,16 @@ if not getgenv().AimbotSettings then
 			Spam = true, -- for semi-auto weapons
 			ClicksPerSecond = 10 -- set this to 0 to get anything higher than 37 cps
 		},
+		Priority = {},
 		Whitelisted = {}, -- Username or User ID
 		WhitelistFriends = true, -- Automatically adds friends to the whitelist
 		Ignore = {} -- Raycast Ignore
 	}
 end
 
-if not AimbotSettings.TriggerBot then
+if not AimbotSettings.IgnoredTransparency then
 	local bind = Instance.new("BindableFunction")
-	bind.OnInvoke = function(a)
+	bind.OnInvoke = function()
 		setclipboard("https://pastebin.com/raw/nwqE7v07")
 	end
 	game:GetService("StarterGui"):SetCore("SendNotification",{
@@ -111,7 +115,9 @@ elseif GameId == 1168263273 then -- bad business
 elseif GameId == 2162282815 then -- rush point
 	ss.Ignore = {camera, player.Character, workspace.RaycastIgnore, workspace.DroppedWeapons, workspace.MapFolder.Map.Ramps, workspace.MapFolder.Map.Walls.MapWalls}
 elseif FindFirstChild(workspace, "Ignore") then
-	ss.Ignore = {workspace.Ignore}
+	tableinsert(ss.Ignore, workspace.Ignore)
+elseif FindFirstChild(workspace, "RaycastIgnore") then
+	tableinsert(ss.Ignore, workspace.RaycastIgnore)
 end
 
 if UAIM then
@@ -134,8 +140,9 @@ local gids = { -- game ids
 	['pft'] = 115272207, -- pf test place
 	['pfu'] = 1256867479, -- pf unstable branch
 	['bb'] = 1168263273,
+	['rp'] = 2162282815, -- rush point
 }
-local getchar, getvis, ts, characters, teams
+local getchar, getvis, ts, characters, teams, rp
 if GameId == (gids.pf or gids.pft or gids.pfu) then
 	for _,v in next, getgc(true) do
 		if typeof(v) == "table" then
@@ -152,6 +159,14 @@ elseif GameId == gids.bb then
 			ts = rawget(v, "TS")
 			characters = ts.Characters
 			teams = ts.Teams
+		end
+	end
+elseif GameId == gids.rp then
+	-- CREDIT TO THIS DUDE FOR CRASH FIX https://v3rmillion.net/showthread.php?pid=8248169#pid8248169
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/Github-Account-39021832/Rush-Point-Fix-Crash/main/src.lua"))()
+	for _,v in next, getgc(true) do
+		if typeof(v) == "table" and rawget(v, "GetAllCharacters") then
+			rp = v
 		end
 	end
 end
@@ -194,6 +209,12 @@ function ClosestPlayer()
 	local plr = nil
 	local closest = mathhuge
 	local myteam = GetTeam(player)
+	for _,v in next, ss.Priority do
+		v = players:FindFirstChild(v)
+		if v and IsAlive(v) and InFov(v) then
+			return v
+		end
+	end
 	for _,v in next, players:GetPlayers() do
 		if v ~= player and IsAlive(v) then
 			local cf = GetChar(v):GetPivot()
@@ -214,24 +235,26 @@ end
 local params = RaycastParamsnew()
 params.FilterType = Enum.RaycastFilterType.Blacklist
 params.IgnoreWater = true
-function IsVisible(plr)
-	local char = GetChar(plr)
-	if ss.VisibleCheck and IsAlive(plr) and FindFirstChild(char, Aimbot.TargetPart) then
+function IsVisible(plr, character, mycharacter, cf, targetpos, valid)
+	local char = character or GetChar(plr)
+	if ss.VisibleCheck and (valid or IsAlive(plr) and FindFirstChild(char, Aimbot.TargetPart)) then
 		if getvis then
 			return getvis(player,plr)
 		else
-			local mychar = GetChar(player)
+			local mychar = mycharacter or GetChar(player)
 			tableinsert(Ignore, mychar)
 			params.FilterDescendantsInstances = Ignore
-			local result = workspace:Raycast(camera.CFrame.Position, (char[Aimbot.TargetPart].Position - camera.CFrame.Position).Unit * 500,params)
+			local cf = cf or camera.CFrame.Position
+			local targetpos = targetpos or char[Aimbot.TargetPart].Position
+			local result = workspace:Raycast(cf, (targetpos - cf).Unit * 500,params)
 			if result then
 				local ins = result.Instance
 				local isdes = ins:IsDescendantOf(char)
 				local model = ins:FindFirstAncestorOfClass("Model")
 				if ss.IgnoreTransparency then
-					if ins.Transparency > 0.8 and not (model ~= nil and model:FindFirstChildOfClass("Humanoid")) and not isdes then
+					if ins.Transparency > ss.IgnoredTransparency and not (model ~= nil and model:FindFirstChildOfClass("Humanoid")) and not isdes then
 						tableinsert(Ignore, ins)
-						return IsVisible(plr)
+						return IsVisible(plr, char, mychar, cf, targetpos, true)
 					elseif isdes then
 						return true
 					end
@@ -245,7 +268,7 @@ function IsVisible(plr)
 	end
 	return false
 end
-task.spawn(function() -- update ignore list
+task.spawn(function() -- update ignore list (i have no idea if i even need this but whatever)
 	while true do
 		if typeof(ss.Ignore) == "table" then
 			for _,v in next, ss.Ignore do
@@ -319,6 +342,36 @@ do -- compatibility
 			return ffa.Value
 		end
 	end
+
+	if rp then -- rush point
+		--[[ -- function method (shitty asf)
+		local getallchars = rp.GetAllCharacters
+		GetChar = function(plr)
+			for _,v in next, getallchars() do
+				if v.Name == plr.Name then
+					return v
+				end
+			end
+		end
+		]]
+		local mapfolder = workspace:WaitForChild("MapFolder")
+		local playerfolder = mapfolder:WaitForChild("Players")
+		local gamemode = mapfolder:WaitForChild("GameStats"):WaitForChild("GameMode")
+		GetChar = function(plr)
+			return FindFirstChild(playerfolder, plr.Name)
+		end
+		IsAlive = GetChar
+		GetTeam = function(plr)
+			local char = GetChar(plr)
+			if char and FindFirstChild(char, "Team") then
+				return char.Team.Value
+			end
+			return nil
+		end
+		IsFFA = function()
+			return gamemode.Value == "Deathmatch"
+		end
+	end
 end
 
 oldfuncs.alive = IsAlive
@@ -328,7 +381,6 @@ oldfuncs.ffa = IsFFA
 oldfuncs.closest = ClosestPlayer
 oldfuncs.visible = IsVisible
 oldfuncs.fov = InFov
-
 
 function IsWhitelisted(plr)
 	if table.find(ss.Whitelisted, (plr.Name or plr.UserId)) then
@@ -344,7 +396,7 @@ local conn1 = uis.InputBegan:Connect(function(i,gp)
 	if gp then
 		return
 	end
-	local a = (uit[ss.Keybind] ~= nil and uit[ss.Keybind]) or (kc[ss.Keybind] ~= nil and kc[ss.Keybind])
+	local a = ss.Keybind:find("Mouse") and uit[ss.Keybind] or kc[ss.Keybind]
 	local b = kc[ss.ToggleKey] ~= nil and kc[ss.ToggleKey]
 	if i.UserInputType == a or i.KeyCode == a then
 		if Aimbot.AimType == "Toggle" then
@@ -365,7 +417,7 @@ local conn2 = uis.InputEnded:Connect(function(i,gp)
 	if gp then
 		return
 	end
-	local a = (uit[ss.Keybind] ~= nil and uit[ss.Keybind]) or (kc[ss.Keybind] ~= nil and kc[ss.Keybind])
+	local a = ss.Keybind:find("Mouse") and uit[ss.Keybind] or kc[ss.Keybind]
 	if (i.UserInputType == a or i.KeyCode == a) and Aimbot.AimType == "Hold" then
 		ads = false
 	end
@@ -443,12 +495,14 @@ function update()
 	else
 		fov.Transparency = 0
 	end
+	
+	local showfov = AimAssist.ShowFov
 	max = (dyn and not ads and max) or (dyn and ads and max / (camera.FieldOfView / 100)) or max
-	fov1.Visible = AimAssist.ShowFov
-	fov2.Visible = AimAssist.ShowFov
-	label1.Visible = AimAssist.ShowFov
+	fov1.Visible = showfov
+	fov2.Visible = showfov
+	label1.Visible = showfov
 	label2.Visible = bot and assist
-	if AimAssist.ShowFov then
+	if showfov then
 		fov1.Position = mouse
 		fov1.Radius = min
 
@@ -486,7 +540,7 @@ function update()
 						str /= 100
 						mousemoverel((vector.X - mouse.X) * str, (vector.Y - mouse.Y) * str)
 					else
-						camera.CFrame = CFramenew(ccf.Position, char[target].Position)
+						camera.CFrame = CFramenew(ccf.Position, char[target.Name].Position)
 					end
 				end
 			end
@@ -498,7 +552,7 @@ function update()
 						factor = mathclamp(factor, 1, 10)
 						uis.MouseDeltaSensitivity = (inmaxfov and (olddelta / factor)) or olddelta
 					end
-					if (AimAssist.RequireMovement and mychar.Humanoid.MoveDirection.Magnitude > 0) or not AimAssist.RequireMovement or getchar then
+					if (AimAssist.RequireMovement and FindFirstChild(mychar, "Humanoid") and mychar.Humanoid.MoveDirection.Magnitude > 0) or not AimAssist.RequireMovement or getchar then
 						local body = WorldToViewportPoint(camera, char[rootpart].Position)
 						local head = WorldToViewportPoint(camera, char.Head.Position)
 						local vector = body
@@ -562,7 +616,7 @@ end
 --local conn3 = RunService.RenderStepped:Connect(update)
 local name = ""
 for _ = 1, math.random(16, 24) do
-	name = name..string.char(math.random(97, 122))
+	name ..= string.char(math.random(97, 122))
 end
 RunService:BindToRenderStep(name, 0, update)
 local conn4 = players.PlayerAdded:Connect(function(plr)
