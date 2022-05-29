@@ -1,9 +1,12 @@
 --[[
-v1.6.11 Changes
-- no longer crashes on bad business
+v1.6.12 Changes
+- Added support for Rush Point
+- Added esp support for NPC characters (any models with a humanoid)
+- Added GetTeamColor function
+- and other fixes im too lazy to write
 ]]
 
-local VERSION = "v1.6.11"
+local VERSION = "v1.6.12"
 
 if not EspSettings then
 	getgenv().EspSettings = {
@@ -34,6 +37,20 @@ if not EspSettings then
 			Transparency = 1,
 			Color = Color3.fromRGB(255, 150, 0),
 			AlwaysOnTop = true
+		},
+		NPC = {
+			Color = Color3.fromRGB(150,150,150),
+			Transparency = 1,
+			RainbowColor = false,
+			Overrides = {
+				Boxes = true,
+				Tracers = true,
+				Names = true,
+				Skeletons = true,
+				HealthBars = true,
+				HeadDots = true,
+				LookTracers = true
+			}
 		},
 		Boxes = {
 			Enabled = true,
@@ -187,7 +204,7 @@ local FindFirstChild = game.FindFirstChild
 local GetMouseLocation = uis.GetMouseLocation
 
 local GameId = game.GameId
-local ss, mousevis, highlights = getgenv().EspSettings, getgenv().EspSettings.MouseVisibility, getgenv().EspSettings.Highlights
+local ss, mousevis, highlights, npcs = getgenv().EspSettings, getgenv().EspSettings.MouseVisibility, getgenv().EspSettings.Highlights, getgenv().EspSettings.NPC
 local OBJECTS, VISIBLE, ID, OUTLINES = {}, true, 0, true
 --[[local bodyparts = {
 	"Head","UpperTorso","LowerTorso","LeftUpperArm","LeftLowerArm","LeftHand","RightUpperArm","RightLowerArm","RightHand","LeftUpperLeg","LeftLowerLeg","LeftFoot","RightUpperLeg","RightLowerLeg","RightFoot",
@@ -200,6 +217,7 @@ local gids = { -- game ids
 	['pft'] = 115272207, -- pf test place
 	['pfu'] = 1256867479, -- pf unstable branch
 	['bb'] = 1168263273,
+	['rp'] = 2162282815, -- rush point
 }
 local zindex = {
 	['Boxes'] = 2,
@@ -233,9 +251,8 @@ local Base = {
 	"OutlineColor"
 }
 local origins = {}
-local omega, beta = fromRGB(255,116,38), fromRGB(38,125,255)
 local white, black = fromRGB(255,255,255), fromRGB(0,0,0)
-local getchar, gethealth, ts, characters, teams
+local getchar, gethealth, ts, characters, teams, rp
 if GameId == (gids.pf or gids.pft or gids.pfu) then
 	for _,v in next, getgc(true) do
 		if typeof(v) == "table" and rawget(v, "getbodyparts") then
@@ -250,6 +267,14 @@ elseif GameId == gids.bb then
 			ts = rawget(v, "TS")
 			characters = ts.Characters
 			teams = ts.Teams
+		end
+	end
+elseif GameId == gids.rp then
+	-- CREDIT TO THIS DUDE FOR CRASH FIX https://v3rmillion.net/showthread.php?pid=8248169#pid8248169
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/Github-Account-39021832/Rush-Point-Fix-Crash/main/src.lua"))()
+	for _,v in next, getgc(true) do
+		if typeof(v) == "table" and rawget(v, "GetAllCharacters") then
+			rp = v -- unused
 		end
 	end
 end
@@ -304,6 +329,10 @@ local supportedparts = {
 local oldfuncs = {}
 
 function IsAlive(plr)
+	if plr.ClassName == "Model" then
+		return true
+	end
+
 	local humanoid = FindFirstChild(plr.Character or game, "Humanoid")
 	if humanoid and humanoid.Health > 0 then
 		return true
@@ -312,10 +341,18 @@ function IsAlive(plr)
 end
 
 function GetChar(plr)
+	if plr.ClassName == "Model" then
+		return plr
+	end
 	return plr.Character
 end
 
 function GetHealth(plr)
+	if plr.ClassName == "Model" then
+		local a = plr.Humanoid
+		return {mathfloor(a.Health), mathfloor(a.MaxHealth)}
+	end
+
 	local a = FindFirstChild(plr.Character or game, "Humanoid")
 	if a then
 		return {mathfloor(a.Health), mathfloor(a.MaxHealth)}
@@ -324,7 +361,17 @@ function GetHealth(plr)
 end
 
 function GetTeam(plr)
+	if plr.ClassName == "Model" then
+		return "NPC"
+	end
 	return plr.Team
+end
+
+function GetTeamColor(plr)
+	if plr.ClassName == "Model" then
+		return npcs.Color
+	end
+	return plr.TeamColor.Color
 end
 
 function IsFFA()
@@ -358,6 +405,10 @@ do -- compatibility
 	end
 	
 	if ts then -- bad business
+		local teamcolors = {
+			Omega = fromRGB(255,116,38),
+			Beta = fromRGB(38,125,255)
+		}
 		hookfunction(PluginManager, error)
 		IsAlive = function(plr)
 			return characters:GetCharacter(plr) ~= nil
@@ -376,6 +427,10 @@ do -- compatibility
 		GetTeam = function(plr)
 			return teams:GetPlayerTeam(plr, plr)
 		end
+		GetTeamColor = function(plr)
+			local team = GetTeam(plr)
+			return (team and teamcolors[team]) or white
+		end
 	end
 
 	if GameId == gids.arsenal then -- arsenal
@@ -388,6 +443,40 @@ do -- compatibility
 			return ffa.Value
 		end
 	end
+
+	if rp then -- rush point
+		--[[ -- function method (shitty asf)
+		local getallchars = rp.GetAllCharacters
+		GetChar = function(plr)
+			for _,v in next, getallchars() do
+				if v.Name == plr.Name then
+					return v
+				end
+			end
+		end
+		]]
+		local mapfolder = workspace:WaitForChild("MapFolder")
+		local playerfolder = mapfolder:WaitForChild("Players")
+		local gamestats = mapfolder:WaitForChild("GameStats")
+		GetChar = function(plr)
+			return FindFirstChild(playerfolder, plr.Name)
+		end
+		IsAlive = GetChar
+		GetTeam = function(plr)
+			local char = GetChar(plr)
+			if char and FindFirstChild(char, "Team") then
+				return char.Team.Value
+			end
+			return nil
+		end
+		GetTeamColor = function(plr)
+			local char = GetChar(plr)
+			return (char and FindFirstChild(char, "Outline") and char.Outline.OutlineColor) or white
+		end
+		IsFFA = function()
+			return gamestats.GameMode.Value == "Deathmatch"
+		end
+	end
 end
 
 oldfuncs.alive = IsAlive
@@ -397,6 +486,13 @@ oldfuncs.team = GetTeam
 oldfuncs.ffa = IsFFA
 
 ----
+
+function ternary(condition,val1,val2)
+	if condition then
+		return val1
+	end
+	return val2
+end
 
 function ApplyZIndex(obj,name,ontop)
 	if ZIndexEnabled then
@@ -413,25 +509,143 @@ function SetProp(obj,prop,value,outline)
 		end
 	end
 end
-function ternary(condition,val1,val2)
-	if condition then
-		return val1
+local Object = {
+	Boxes = function()
+		return {
+			Outline = Drawingnew("Quad"),
+			Box = Drawingnew("Quad")
+		}
+	end,
+	Tracers = function()
+		return {
+			Outline = Drawingnew("Line"),
+			Tracer = Drawingnew("Line")
+		}
+	end,
+	Names = function()
+		return {
+			Name = Drawingnew("Text"),
+			Data = Drawingnew("Text")
+		}
+	end,
+	Skeletons = function()
+		return (ts and { -- bad business
+			ChestOutline = Drawingnew("Line"),
+			HipsOutline = Drawingnew("Line"),
+			LeftArmOutline = Drawingnew("Line"),
+			LeftForearmOutline = Drawingnew("Line"),
+			LeftHandOutline = Drawingnew("Line"),
+			RightArmOutline = Drawingnew("Line"),
+			RightForearmOutline = Drawingnew("Line"),
+			RightHandOutline = Drawingnew("Line"),
+			LeftLegOutline = Drawingnew("Line"),
+			LeftForelegOutline = Drawingnew("Line"),
+			LeftFootOutline = Drawingnew("Line"),
+			RightLegOutline = Drawingnew("Line"),
+			RightForelegOutline = Drawingnew("Line"),
+			RightFootOutline = Drawingnew("Line"),
+
+			Chest = Drawingnew("Line"),
+			Hips = Drawingnew("Line"),
+			LeftArm = Drawingnew("Line"),
+			LeftForearm = Drawingnew("Line"),
+			LeftHand = Drawingnew("Line"),
+			RightArm = Drawingnew("Line"),
+			RightForearm = Drawingnew("Line"),
+			RightHand = Drawingnew("Line"),
+			LeftLeg = Drawingnew("Line"),
+			LeftForeleg = Drawingnew("Line"),
+			LeftFoot = Drawingnew("Line"),
+			RightLeg = Drawingnew("Line"),
+			RightForeleg = Drawingnew("Line"),
+			RightFoot = Drawingnew("Line")
+		}) or { -- 42 objects btw
+			-- R15
+			UpperTorsoOutline = Drawingnew("Line"),
+			LowerTorsoOutline = Drawingnew("Line"),
+			LeftUpperArmOutline = Drawingnew("Line"),
+			LeftLowerArmOutline = Drawingnew("Line"),
+			LeftHandOutline = Drawingnew("Line"),
+			RightUpperArmOutline = Drawingnew("Line"),
+			RightLowerArmOutline = Drawingnew("Line"),
+			RightHandOutline = Drawingnew("Line"),
+			LeftUpperLegOutline = Drawingnew("Line"),
+			LeftLowerLegOutline = Drawingnew("Line"),
+			LeftFootOutline = Drawingnew("Line"),
+			RightUpperLegOutline = Drawingnew("Line"),
+			RightLowerLegOutline = Drawingnew("Line"),
+			RightFootOutline = Drawingnew("Line"),
+
+			UpperTorso = Drawingnew("Line"),
+			LowerTorso = Drawingnew("Line"),
+			LeftUpperArm = Drawingnew("Line"),
+			LeftLowerArm = Drawingnew("Line"),
+			LeftHand = Drawingnew("Line"),
+			RightUpperArm = Drawingnew("Line"),
+			RightLowerArm = Drawingnew("Line"),
+			RightHand = Drawingnew("Line"),
+			LeftUpperLeg = Drawingnew("Line"),
+			LeftLowerLeg = Drawingnew("Line"),
+			LeftFoot = Drawingnew("Line"),
+			RightUpperLeg = Drawingnew("Line"),
+			RightLowerLeg = Drawingnew("Line"),
+			RightFoot = Drawingnew("Line"),
+			-- R6
+			TorsoOutline = Drawingnew("Line"),
+			["Left ArmOutline"] = Drawingnew("Line"),
+			["Right ArmOutline"] = Drawingnew("Line"),
+			["Left LegOutline"] = Drawingnew("Line"),
+			["Right LegOutline"] = Drawingnew("Line"),
+
+			Torso = Drawingnew("Line"),
+			["Left Arm"] = Drawingnew("Line"),
+			["Right Arm"] = Drawingnew("Line"),
+			["Left Leg"] = Drawingnew("Line"),
+			["Right Leg"] = Drawingnew("Line")
+		}
+	end,
+	HealthBars = function()
+		return {
+			Outline = Drawingnew("Quad"),
+			Bar = Drawingnew("Quad")
+		}
+	end,
+	HeadDots = function()
+		return {
+			Outline = Drawingnew("Circle"),
+			Dot = Drawingnew("Circle")
+		}
+	end,
+	LookTracers = function()
+		return {
+			Outline = Drawingnew("Line"),
+			Tracer = Drawingnew("Line")
+		}
 	end
-	return val2
+}
+function NewObject(type)
+	local obj = Object[type]()
+	SetProp(obj, "Visible", false)
+	ApplyZIndex(obj, type)
+	return obj
 end
-function Box(plr)
+function NewCharacterObject(objs, type, plr)
 	ID += 1
 
-	local type = "Boxes"
-	local objects = {
-		Outline = Drawingnew("Quad"),
-		Box = Drawingnew("Quad")
-		
+	return {
+		Object = objs,
+		Type = type,
+		Player = plr,
+		NPC = plr.ClassName ~= "Player",
+		Destroyed = false,
+		Id = ID
 	}
-	SetProp(objects, "Visible", false)
+end
+function Box(plr)
+	local type = "Boxes"
+	local objects = NewObject(type)
 	SetProp(objects, "Filled", false)
-	ApplyZIndex(objects, type)
-	local a = {Object = objects, Type = type, Player = plr, Destroyed = false, Id = ID}
+	local a = NewCharacterObject(objects, type, plr)
 	function a:Remove()
 		if a.Destroyed then return end
 		objects.Box:Remove()
@@ -441,17 +655,9 @@ function Box(plr)
 	OBJECTS[ID] = a
 end
 function Tracer(plr)
-	ID += 1
-
 	local type = "Tracers"
-	local objects = {
-		Outline = Drawingnew("Line"),
-		Tracer = Drawingnew("Line")
-		
-	}
-	SetProp(objects, "Visible", false)
-	ApplyZIndex(objects, type)
-	local a = {Object = objects, Type = type, Player = plr, Destroyed = false, Id = ID}
+	local objects = NewObject(type)
+	local a = NewCharacterObject(objects, type, plr)
 	function a:Remove()
 		if a.Destroyed then return end
 		objects.Tracer:Remove()
@@ -461,17 +667,10 @@ function Tracer(plr)
 	OBJECTS[ID] = a
 end
 function Name(plr)
-	ID += 1
-
 	local type = "Names"
-	local objects = {
-		Name = Drawingnew("Text"),
-		Data = Drawingnew("Text")
-	}
-	SetProp(objects, "Visible", false)
+	local objects = NewObject(type)
 	SetProp(objects, "Center", true)
-	ApplyZIndex(objects, type)
-	local a = {Object = objects, Type = type, Player = plr, Destroyed = false, Id = ID}
+	local a = NewCharacterObject(objects, type, plr)
 	function a:Remove()
 		if a.Destroyed then return end
 		objects.Name:Remove()
@@ -481,86 +680,9 @@ function Name(plr)
 	OBJECTS[ID] = a
 end
 function Skeleton(plr)
-	ID += 1
-
 	local type = "Skeletons"
-	local objects = (ts and {
-		ChestOutline = Drawingnew("Line"),
-		HipsOutline = Drawingnew("Line"),
-		LeftArmOutline = Drawingnew("Line"),
-		LeftForearmOutline = Drawingnew("Line"),
-		LeftHandOutline = Drawingnew("Line"),
-		RightArmOutline = Drawingnew("Line"),
-		RightForearmOutline = Drawingnew("Line"),
-		RightHandOutline = Drawingnew("Line"),
-		LeftLegOutline = Drawingnew("Line"),
-		LeftForelegOutline = Drawingnew("Line"),
-		LeftFootOutline = Drawingnew("Line"),
-		RightLegOutline = Drawingnew("Line"),
-		RightForelegOutline = Drawingnew("Line"),
-		RightFootOutline = Drawingnew("Line"),
-
-		Chest = Drawingnew("Line"),
-		Hips = Drawingnew("Line"),
-		LeftArm = Drawingnew("Line"),
-		LeftForearm = Drawingnew("Line"),
-		LeftHand = Drawingnew("Line"),
-		RightArm = Drawingnew("Line"),
-		RightForearm = Drawingnew("Line"),
-		RightHand = Drawingnew("Line"),
-		LeftLeg = Drawingnew("Line"),
-		LeftForeleg = Drawingnew("Line"),
-		LeftFoot = Drawingnew("Line"),
-		RightLeg = Drawingnew("Line"),
-		RightForeleg = Drawingnew("Line"),
-		RightFoot = Drawingnew("Line")
-	}) or { -- 42 objects btw
-		-- R15
-		UpperTorsoOutline = Drawingnew("Line"),
-		LowerTorsoOutline = Drawingnew("Line"),
-		LeftUpperArmOutline = Drawingnew("Line"),
-		LeftLowerArmOutline = Drawingnew("Line"),
-		LeftHandOutline = Drawingnew("Line"),
-		RightUpperArmOutline = Drawingnew("Line"),
-		RightLowerArmOutline = Drawingnew("Line"),
-		RightHandOutline = Drawingnew("Line"),
-		LeftUpperLegOutline = Drawingnew("Line"),
-		LeftLowerLegOutline = Drawingnew("Line"),
-		LeftFootOutline = Drawingnew("Line"),
-		RightUpperLegOutline = Drawingnew("Line"),
-		RightLowerLegOutline = Drawingnew("Line"),
-		RightFootOutline = Drawingnew("Line"),
-
-		UpperTorso = Drawingnew("Line"),
-		LowerTorso = Drawingnew("Line"),
-		LeftUpperArm = Drawingnew("Line"),
-		LeftLowerArm = Drawingnew("Line"),
-		LeftHand = Drawingnew("Line"),
-		RightUpperArm = Drawingnew("Line"),
-		RightLowerArm = Drawingnew("Line"),
-		RightHand = Drawingnew("Line"),
-		LeftUpperLeg = Drawingnew("Line"),
-		LeftLowerLeg = Drawingnew("Line"),
-		LeftFoot = Drawingnew("Line"),
-		RightUpperLeg = Drawingnew("Line"),
-		RightLowerLeg = Drawingnew("Line"),
-		RightFoot = Drawingnew("Line"),
-		-- R6
-		TorsoOutline = Drawingnew("Line"),
-		["Left ArmOutline"] = Drawingnew("Line"),
-		["Right ArmOutline"] = Drawingnew("Line"),
-		["Left LegOutline"] = Drawingnew("Line"),
-		["Right LegOutline"] = Drawingnew("Line"),
-
-		Torso = Drawingnew("Line"),
-		["Left Arm"] = Drawingnew("Line"),
-		["Right Arm"] = Drawingnew("Line"),
-		["Left Leg"] = Drawingnew("Line"),
-		["Right Leg"] = Drawingnew("Line")
-	}
-	SetProp(objects, "Visible", false)
-	ApplyZIndex(objects, type)
-	local a = {Object = objects, Type = type, Player = plr, Destroyed = false, Id = ID}
+	local objects = NewObject(type)
+	local a = NewCharacterObject(objects, type, plr)
 	function a:Remove()
 		if a.Destroyed then return end
 		for _,v in next, objects do
@@ -571,20 +693,13 @@ function Skeleton(plr)
 	OBJECTS[ID] = a
 end
 function HealthBar(plr)
-	ID += 1
-
 	local type = "HealthBars"
-	local objects = {
-		Outline = Drawingnew("Quad"),
-		Bar = Drawingnew("Quad")
-	}
-	SetProp(objects, "Visible", false)
+	local objects = NewObject(type)
 	SetProp(objects, "Thickness", 1)
 	objects.Bar.Filled = true
 	objects.Outline.Filled = false
-	ApplyZIndex(objects, type)
 	if ZIndexEnabled then objects.Outline.ZIndex = 2 end
-	local a = {Object = objects, Type = type, Player = plr, Destroyed = false, Id = ID}
+	local a = NewCharacterObject(objects, type, plr)
 	function a:Remove()
 		if a.Destroyed then return end
 		objects.Bar:Remove()
@@ -594,16 +709,9 @@ function HealthBar(plr)
 	OBJECTS[ID] = a
 end
 function HeadDot(plr)
-	ID += 1
-
 	local type = "HeadDots"
-	local objects = {
-		Outline = Drawingnew("Circle"),
-		Dot = Drawingnew("Circle")
-	}
-	SetProp(objects, "Visible", false)
-	ApplyZIndex(objects, type)
-	local a = {Object = objects, Type = type, Player = plr, Destroyed = false, Id = ID}
+	local objects = NewObject(type)
+	local a = NewCharacterObject(objects, type, plr)
 	function a:Remove()
 		if a.Destroyed then return end
 		objects.Dot:Remove()
@@ -613,16 +721,9 @@ function HeadDot(plr)
 	OBJECTS[ID] = a
 end
 function LookTracer(plr)
-	ID += 1
-
 	local type = "LookTracers"
-	local objects = {
-		Outline = Drawingnew("Line"),
-		Tracer = Drawingnew("Line")
-	}
-	SetProp(objects, "Visible", false)
-	ApplyZIndex(objects, type)
-	local a = {Object = objects, Type = type, Player = plr, Destroyed = false, Id = ID}
+	local objects = NewObject(type)
+	local a = NewCharacterObject(objects, type, plr)
 	function a:Remove()
 		if a.Destroyed then return end
 		objects.Tracer:Remove()
@@ -777,13 +878,13 @@ local conn1 = camera:GetPropertyChangedSignal("ViewportSize"):Connect(updateorig
 
 local lastupdate, refresh = osclock(), ss.RefreshRate
 function update()
-	refresh = ss.RefreshRate
-	refresh = mathclamp(refresh, 0, mathhuge)
+	refresh = mathclamp(ss.RefreshRate, 0, mathhuge)
 	if osclock() - lastupdate < (refresh / 1000) then
 		return
 	end
 	lastupdate = osclock()
-	origins.mouse = GetMouseLocation(uis)
+	local mousepos = GetMouseLocation(uis)
+	origins.mouse = mousepos
 	local ffa, myteam, ccf, camfov = IsFFA(), GetTeam(player), camera.CFrame.Position, camera.FieldOfView
 	for _,v in next, OBJECTS do
 		if not v.Destroyed then
@@ -793,19 +894,19 @@ function update()
 				v:Remove()
 			end
 	
-			local plr, part, obj, type = v.Player, v.Part, v.Object, v.Type	  -- objects shit
-			local cf, size, mid, inViewport, tl, tr, bl, br					  -- boxes shit
-			local tlx, tly, tlz, trx, try, blx, bly, brx, bry, z				 -- boxes corner axes shit
-			local c0, c1, c2, c3, c4, c5, c6, c7, c8							 -- part corner positions shit
-			local head, ltracerto												-- head dots and look tracers shit
-			local team, teamcolor												-- team shit
-			local char, health, maxhealth, mag, mousemag, render				 -- other shit
-			local s = ss[type] or v.Options									  -- settings shit
+			local plr, part, obj, type, isnpc = v.Player, v.Part, v.Object, v.Type, v.NPC -- objects shit
+			local cf, size, mid, inViewport, tl, tr, bl, br -- boxes shit
+			local tlx, tly, tlz, trx, try, blx, bly, brx, bry, z -- boxes corner axes shit
+			local c0, c1, c2, c3, c4, c5, c6, c7, c8 -- part corner positions shit
+			local head, ltracerto -- head dots and look tracers shit
+			local team, teamcolor -- team shit
+			local char, health, maxhealth, mag, mousemag, render -- other shit
+			local s = v.Options or ss[type] -- settings shit
 			if VISIBLE and plr and IsAlive(plr) and s and s.Enabled then
 				local hp = GetHealth(plr)
 				char, health, maxhealth = GetChar(plr), hp[1], hp[2]
 				cf, size = char:GetBoundingBox()
-				team, teamcolor = GetTeam(plr), plr.TeamColor.Color
+				team, teamcolor = GetTeam(plr), GetTeamColor(plr)
 				mag = (ccf - cf.Position).Magnitude
 				render = ffa or (not ss.TeamCheck or (not ffa and ss.TeamCheck and team ~= myteam)) and mag <= ss.MaximumDistance
 				if render then
@@ -853,13 +954,12 @@ function update()
 						end
 					end
 					if mousevis.Enabled then
-						local m = GetMouseLocation(uis)
 						local mags = {}
-						tableinsert(mags, (m - Vector2new(mid.X, mid.Y)).Magnitude)
-						tableinsert(mags, (m - Vector2new(tlx, tly)).Magnitude)
-						tableinsert(mags, (m - Vector2new(trx, try)).Magnitude)
-						tableinsert(mags, (m - Vector2new(blx, bly)).Magnitude)
-						tableinsert(mags, (m - Vector2new(brx, bry)).Magnitude)
+						tableinsert(mags, (mousepos - Vector2new(mid.X, mid.Y)).Magnitude)
+						tableinsert(mags, (mousepos - Vector2new(tlx, tly)).Magnitude)
+						tableinsert(mags, (mousepos - Vector2new(trx, try)).Magnitude)
+						tableinsert(mags, (mousepos - Vector2new(blx, bly)).Magnitude)
+						tableinsert(mags, (mousepos - Vector2new(brx, bry)).Magnitude)
 						
 						tablesort(mags, function(a,b)
 							return a < b
@@ -903,16 +1003,18 @@ function update()
 					SetProp(obj, "Visible", render)
 					if s.Enabled and inViewport and render then
 						local highlight = highlights.Enabled and tablefind(highlights.Players, plr.Name)
+						local certified_npc = isnpc and npcs.Overrides[type]
 						local color =		(highlight and highlights.Color) or
+											 (certified_npc and (npcs.RainbowColor and fromHSV(tick() % 5 / 5, 1, 1) or npcs.Color)) or
 											 (s.RainbowColor and fromHSV(tick() % 5 / 5, 1, 1)) or
-											 (ts and team == "Omega" and omega or team == "Beta" and beta) or
 											 (s.UseTeamColor and teamcolor) or
 											 s.Color
-						local transparency = (mousevis.Enabled and mousemag <= mousevis.Radius and mousevis.Selected[type] and mousevis.Transparency) or
+						local transparency = (mousevis.Enabled and mousevis.Selected[type] and mousemag <= mousevis.Radius and mousevis.Transparency) or
+											 (certified_npc and npcs.Transparency) or
 											 (highlight and highlights.Transparency) or
 											 s.Transparency
 						--
-
+						
 						ApplyZIndex(obj, type, highlight and highlights.AlwaysOnTop)
 						SetProp(obj, "Transparency", transparency)
 						SetProp(obj, "Color", color)
@@ -926,8 +1028,8 @@ function update()
 							box.PointD = Vector2new(brx, bry)
 
 							if OUTLINES then
-								out.Visible = ZIndexEnabled and s.Outline and box.Visible
-								if ZIndexEnabled and s.Outline then
+								out.Visible = s.Outline and box.Visible
+								if s.Outline then
 									out.Color = s.OutlineColor
 									out.Thickness = s.Thickness + s.OutlineThickness
 									out.PointA = box.PointA
@@ -951,8 +1053,8 @@ function update()
 							end
 
 							if OUTLINES then
-								out.Visible = ZIndexEnabled and outline and tracer.Visible
-								if ZIndexEnabled and outline then
+								out.Visible = outline and tracer.Visible
+								if outline then
 									out.Color = s.OutlineColor
 									out.Thickness = thickness + s.OutlineThickness
 									out.From = from
@@ -972,7 +1074,12 @@ function update()
 							if ss.HealthBars.Enabled then
 								data.Position = Vector2new(data.Position.X, data.Position.Y + z)
 							end
+
+							if isnpc then
+								name.Text = "[NPC] "
+							end
 							name.Text = (s.UseDisplayName and plr.DisplayName) or plr.Name
+
 							data.Text = ""
 							if s.ShowDistance then
 								data.Text = "[ "..mathfloor(mag)..s.DistanceDataType.." ]"
@@ -992,7 +1099,8 @@ function update()
 							for i2,v2 in next, obj do
 								local from = FindFirstChild(char, From[i2] or "")
 								local to = FindFirstChild(char, i2 or "")
-								if not find(i2, "Outline") and from and find(from.ClassName, "Part") and to and find(to.ClassName, "Part") then
+								local isoutline = find(i2, "Outline")
+								if not isoutline and from and find(from.ClassName, "Part") and to and find(to.ClassName, "Part") then
 									local pos1, in1 = WorldToViewportPoint(camera, from.Position)
 									local pos2, in2 = WorldToViewportPoint(camera, to.Position)
 									v2.Visible = in1 and in2
@@ -1007,8 +1115,8 @@ function update()
 									if find(i2, "Outline") then
 										local name = i2:gsub("Outline","")
 										local v3 = obj[name]
-										v2.Visible = ZIndexEnabled and outline and v3.Visible
-										if ZIndexEnabled and v2.Visible then
+										v2.Visible = outline and v3.Visible
+										if v2.Visible then
 											v2.Color = s.OutlineColor
 											v2.Thickness = thickness + othickness
 											v2.From = v3.From
@@ -1056,8 +1164,8 @@ function update()
 							)
 	
 							if OUTLINES then
-								out.Visible = ZIndexEnabled and outline and bar.Visible
-								if ZIndexEnabled and outline then
+								out.Visible = outline and bar.Visible
+								if outline then
 									out.Color = s.OutlineColor
 									out.Thickness = s.OutlineThickness
 									out.PointA = (baronly and bar.PointA) or Vector2new(brx, bry + 5)
@@ -1079,8 +1187,8 @@ function update()
 								dot.Radius = radius
 
 								if OUTLINES then
-									out.Visible = ZIndexEnabled and outline and dot.Visible
-									if ZIndexEnabled and outline  then
+									out.Visible = outline and dot.Visible
+									if outline  then
 										out.Color = s.OutlineColor
 										out.Thickness = (filled and thickness + (s.OutlineThickness - 1)) or thickness + s.OutlineThickness
 										out.Position = pos
@@ -1102,8 +1210,8 @@ function update()
 								tracer.To = to
 
 								if OUTLINES then
-									out.Visible = ZIndexEnabled and outline and tracer.Visible
-									if ZIndexEnabled and outline then
+									out.Visible = outline and tracer.Visible
+									if outline then
 										out.Color = s.OutlineColor
 										out.Thickness = thickness + s.OutlineThickness
 										out.From = from
@@ -1340,7 +1448,7 @@ end
 function esp:Add(a)
 	a = a or ""
 	local t = typeof(a)
-	if (t == "Instance" and a.ClassName == "Player") or (t == "string" and FindFirstChild(players, a)) then
+	if (t == "Instance" and a.ClassName == "Player" or a.ClassName == "Model") or (t == "string" and FindFirstChild(players, a)) then
 		local plr = (t == "string" and players[a]) or a
 		if not hasesp(plr) then
 			doshit(plr)
@@ -1350,7 +1458,7 @@ end
 function esp:Remove(a)
 	a = a or ""
 	local t = typeof(a)
-	if (t == "Instance" and a.ClassName == "Player") or (t == "string" and FindFirstChild(players, a)) then
+	if (t == "Instance" and a.ClassName == "Player" or a.ClassName == "Model") or (t == "string" and FindFirstChild(players, a)) then
 		local plr = (t == "string" and players[a]) or a
 		if hasesp(plr) then
 			for _,v in next, OBJECTS do
@@ -1384,6 +1492,8 @@ function esp:SetFunction(a,f)
 		GetHealth = f
 	elseif a == "team" then
 		GetTeam = f
+	elseif a == "teamcolor" then
+		GetTeamColor = f
 	elseif a == "ffa" then
 		IsFFA = f
 	end
@@ -1401,6 +1511,8 @@ function esp:ResetFunction(a)
 		GetHealth = f
 	elseif a == "team" then
 		GetTeam = f
+	elseif a == "teamcolor" then
+		GetTeamColor = f
 	elseif a == "ffa" then
 		IsFFA = f
 	end
