@@ -180,7 +180,7 @@ do -- hooks
 	end)
 
 	hookfunction(decompile, function(a) -- decompile fix thing
-		return "-- Disassembled with the Script-Ware disassembler.\n\n"..disassemble(getscriptbytecode(a))
+		return "-- Disassembled with the Script-Ware disassembler.\n\n"..disassemble(a)
 	end)
 
 	local oldt;oldt = hookfunction(getrenv().debug.traceback, function(lol) -- secure_call thing
