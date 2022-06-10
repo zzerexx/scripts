@@ -1,9 +1,9 @@
 assert(import, "you are not using script ware")
 
 local _, version;_, version = xpcall(function()
-	return game:GetService("HttpService"):JSONDecode(game:HttpGet("https://api.whatexploitsare.online/status/Synapse"))[1].Synapse['exploit_version']
+	return game:GetService("HttpService"):JSONDecode(game:HttpGet("https://api.whatexploitsare.online/status/Synapse"))[1].Synapse.exploit_version
 end, function()
-	version = "2.15.7"
+	version = "2.16.3c"
 end)
 
 loadstring(game:HttpGet("https://api.irisapp.ca/Scripts/IrisInstanceProtect.lua"))() -- credit to iris (this is for protect_gui and unprotect_gui)
@@ -73,7 +73,6 @@ local function define(name, value, parent)
 		getgenv()[name] = lol
 	end
 end
-
 local function connection(conn, enabled)
 	for _,v in next, getconnections(conn) do
 		if enabled then
@@ -473,7 +472,7 @@ do -- syn library
 	define("derive", function(_, len)
 		return c.generatebytes(len)
 	end, t)
-	define("random", c.generatekey, crypt)
+	define("random", c.generatebytes, crypt)
 
 	local base64 = {}
 	define("encode", c.base64encode, base64)
@@ -482,16 +481,18 @@ do -- syn library
 
 	local lz4 = {}
 	define("compress", lz4compress, lz4)
-	define("decompress", lz4decompress, lz4) -- ik synapse doesnt have this but idc it should have it
+	--define("decompress", lz4decompress, lz4)
 	define("lz4", lz4, crypt)
 
 	local custom = {}
 	define("encrypt", function(cipher, data, key, nonce)
+		cipher = cipher:lower()
 		assert(cipher:find("eax"), "aes-eax is not supported")
 		assert(cipher:find("bf"), "Blowfish ciphers are not supported")
 		return crypt.custom_encrypt(data, key, nonce, ciphers[cipher:gsub("_", "-")])
 	end, custom)
 	define("decrypt", function(cipher, data, key, nonce)
+		cipher = cipher:lower()
 		assert(cipher:find("eax"), "aes-eax is not supported")
 		assert(cipher:find("bf"), "Blowfish ciphers are not supported")
 		return crypt.custom_decrypt(data, key, nonce, ciphers[cipher:gsub("_", "-")])
@@ -501,7 +502,7 @@ do -- syn library
 
 		local HashLib = table.find(hashlibalgs, alg)
 		local SwLib = table.find(hashalgs, alg)
-		assert(HashLib or SwLib, "bad argument to 'hash' (non-existant hash algorithm)")
+		assert(HashLib or SwLib, "bad argument to #1 to 'hash' (non-existant hash algorithm)")
 		if HashLib then -- using hash lib for 'sha1' and 'sha224' cuz they return the same thing when using the built-in hash function
 			return hash[alg:gsub("-", "_")](data)
 		end
