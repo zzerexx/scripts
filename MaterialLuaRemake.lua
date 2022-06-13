@@ -1,4 +1,4 @@
-if getgenv().MLRemake ~= nil then
+if getgenv and getgenv().MLRemake ~= nil then
 	return MLRemake
 end
 local MLRemake = {
@@ -398,7 +398,7 @@ MLRemake.Title.BorderSizePixel = 0
 MLRemake.Title.Position = UDim2.new(0, 50, 0, 5)
 MLRemake.Title.Size = UDim2.new(1, -50, 0, 20)
 MLRemake.Title.ZIndex = 8
-MLRemake.Title.Font = Enum.Font.GothamSemibold
+MLRemake.Title.Font = Enum.Font.GothamMedium
 MLRemake.Title.Text = "Material Lua"
 MLRemake.Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Title.TextSize = 16.000
@@ -2148,7 +2148,7 @@ MLRemake.Title_3.BackgroundTransparency = 1.000
 MLRemake.Title_3.BorderSizePixel = 0
 MLRemake.Title_3.Size = UDim2.new(1, 0, 0, 16)
 MLRemake.Title_3.ZIndex = 21
-MLRemake.Title_3.Font = Enum.Font.GothamSemibold
+MLRemake.Title_3.Font = Enum.Font.GothamMedium
 MLRemake.Title_3.Text = "Material Lua Remake"
 MLRemake.Title_3.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Title_3.TextSize = 16.000
@@ -2291,7 +2291,8 @@ do -- MLRemake.MLRemake.UI
 			Banner = {
 				Text = "Banner",
 				Callback = nofunc,
-				Options = {"OK"}
+				Options = {"OK"},
+				Font = Enum.Font.Gotham
 			},
 			Notify = {
 				Title = "Material Lua Remake",
@@ -2583,6 +2584,7 @@ do -- MLRemake.MLRemake.UI
 				new.Name = "Banner"
 				new.Label.Text = t.Text
 				new.Label.RichText = true
+				new.Label.Font = t.Font or Enum.Font[t.Font]
 				new.Parent = p or main
 		
 				ui.Dim2(true, p)
@@ -3044,6 +3046,8 @@ do -- MLRemake.MLRemake.UI
 							PAGE_INDEX += 1
 							title = t.." "..PAGE_INDEX..""
 						end
+					else
+						title = t
 					end
 					
 					local discriminator = ""
@@ -3156,6 +3160,12 @@ do -- MLRemake.MLRemake.UI
 				function UI.Notify(t)
 					
 				end
+				function UI:Destroy()
+					if getgenv then
+						getgenv().MLRemake = nil
+					end
+					new:Destroy()
+				end
 		
 				UI.New = UI.new
 				UI.UI = new
@@ -3188,13 +3198,27 @@ do -- MLRemake.MLRemake.UI
 				
 				local a = {Destroyed = false, Object = new}
 				
-				function a:SetText(text)
+				local function set(text)
 					if a.Destroyed then return end
 					new.Text = text
 				end
-				function a:GetText()
+				local function get()
 					if a.Destroyed then return end
 					return new.Text
+				end
+				
+				function a:Set(text)
+					set(text)
+				end
+				function a:Get()
+					return get()
+				end
+				
+				function a:SetText(text)
+					set(text)
+				end
+				function a:GetText()
+					return get()
 				end
 				function a:GetId()
 					if a.Destroyed then return end
@@ -3245,6 +3269,24 @@ do -- MLRemake.MLRemake.UI
 				
 				local a = {Destroyed = false, Object = new}
 				
+				local function set(value)
+					if a.Destroyed then return end
+					toggled = value
+					toggle.Indicator.Position = (t.Enabled and UDim2new(0.5, 0, 0.5, 0)) or UDim2new(0, 0, 0.5, 0)
+					t.Callback(value)
+				end
+				local function get()
+					if a.Destroyed then return end
+					return toggled
+				end
+				
+				function a:Set(text)
+					set()
+				end
+				function a:Get()
+					return get()
+				end
+				
 				function a:SetText(text)
 					if a.Destroyed then return end
 					new.Text = text
@@ -3258,14 +3300,10 @@ do -- MLRemake.MLRemake.UI
 					return id
 				end
 				function a:SetState(value)
-					if a.Destroyed then return end
-					toggled = value
-					toggle.Indicator.Position = (t.Enabled and UDim2new(0.5, 0, 0.5, 0)) or UDim2new(0, 0, 0.5, 0)
-					t.Callback(value)
+					set(value)
 				end
 				function a:GetState()
-					if a.Destroyed then return end
-					return toggled
+					return get()
 				end
 				function a:Destroy()
 					if a.Destroyed then return end
@@ -3350,6 +3388,24 @@ do -- MLRemake.MLRemake.UI
 				end
 				
 				local a = {Destroyed = false, Object = new}
+				
+				local function set(value)
+					if a.Destroyed then return end
+					options = value
+					amount = #value
+					refresh()
+				end
+				local function get()
+					if a.Destroyed then return end
+					return options
+				end
+				
+				function a:Set(value)
+					set(value)
+				end
+				function a:Get()
+					return get()
+				end
 		
 				function a:SetText(text)
 					if a.Destroyed then return end
@@ -3364,14 +3420,10 @@ do -- MLRemake.MLRemake.UI
 					return id
 				end
 				function a:SetOptions(value)
-					if a.Destroyed then return end
-					options = value
-					amount = #value
-					refresh()
+					set(value)
 				end
 				function a:GetOptions()
-					if a.Destroyed then return end
-					return options
+					return get()
 				end
 				function a:Destroy()
 					if a.Destroyed then return end
@@ -3425,14 +3477,28 @@ do -- MLRemake.MLRemake.UI
 				end
 				
 				local a = {Destroyed = false, Object = new}
-		
-				function a:SetText(text)
+				
+				local function set(text)
 					if a.Destroyed then return end
 					new.PlaceholderText = text
 				end
-				function a:GetText()
+				local function get()
 					if a.Destroyed then return end
 					return new.PlaceholderText
+				end
+				
+				function a:Set(text)
+					set(text)
+				end
+				function a:Get()
+					return get()
+				end
+		
+				function a:SetText(text)
+					set(text)
+				end
+				function a:GetText()
+					return get()
 				end
 				function a:GetId()
 					if a.Destroyed then return end
@@ -3492,14 +3558,28 @@ do -- MLRemake.MLRemake.UI
 				end
 				
 				local a = {Destroyed = false, Object = new}
-		
-				function a:SetText(...)
+				
+				local function set(...)
 					if a.Destroyed then return end
 					SetText(...)
 				end
-				function a:GetText()
+				local function get()
 					if a.Destroyed then return end
 					return new.Text
+				end
+				
+				function a:Set(...)
+					set(...)
+				end
+				function a:Get()
+					return get()
+				end
+				
+				function a:SetText(...)
+					set(...)
+				end
+				function a:GetText()
+					return get()
 				end
 				function a:GetId()
 					if a.Destroyed then return end
@@ -3697,6 +3777,24 @@ do -- MLRemake.MLRemake.UI
 				init()
 				
 				local a = {Destroyed = false, Object = new}
+				
+				local function set(value)
+					if a.Destroyed then return end
+					lastvalue = value
+					val.Text = ui.AddAffixes(value, t)
+					t.Callback(value)
+				end
+				local function get()
+					if a.Destroyed then return end
+					return lastvalue
+				end
+				
+				function a:Set(value)
+					set(value)
+				end
+				function a:Get()
+					return get()
+				end
 		
 				function a:SetText(text)
 					if a.Destroyed then return end
@@ -3725,10 +3823,7 @@ do -- MLRemake.MLRemake.UI
 					init()
 				end
 				function a:SetValue(value)
-					if a.Destroyed then return end
-					lastvalue = value
-					val.Text = ui.AddAffixes(value, t)
-					t.Callback(value)
+					set(value)
 				end
 				function a:GetMin()
 					if a.Destroyed then return end
@@ -3739,8 +3834,7 @@ do -- MLRemake.MLRemake.UI
 					return max
 				end
 				function a:GetValue()
-					if a.Destroyed then return end
-					return lastvalue
+					return get()
 				end
 				function a:Destroy()
 					if a.Destroyed then return end
@@ -3875,6 +3969,25 @@ do -- MLRemake.MLRemake.UI
 				end)
 				
 				local a = {Destroyed = false, Object = new}
+				
+				local function set(value)
+					if a.Destroyed then return end
+					color = value
+					hue, sat, val = value:ToHSV()
+					ui.SetPickerPreview(new, color, true)
+					t.Callback(value)
+				end
+				local function get()
+					if a.Destroyed then return end
+					return fromHSV(hue, sat, val)
+				end
+				
+				function a:Set(value)
+					set(value)
+				end
+				function a:Get()
+					return get()
+				end
 		
 				function a:SetText(text)
 					if a.Destroyed then return end
@@ -3889,15 +4002,10 @@ do -- MLRemake.MLRemake.UI
 					return id
 				end
 				function a:SetColor(value)
-					if a.Destroyed then return end
-					color = value
-					hue, sat, val = value:ToHSV()
-					ui.SetPickerPreview(new, color, true)
-					t.Callback(value)
+					set(value)
 				end
 				function a:GetColor()
-					if a.Destroyed then return end
-					return fromHSV(hue, sat, val)
+					return get()
 				end
 				function a:Destroy()
 					if a.Destroyed then return end
@@ -3963,6 +4071,24 @@ do -- MLRemake.MLRemake.UI
 				end
 				
 				local a = {Destroyed = false, Object = new}
+				
+				local function set(value)
+					if a.Destroyed then return end
+					keybind = value
+					ui.SetBindLabel(new, value)
+					t.Callback(value)
+				end
+				local function get()
+					if a.Destroyed then return end
+					return keybind
+				end
+				
+				function a:Set(value)
+					set(value)
+				end
+				function a:Get()
+					return get()
+				end
 		
 				function a:SetText(text)
 					if a.Destroyed then return end
@@ -3977,14 +4103,10 @@ do -- MLRemake.MLRemake.UI
 					return id
 				end
 				function a:SetBind(value)
-					if a.Destroyed then return end
-					keybind = value
-					ui.SetBindLabel(new, value)
-					t.Callback(value)
+					set(value)
 				end
 				function a:GetBind()
-					if a.Destroyed then return end
-					return keybind
+					return get()
 				end
 				function a:Destroy()
 					if a.Destroyed then return end
@@ -4104,6 +4226,31 @@ do -- MLRemake.MLRemake.UI
 				end
 				
 				local a = {Destroyed = false, Object = new}
+				
+				local function set(value)
+					if a.Destroyed then return end
+					table.sort(value, function(a,b)
+						return a < b
+					end)
+					data = value
+					amount = 0
+					for i,v in next, value do
+						amount += 1
+					end
+					t.Callback(value)
+					refresh()
+				end
+				local function get()
+					if a.Destroyed then return end
+					return data
+				end
+				
+				function a:Set(value)
+					set(value)
+				end
+				function a:Get()
+					return get()
+				end
 		
 				function a:SetText(text)
 					if a.Destroyed then return end
@@ -4118,21 +4265,10 @@ do -- MLRemake.MLRemake.UI
 					return id
 				end
 				function a:SetData(value)
-					if a.Destroyed then return end
-					table.sort(value, function(a,b)
-						return a < b
-					end)
-					data = value
-					amount = 0
-					for i,v in next, value do
-						amount += 1
-					end
-					t.Callback(value)
-					refresh()
+					set(value)
 				end
 				function a:GetData()
-					if a.Destroyed then return end
-					return data
+					return get()
 				end
 				function a:Destroy()
 					if a.Destroyed then return end
@@ -4217,6 +4353,30 @@ do -- MLRemake.MLRemake.UI
 				end
 		
 				local a = {Destroyed = false, Object = new}
+				
+				local function set(value)
+					if a.Destroyed then return end
+					table.sort(value, function(a,b)
+						return a < b
+					end)
+					data = value
+					amount = 0
+					for _,_ in next, value do
+						amount += 1
+					end
+					refresh()
+				end
+				local function get()
+					if a.Destroyed then return end
+					return data
+				end
+				
+				function a:Set(value)
+					set(value)
+				end
+				function a:Get()
+					return get()
+				end
 		
 				function a:SetText(text)
 					if a.Destroyed then return end
@@ -4231,20 +4391,10 @@ do -- MLRemake.MLRemake.UI
 					return id
 				end
 				function a:SetData(value)
-					if a.Destroyed then return end
-					table.sort(value, function(a,b)
-						return a < b
-					end)
-					data = value
-					amount = 0
-					for _,_ in next, value do
-						amount += 1
-					end
-					refresh()
+					set(value)
 				end
 				function a:GetData()
-					if a.Destroyed then return end
-					return data
+					return get()
 				end
 				function a:Destroy()
 					if a.Destroyed then return end
@@ -4293,6 +4443,22 @@ do -- MLRemake.MLRemake.UI
 				end
 				
 				local a = {Destroyed = false, Object = new}
+				
+				local function set(value)
+					if a.Destroyed then return end
+					SetValue(value)
+				end
+				local function get()
+					if a.Destroyed then return end
+					return lastvalue
+				end
+				
+				function a:Set(value)
+					set(value)
+				end
+				function a:Get()
+					return get()
+				end
 		
 				function a:SetText(text)
 					if a.Destroyed then return end
@@ -4317,8 +4483,7 @@ do -- MLRemake.MLRemake.UI
 					SetValue(lastvalue)
 				end
 				function a:SetValue(value)
-					if a.Destroyed then return end
-					SetValue(value)
+					set(value)
 				end
 				function a:GetMin()
 					if a.Destroyed then return end
@@ -4327,6 +4492,9 @@ do -- MLRemake.MLRemake.UI
 				function a:GetMax()
 					if a.Destroyed then return end
 					return max
+				end
+				function a:GetValue()
+					return get()
 				end
 				function a:Destroy()
 					if a.Destroyed then return end
