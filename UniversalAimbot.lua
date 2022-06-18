@@ -143,7 +143,7 @@ local gids = { -- game ids
 	['rp'] = 2162282815, -- rush point
 }
 local getchar, getvis, ts, characters, teams, rp
-if GameId == (gids.pf or gids.pft or gids.pfu) then
+if (GameId == gids.pf) or (GameId == gids.pft) or (GameId == gids.pfu) then
 	for _,v in next, getgc(true) do
 		if typeof(v) == "table" then
 			if rawget(v, "getbodyparts") then
