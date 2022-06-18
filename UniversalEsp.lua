@@ -253,7 +253,7 @@ local Base = {
 local origins = {}
 local white, black = fromRGB(255,255,255), fromRGB(0,0,0)
 local getchar, gethealth, ts, characters, teams, rp
-if GameId == (gids.pf or gids.pft or gids.pfu) then
+if (GameId == gids.pf) or (GameId == gids.pft) or (GameId == gids.pfu) then
 	for _,v in next, getgc(true) do
 		if typeof(v) == "table" and rawget(v, "getbodyparts") then
 			getchar = rawget(v, "getbodyparts")
