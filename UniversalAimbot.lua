@@ -485,21 +485,25 @@ end
 
 -- crosshair
 local t, b, r, l, chdestroyed = Drawingnew("Line"), Drawingnew("Line"), Drawingnew("Line"), Drawingnew("Line"), false
+for _,v in next, {t, b, r, l} do
+	pcall(function()
+		v.ZIndex = 100
+	end)
+end
 function updatecrosshair(s)
-	if chdestroyed then return end
+	for _,v in next, {t, b, r, l} do
+		v.Visible = s.Enabled
+	end
+	if chdestroyed or not s.Enabled then return end
 	local center = camera.ViewportSize / 2
 	center = Vector2new(mathfloor(center.X), mathfloor(center.Y))
 	local length = s.Length
 	local offset = s.Offset
 
 	for _,v in next, {t, b, r, l} do
-		v.Visible = s.Enabled
 		v.Transparency = ads and s.TransparencyKeybind or s.Transparency
 		v.Color = s.RainbowColor and fromHSV(tick() % 5 / 5, 1, 1) or s.Color
 		v.Thickness = s.Thickness
-		pcall(function()
-			v.ZIndex = 100
-		end)
 	end
 
 	t.From = Vector2new(center.X, center.Y - offset)
