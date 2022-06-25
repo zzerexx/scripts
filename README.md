@@ -44,23 +44,21 @@ Main Changes
 ---
   
 # Universal Aimbot  
-Updated May 28, 2022  
-v1.1.16  
+Updated June 24, 2022  
+v1.1.17  
 ```
 https://pastebin.com/raw/nwqE7v07
 ```  
 [Documentation](https://zzerexx.gitbook.io/universal-script-api)  
 ### UI Version  
-Updated May 28, 2022  
+Updated June 24, 2022  
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalAimbotUI.lua"))()
 ```  
-## Update v1.1.16  
+## Update v1.1.17  
 Main Changes  
-- Added the ability to prioritize players (players who are prioritized will always be targeted first)
-- Added IgnoredTransparency which allows you to change the transparency that are ignored by IgnoreTransparency
-- Added support for Rush Point 
-- new documentation [here](https://zzerexx.gitbook.io/universal-script-api)
+- Added a customizable crosshair with various options
+- Added `UseKeybind` for TriggerBot; if this is enabled, you must hold down your keybind to use triggerbot
   
 ## NOTICE  
 ```
