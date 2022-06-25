@@ -1,11 +1,10 @@
 --[[
-v1.1.16 Changes
-- Added the ability to prioritize players (players who are prioritized will always be targeted first)
-- Added IgnoredTransparency which allows you to change the transparency that are ignored by IgnoreTransparency
-- Added support for Rush Point
+v1.1.17 Changes
+- Added a customizable crosshair with various options
+- Added `UseKeybind` for TriggerBot; if this is enabled, you must hold down your keybind to use triggerbot
 ]]
 
-local VERSION = "v1.1.16"
+local VERSION = "v1.1.17"
 
 if not getgenv().AimbotSettings then
 	getgenv().AimbotSettings = {
@@ -48,7 +47,18 @@ if not getgenv().AimbotSettings then
 			Enabled = false,
 			Delay = 60, -- how long it waits before clicking (milliseconds)
 			Spam = true, -- for semi-auto weapons
-			ClicksPerSecond = 10 -- set this to 0 to get anything higher than 37 cps
+			ClicksPerSecond = 10, -- set this to 0 to get anything higher than 37 cps
+			UseKeybind = false, -- if enabled, your keybind must be held to use trigger bot
+		},
+		Crosshair = {
+			Enabled = false,
+			Transparency = 1,
+			TransparencyKeybind = 1, -- when the keybind is held, the crosshair's transparency will be changed to this
+			Color = Color3.fromRGB(255, 0, 0),
+			RainbowColor = false,
+			Length = 15,
+			Thickness = 2,
+			Offset = 0
 		},
 		Priority = {},
 		Whitelisted = {}, -- Username or User ID
@@ -87,7 +97,9 @@ local tableinsert = table.insert
 local WorldToViewportPoint = camera.WorldToViewportPoint
 local CFramenew = CFrame.new
 local Vector2new = Vector2.new 
-local Color3fromRGB = Color3.fromRGB
+local fromRGB = Color3.fromRGB
+local fromHSV = Color3.fromHSV
+local mathfloor = math.floor
 local mathclamp = math.clamp
 local mathhuge = math.huge
 local lower = string.lower
@@ -429,38 +441,40 @@ end)
 fov = Drawingnew("Circle")
 fov.Visible = true
 fov.Transparency = 1
-fov.Color = Color3.fromRGB(255,255,255)
+fov.Color = fromRGB(255,255,255)
 fov.Thickness = 1
 fov.NumSides = 64
 fov.Radius = 100
 fov.Filled = false
 
-local fov1,fov2,label1,label2 = Drawingnew("Circle"),Drawingnew("Circle"),Drawingnew("Text"),Drawingnew("Text")
-for _,v in next, {fov1,fov2} do
-	v.Visible = false
-	v.Transparency = 1 
-	v.Thickness = 1 
-	v.NumSides = 64
-	v.Radius = 100
-	v.Filled = false
+-- aim assist fov circles and labels
+local fov1, fov2, label1, label2 = Drawingnew("Circle"), Drawingnew("Circle"), Drawingnew("Text"), Drawingnew("Text")
+do
+	for _,v in next, {fov1, fov2} do
+		v.Visible = false
+		v.Transparency = 1 
+		v.Thickness = 1 
+		v.NumSides = 64
+		v.Radius = 100
+		v.Filled = false
+	end
+	fov1.Color = fromRGB(255,0,0)
+	fov2.Color = fromRGB(0, 0, 255)
+	
+	for _,v in next, {label1,label2} do
+		v.Visible = false
+		v.Transparency = 1
+		v.Size = 32 
+		v.Center = true 
+		v.Outline = true 
+		v.OutlineColor = fromRGB(0,0,0)
+		v.Font = Fonts.UI
+	end
+	label1.Color = fromRGB(255,255,255)
+	label1.Text = "Aim Assist only works when the player is outside the Red circle and inside the Blue circle"
+	label2.Color = fromRGB(255,0,0)
+	label2.Text = "You cannot use Aimbot and Aim Assist at the same time!"
 end
-fov1.Color = Color3fromRGB(255,0,0)
-fov2.Color = Color3fromRGB(0, 0, 255)
-
-for _,v in next, {label1,label2} do
-	v.Visible = false
-	v.Transparency = 1
-	v.Size = 32 
-	v.Center = true 
-	v.Outline = true 
-	v.OutlineColor = Color3fromRGB(0,0,0)
-	v.Font = Fonts.UI
-end
-label1.Color = Color3.fromRGB(255,255,255)
-label1.Text = "Aim Assist only works when the player is outside the Red circle and inside the Blue circle"
-label2.Color = Color3.fromRGB(255,0,0)
-label2.Text = "You cannot use Aimbot and Aim Assist at the same time!"
-
 function removefov()
 	fov:Remove()
 	fov1:Remove()
@@ -468,6 +482,56 @@ function removefov()
 	label1:Remove()
 	label2:Remove()
 end
+
+-- crosshair
+local t, b, r, l, chdestroyed = Drawingnew("Line"), Drawingnew("Line"), Drawingnew("Line"), Drawingnew("Line"), false
+function updatecrosshair(s)
+	if chdestroyed or not s.Enabled then return end
+	local center = camera.ViewportSize / 2
+	center = Vector2new(mathfloor(center.X), mathfloor(center.Y))
+	local length = s.Length
+	local offset = s.Offset
+
+	for _,v in next, {t, b, r, l} do
+		v.Visible = s.Enabled
+		v.Transparency = ads and s.TransparencyKeybind or s.Transparency
+		v.Color = s.RainbowColor and fromHSV(tick() % 5 / 5, 1, 1) or s.Color
+		v.Thickness = s.Thickness
+		pcall(function()
+			v.ZIndex = 100
+		end)
+	end
+
+	t.From = Vector2new(center.X, center.Y - offset)
+	t.To   = Vector2new(center.X, center.Y - offset - length)
+
+	b.From = Vector2new(center.X, center.Y + offset)
+	b.To   = Vector2new(center.X, center.Y + offset + length)
+
+	r.From = Vector2new(center.X + offset, center.Y)
+	r.To   = Vector2new(center.X + offset + length, center.Y)
+
+	l.From = Vector2new(center.X - offset, center.Y)
+	l.To   = Vector2new(center.X - offset - length, center.Y)
+end
+function removecrosshair()
+	t:Remove()
+	b:Remove()
+	r:Remove()
+	l:Remove()
+	chdestroyed = true
+end
+local defaultcrosshair = {
+	Enabled = false,
+	Transparency = 1,
+	TransparencyKeybind = 1,
+	Color = fromRGB(255, 0, 0),
+	RainbowColor = false,
+	Length = 15,
+	Thickness = 2,
+	Offset = 0
+}
+updatecrosshair(ss.Crosshair or defaultcrosshair)
 
 local lastupdate = osclock()
 function update()
@@ -480,9 +544,112 @@ function update()
 	mouse = uis:GetMouseLocation()
 	local min, max, dyn, size = AimAssist.MinFov, AimAssist.MaxFov, AimAssist.DynamicFov, camera.ViewportSize
 	local bot, assist = Aimbot.Enabled, AimAssist.Enabled
-	if ts then
-		ss.VisibleCheck = false
+
+	local plr = ClosestPlayer()
+	if plr ~= nil then
+		local s = (bot and not assist and Aimbot) or (assist and not bot and AimAssist)
+		local char, mychar = GetChar(plr), GetChar(player)
+		local cf, ccf = char:GetBoundingBox(), camera.CFrame
+		local dist = (ccf.Position - cf.Position).Magnitude
+
+		if (ads or ss.AlwaysActive) and dist <= ss.MaximumDistance then
+			if IsVisible(plr) and not IsWhitelisted(plr) then
+				local str = mathclamp(s.Strength, 1, (bot and 200) or (assist and 100))
+				if getchar then
+					str = mathclamp(str, 1, 65)
+				end
+				local target = Aimbot.TargetPart
+				if ts and FindFirstChild(char, "Body") then
+					char = char.Body
+				end
+				if bot then
+					target = FindFirstChild(char, target)
+					if InFov(plr) and target then
+						local vector = WorldToViewportPoint(camera, target.Position)
+						if Aimbot.Use_mousemoverel then
+							str /= 100
+							mousemoverel((vector.X - mouse.X) * str, (vector.Y - mouse.Y) * str)
+						else
+							camera.CFrame = CFramenew(ccf.Position, char[target.Name].Position)
+						end
+					end
+				end
+				if assist then
+					local inmaxfov = InFov(plr, max)
+					if not InFov(plr, min) and inmaxfov then
+						local factor = AimAssist.SlowFactor
+						if AimAssist.SlowSensitivity then
+							factor = mathclamp(factor, 1, 10)
+							uis.MouseDeltaSensitivity = (inmaxfov and (olddelta / factor)) or olddelta
+						end
+						if (AimAssist.RequireMovement and FindFirstChild(mychar, "Humanoid") and mychar.Humanoid.MoveDirection.Magnitude > 0) or not AimAssist.RequireMovement or getchar then
+							local body = WorldToViewportPoint(camera, char[rootpart].Position)
+							local head = WorldToViewportPoint(camera, char.Head.Position)
+							local vector = body
+							if (mouse - Vector2new(head.X, head.Y)).Magnitude < (mouse - Vector2new(body.X, body.Y)).Magnitude then
+								vector = head
+							end
+		
+							-- distance based strength
+							local mag = (ccf.Position - char[rootpart].Position).Magnitude
+							local mult = (mag <= 20 and 2) or (mag <= 40 and 1.4) or 1
+		
+							if ads then
+								mult /= 1.8
+							end
+							if AimAssist.SlowSensitivity then
+								mult *= factor
+							end
+		
+							str *= mult
+							str /= 1000
+							mousemoverel((vector.X - mouse.X) * str, (vector.Y - mouse.Y) * str * 1.2)
+						end
+					elseif assist and not inmaxfov then
+						uis.MouseDeltaSensitivity = olddelta
+					end
+				end
+			elseif assist and not InFov(plr, max) then
+				uis.MouseDeltaSensitivity = olddelta
+			end
+		end
+
+		local target = Mouse.Target
+		local usebind = Trigger.UseKeybind
+		if not triggering and Trigger.Enabled and target ~= nil and target:IsDescendantOf(char) and not mousedown then
+			taskspawn(function()
+				triggering = true
+				taskwait(Trigger.Delay / 1000)
+				target = Mouse.Target
+				if target ~= nil and target:IsDescendantOf(char) then
+					triggering = true
+					local cps = Trigger.ClicksPerSecond
+					local spam = Trigger.Spam
+					if cps > 37 then
+						cps = 0
+					end
+					local waitamount = cps == 0 and 0 or 1 / cps
+					
+					if (usebind and ads or not usebind) then
+						mouse1press()
+					end
+					taskwait(waitamount)
+					repeat
+						target = Mouse.Target
+						if spam and (usebind and ads or not usebind) and not mousedown then
+							mouse1press()
+						end
+						taskwait(waitamount)
+					until char == nil or Mouse.Target == nil or not Mouse.Target:IsDescendantOf(char)
+					mouse1release()
+					triggering = false
+				else
+					triggering = false
+				end
+			end)
+		end
 	end
+
 	if FovCircle.Enabled then
 		fov.Position = mouse
 		fov.NumSides = FovCircle.NumSides
@@ -495,7 +662,7 @@ function update()
 	else
 		fov.Transparency = 0
 	end
-	
+
 	local showfov = AimAssist.ShowFov
 	max = (dyn and not ads and max) or (dyn and ads and max / (camera.FieldOfView / 100)) or max
 	fov1.Visible = showfov
@@ -515,103 +682,8 @@ function update()
 		label2.Position = Vector2new(size.X / 2, (size.Y / 2) + max + 42)
 		return
 	end
-	local plr = ClosestPlayer()
-	if plr == nil then return end
-	local s = (bot and not assist and Aimbot) or (assist and not bot and AimAssist)
-	local char, mychar = GetChar(plr), GetChar(player)
-	local cf, ccf = char:GetBoundingBox(), camera.CFrame
-	local dist = (ccf.Position - cf.Position).Magnitude
 
-	if (ads or ss.AlwaysActive) and dist <= ss.MaximumDistance then
-		if IsVisible(plr) and not IsWhitelisted(plr) then
-			local str = mathclamp(s.Strength, 1, (bot and 200) or (assist and 100))
-			if getchar then
-				str = mathclamp(str, 1, 65)
-			end
-			local target = Aimbot.TargetPart
-			if ts and FindFirstChild(char, "Body") then
-				char = char.Body
-			end
-			if bot then
-				target = FindFirstChild(char, target)
-				if InFov(plr) and target then
-					local vector = WorldToViewportPoint(camera, target.Position)
-					if Aimbot.Use_mousemoverel then
-						str /= 100
-						mousemoverel((vector.X - mouse.X) * str, (vector.Y - mouse.Y) * str)
-					else
-						camera.CFrame = CFramenew(ccf.Position, char[target.Name].Position)
-					end
-				end
-			end
-			if assist then
-				local inmaxfov = InFov(plr, max)
-				if not InFov(plr, min) and inmaxfov then
-					local factor = AimAssist.SlowFactor
-					if AimAssist.SlowSensitivity then
-						factor = mathclamp(factor, 1, 10)
-						uis.MouseDeltaSensitivity = (inmaxfov and (olddelta / factor)) or olddelta
-					end
-					if (AimAssist.RequireMovement and FindFirstChild(mychar, "Humanoid") and mychar.Humanoid.MoveDirection.Magnitude > 0) or not AimAssist.RequireMovement or getchar then
-						local body = WorldToViewportPoint(camera, char[rootpart].Position)
-						local head = WorldToViewportPoint(camera, char.Head.Position)
-						local vector = body
-						if (mouse - Vector2new(head.X, head.Y)).Magnitude < (mouse - Vector2new(body.X, body.Y)).Magnitude then
-							vector = head
-						end
-	
-						-- distance based strength
-						local mag = (ccf.Position - char[rootpart].Position).Magnitude
-						local mult = (mag <= 20 and 2) or (mag <= 40 and 1.4) or 1
-	
-						if ads then
-							mult /= 1.8
-						end
-						if AimAssist.SlowSensitivity then
-							mult *= factor
-						end
-	
-						str *= mult
-						str /= 1000
-						mousemoverel((vector.X - mouse.X) * str, (vector.Y - mouse.Y) * str * 1.2)
-					end
-				elseif assist and not inmaxfov then
-					uis.MouseDeltaSensitivity = olddelta
-				end
-			end
-		elseif assist and not InFov(plr, max) then
-			uis.MouseDeltaSensitivity = olddelta
-		end
-	end
-
-	local target = Mouse.Target
-	if not triggering and Trigger.Enabled and target ~= nil and target:IsDescendantOf(char) then
-		taskspawn(function()
-			triggering = true
-			taskwait(Trigger.Delay / 1000)
-			target = Mouse.Target
-			if target ~= nil and target:IsDescendantOf(char) then
-				triggering = true
-				local cps = Trigger.ClicksPerSecond
-				if cps > 37 then
-					cps = 0
-				end
-				local waitamount = 1 / Trigger.ClicksPerSecond
-				
-				repeat
-					target = Mouse.Target
-					if Trigger.Spam and not mousedown then
-						mouse1press()
-					end
-					taskwait(waitamount)
-				until char == nil or Mouse.Target == nil or not Mouse.Target:IsDescendantOf(char)
-				mouse1release()
-				triggering = false
-			else
-				triggering = false
-			end
-		end)
-	end
+	updatecrosshair(ss.Crosshair or defaultcrosshair)
 end
 --local conn3 = RunService.RenderStepped:Connect(update)
 local name = ""
@@ -621,7 +693,7 @@ end
 RunService:BindToRenderStep(name, 0, update)
 local conn4 = players.PlayerAdded:Connect(function(plr)
 	if ss.WhitelistFriends and player:IsFriendsWith(plr.UserId) then
-		tableinsert(ss.Whitelisted,plr.UserId)
+		tableinsert(ss.Whitelisted, plr.UserId)
 	end
 end)
 if typeof(ss.Keybind) == "EnumItem" then
@@ -711,6 +783,7 @@ function aimbot:Destroy()
 	conn4:Disconnect()
 	RunService:UnbindFromRenderStep(name)
 	removefov()
+	removecrosshair()
 	uis.MouseDeltaSensitivity = olddelta
 	destroyed = true
 end
