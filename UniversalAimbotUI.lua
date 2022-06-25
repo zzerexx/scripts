@@ -43,7 +43,18 @@ if not getgenv().AimbotSettings then
 			Enabled = false,
 			Delay = 60, -- how long it waits before clicking (milliseconds)
 			Spam = true, -- for semi-auto weapons
-			ClicksPerSecond = 10 -- set this to 0 to get anything higher than 37 cps
+			ClicksPerSecond = 10, -- set this to 0 to get anything higher than 37 cps
+			UseKeybind = false, -- if enabled, your keybind must be held to use trigger bot
+		},
+		Crosshair = {
+			Enabled = false,
+			Transparency = 1,
+			TransparencyKeybind = 1, -- when the keybind is held, the crosshair's transparency will be changed to this
+			Color = Color3.fromRGB(255, 0, 0),
+			RainbowColor = false,
+			Length = 15,
+			Thickness = 2,
+			Offset = 0
 		},
 		Priority = {},
 		Whitelisted = {}, -- Username or User ID
@@ -82,6 +93,7 @@ local icons = {
 	['Settings'] = "https://i.imgur.com/ENNQDl3.png",
 	['Fov Circle'] = "https://i.imgur.com/FwxEP7R.png",
 	['Trigger Bot'] = "https://i.imgur.com/4ighciz.png",
+	['Crosshair'] = "https://i.imgur.com/9riS2nl.png",
 	['Players'] = "https://i.imgur.com/rSSostV.png",
 	['Other'] = "https://i.imgur.com/2HCDHHU.png",
 	['Configs'] = "https://i.imgur.com/AAiWa00.png",
@@ -102,7 +114,7 @@ function page(title)
 	return UI.new({Title = title, ImageId = "UAIM_Icons\\"..title..".png", ImageSize = Vector2.new(20, 20)})
 end
 
-local version = "v1.1.16"
+local version = "v1.1.17"
 local aimbot = Load("UniversalAimbot")
 local cfg = Load("ConfigManager")
 local Material = Load("MaterialLuaRemake")
@@ -123,6 +135,7 @@ local Assist = page("Aim Assist")
 local Settings = page("Settings")
 local Fov = page("Fov Circle")
 local Trigger = page("Trigger Bot")
+local Crosshair = page("Crosshair")
 local Players = page("Players")
 local Other = page("Other")
 local Configs = page("Configs")
@@ -138,7 +151,18 @@ local newsettings = {
 	TriggerBot = {
 		Delay = 60,
 		Spam = true,
-		ClicksPerSecond = 10
+		ClicksPerSecond = 10,
+		UseKeybind = false
+	},
+	Crosshair = {
+		Enabled = false,
+		Transparency = 1,
+		TransparencyKeybind = false,
+		Color = Color3.fromRGB(255, 0, 0),
+		RainbowColor = false,
+		Length = 15,
+		Thickness = 2,
+		Offset = 0
 	}
 }
 for i,v in next, newsettings do
@@ -202,7 +226,7 @@ function destroy()
 	UI.UI:Destroy()
 	getgenv().UAIM = nil
 end
-local script = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalAimbotUI.lua"))
+local script = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalAimbotUI.lua"))
 function reload(safemode)
 	destroy()
 	task.wait(0.5)
@@ -250,12 +274,13 @@ end
 
 do -- Aimbot
 	local type = "Aimbot"
+	local s = ss[type]
 	Aimbot.Toggle({
 		Text = "Enabled",
 		Callback = function(value)
 			aimbot:Set(type, "Enabled", value)
 		end,
-		Enabled = ss.Aimbot.Enabled
+		Enabled = s.Enabled
 	})
 	Aimbot.Dropdown({
 		Text = "Target Part",
@@ -263,7 +288,7 @@ do -- Aimbot
 			aimbot:Set(type, "TargetPart", value)
 		end,
 		Options = {"Head", "UpperTorso", "Torso", "HumanoidRootPart"},
-		Def = ss.Aimbot.TargetPart,
+		Def = s.TargetPart,
 		Menu = {
 			Info = function()
 				UI.Banner("Some games don't have certain parts. For example, Arsenal doesn't have Torso, so you will have to select UpperTorso.")
@@ -282,7 +307,7 @@ do -- Aimbot
 		Callback = function(value)
 			aimbot:Set(type, "Use_mousemoverel", value)
 		end,
-		Enabled = ss.Aimbot.Use_mousemoverel
+		Enabled = s.Use_mousemoverel
 	})
 	Aimbot.Slider({
 		Text = "Strength",
@@ -291,7 +316,7 @@ do -- Aimbot
 		end,
 		Min = 1,
 		Max = 200,
-		Def = ss.Aimbot.Strength,
+		Def = s.Strength,
 		Menu = {
 			Info = function()
 				UI.Banner("If you are experiencing shakiness, try raising the Refresh Rate to 10 (if its lower).\nAlternatively, you can lower the Strength.")
@@ -304,18 +329,19 @@ do -- Aimbot
 			aimbot:Set(type, "AimType", value)
 		end,
 		Options = {"Hold", "Toggle"},
-		Def = ss.Aimbot.AimType
+		Def = s.AimType
 	})
 end
 
 do -- Aim Assist
 	local type = "AimAssist"
+	local s = ss[type]
 	Assist.Toggle({
 		Text = "Enabled",
 		Callback = function(value)
 			aimbot:Set(type, "Enabled", value)
 		end,
-		Enabled = ss.AimAssist.Enabled
+		Enabled = s.Enabled
 	})
 	Assist.Slider({
 		Text = "Minimum Fov",
@@ -324,7 +350,7 @@ do -- Aim Assist
 		end,
 		Min = 0,
 		Max = 50,
-		Def = ss.AimAssist.MinFov,
+		Def = s.MinFov,
 		Suffix = " px"
 	})
 	Assist.Slider({
@@ -334,7 +360,7 @@ do -- Aim Assist
 		end,
 		Min = 0,
 		Max = 200,
-		Def = ss.AimAssist.MaxFov,
+		Def = s.MaxFov,
 		Suffix = " px"
 	})
 	Assist.Button({
@@ -348,14 +374,14 @@ do -- Aim Assist
 		Callback = function(value)
 			aimbot:Set(type, "DynamicFov", value)
 		end,
-		Enabled = ss.AimAssist.DynamicFov
+		Enabled = s.DynamicFov
 	})
 	Assist.Toggle({
 		Text = "Show Minimum and Maximum Fov",
 		Callback = function(value)
 			aimbot:Set(type, "ShowFov", value)
 		end,
-		Enabled = ss.AimAssist.ShowFov
+		Enabled = s.ShowFov
 	})
 	Assist.Slider({
 		Text = "Strength",
@@ -364,14 +390,14 @@ do -- Aim Assist
 		end,
 		Min = 1,
 		Max = 100,
-		Def = ss.AimAssist.Strength
+		Def = s.Strength
 	})
 	Assist.Toggle({
 		Text = "Slow Sensitivity",
 		Callback = function(value)
 			aimbot:Set(type, "SlowSensitivity", value)
 		end,
-		Enabled = ss.AimAssist.SlowSensitivity
+		Enabled = s.SlowSensitivity
 	})
 	Assist.Slider({
 		Text = "Slow Factor",
@@ -380,7 +406,7 @@ do -- Aim Assist
 		end,
 		Min = 1,
 		Max = 10,
-		Def = ss.AimAssist.SlowFactor,
+		Def = s.SlowFactor,
 		Decimals = 2
 	})
 	Assist.Toggle({
@@ -388,7 +414,7 @@ do -- Aim Assist
 		Callback = function(value)
 			aimbot:Set(type, "RequireMovement", value)
 		end,
-		Enabled = ss.AimAssist.RequireMovement
+		Enabled = s.RequireMovement
 	})
 end
 
@@ -482,19 +508,20 @@ end
 
 do -- Fov Circle
 	local type = "FovCircle"
+	local s = ss[type]
 	Fov.Toggle({
 		Text = "Enabled",
 		Callback = function(value)
 			aimbot:Set(type, "Enabled", value)
 		end,
-		Enabled = ss.FovCircle.Enabled
+		Enabled = s.Enabled
 	})
 	Fov.Toggle({
 		Text = "Dynamic",
 		Callback = function(value)
 			aimbot:Set(type, "Dynamic", value)
 		end,
-		Enabled = ss.FovCircle.Dynamic
+		Enabled = s.Dynamic
 	})
 	Fov.Slider({
 		Text = "Radius",
@@ -503,7 +530,7 @@ do -- Fov Circle
 		end,
 		Min = 0,
 		Max = 500,
-		Def = ss.FovCircle.Radius,
+		Def = s.Radius,
 		Suffix = " px"
 	})
 	Fov.Slider({
@@ -513,12 +540,12 @@ do -- Fov Circle
 		end,
 		Min = 0,
 		Max = 1,
-		Def = ss.FovCircle.Transparency,
+		Def = s.Transparency,
 		Decimals = 2
 	})
 	Fov.ColorPicker({
 		Text = "Color",
-		Default = ss.FovCircle.Color,
+		Default = s.Color,
 		Callback = function(value)
 			aimbot:Set(type, "Color", value)
 		end
@@ -530,34 +557,56 @@ do -- Fov Circle
 		end,
 		Min = 16,
 		Max = 128,
-		Def = ss.FovCircle.NumSides
+		Def = s.NumSides
 	})
 end
 
 do -- Trigger Bot
 	local type = "TriggerBot"
+	local s = ss[type]
 	Trigger.Toggle({
 		Text = "Enabled",
 		Callback = function(value)
 			aimbot:Set(type, "Enabled", value)
 		end,
-		Enabled = ss.TriggerBot.Enabled
+		Enabled = s.Enabled
 	})
 	Trigger.Slider({
-		Text = "Delay (milliseconds)",
+		Text = "Delay",
 		Callback = function(value)
 			aimbot:Set(type, "Delay", value)
 		end,
 		Min = 0,
 		Max = 1000,
-		Def = ss.TriggerBot.Delay
+		Def = s.Delay,
+		Suffix = " ms",
+		Menu = {
+			Info = function()
+				UI.Banner("This determines how long it waits before clicking.")
+			end
+		}
+	})
+	Trigger.Slider({
+		Text = "Delay Between Clicks",
+		Callback = function(value)
+			aimbot:Set(type, "Delay", value)
+		end,
+		Min = 0,
+		Max = 1000,
+		Def = s.DelayBetweenClicks,
+		Suffix = " ms",
+		Menu = {
+			Info = function()
+				UI.Banner("This determines how long it waits between each click while spamming. This only takes effect when <b>Spam</b> is enabled.")
+			end
+		}
 	})
 	Trigger.Toggle({
 		Text = "Spam",
 		Callback = function(value)
 			aimbot:Set(type, "Spam", value)
 		end,
-		Enabled = ss.TriggerBot.Spam
+		Enabled = s.Spam
 	})
 	Trigger.Slider({
 		Text = "Clicks Per Second",
@@ -566,12 +615,105 @@ do -- Trigger Bot
 		end,
 		Min = 0,
 		Max = 37,
-		Def = ss.TriggerBot.ClicksPerSecond,
+		Def = s.ClicksPerSecond,
 		Menu = {
 			Info = function()
 				UI.Banner("Set this to 0 to get anything higher than 37 CPS.")
 			end
 		}
+	})
+	Trigger.Toggle({
+		Text = "Use Keybind",
+		Callback = function(value)
+			aimbot:Set(type, "UseKeybind", value)
+		end,
+		Enabled = s.UseKeybind
+	})
+end
+
+do -- Crosshair
+	local type = "Crosshair"
+	local s = ss[type]
+	Crosshair.Toggle({
+		Text = "Enabled",
+		Callback = function(value)
+			aimbot:Set(type, "Enabled", value)
+		end,
+		Enabled = s.Enabled,
+		Menu = {
+			Info = function()
+				UI.Banner("Smaller crosshairs may appear to be un-even.")
+			end
+		}
+	})
+	Crosshair.Slider({
+		Text = "Transparency",
+		Callback = function(value)
+			aimbot:Set(type, "Transparency", value)
+		end,
+		Min = 0,
+		Max = 1,
+		Def = s.Transparency,
+		Decimals = 2
+	})
+	Crosshair.Slider({
+		Text = "Transparency while Keybind held",
+		Callback = function(value)
+			aimbot:Set(type, "TransparencyKeybind", value)
+		end,
+		Min = 0,
+		Max = 1,
+		Def = s.TransparencyKeybind,
+		Decimals = 2,
+		Menu = {
+			Info = function()
+				UI.Banner("If this is enabled, the crosshair's transparency will be changed to this value while your Keybind is held.")
+			end
+		}
+	})
+	Crosshair.ColorPicker({
+		Text = "Color",
+		Callback = function(value)
+			aimbot:Set(type, "Color", value)
+		end,
+		Def = s.Color
+	})
+	Crosshair.Toggle({
+		Text = "Rainbow Color",
+		Callback = function(value)
+			aimbot:Set(type, "RainbowColor", value)
+		end,
+		Enabled = s.RainbowColor
+	})
+	Crosshair.Slider({
+		Text = "Length",
+		Callback = function(value)
+			aimbot:Set(type, "Length", value)
+		end,
+		Min = 1,
+		Max = 200,
+		Def = s.Length,
+		Decimals = 2
+	})
+	Crosshair.Slider({
+		Text = "Thickness",
+		Callback = function(value)
+			aimbot:Set(type, "Thickness", value)
+		end,
+		Min = 1,
+		Max = 200,
+		Def = s.Thickness,
+		Decimals = 2
+	})
+	Crosshair.Slider({
+		Text = "Offset",
+		Callback = function(value)
+			aimbot:Set(type, "Offset", value)
+		end,
+		Min = 0,
+		Max = 200,
+		Def = s.Offset,
+		Decimals = 2
 	})
 end
 
@@ -606,7 +748,7 @@ do -- Players
 		Transparent = true
 	})
 	Players.Button({
-		Text = "Add Player to Whitelist",
+		Text = "Whitelist the selected player",
 		Callback = function()
 			if plr == "" then
 				return UI.Banner("Please select a player.")
@@ -618,7 +760,7 @@ do -- Players
 		end
 	})
 	Players.Button({
-		Text = "Remove Player from Whitelist",
+		Text = "Un-whitelist the selected player",
 		Callback = function()
 			if plr == nil then
 				return UI.Banner("Please select a player.")
@@ -637,7 +779,7 @@ do -- Players
 		Enabled = true,
 		Menu = {
 			Info = function()
-				UI.Banner("If enabled, your friends will automatically be whitelisted upon joining.")
+				UI.Banner("If enabled, your friends will automatically be whitelisted upon joining the game.")
 			end
 		}
 	})
