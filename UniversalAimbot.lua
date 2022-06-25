@@ -486,7 +486,7 @@ end
 -- crosshair
 local t, b, r, l, chdestroyed = Drawingnew("Line"), Drawingnew("Line"), Drawingnew("Line"), Drawingnew("Line"), false
 function updatecrosshair(s)
-	if chdestroyed or not s.Enabled then return end
+	if chdestroyed then return end
 	local center = camera.ViewportSize / 2
 	center = Vector2new(mathfloor(center.X), mathfloor(center.Y))
 	local length = s.Length
