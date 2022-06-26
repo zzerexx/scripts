@@ -28,7 +28,7 @@ local events = rs:WaitForChild("Events")
 local unlock = events:WaitForChild("Unlock")
 local brew = events:WaitForChild("Brew")
 local floppa = workspace:WaitForChild("Floppa")
-local dj = workspace.Unlocks:WaitForChild("DJ El Gato").Primary
+local dj = workspace.Unlocks:FindFirstChild("DJ El Gato") and workspace.Unlocks['DJ El Gato'].Primary or nil
 local unlocks = require(rs.Modules.Unlocks).the_interwebs
 local vars = {
 	autobuy = false,
@@ -45,6 +45,11 @@ local vars = {
 plr.CharacterAdded:Connect(function(a)
 	char = a
 	root = a:WaitForChild("HumanoidRootPart")
+end)
+workspace.Unlocks.ChildAdded:Connect(function(a)
+	if a.Name == "DJ El Gato" then
+		dj = a.Primary
+	end
 end)
 
 local function buyitem(item)
