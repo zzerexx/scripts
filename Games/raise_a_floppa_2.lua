@@ -177,6 +177,19 @@ other.Button({
 	end
 })
 other.Button({
+	Text = "Enable Anti AFK",
+	Callback = function()
+		local v = game:GetService("VirtualUser")
+		local zero = Vector2.zero
+		local camera = workspace.CurrentCamera
+		plr.Idled:Connect(function()
+			v:Button2Down(zero, camera.CFrame)
+			task.wait(1)
+			v:Button2Up(zero, camera.CFrame)
+		end)
+	end
+})
+other.Button({
 	Text = "Destroy Gui",
 	Callback = function()
 		UI.Banner({
