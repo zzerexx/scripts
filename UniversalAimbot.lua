@@ -89,8 +89,8 @@ local uis = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
 
 local mousemoverel = mousemoverel
-local mouse1press = mouse1press
-local mouse1release = mouse1release
+local mouse1press = mouse1press or mouse1down
+local mouse1release = mouse1release or mouse1up
 local Drawingnew = Drawing.new 
 local Fonts = Drawing.Fonts
 local tableinsert = table.insert
@@ -550,8 +550,8 @@ function update()
 	local bot, assist = Aimbot.Enabled, AimAssist.Enabled
 
 	local plr = ClosestPlayer()
-	if plr ~= nil then
-		local s = (bot and not assist and Aimbot) or (assist and not bot and AimAssist)
+	local s = (bot and not assist and Aimbot) or (assist and not bot and AimAssist) or nil
+	if plr ~= nil and s ~= nil then
 		local char, mychar = GetChar(plr), GetChar(player)
 		local cf, ccf = char:GetBoundingBox(), camera.CFrame
 		local dist = (ccf.Position - cf.Position).Magnitude
