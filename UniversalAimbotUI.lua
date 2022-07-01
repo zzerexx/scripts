@@ -983,7 +983,7 @@ end
 
 do -- Feedback
 	local Http = game:GetService("HttpService")
-	local request = request or http_request or (http and http.request) or nil
+	local request = request or http_request or (http and http.request) or (syn and syn.request) or nil
 	local errors = {
 		[2] = "The feedback system is receiving too many requests at the moment.",
 		[3] = "You are sending too many requests.",
