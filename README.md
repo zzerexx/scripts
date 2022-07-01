@@ -21,7 +21,7 @@ https://pastebin.com/raw/5zw0rLH9
 ```  
 [Documentation](https://zzerexx.gitbook.io/universal-script-api)  
 ### UI Version  
-Updated May 28, 2022  
+Updated June 30, 2022  
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua"))()
 ```  
@@ -41,17 +41,20 @@ Main Changes
 - new documentation [here](https://zzerexx.gitbook.io/universal-script-api)
 - and other fixes im too lazy to write
   
+UI Changes  
+- Fixed Feedback page on synapse
+  
 ---
   
 # Universal Aimbot  
-Updated June 24, 2022  
+Updated June 30, 2022  
 v1.1.17  
 ```
 https://pastebin.com/raw/nwqE7v07
 ```  
 [Documentation](https://zzerexx.gitbook.io/universal-script-api)  
 ### UI Version  
-Updated June 24, 2022  
+Updated June 30, 2022  
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalAimbotUI.lua"))()
 ```  
@@ -59,6 +62,9 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/
 Main Changes  
 - Added a customizable crosshair with various options
 - Added `UseKeybind` for TriggerBot; if this is enabled, you must hold down your keybind to use triggerbot
+  
+UI Changes  
+- Fixed Feedback page on synapse
   
 ## NOTICE  
 ```
