@@ -8,6 +8,7 @@ local Main = Instance.new("Frame")
 local UIPadding = Instance.new("UIPadding")
 local Logo = Instance.new("ImageButton")
 local Label = Instance.new("TextLabel")
+local Version = Instance.new("TextLabel")
 local Content = Instance.new("Frame")
 local Title = Instance.new("TextLabel")
 local UIPadding_2 = Instance.new("UIPadding")
@@ -49,14 +50,15 @@ local Submit = Instance.new("TextButton")
 local Dim = Instance.new("Frame")
 local ErrorBox = Instance.new("Frame")
 local Label_3 = Instance.new("TextLabel")
+local UIPadding_6 = Instance.new("UIPadding")
 local MiniView = Instance.new("Frame")
 local SongCover = Instance.new("ImageLabel")
 local Title_2 = Instance.new("TextLabel")
-local UIPadding_6 = Instance.new("UIPadding")
-local Artist_2 = Instance.new("TextLabel")
 local UIPadding_7 = Instance.new("UIPadding")
-local Next_2 = Instance.new("ImageButton")
+local Artist_2 = Instance.new("TextLabel")
 local UIPadding_8 = Instance.new("UIPadding")
+local Next_2 = Instance.new("ImageButton")
+local UIPadding_9 = Instance.new("UIPadding")
 local Play_2 = Instance.new("ImageButton")
 local Pause_2 = Instance.new("ImageButton")
 local Positions = Instance.new("ImageButton")
@@ -117,12 +119,12 @@ local Options_2 = Instance.new("ScrollingFrame")
 local UIListLayout = Instance.new("UIListLayout")
 local TextBox = Instance.new("Frame")
 local Label_6 = Instance.new("TextLabel")
-local UIPadding_9 = Instance.new("UIPadding")
+local UIPadding_10 = Instance.new("UIPadding")
 local Line = Instance.new("Frame")
 local Box = Instance.new("TextBox")
 local Button_2 = Instance.new("Frame")
 local Label_7 = Instance.new("TextLabel")
-local UIPadding_10 = Instance.new("UIPadding")
+local UIPadding_11 = Instance.new("UIPadding")
 local Line_2 = Instance.new("Frame")
 local Button_3 = Instance.new("TextButton")
 local Settings = Instance.new("ImageButton")
@@ -178,6 +180,20 @@ Label.Text = "Spotify"
 Label.TextColor3 = Color3.fromRGB(255, 255, 255)
 Label.TextSize = 20.000
 Label.TextXAlignment = Enum.TextXAlignment.Left
+
+Version.Name = "Version"
+Version.Parent = Label
+Version.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Version.BackgroundTransparency = 1.000
+Version.BorderSizePixel = 0
+Version.Position = UDim2.new(1, 0, 0, 0)
+Version.Size = UDim2.new(0, 50, 0, 27)
+Version.Font = Enum.Font.SourceSans
+Version.Text = "v1.1"
+Version.TextColor3 = Color3.fromRGB(75, 75, 75)
+Version.TextSize = 14.000
+Version.TextXAlignment = Enum.TextXAlignment.Left
+Version.TextYAlignment = Enum.TextYAlignment.Bottom
 
 Content.Name = "Content"
 Content.Parent = Main
@@ -473,7 +489,7 @@ TokenMain.AnchorPoint = Vector2.new(0.5, 0.5)
 TokenMain.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
 TokenMain.BorderSizePixel = 0
 TokenMain.Position = UDim2.new(0.5, 0, 0.5, 0)
-TokenMain.Size = UDim2.new(0, 300, 0, 140)
+TokenMain.Size = UDim2.new(0, 300, 0, 165)
 TokenMain.Visible = false
 TokenMain.ZIndex = 21
 
@@ -531,7 +547,7 @@ Description.Position = UDim2.new(0, 0, 0, 25)
 Description.Size = UDim2.new(1, 0, 0, 90)
 Description.ZIndex = 22
 Description.Font = Enum.Font.Gotham
-Description.Text = "1. Click Link in the top left and paste the link in your browser\\n2. Click GET TOKEN and select user-read-currently-playing\\n3. After it refreshes, in the OAuth Token text box, select all and copy the token. Paste this token in the text box below and click Submit."
+Description.Text = "1. Click Link in the top left and paste the link in your browser\\n2. Click GET TOKEN and select the following:\\n          user-read-currently-playing\\n          user-read-playback-state\\n          user-modify-playback-state\\n3. After it refreshes, in the OAuth Token text box, select all and copy the token. Paste this token in the text box below and click Submit."
 Description.TextColor3 = Color3.fromRGB(255, 255, 255)
 Description.TextSize = 12.000
 Description.TextWrapped = true
@@ -598,6 +614,10 @@ Label_3.Text = "Error message"
 Label_3.TextColor3 = Color3.fromRGB(255, 50, 50)
 Label_3.TextSize = 12.000
 
+UIPadding_6.Parent = Label_3
+UIPadding_6.PaddingBottom = UDim.new(0, 2)
+UIPadding_6.PaddingTop = UDim.new(0, 2)
+
 MiniView.Name = "MiniView"
 MiniView.Parent = Main
 MiniView.AnchorPoint = Vector2.new(0, 1)
@@ -630,8 +650,8 @@ Title_2.TextColor3 = Color3.fromRGB(255, 255, 255)
 Title_2.TextSize = 14.000
 Title_2.TextXAlignment = Enum.TextXAlignment.Left
 
-UIPadding_6.Parent = Title_2
-UIPadding_6.PaddingLeft = UDim.new(0, 3)
+UIPadding_7.Parent = Title_2
+UIPadding_7.PaddingLeft = UDim.new(0, 3)
 
 Artist_2.Name = "Artist"
 Artist_2.Parent = MiniView
@@ -647,8 +667,8 @@ Artist_2.TextColor3 = Color3.fromRGB(150, 150, 150)
 Artist_2.TextSize = 12.000
 Artist_2.TextXAlignment = Enum.TextXAlignment.Left
 
-UIPadding_7.Parent = Artist_2
-UIPadding_7.PaddingLeft = UDim.new(0, 3)
+UIPadding_8.Parent = Artist_2
+UIPadding_8.PaddingLeft = UDim.new(0, 3)
 
 Next_2.Name = "Next"
 Next_2.Parent = MiniView
@@ -663,8 +683,8 @@ Next_2.AutoButtonColor = false
 Next_2.Image = "rbxassetid://9607545497"
 Next_2.ImageColor3 = Color3.fromRGB(170, 170, 170)
 
-UIPadding_8.Parent = MiniView
-UIPadding_8.PaddingRight = UDim.new(0, 5)
+UIPadding_9.Parent = MiniView
+UIPadding_9.PaddingRight = UDim.new(0, 5)
 
 Play_2.Name = "Play"
 Play_2.Parent = MiniView
@@ -1286,8 +1306,8 @@ Label_6.TextColor3 = Color3.fromRGB(255, 255, 255)
 Label_6.TextSize = 14.000
 Label_6.TextXAlignment = Enum.TextXAlignment.Left
 
-UIPadding_9.Parent = Label_6
-UIPadding_9.PaddingLeft = UDim.new(0, 5)
+UIPadding_10.Parent = Label_6
+UIPadding_10.PaddingLeft = UDim.new(0, 5)
 
 Line.Name = "Line"
 Line.Parent = TextBox
@@ -1334,8 +1354,8 @@ Label_7.TextColor3 = Color3.fromRGB(255, 255, 255)
 Label_7.TextSize = 14.000
 Label_7.TextXAlignment = Enum.TextXAlignment.Left
 
-UIPadding_10.Parent = Label_7
-UIPadding_10.PaddingLeft = UDim.new(0, 5)
+UIPadding_11.Parent = Label_7
+UIPadding_11.PaddingLeft = UDim.new(0, 5)
 
 Line_2.Name = "Line"
 Line_2.Parent = Button_2
@@ -1372,7 +1392,7 @@ Settings.Image = "rbxassetid://9622863785"
 
 -- Scripts:
 
-local function POFZOUR_fake_script() -- Main.SmoothDrag 
+local function DXWOMND_fake_script() -- Main.SmoothDrag 
 	local script = Instance.new('LocalScript', Main)
 
 	local uis = game:GetService("UserInputService")
@@ -1420,10 +1440,12 @@ local function POFZOUR_fake_script() -- Main.SmoothDrag
 	
 	SmoothDrag(script.Parent)
 end
-coroutine.wrap(POFZOUR_fake_script)()
-local function QRYB_fake_script() -- Spotify.LocalScript 
+coroutine.wrap(DXWOMND_fake_script)()
+local function ETATBUI_fake_script() -- Spotify.LocalScript 
 	local script = Instance.new('LocalScript', Spotify)
 
+	-- zzerexx was here
+	
 	if SPOTIFY then SPOTIFY() end
 	
 	-- Variables
@@ -1451,6 +1473,7 @@ local function QRYB_fake_script() -- Spotify.LocalScript
 	local playing = false
 	local seeking = false
 	local durationms = 0
+	local errorvisible = false
 	
 	-- UI
 	local main = script.Parent.Main
@@ -1479,7 +1502,16 @@ local function QRYB_fake_script() -- Spotify.LocalScript
 	title.Alt.AutomaticSize = Enum.AutomaticSize.X
 	artist.Alt.AutomaticSize = Enum.AutomaticSize.X
 	tokenmain.Description.RichText = true
-	tokenmain.Description.Text = "<b>1.</b> Click <b><font color='#1ed760'>Link</font></b> in the top left and paste the link in your browser<br /><b>2.</b> Click <b><font color='#1ed760'>GET TOKEN</font></b> and select <b><font color='#1ed760'>user-read-currently-playing</font></b><br /><b>3.</b> After it refreshes, in the <b><font color='#1ed760'>OAuth Token</font></b> text box, select all and copy the token. Paste this token in the text box below and click <b><font color='#1ed760'>Submit</font></b>."
+	--tokenmain.Description.Text = "<b>1.</b> Click <b><font color='#1ed760'>Link</font></b> in the top left and paste the link in your browser<br /><b>2.</b> Click <b><font color='#1ed760'>GET TOKEN</font></b> and select <b><font color='#1ed760'>user-read-currently-playing</font></b>, <b><font color='#1ed760'>user-read-playback-state</font></b>, and <b><font color='#1ed760'>user-modify-playback-state</font></b><br /><b>3.</b> After it refreshes, in the <b><font color='#1ed760'>OAuth Token</font></b> text box, select all and copy the token. Paste this token in the text box below and click <b><font color='#1ed760'>Submit</font></b>."
+	tokenmain.Description.Text = [[<b>1.</b> Click <b><font color='#1ed760'>Link</font></b> in the top left and paste the link in your browser
+	<b>2.</b> Click <b><font color='#1ed760'>GET TOKEN</font></b> and select the following:
+	          <b><font color='#1ed760'>user-read-currently-playing</font></b>
+	          <b><font color='#1ed760'>user-read-playback-state</font></b>
+	          <b><font color='#1ed760'>user-modify-playback-state</font></b>
+	<b>3.</b> After it refreshes, in the <b><font color='#1ed760'>OAuth Token</font></b> text box, select all and copy the token. Paste this token in the text box below and click <b><font color='#1ed760'>Submit</font></b>.]]
+	error.AutomaticSize = Enum.AutomaticSize.Y
+	error.Label.AutomaticSize = Enum.AutomaticSize.Y
+	error.Label.RichText = true
 	
 	-- Functions
 	local request = request or http_request or (syn and syn.request) or (getgenv and getgenv().http and getgenv().http.request) or nil
@@ -1504,6 +1536,21 @@ local function QRYB_fake_script() -- Spotify.LocalScript
 		
 		return string.format("%s:%s", minutes, seconds)
 	end
+	local function showerror(msg)
+		if errorvisible then return end
+		task.spawn(function()
+			errorvisible = true
+			error.Visible = true
+			error.Label.Text = msg
+			if msg == "Permissions missing" then
+				error.Label.Text = "<b>Unable to update playback buttons</b>\nMake sure you select the following scopes:\n<b>user-read-currently-playing</b>\n<b>user-read-playback-state</b>\n<b>user-modify-playback-state</b>"
+			end
+			
+			task.wait(3)
+			error.Visible = false
+			errorvisible = false
+		end)
+	end
 	
 	----
 	
@@ -1516,21 +1563,18 @@ local function QRYB_fake_script() -- Spotify.LocalScript
 				['Content-Type'] = "application/json"
 			}
 		}
-		if method == "POST" then
+		if method == "POST" or method == "PUT" then -- fix dumb error
 			t.Body = ""
 		end
 		local data = request(t)
 		
-		local body = data.Body
-		if body.error then
-			error.Visible = true
-			error.Label.Text = body.error.message
+		local body = data.Body ~= nil and decode(data.Body)
+		if body and body.error then
+			showerror(body.error.message)
 			return
-		else
-			error.Visible = false
 		end
 	
-		return (data and body and body:gsub(" ", "") ~= "" and decode(body)) or ""
+		return (data and body) or ""
 	end
 	
 	local function SetPreview(t)
@@ -1603,7 +1647,7 @@ local function QRYB_fake_script() -- Spotify.LocalScript
 	local function CheckToken(token)
 		local data = MakeRequest(token, "me")
 		
-		return data.display_name ~= nil
+		return rawget(data, "display_name")
 	end
 	
 	-- Playback Controls
@@ -1948,4 +1992,4 @@ local function QRYB_fake_script() -- Spotify.LocalScript
 		task.wait(INTERVAL or 0.1)
 	end
 end
-coroutine.wrap(QRYB_fake_script)()
+coroutine.wrap(ETATBUI_fake_script)()
