@@ -1392,7 +1392,7 @@ Settings.Image = "rbxassetid://9622863785"
 
 -- Scripts:
 
-local function DXWOMND_fake_script() -- Main.SmoothDrag 
+local function VLBVB_fake_script() -- Main.SmoothDrag 
 	local script = Instance.new('LocalScript', Main)
 
 	local uis = game:GetService("UserInputService")
@@ -1440,8 +1440,8 @@ local function DXWOMND_fake_script() -- Main.SmoothDrag
 	
 	SmoothDrag(script.Parent)
 end
-coroutine.wrap(DXWOMND_fake_script)()
-local function ETATBUI_fake_script() -- Spotify.LocalScript 
+coroutine.wrap(VLBVB_fake_script)()
+local function XHKNDO_fake_script() -- Spotify.LocalScript 
 	local script = Instance.new('LocalScript', Spotify)
 
 	-- zzerexx was here
@@ -1646,6 +1646,7 @@ local function ETATBUI_fake_script() -- Spotify.LocalScript
 	end
 	local function CheckToken(token)
 		local data = MakeRequest(token, "me")
+		if data == nil then return end
 		
 		return rawget(data, "display_name")
 	end
@@ -1992,4 +1993,4 @@ local function ETATBUI_fake_script() -- Spotify.LocalScript
 		task.wait(INTERVAL or 0.1)
 	end
 end
-coroutine.wrap(ETATBUI_fake_script)()
+coroutine.wrap(XHKNDO_fake_script)()
