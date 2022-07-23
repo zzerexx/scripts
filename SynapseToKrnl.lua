@@ -3,7 +3,7 @@ assert(KRNL_LOADED, "you are not using krnl")
 local _, version;_, version = xpcall(function()
 	return game:GetService("HttpService"):JSONDecode(game:HttpGet("https://api.whatexploitsare.online/status/Synapse"))[1].Synapse.exploit_version
 end, function()
-	version = "2.16.4"
+	version = "2.17.1"
 end)
 
 loadstring(game:HttpGet("https://api.irisapp.ca/Scripts/IrisInstanceProtect.lua"))() -- credit to iris (this is for protect_gui and unprotect_gui)
@@ -29,6 +29,11 @@ local function connection(conn, enabled)
 end
 
 do -- hooks
+	local Hook = Krnl:Require("Hook")
+	local function hookfunction(old, new) -- "new closure has too many upvalues" bro stfu
+		return Hook.new(old, new).Closure
+	end
+
 	local headers = game:GetService("HttpService"):JSONDecode(request({Url = "https://httpbin.org/get"}).Body).headers
 	local Fingerprint = headers['Krnl-Hwid']
 	local UserIdentifier = headers['Krnl-Hwid']
@@ -147,13 +152,18 @@ do -- syn_ filesystem
 end
 
 do -- syn_ input
+	define("mouse1press", mouse1down) -- dummy krnl devs removed these ??????????
+	define("mouse1release", mouse1up)
+	define("mouse2press", mouse2down)
+	define("mouse2release", mouse2up)
+
 	define("syn_mouse1click", mouse1click)
-	define("syn_mouse1press", mouse1down)
-	define("syn_mouse1release", mouse1up)
+	define("syn_mouse1press", mouse1press)
+	define("syn_mouse1release", mouse1release)
 
 	define("syn_mouse2click", mouse2click)
-	define("syn_mouse2press", mouse2down)
-	define("syn_mouse2release", mouse2up)
+	define("syn_mouse2press", mouse2press)
+	define("syn_mouse2release", mouse2release)
 
 	define("syn_mousescroll", mousescroll)
 	define("syn_mousemoverel", mousemoverel)
@@ -392,11 +402,11 @@ do -- syn library
 end
 
 setreadonly(syn, true)
-
+setreadonly(bit, false)
 define("ror", bit.rrotate, bit)
 define("rol", bit.lrotate, bit)
 define("tohex", function(a)
 	return tonumber(string.format("%08x", a % 4294967296))
 end, bit)
-
+setreadonly(bit, true)
 -- pasted from synapse to scriptware
