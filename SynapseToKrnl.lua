@@ -148,12 +148,12 @@ end
 
 do -- syn_ input
 	define("syn_mouse1click", mouse1click)
-	define("syn_mouse1press", mouse1press)
-	define("syn_mouse1release", mouse1release)
+	define("syn_mouse1press", mouse1down)
+	define("syn_mouse1release", mouse1up)
 
 	define("syn_mouse2click", mouse2click)
-	define("syn_mouse2press", mouse2press)
-	define("syn_mouse2release", mouse2release)
+	define("syn_mouse2press", mouse2down)
+	define("syn_mouse2release", mouse2up)
 
 	define("syn_mousescroll", mousescroll)
 	define("syn_mousemoverel", mousemoverel)
