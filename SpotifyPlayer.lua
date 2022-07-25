@@ -1392,7 +1392,7 @@ Settings.Image = "rbxassetid://9622863785"
 
 -- Scripts:
 
-local function VLBVB_fake_script() -- Main.SmoothDrag 
+local function PNUBHTJ_fake_script() -- Main.SmoothDrag 
 	local script = Instance.new('LocalScript', Main)
 
 	local uis = game:GetService("UserInputService")
@@ -1440,8 +1440,8 @@ local function VLBVB_fake_script() -- Main.SmoothDrag
 	
 	SmoothDrag(script.Parent)
 end
-coroutine.wrap(VLBVB_fake_script)()
-local function XHKNDO_fake_script() -- Spotify.LocalScript 
+coroutine.wrap(PNUBHTJ_fake_script)()
+local function HGXGQX_fake_script() -- Spotify.LocalScript 
 	local script = Instance.new('LocalScript', Spotify)
 
 	-- zzerexx was here
@@ -1450,7 +1450,7 @@ local function XHKNDO_fake_script() -- Spotify.LocalScript
 	
 	-- Variables
 	local ENABLED = true
-	local INTERVAL = 0.1
+	local INTERVAL = 1.25
 	
 	local player = game:GetService("Players").LocalPlayer
 	local uis = game:GetService("UserInputService")
@@ -1907,7 +1907,7 @@ local function XHKNDO_fake_script() -- Spotify.LocalScript
 	
 	newtextbox({
 		Text = "Request Interval (ms)",
-		Placeholder = "100",
+		Placeholder = "1250",
 		Callback = function(self, text)
 			INTERVAL = text:gsub("%D", "") / 1000
 			self.Box.Text = INTERVAL * 1000
@@ -1993,4 +1993,4 @@ local function XHKNDO_fake_script() -- Spotify.LocalScript
 		task.wait(INTERVAL or 0.1)
 	end
 end
-coroutine.wrap(XHKNDO_fake_script)()
+coroutine.wrap(HGXGQX_fake_script)()
