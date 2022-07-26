@@ -237,41 +237,6 @@ function reload(safemode)
 	end
 end
 
-do -- new icons notification
-	task.delay(3, function()
-		if readfile("UAIM_Icons\\Aimbot.png") == game:HttpGet("https://i.imgur.com/Bcaku7A.png") then
-			UI.Banner({
-				Text = "There are new UI icons available! Would you like to use the new icons instead?",
-				Callback = function(value)
-					if value == "Yes" then
-						delfolder("UAIM_Icons")
-						for i,v in next, icons do
-							local folder = "UAIM_Icons"
-							if not isfolder("UAIM_Icons") then
-								makefolder("UAIM_Icons")
-							end
-							local path = folder.."\\"..i..".png"
-							if not isfile(path) then
-								writefile(path, game:HttpGet(v))
-							end
-						end
-						UI.Banner({
-							Text = "Successfully added new icons! Would you like to re-load the UI to apply?",
-							Callback = function(value)
-								if value == "Yes" then
-									reload()
-								end
-							end,
-							Options = {"Yes", "No"}
-						})
-					end
-				end,
-				Options = {"Yes", "No"}
-			})
-		end
-	end)
-end
-
 do -- Aimbot
 	local type = "Aimbot"
 	local s = ss[type]
@@ -982,6 +947,9 @@ do -- Configs
 end
 
 do -- Feedback
+	local url = "https://websec.services/send/628d301f5db848748d1e31b1"
+	local script = "Aimbot"
+
 	local Http = game:GetService("HttpService")
 	local request = request or http_request or (http and http.request) or (syn and syn.request) or nil
 	local errors = {
@@ -995,12 +963,20 @@ do -- Feedback
 	if request then
 		local msg = nil
 		local sending = false
+		local bug = false
 		Feedback.TextBox({
 			Text = "Your message here",
 			Callback = function(value)
 				msg = value
 			end,
 			ClearOnFocus = false
+		})
+		Feedback.Toggle({
+			Text = "Is this a bug report?",
+			Callback = function(value)
+				bug = value
+			end,
+			Enabled = false
 		})
 		Feedback.Button({
 			Text = "Send Feedback",
@@ -1009,8 +985,10 @@ do -- Feedback
 				sending = true
 				UI.Banner("Sending feedback...")
 
+				local gameicon = Http:JSONDecode(game:HttpGet(string.format("https://thumbnails.roblox.com/v1/places/gameicons?placeIds=%s&size=128x128&format=Png&isCircular=false", game.PlaceId))).data[1].imageUrl
+
 				local req = request({
-					Url = "https://websec.services/send/628d301f5db848748d1e31b1",
+					Url = url,
 					Method = "POST",
 					Headers = {
 						['Content-Type'] = "application/json"
@@ -1018,9 +996,13 @@ do -- Feedback
 					Body = Http:JSONEncode({
 						content = "",
 						embeds = {{
-							title = "Universal Aimbot Feedback",
+							title = string.format("Universal %s %s", script, bug and "Bug Report" or "Feedback"),
 							description = string.format("`%s`", msg),
 							timestamp = DateTime.now():ToIsoDate(),
+							color = bug and 0xFF0000 or 0x00FFFF,
+							image = {
+								url = gameicon
+							},
 							author = {
 								name = "Game: "..game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name,
 								url = "https://roblox.com/games/"..game.PlaceId
@@ -1037,10 +1019,11 @@ do -- Feedback
 					UI.Banner("Failed to send feedback; Request failed")
 					return
 				end
-
-				local status = Http:JSONDecode(req.Body).status
-				UI.Banner(status == 0 and "Thank you for your feedback!" or "Failed to send feedback")
+				
+				--local status = Http:JSONDecode(req.Body).status
+				--UI.Banner(status == 0 and "Thank you for your feedback!" or "Failed to send feedback")
 				--UI.Banner((status == 10 and "Thank you for your feedback!") or ("Failed to send feedback;\n"..errors[status]))
+				UI.Banner("Thank you for your feedback")
 				sending = false
 			end,
 			Menu = {
