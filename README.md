@@ -21,7 +21,7 @@ https://pastebin.com/raw/5zw0rLH9
 ```  
 [Documentation](https://zzerexx.gitbook.io/universal-script-api)  
 ### UI Version  
-Updated June 30, 2022  
+Updated July 26, 2022  
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua"))()
 ```  
@@ -42,7 +42,8 @@ Main Changes
 - and other fixes im too lazy to write
   
 UI Changes  
-- Fixed Feedback page on synapse
+- Fixed Feedback page
+- Added bug report option on Feedback page
   
 ---
   
@@ -54,7 +55,7 @@ https://pastebin.com/raw/nwqE7v07
 ```  
 [Documentation](https://zzerexx.gitbook.io/universal-script-api)  
 ### UI Version  
-Updated June 30, 2022  
+Updated July 26, 2022  
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalAimbotUI.lua"))()
 ```  
@@ -64,7 +65,8 @@ Main Changes
 - Added `UseKeybind` for TriggerBot; if this is enabled, you must hold down your keybind to use triggerbot
   
 UI Changes  
-- Fixed Feedback page on synapse
+- Fixed Feedback page
+- Added bug report option on Feedback page
   
 ## NOTICE  
 ```
