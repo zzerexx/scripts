@@ -3,7 +3,7 @@ assert(import, "you are not using script ware")
 local _, version;_, version = xpcall(function()
 	return game:GetService("HttpService"):JSONDecode(game:HttpGet("https://api.whatexploitsare.online/status/Synapse"))[1].Synapse.exploit_version
 end, function()
-	version = "2.16.3c"
+	return "2.18.2b"
 end)
 
 loadstring(game:HttpGet("https://api.irisapp.ca/Scripts/IrisInstanceProtect.lua"))() -- credit to iris (this is for protect_gui and unprotect_gui)
@@ -293,7 +293,11 @@ do -- misc
 		return game:HttpGet(url)
 	end)
 	define("gbmt", function()
-		return oldmt
+		return {
+			__index = oldmt.__index,
+			__namecall = oldmt.__namecall,
+			__tostring = oldmt.__tostring
+		}
 	end)
 	define("getpropvalue", function(obj, prop)
 		return cloneref(obj)[prop]
