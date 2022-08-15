@@ -3,7 +3,7 @@ assert(KRNL_LOADED, "you are not using krnl")
 local _, version;_, version = xpcall(function()
 	return game:GetService("HttpService"):JSONDecode(game:HttpGet("https://api.whatexploitsare.online/status/Synapse"))[1].Synapse.exploit_version
 end, function()
-	version = "2.17.1"
+	return "2.18.2b"
 end)
 
 loadstring(game:HttpGet("https://api.irisapp.ca/Scripts/IrisInstanceProtect.lua"))() -- credit to iris (this is for protect_gui and unprotect_gui)
@@ -36,7 +36,7 @@ do -- hooks
 
 	local headers = game:GetService("HttpService"):JSONDecode(request({Url = "https://httpbin.org/get"}).Body).headers
 	local Fingerprint = headers['Krnl-Hwid']
-	local UserIdentifier = headers['Krnl-Hwid']
+	local UserIdentifier = headers['Krnl-Hwid']:reverse() -- troll
 	local UserAgent = "synx/"..version
 	local oldr;oldr = hookfunction(request, function(options)
 		local h = options.Headers or {}
@@ -228,7 +228,11 @@ do -- misc
 		return game:HttpGet(url)
 	end)
 	define("gbmt", function()
-		return oldmt
+		return {
+			__index = oldmt.__index,
+			__namecall = oldmt.__namecall,
+			__tostring = oldmt.__tostring
+		}
 	end)
 	define("getpropvalue", function(obj, prop)
 		return cloneref(obj)[prop]
@@ -268,8 +272,6 @@ do -- rconsole
 		return table.concat(msg, " ")
 	end
 	define("rconsoleinputasync", function()
-		consolecreate()
-		
 		task.spawn(function()
 			return rconsoleinput()
 		end)
