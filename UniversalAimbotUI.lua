@@ -237,6 +237,23 @@ function reload(safemode)
 	end
 end
 
+do
+	if Krnl and KRNL_LOADED then
+		task.delay(2, function()
+			UI.Banner({
+				Text = "<font size='24'><b><u>ATTENTION KRNL USERS</u></b></font><br />It appears that you're using Krnl. Universal Aimbot <i>(and all other aimbot scripts)</i> cannot function properly because the custom function that aimbot scripts need <b><u>IS FUCKED UP ON KRNL!</u></b><br /><b><u>Please</u></b> complain to the devs in the Krnl discord server about this issue!<i> (it has been fucked for several months)</i><br />Additionally, please <b><u>do not send bug reports</u></b> about aimbot 'not working' if you're using Krnl.",
+				Options = {"Ok", "Copy Discord"},
+				Callback = function(value)
+					if value == "Copy Discord" then
+						setclipboard("https://krnl.place/invite")
+						UI.Banner("Copied server invite to your clipboard!")
+					end
+				end
+		    })
+		end)
+	end
+end
+
 do -- Aimbot
 	local type = "Aimbot"
 	local s = ss[type]
