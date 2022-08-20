@@ -22,7 +22,7 @@ https://pastebin.com/raw/5zw0rLH9
 [Documentation](https://zzerexx.gitbook.io/universal-script-api)  
 ### UI Version  
 Updated July 26, 2022  
-```
+```lua
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua"))()
 loadstring(game:HttpGet("https://zzerexx.github.io/Universal/Esp.lua"))() -- Both loadstrings are the same, this one just looks better
 ```  
@@ -30,7 +30,7 @@ loadstring(game:HttpGet("https://zzerexx.github.io/Universal/Esp.lua"))() -- Bot
 Updated May 28, 2022  
 Boxes, Names, zero customizability, optimized asf  
 Supports `SetFunction` and `ResetFunction` for compatibility!  
-```
+```lua
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspPerformance.lua"))()
 ```  
   
@@ -57,7 +57,7 @@ https://pastebin.com/raw/nwqE7v07
 [Documentation](https://zzerexx.gitbook.io/universal-script-api)  
 ### UI Version  
 Updated July 26, 2022  
-```
+```lua
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalAimbotUI.lua"))()
 loadstring(game:HttpGet("https://zzerexx.github.io/Universal/Aimbot.lua"))() -- Both loadstrings are the same, this one just looks better
 ```  
