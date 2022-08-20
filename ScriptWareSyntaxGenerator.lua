@@ -19,14 +19,14 @@ local examples = {
 	Syntax_Number = "1 2 3 4 5 6 7 8 9 0",
 	Syntax_String = "\"this is a string\"",
 	Syntax_Character = "",
-	Syntax_Operator = "+ - * / % ^ # = ~ < > ( ) { } [ ] ; : , .",
+	Syntax_Operator = "+ - * / % ^ # =\n<b>any punctuation counts as an operator</b>",
 	Syntax_Keywords = "and end in repeat break local return do for then else function not elseif if or until while",
-	Syntax_Globals = "print _G tostring assert error getfenv next pairs loadstring pcall\n... and alot more",
-	Syntax_Functions = "HttpGet HttpGetAsync",
-	Syntax_Enums = "KeyCode ActionType Font UserInputType etc\npretty much any enum",
-	Syntax_Logic = "import getrawmetatable mousemoverel setupvalue etc\nany scriptware function",
+	Syntax_Globals = "print _G tostring assert error getfenv next pairs loadstring pcall\n<b>... and alot more</b>",
+	Syntax_Functions = "HttpGet HttpGetAsync HttpPost",
+	Syntax_Enums = "KeyCode ActionType Font UserInputType etc\n<b>pretty much any enum</b>",
+	Syntax_Logic = "import getrawmetatable mousemoverel setupvalue etc\n<b>any scriptware function</b>",
 	Syntax_Metamethods = "true false nil",
-	Syntax_SWFunctions = "__index __newindex __namecall __add __sub etc\nany metamethod",
+	Syntax_SWFunctions = "__index __newindex __namecall __add __sub etc\n<b>any metamethod</b>",
 	Syntax_Custom = "continue"
 }
 
@@ -38,7 +38,7 @@ local UI = Material.Load({
 	SizeX = 550
 })
 
-local page = UI.new("Syntax")
+local page = UI.new("zzerexx was here")
 
 local ui = {}
 local function picker(name, key)
@@ -82,6 +82,7 @@ picker("Booleans", "Syntax_Metamethods")
 picker("Metamethods", "Syntax_SWFunctions")
 picker("Custom", "Syntax_Custom")
 
+-- #1 syntax highlight method (i dont know how to make syntax highlighting)
 local code = [[GLOBloadstring_GLOBOP(_OPDEFgame_DEFOP:_OPFUNCHttpGet_FUNCOP(_OPSTR"https://google.com"_STROP))()_OP
 KWlocal_KW DEFlol_DEF OP= {_OPSTR"string"_STROP,_OP CHAR'string'_CHAROP}_OP
 KWlocal_KW DEFtotal_DEF OP=_OP NUMB500_NUMB OP+_OP NUMB500_NUMB
@@ -244,7 +245,7 @@ page.TextBox({
 			return http:JSONDecode(value:gsub("[\n\t]", ""))
 		end)
 		if not suc then
-			UI.Banner("Can't parse JSON")
+			UI.Banner("Can't parse JSON<br />Please make sure the last value in your theme JSON does not have a comma at the end.")
 		end
 
 		local function modify(name)
@@ -261,6 +262,19 @@ page.TextBox({
 		for _,v in next, {"Comment", "Number", "String", "Character", "Operator", "Keywords", "Globals", "Functions", "Enums", "Logic", "Metamethods", "SWFunctions", "Custom"} do
 			modify(v)
 		end
+		
+		local bgcolor = theme.ExecuteBox_Background
+		if bgcolor then
+			local c = bgcolor:gsub(" ", ""):split(",")
+			l.Object.BackgroundColor3 = Color3.fromRGB(tonumber(c[1]), tonumber(c[2]), tonumber(c[3]))
+		end
+
+		local textcolor = theme.ExecuteBox_Font_Colour
+		if textcolor then
+			local c = textcolor:gsub(" ", ""):split(",")
+			default = Color3.fromRGB(tonumber(c[1]), tonumber(c[2]), tonumber(c[3]))
+		end
+
 		preview()
 	end
 })
