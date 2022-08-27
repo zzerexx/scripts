@@ -127,6 +127,10 @@ local Label_7 = Instance.new("TextLabel")
 local UIPadding_11 = Instance.new("UIPadding")
 local Line_2 = Instance.new("Frame")
 local Button_3 = Instance.new("TextButton")
+local Label_8 = Instance.new("Frame")
+local Label_9 = Instance.new("TextLabel")
+local UIPadding_12 = Instance.new("UIPadding")
+local Line_3 = Instance.new("Frame")
 local Settings = Instance.new("ImageButton")
 
 if syn then
@@ -189,7 +193,7 @@ Version.BorderSizePixel = 0
 Version.Position = UDim2.new(1, 0, 0, 0)
 Version.Size = UDim2.new(0, 50, 0, 27)
 Version.Font = Enum.Font.SourceSans
-Version.Text = "v1.1"
+Version.Text = "v1.2"
 Version.TextColor3 = Color3.fromRGB(75, 75, 75)
 Version.TextSize = 14.000
 Version.TextXAlignment = Enum.TextXAlignment.Left
@@ -592,7 +596,7 @@ Dim.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 Dim.BackgroundTransparency = 0.600
 Dim.BorderSizePixel = 0
 Dim.Position = UDim2.new(0.5, 0, 0.5, 0)
-Dim.Size = UDim2.new(1, 0, 1, 60)
+Dim.Size = UDim2.new(1, 0, 1, 35)
 Dim.ZIndex = 20
 
 ErrorBox.Name = "ErrorBox"
@@ -1380,6 +1384,40 @@ Button_3.Text = "Activate"
 Button_3.TextColor3 = Color3.fromRGB(255, 255, 255)
 Button_3.TextSize = 14.000
 
+Label_8.Name = "Label"
+Label_8.Parent = Options_2
+Label_8.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Label_8.BackgroundTransparency = 1.000
+Label_8.BorderSizePixel = 0
+Label_8.Size = UDim2.new(1, 0, 0, 25)
+Label_8.Visible = false
+Label_8.ZIndex = 22
+
+Label_9.Name = "Label"
+Label_9.Parent = Label_8
+Label_9.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Label_9.BackgroundTransparency = 1.000
+Label_9.BorderSizePixel = 0
+Label_9.Size = UDim2.new(0, 200, 0, 25)
+Label_9.ZIndex = 22
+Label_9.Font = Enum.Font.Gotham
+Label_9.TextColor3 = Color3.fromRGB(255, 255, 255)
+Label_9.TextSize = 14.000
+Label_9.TextXAlignment = Enum.TextXAlignment.Left
+
+UIPadding_12.Parent = Label_9
+UIPadding_12.PaddingLeft = UDim.new(0, 5)
+
+Line_3.Name = "Line"
+Line_3.Parent = Label_8
+Line_3.AnchorPoint = Vector2.new(0, 1)
+Line_3.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+Line_3.BorderSizePixel = 0
+Line_3.Position = UDim2.new(0, 5, 1, 0)
+Line_3.Size = UDim2.new(1, -110, 0, 1)
+Line_3.Visible = false
+Line_3.ZIndex = 22
+
 Settings.Name = "Settings"
 Settings.Parent = Main
 Settings.AnchorPoint = Vector2.new(1, 0)
@@ -1392,7 +1430,7 @@ Settings.Image = "rbxassetid://9622863785"
 
 -- Scripts:
 
-local function PNUBHTJ_fake_script() -- Main.SmoothDrag 
+local function VODBJ_fake_script() -- Main.SmoothDrag 
 	local script = Instance.new('LocalScript', Main)
 
 	local uis = game:GetService("UserInputService")
@@ -1440,17 +1478,37 @@ local function PNUBHTJ_fake_script() -- Main.SmoothDrag
 	
 	SmoothDrag(script.Parent)
 end
-coroutine.wrap(PNUBHTJ_fake_script)()
-local function HGXGQX_fake_script() -- Spotify.LocalScript 
+coroutine.wrap(VODBJ_fake_script)()
+local function GDDJ_fake_script() -- Spotify.LocalScript 
 	local script = Instance.new('LocalScript', Spotify)
 
 	-- zzerexx was here
 	
 	if SPOTIFY then SPOTIFY() end
 	
+	local assets = {
+		"rbxassetid://9622474485",
+		"rbxassetid://9622475855",
+		"rbxassetid://9607545497",
+		"rbxassetid://9607545605",
+		"rbxassetid://9622475488",
+		"rbxassetid://9607545176",
+		"rbxassetid://9607545382",
+		"rbxassetid://9613882600",
+		"rbxassetid://9607545497",
+		"rbxassetid://9622475855",
+		"rbxassetid://9607545382",
+		"rbxassetid://9634569804",
+		"rbxassetid://9622863785"
+	}
+	task.spawn(function()
+		game:GetService("ContentProvider"):PreloadAsync(assets)
+	end)
+	
 	-- Variables
 	local ENABLED = true
-	local INTERVAL = 1.25
+	local INTERVAL = 0.3
+	local VERSION = "v1.2"
 	
 	local player = game:GetService("Players").LocalPlayer
 	local uis = game:GetService("UserInputService")
@@ -1513,9 +1571,20 @@ local function HGXGQX_fake_script() -- Spotify.LocalScript
 	error.Label.AutomaticSize = Enum.AutomaticSize.Y
 	error.Label.RichText = true
 	
+	main.Label.Version.Text = VERSION
+	
 	-- Functions
 	local request = request or http_request or (syn and syn.request) or (getgenv and getgenv().http and getgenv().http.request) or nil
 	local getcustomasset = getcustomasset or getsynasset or nil
+	if not request then
+		game:GetService("StarterGui"):SetCore("SendNotification", {
+			Title = "Spotify Player "..VERSION,
+			Text = "Your exploit does not have a request function.",
+			Duration = 5
+		})
+		return
+	end
+	
 	local function encode(a)
 		return http:JSONEncode(a)
 	end
@@ -1551,6 +1620,13 @@ local function HGXGQX_fake_script() -- Spotify.LocalScript
 			errorvisible = false
 		end)
 	end
+	local function notify(text, duration)
+		game:GetService("StarterGui"):SetCore("SendNotification", {
+			Title = "Spotify Player "..VERSION,
+			Text = text,
+			Duration = duration or 5
+		})
+	end
 	
 	----
 	
@@ -1585,7 +1661,8 @@ local function HGXGQX_fake_script() -- Spotify.LocalScript
 					makefolder(folder)
 				end
 				
-				local song = t.song.id
+				--local song = t.song.id
+				local song = t.album.id -- prevent duplicate song covers from being created (if theyre apart of the same album)
 				local songpath = folder.."\\"..song..".jpeg"
 				if not isfile(songpath) then
 					writefile(songpath, game:HttpGet(t.images.songcover))
@@ -1650,6 +1727,32 @@ local function HGXGQX_fake_script() -- Spotify.LocalScript
 		
 		return rawget(data, "display_name")
 	end
+	local estimatecd = false
+	local function EstimateCacheSize()
+		if estimatecd then notify("calm down") return end
+		if not isfolder("Spotify Cache") then return end
+		estimatecd = true
+		
+		local total = 0
+		
+		for i,v in next, listfiles("Spotify Cache") do
+			local size = readfile(v):len() / 1000 * 0.95320580959
+			
+			total += size
+		end
+		
+		local a = " KB"
+		if total > 1000 then
+			total /= 1000
+			a = " MB"
+		end
+		total = round(total, 2)
+		
+		task.delay(0.75, function()
+			estimatecd = false
+		end)
+		return total..a
+	end
 	
 	-- Playback Controls
 	local function Previous()
@@ -1707,7 +1810,7 @@ local function HGXGQX_fake_script() -- Spotify.LocalScript
 		
 		local song = {
 			name = data.item.name,
-			id = data.item.id
+			id = data.item.id -- no longer used in favor of item.album.id
 		}
 		
 		local playback = {
@@ -1715,6 +1818,11 @@ local function HGXGQX_fake_script() -- Spotify.LocalScript
 			total = data.item.duration_ms,
 			playing = data.is_playing
 		}
+		
+		local album = {
+			id = data.item.album.id
+		}
+		
 		durationms = data.item.duration_ms
 		
 		return {
@@ -1723,7 +1831,8 @@ local function HGXGQX_fake_script() -- Spotify.LocalScript
 			artistnames = artistnames,
 			images = images,
 			song = song,
-			playback = playback
+			playback = playback,
+			album = album
 		}
 	end
 	local function GetCurrentState(token)
@@ -1900,6 +2009,13 @@ local function HGXGQX_fake_script() -- Spotify.LocalScript
 			t.Callback(new)
 		end)
 	end
+	local function newlabel(t)
+		local new = optionss.Label:Clone()
+		new.Parent = optionss
+		new.Visible = true
+		new.Name = t.Text
+		new.Label.Text = t.Text
+	end
 	
 	settingsmain.Close.Activated:Connect(function()
 		settingsmain.Visible = false
@@ -1907,21 +2023,49 @@ local function HGXGQX_fake_script() -- Spotify.LocalScript
 	
 	newtextbox({
 		Text = "Request Interval (ms)",
-		Placeholder = "1250",
+		Placeholder = INTERVAL * 1000,
 		Callback = function(self, text)
 			INTERVAL = text:gsub("%D", "") / 1000
 			self.Box.Text = INTERVAL * 1000
 		end
 	})
 	newbutton({
-		Text = "Close Spotify Player",
-		ButtonText = "Close",
+		Text = "Estimate Image Cache Size",
+		ButtonText = "Estimate",
+		Callback = function()
+			notify("Estimated size: "..EstimateCacheSize())
+		end
+	})
+	newbutton({
+		Text = "Clear Image Cache",
+		ButtonText = "Clear",
+		Callback = function()
+			if not isfolder("Spotify Cache") then return end
+			
+			xpcall(function()
+				for i,v in next, listfiles("Spotify Cache") do
+					delfile(v)
+				end
+			end, function()
+				notify("An error occurred while trying to clear the cache.")
+				return
+			end)
+			
+			notify("Successfully cleared cache.")
+		end
+	})
+	newbutton({
+		Text = "Destroy Spotify Player",
+		ButtonText = "Destroy",
 		Callback = function()
 			if SPOTIFY then
 				SPOTIFY()
 				getgenv().SPOTIFY = nil
 			end
 		end
+	})
+	newlabel({
+		Text = "zzerexx was here"
 	})
 	
 	controls.Shuffle.Activated:Connect(function()
@@ -1993,4 +2137,4 @@ local function HGXGQX_fake_script() -- Spotify.LocalScript
 		task.wait(INTERVAL or 0.1)
 	end
 end
-coroutine.wrap(HGXGQX_fake_script)()
+coroutine.wrap(GDDJ_fake_script)()
