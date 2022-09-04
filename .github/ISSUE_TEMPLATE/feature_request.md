@@ -1,7 +1,7 @@
 ---
 name: Feature request
 about: Suggest an idea for a script
-title: ''
+title: "[REQUEST] Idea"
 labels: enhancement
 assignees: zzerexx
 
