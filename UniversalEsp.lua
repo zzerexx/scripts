@@ -1,12 +1,10 @@
 --[[
-v1.6.12 Changes
-- Added support for Rush Point
-- Added esp support for NPC characters (any models with a humanoid)
-- Added GetTeamColor function
-- and other fixes im too lazy to write
+v1.6.13 Changes
+- Added function 'esp:GetObjectFromId'; returns an object with the given Id
+- 'OutlineThickness' has been changed; you may notice that its a bit thicker
 ]]
 
-local VERSION = "v1.6.12"
+local VERSION = "v1.6.13"
 
 if not EspSettings then
 	getgenv().EspSettings = {
@@ -60,7 +58,7 @@ if not EspSettings then
 			RainbowColor = false,
 			Outline = true,
 			OutlineColor = Color3.fromRGB(0,0,0),
-			OutlineThickness = 3,
+			OutlineThickness = 1,
 			Thickness = 1
 		},
 		Tracers = {
@@ -71,7 +69,7 @@ if not EspSettings then
 			RainbowColor = false,
 			Outline = true,
 			OutlineColor = Color3.fromRGB(0,0,0),
-			OutlineThickness = 3,
+			OutlineThickness = 1,
 			Origin = "Top", -- "Top" or "Center" or "Bottom" or "Mouse"
 			Thickness = 1
 		},
@@ -99,7 +97,7 @@ if not EspSettings then
 			RainbowColor = false,
 			Outline = true,
 			OutlineColor = Color3.fromRGB(0,0,0),
-			OutlineThickness = 3,
+			OutlineThickness = 1,
 			Thickness = 1
 		},
 		HealthBars = {
@@ -110,7 +108,7 @@ if not EspSettings then
 			RainbowColor = false,
 			Outline = true,
 			OutlineColor = Color3.fromRGB(0,0,0),
-			OutlineThickness = 3,
+			OutlineThickness = 1,
 			Origin = "None", -- "None" or "Left" or "Right"
 			OutlineBarOnly = true
 		},
@@ -122,7 +120,7 @@ if not EspSettings then
 			RainbowColor = false,
 			Outline = true,
 			OutlineColor = Color3.fromRGB(0,0,0),
-			OutlineThickness = 3,
+			OutlineThickness = 1,
 			Thickness = 1,
 			Filled = false,
 			Scale = 1
@@ -135,7 +133,7 @@ if not EspSettings then
 			RainbowColor = false,
 			Outline = true,
 			OutlineColor = Color3.fromRGB(0,0,0),
-			OutlineThickness = 3,
+			OutlineThickness = 1,
 			Thickness = 1,
 			Length = 5
 		}
@@ -272,11 +270,6 @@ elseif GameId == gids.bb then
 elseif GameId == gids.rp then
 	-- CREDIT TO THIS DUDE FOR CRASH FIX https://v3rmillion.net/showthread.php?pid=8248169#pid8248169
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/Github-Account-39021832/Rush-Point-Fix-Crash/main/src.lua"))()
-	for _,v in next, getgc(true) do
-		if typeof(v) == "table" and rawget(v, "GetAllCharacters") then
-			rp = v -- unused
-		end
-	end
 end
 local From = {
 	UpperTorso = "Head",
@@ -326,6 +319,22 @@ local supportedparts = {
 	"UnionOperation",
 	"WedgePart"
 }
+
+local setidentity = setthreadidentity or set_thread_identity or setthreadcontext or setidentity or (syn and syn.set_thread_identity)
+function safecall(func, env, ...)
+	if env ~= nil and typeof(env) == "Instance" then
+		env = getsenv(env)
+	end
+	return coroutine.wrap(function(...)
+		setidentity(2)
+		if env then
+			setfenv(0, env)
+			setfenv(1, env)
+		end
+		return func(...)
+	end)(...)
+end
+
 local oldfuncs = {}
 
 function IsAlive(plr)
@@ -389,9 +398,6 @@ end
 
 do -- compatibility
 	if getchar then -- phantom forces
-		IsAlive = function(plr)
-			return getchar(plr) ~= nil
-		end
 		GetChar = function(plr)
 			local a = getchar(plr)
 			if a ~= nil then
@@ -399,25 +405,36 @@ do -- compatibility
 			end
 			return nil
 		end
+		IsAlive = GetChar
 		GetHealth = function(plr)
 			return {mathfloor(gethealth(plr, plr)), 100}
 		end
 	end
 	
 	if ts then -- bad business
-		local teamcolors = {
-			Omega = fromRGB(255,116,38),
-			Beta = fromRGB(38,125,255)
-		}
-		hookfunction(PluginManager, error)
-		IsAlive = function(plr)
-			return characters:GetCharacter(plr) ~= nil
+		local settings = game:GetService("ReplicatedStorage"):WaitForChild("PlayerData"):WaitForChild(player.Name):WaitForChild("Settings")
+		local function getcolor(a)
+			local b = settings:WaitForChild(string.format("Team%sColor", a)).Value:split(",")
+			for i,v in next, b do
+				b[i] = tonumber(v) / 100
+			end
+			return fromHSV(unpack(b))
 		end
+		local teamcolors = {
+			Survivors = getcolor("Survivors"),
+			Infected = getcolor("Infected"),
+			FFA = getcolor("FFA"),
+			Beta = getcolor("Beta"),
+			Omega = getcolor("Omega")
+		}
+		
+		hookfunction(PluginManager, error) -- prevent crash
 		GetChar = function(plr)
 			return characters:GetCharacter(plr)
 		end
+		IsAlive = GetChar
 		GetHealth = function(plr)
-			local a = characters:GetCharacter(plr)
+			local a = GetChar(plr)
 			local hp = FindFirstChild(a, "Health")
 			if hp then
 				return {mathfloor(hp.Value), mathfloor(hp.MaxHealth.Value)}
@@ -445,16 +462,6 @@ do -- compatibility
 	end
 
 	if rp then -- rush point
-		--[[ -- function method (shitty asf)
-		local getallchars = rp.GetAllCharacters
-		GetChar = function(plr)
-			for _,v in next, getallchars() do
-				if v.Name == plr.Name then
-					return v
-				end
-			end
-		end
-		]]
 		local mapfolder = workspace:WaitForChild("MapFolder")
 		local playerfolder = mapfolder:WaitForChild("Players")
 		local gamestats = mapfolder:WaitForChild("GameStats")
@@ -886,6 +893,7 @@ function update()
 	local mousepos = GetMouseLocation(uis)
 	origins.mouse = mousepos
 	local ffa, myteam, ccf, camfov = IsFFA(), GetTeam(player), camera.CFrame.Position, camera.FieldOfView
+	local rainbow = fromHSV(tick() % 5 / 5, 1, 1)
 	for _,v in next, OBJECTS do
 		if not v.Destroyed then
 			if v.Player == nil and not v.Options then
@@ -902,13 +910,14 @@ function update()
 			local team, teamcolor -- team shit
 			local char, health, maxhealth, mag, mousemag, render -- other shit
 			local s = v.Options or ss[type] -- settings shit
-			if VISIBLE and plr and IsAlive(plr) and s and s.Enabled then
+			local isalive = IsAlive(plr)
+			if VISIBLE and plr and isalive and s and s.Enabled then
 				local hp = GetHealth(plr)
 				char, health, maxhealth = GetChar(plr), hp[1], hp[2]
 				cf, size = char:GetBoundingBox()
 				team, teamcolor = GetTeam(plr), GetTeamColor(plr)
 				mag = (ccf - cf.Position).Magnitude
-				render = ffa or (not ss.TeamCheck or (not ffa and ss.TeamCheck and team ~= myteam)) and mag <= ss.MaximumDistance
+				render = (ffa or (not ss.TeamCheck or (not ffa and ss.TeamCheck and team ~= myteam))) and mag <= ss.MaximumDistance
 				if render then
 					if ss.FaceCamera then
 						cf = CFramenew(cf.Position, ccf)
@@ -999,14 +1008,14 @@ function update()
 				end
 			end
 			if VISIBLE then
-				if plr and IsAlive(plr) and s and s.Enabled then
+				if plr and isalive and s and s.Enabled then
 					SetProp(obj, "Visible", render)
 					if s.Enabled and inViewport and render then
 						local highlight = highlights.Enabled and tablefind(highlights.Players, plr.Name)
 						local certified_npc = isnpc and npcs.Overrides[type]
 						local color =		(highlight and highlights.Color) or
-											 (certified_npc and (npcs.RainbowColor and fromHSV(tick() % 5 / 5, 1, 1) or npcs.Color)) or
-											 (s.RainbowColor and fromHSV(tick() % 5 / 5, 1, 1)) or
+											 (certified_npc and (npcs.RainbowColor and rainbow or npcs.Color)) or
+											 (s.RainbowColor and rainbow) or
 											 (s.UseTeamColor and teamcolor) or
 											 s.Color
 						local transparency = (mousevis.Enabled and mousevis.Selected[type] and mousemag <= mousevis.Radius and mousevis.Transparency) or
@@ -1031,7 +1040,7 @@ function update()
 								out.Visible = s.Outline and box.Visible
 								if s.Outline then
 									out.Color = s.OutlineColor
-									out.Thickness = s.Thickness + s.OutlineThickness
+									out.Thickness = s.Thickness + (s.OutlineThickness * 2)
 									out.PointA = box.PointA
 									out.PointB = box.PointB
 									out.PointC = box.PointC
@@ -1056,7 +1065,7 @@ function update()
 								out.Visible = outline and tracer.Visible
 								if outline then
 									out.Color = s.OutlineColor
-									out.Thickness = thickness + s.OutlineThickness
+									out.Thickness = thickness + (s.OutlineThickness * 2)
 									out.From = from
 									out.To = to
 								end
@@ -1118,7 +1127,7 @@ function update()
 										v2.Visible = outline and v3.Visible
 										if v2.Visible then
 											v2.Color = s.OutlineColor
-											v2.Thickness = thickness + othickness
+											v2.Thickness = thickness + (othickness * 2)
 											v2.From = v3.From
 											v2.To = v3.To
 										end
@@ -1167,7 +1176,7 @@ function update()
 								out.Visible = outline and bar.Visible
 								if outline then
 									out.Color = s.OutlineColor
-									out.Thickness = s.OutlineThickness
+									out.Thickness = s.OutlineThickness * 2
 									out.PointA = (baronly and bar.PointA) or Vector2new(brx, bry + 5)
 									out.PointB = (baronly and bar.PointB) or Vector2new(blx, bly + 5)
 									out.PointC = (baronly and bar.PointC) or Vector2new(blx, bly + z)
@@ -1189,8 +1198,9 @@ function update()
 								if OUTLINES then
 									out.Visible = outline and dot.Visible
 									if outline  then
+										local othickness = thickness + (s.OutlineThickness * 2)
 										out.Color = s.OutlineColor
-										out.Thickness = (filled and thickness + (s.OutlineThickness - 1)) or thickness + s.OutlineThickness
+										out.Thickness = (filled and thickness + (othickness - 1)) or othickness
 										out.Position = pos
 										out.Radius = (filled and radius + 1) or radius
 									end
@@ -1213,7 +1223,7 @@ function update()
 									out.Visible = outline and tracer.Visible
 									if outline then
 										out.Color = s.OutlineColor
-										out.Thickness = thickness + s.OutlineThickness
+										out.Thickness = thickness + (s.OutlineThickness * 2)
 										out.From = from
 										out.To = to
 									end
@@ -1226,7 +1236,7 @@ function update()
 				elseif part then
 					SetProp(obj, "Visible", inViewport)
 					if inViewport then
-						local color = (s.RainbowColor and fromHSV(tick() % 5 / 5, 1, 1)) or s.Color
+						local color = (s.RainbowColor and rainbow) or s.Color
 						SetProp(obj, "Transparency", s.Transparency)
 						SetProp(obj, "Color", color)
 						if type == "Labels" then
@@ -1288,7 +1298,7 @@ end
 --local conn2 = RunService.RenderStepped:Connect(update)
 local name = ""
 for _ = 1, math.random(16, 24) do
-	name = name..string.char(math.random(97, 122))
+	name ..= string.char(math.random(97, 122))
 end
 RunService:BindToRenderStep(name, 0, update)
 if typeof(ss.ToggleKey) == "EnumItem" then
@@ -1409,6 +1419,7 @@ function esp:GetTotalObjects()
 		DrawingObjects = 0,
 		VisibleObjects = 0,
 		DestroyedObjects = 0,
+		NPCObjects = 0,
 		Boxes = 0,
 		Tracers = 0,
 		Names = 0,
@@ -1427,19 +1438,27 @@ function esp:GetTotalObjects()
 				if v2.Visible then
 					data.VisibleObjects += 1
 				end
+				if v2.NPC then
+					data.NPCObjects += 1
+				end
 				if find(i2, "Outline") then
 					data.Outlines += 1
 				else
 					data[v.Type] += 1
 				end
+			else
+				data.DestroyedObjects += 1
 			end
 		end
 	end
 	return data
 end
+function esp:GetObjectFromId(id)
+	return OBJECTS[id]
+end
 function hasesp(a)
 	for _,v in next, OBJECTS do
-		if v.Player ~= nil and v.Player == a and not v.Destroyed then
+		if (v.Player ~= nil or v.NPC) and v.Player == a and not v.Destroyed then
 			return true
 		end
 	end
