@@ -4,8 +4,8 @@ my cool scripts
 ---
   
 # Universal Esp  
-Updated May 28, 2022  
-v1.6.12  
+Updated September 3, 2022  
+v1.6.13  
 - Box Esp  
 - Tracers  
 - Name Esp  
@@ -34,13 +34,10 @@ Supports `SetFunction` and `ResetFunction` for compatibility!
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspPerformance.lua"))()
 ```  
   
-## Update v1.6.12  
+## Update v1.6.13  
 Main Changes  
-- Added support for Rush Point
-- Added esp support for NPC characters (any models with a humanoid) (must use `esp:Add()`)
-- Added GetTeamColor function
-- new documentation [here](https://zzerexx.gitbook.io/universal-script-api)
-- and other fixes im too lazy to write
+- Added function 'esp:GetObjectFromId'; returns an object with the given Id
+- 'OutlineThickness' has been slightly changed; you may notice that its a bit thicker
   
 UI Changes  
 - Fixed Feedback page
