@@ -1,6 +1,23 @@
 -- TurtleSpy V1.5.2, credits to Intrer#0421
 -- modified by zzerexx#3970
--- uses hookmetamethod now
+
+-- uses hookmetamethod
+-- uses aliases to support more exploits
+-- code font instead of sourcesans (wtf?)
+
+local getidentity = getidentity or getthreadidentity or get_thread_identity or getthreadcontext or get_thread_context or (syn and syn.get_thread_identity)
+local setidentity = setidentity or setthreadidentity or set_thread_identity or setthreadcontext or set_thread_context or (syn and syn.set_thread_identity)
+local decompile = decompile or disassemble
+local setclipboard = setclipboard or toclipboard
+local getcallingscript = getcallingscript or get_calling_script
+local hookfunction = hookfunction or hookfunc or detour_function
+local hookmetamethod = hookmetamethod or newcclosure(function(obj, method, func)
+    return hookfunction(getrawmetatable(obj)[method], func)
+end)
+local getnamecallmethod = getnamecallmethod or get_namecall_method
+local gethui = gethui or get_hidden_ui or get_hidden_gui or hiddenUI or function()
+	return game:GetService("CoreGui")
+end
 
 local colorSettings =
 {
@@ -66,14 +83,10 @@ function isSynapse()
     end
 end
 function Parent(GUI)
-    if syn and syn.protect_gui then
-        syn.protect_gui(GUI)
-        GUI.Parent = game:GetService("CoreGui")
-    elseif PROTOSMASHER_LOADED then
-        GUI.Parent = get_hidden_gui()
-    else
-        GUI.Parent = game:GetService("CoreGui")
-    end
+	if syn then
+		syn.protect_gui(GUI)
+	end
+	GUI.Parent = gethui()
 end
 
 local client = game.Players.LocalPlayer
@@ -485,7 +498,7 @@ Code.BackgroundTransparency = 1.000
 Code.Position = UDim2.new(0.00888902973, 0, 0.0394801199, 0)
 Code.Size = UDim2.new(0, 100000, 0, 25)
 Code.ZIndex = 18
-Code.Font = Enum.Font.SourceSans
+Code.Font = Enum.Font.Code
 Code.Text = "Thanks for using Turtle Spy! :D"
 Code.TextColor3 = colorSettings["Code"]["TextColor"]
 Code.TextSize = 14.000
@@ -731,8 +744,8 @@ Minimize.MouseButton1Click:Connect(function()
 end)
 
 local function FindRemote(remote, args)
-    local currentId = (get_thread_context or syn.get_thread_identity)()
-    ;(set_thread_context or syn.set_thread_identity)(7)
+    local currentId = getidentity()
+    ;setidentity(7)
     local i
     if table.find(unstacked, remote) then
     local numOfRemotes = 0
@@ -749,7 +762,7 @@ local function FindRemote(remote, args)
     else
         i = table.find(remotes, remote)
     end
-    ;(set_thread_context or syn.set_thread_identity)(currentId)
+    ;setidentity(currentId)
     return i
 end
 
@@ -1060,8 +1073,8 @@ end)
 -- Main function: add a remote to the list (event: is it a RemoteEvent?, remote: the remote fired, ...: the args)
 function addToList(event, remote, ...)
     -- set thread context since this is running in a game thread
-    local currentId = (get_thread_context or syn.get_thread_identity)()
-    ;(set_thread_context or syn.set_thread_identity)(7)
+    local currentId = getidentity()
+    ;setidentity(7)
     if not remote then return end
 
     -- important variables
@@ -1080,7 +1093,7 @@ function addToList(event, remote, ...)
         -- add all useful info about the remote to tables
         remoteButtons[#remotes] = rButton.Number
         remoteArgs[#remotes] = args
-        remoteScripts[#remotes] = (isSynapse() and getcallingscript() or rawget(getfenv(0), "script"))
+        remoteScripts[#remotes] = getcallingscript()
 
         -- clone a little baby of the remotebutton
         rButton.Parent = RemoteScrollFrame
@@ -1121,7 +1134,7 @@ function addToList(event, remote, ...)
             CodeFrame.CanvasSize = UDim2.new(0, textsize.X + 11, 2, 0)
         end
     end
-    ;(set_thread_context or syn.set_thread_identity)(currentId)
+    ;setidentity(currentId)
 end
 
 local OldEvent
@@ -1148,27 +1161,25 @@ end)
 
 -- game namecall hook (makes the script detect the remotes, basically)
 local OldNamecall
-OldNamecall = hookmetamethod(game,"__namecall",function(...)
-    local args = {...}
-    local Self = args[1]
-    local method = (getnamecallmethod or get_namecall_method)()
+OldNamecall = hookmetamethod(game, "__namecall", function(Self, ...)
+    local method = getnamecallmethod()
     if method == "FireServer" and isA(Self, "RemoteEvent")  then
         -- if the remote is blocked and the remote is being fired by the game then block it
         if not checkcaller() and table.find(BlockList, Self) then
             return
         elseif table.find(IgnoreList, Self) then
             --if ignored then don't call the addToList
-            return OldNamecall(...)
+            return OldNamecall(Self, ...)
         end
         addToList(true, Self, ...)
     elseif method == "InvokeServer" and isA(Self, 'RemoteFunction') then
         if not checkcaller() and table.find(BlockList, Self) then
             return
         elseif table.find(IgnoreList, Self) then
-            return OldNamecall(...)
+            return OldNamecall(Self, ...)
         end
         addToList(false, Self, ...)
     end
 
-    return OldNamecall(...)
+    return OldNamecall(Self, ...)
 end)
