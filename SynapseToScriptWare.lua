@@ -3,10 +3,10 @@ assert(import, "you are not using script ware")
 local _, version;_, version = xpcall(function()
 	return game:GetService("HttpService"):JSONDecode(game:HttpGet("https://api.whatexploitsare.online/status/Synapse"))[1].Synapse.exploit_version
 end, function()
-	return "2.18.2b"
+	return "2.18.5e"
 end)
 
-loadstring(game:HttpGet("https://api.irisapp.ca/Scripts/IrisInstanceProtect.lua"))() -- credit to iris (this is for protect_gui and unprotect_gui)
+--loadstring(game:HttpGet("https://api.irisapp.ca/Scripts/IrisInstanceProtect.lua"))() -- credit to iris (this is for protect_gui and unprotect_gui)
 local hash = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/HashLib.lua"))()
 local hashlibalgs = {"sha1", "sha224"}
 local hashalgs = {
@@ -183,10 +183,11 @@ do -- hooks
 	end)
 
 	local oldt;oldt = hookfunction(getrenv().debug.traceback, function(lol) -- secure_call thing
+		local traceback = oldt(lol)
 		if checkcaller() then
-			return lol.."\n"..oldt():split("\n")[2].."\n"
+			return tostring(lol).."\n"..traceback:split("\n")[2].."\n"
 		end
-		return oldt()
+		return oldt(lol)
 	end)
 
 	hookfunction(identifyexecutor, function()
@@ -290,7 +291,7 @@ do -- misc
 	define("getpcdprop", getpcd)
 	define("getsynasset", getcustomasset)
 	define("htgetf", function(url)
-		return game:HttpGet(url)
+		return game:HttpGetAsync(url)
 	end)
 	define("gbmt", function()
 		return {
@@ -431,8 +432,11 @@ do -- syn library
 	define("write_clipboard", setclipboard, t)
 	define("queue_on_teleport", queue_on_teleport, t)
 
-	define("protect_gui", ProtectInstance, t) -- credit to iris (https://api.irisapp.ca/Scripts/docs/IrisProtectInstance)
-	define("unprotect_gui", UnProtectInstance, t)
+	define("protect_gui", none, t) -- IrisProtectInstance fucks some things up (like phantom forces)
+	define("unprotect_gui", none, t)
+	--define("protect_gui", ProtectInstance, t) -- credit to iris (https://api.irisapp.ca/Scripts/docs/IrisProtectInstance)
+	--define("unprotect_gui", UnProtectInstance, t)
+
 	--[[local Protected = {}
 	define("protect_gui", function(obj)
 		assert(typeof(obj) == "Instance", "bad argument #1 to 'protect_gui' (Instance expected, got "..typeof(obj)..")")
