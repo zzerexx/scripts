@@ -3,10 +3,10 @@ assert(KRNL_LOADED, "you are not using krnl")
 local _, version;_, version = xpcall(function()
 	return game:GetService("HttpService"):JSONDecode(game:HttpGet("https://api.whatexploitsare.online/status/Synapse"))[1].Synapse.exploit_version
 end, function()
-	return "2.18.2b"
+	return "2.18.5e"
 end)
 
-loadstring(game:HttpGet("https://api.irisapp.ca/Scripts/IrisInstanceProtect.lua"))() -- credit to iris (this is for protect_gui and unprotect_gui)
+--loadstring(game:HttpGet("https://api.irisapp.ca/Scripts/IrisInstanceProtect.lua"))() -- credit to iris (this is for protect_gui and unprotect_gui)
 local oldmt = getrawmetatable(game)
 local none = newcclosure(function() end)
 
@@ -30,9 +30,10 @@ end
 
 do -- hooks
 	local Hook = Krnl:Require("Hook")
-	local function hookfunction(old, new) -- "new closure has too many upvalues" bro stfu
+	define("hookfunction", function(old, new) -- "new closure has too many upvalues" bro stfu
 		return Hook.new(old, new).Closure
-	end
+	end)
+	hookfunction(hookfunc, hookfunction)
 
 	local headers = game:GetService("HttpService"):JSONDecode(request({Url = "https://httpbin.org/get"}).Body).headers
 	local Fingerprint = headers['Krnl-Hwid']
@@ -128,10 +129,11 @@ do -- hooks
 	end)
 
 	local oldt;oldt = hookfunction(getrenv().debug.traceback, function(lol) -- secure_call thing
+		local traceback = oldt(lol)
 		if checkcaller() then
-			return lol.."\n"..oldt():split("\n")[2].."\n"
+			return tostring(lol).."\n"..traceback:split("\n")[2].."\n"
 		end
-		return oldt()
+		return oldt(lol)
 	end)
 
 	hookfunction(identifyexecutor, function()
@@ -194,7 +196,7 @@ do -- syn_
 	define("syn_context_get", getthreadcontext)
 	define("syn_context_set", setthreadcontext)
 	define("syn_setfflag", setfflag)
-	define("syn_dumpstring", none)
+	define("syn_dumpstring", getscriptbytecode)
 	define("syn_islclosure", islclosure)
 	define("syn_checkcaller", checkcaller)
 	define("syn_clipboard_set", setclipboard)
@@ -207,7 +209,10 @@ do -- syn_
 		return WebSocket.connect(a)
 	end)
 	define("syn_websocket_close", function(a)
-		a:Close()
+		local mt = getmetatable(a)
+		if mt and rawget(mt, "ClassName") == "WebSocket" then
+			a:Close()
+		end
 	end)
 end
 
@@ -220,12 +225,29 @@ do -- misc
 	define("validfgwindow", isrbxactive)
 	define("getprops", getproperties)
 	define("gethiddenprop", gethiddenproperty)
-	define("gethiddenprops", none)
+	define("gethiddenprops", function(obj)
+		obj = cloneref(obj)
+		local props = getproperties(obj)
+		local hidden = {}
+		if props then
+			for i,_ in next, props do
+				local suc, prop = pcall(function()
+					return obj[i]
+				end)
+				if not suc then
+					hidden[i] = prop
+				end
+			end
+		end
+		return hidden
+	end)
 	define("sethiddenprop", sethiddenproperty)
-	define("getpcdprop", none)
+	define("getpcdprop", function(obj)
+		return gethiddenproperty(obj, "PhysicalConfigData")
+	end)
 	define("getsynasset", getcustomasset)
 	define("htgetf", function(url)
-		return game:HttpGet(url)
+		return game:HttpGetAsync(url)
 	end)
 	define("gbmt", function()
 		return {
@@ -253,6 +275,7 @@ do -- misc
 	define("is_redirection_enabled", function()
 		return false
 	end)
+	define("dumpstring", getscriptbytecode)
 end
 
 do -- get_ (who even uses these??)
@@ -315,8 +338,11 @@ do -- syn library
 	define("write_clipboard", setclipboard, t)
 	define("queue_on_teleport", queue_on_teleport, t)
 
-	define("protect_gui", ProtectInstance, t) -- credit to iris (https://api.irisapp.ca/Scripts/docs/IrisProtectInstance)
-	define("unprotect_gui", UnProtectInstance, t)
+	define("protect_gui", none, t) -- IrisProtectInstance fucks some things up (like phantom forces)
+	define("unprotect_gui", none, t)
+	--define("protect_gui", ProtectInstance, t) -- credit to iris (https://api.irisapp.ca/Scripts/docs/IrisProtectInstance)
+	--define("unprotect_gui", UnProtectInstance, t)
+
 	--[[local Protected = {}
 	define("protect_gui", function(obj)
 		assert(typeof(obj) == "Instance", "bad argument #1 to 'protect_gui' (Instance expected, got "..typeof(obj)..")")
