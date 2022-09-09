@@ -911,8 +911,8 @@ function update()
 			local team, teamcolor -- team shit
 			local char, health, maxhealth, mag, mousemag, render -- other shit
 			local s = v.Options or ss[type] -- settings shit
-			local isalive = IsAlive(plr)
-			if VISIBLE and plr and isalive and s and s.Enabled then
+			local isalive = plr and IsAlive(plr)
+			if VISIBLE and isalive and s and s.Enabled then
 				local hp = GetHealth(plr)
 				char, health, maxhealth = GetChar(plr), hp[1], hp[2]
 				cf, size = char:GetBoundingBox()
