@@ -317,7 +317,8 @@ local supportedparts = {
 	"Part",
 	"TrussPart",
 	"UnionOperation",
-	"WedgePart"
+	"WedgePart",
+	"MeshPart"
 }
 
 local setidentity = setthreadidentity or set_thread_identity or setthreadcontext or setidentity or (syn and syn.set_thread_identity)
