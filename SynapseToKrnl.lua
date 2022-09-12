@@ -33,6 +33,7 @@ do -- hooks
 	define("hookfunction", function(old, new) -- "new closure has too many upvalues" bro stfu
 		return Hook.new(old, new).Closure
 	end)
+	local hookfunction = none -- [TEMPORARY] Hook.new fucking broke (nothing will be hooked to prevent errors)
 	hookfunction(hookfunc, hookfunction)
 
 	local headers = game:GetService("HttpService"):JSONDecode(request({Url = "https://httpbin.org/get"}).Body).headers
