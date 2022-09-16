@@ -3,7 +3,7 @@ assert(import, "you are not using script ware")
 local _, version;_, version = xpcall(function()
 	return game:GetService("HttpService"):JSONDecode(game:HttpGet("https://api.whatexploitsare.online/status/Synapse"))[1].Synapse.exploit_version
 end, function()
-	return "2.18.5e"
+	return "2.19.1b"
 end)
 
 --loadstring(game:HttpGet("https://api.irisapp.ca/Scripts/IrisInstanceProtect.lua"))() -- credit to iris (this is for protect_gui and unprotect_gui)
@@ -182,13 +182,22 @@ do -- hooks
 		return "-- Disassembled with the Script-Ware disassembler.\n\n"..disassemble(a)
 	end)
 
-	local oldt;oldt = hookfunction(getrenv().debug.traceback, function(lol) -- secure_call thing
-		local traceback = oldt(lol)
-		if checkcaller() then
-			return tostring(lol).."\n"..traceback:split("\n")[2].."\n"
-		end
-		return oldt(lol)
-	end)
+	do -- secure_call things
+		local oldt;oldt = hookfunction(getrenv().debug.traceback, function(lol) -- prevent debug.traceback detection
+			local traceback = oldt(lol)
+			if checkcaller() then
+				local a = traceback:split("\n")
+				return string.format("%s\n%s\n", a[1], a[3])
+			end
+			return traceback
+		end)
+		local oldi;oldi = hookfunction(getrenv().debug.info, function(lvl, a) -- prevent debug.info detection
+			if checkcaller() then
+				return oldi(3, a)
+			end
+			return oldi(lvl, a)
+		end)
+	end
 
 	hookfunction(identifyexecutor, function()
 		return "Synapse X", version
@@ -320,7 +329,8 @@ do -- misc
 		return false
 	end)
 	define("getspecialinfo", function(obj)
-		assert(typeof(obj) == "Instance", "bad argument to #1 'getspecialinfo' (Instance expected, got "..typeof(obj)..")")
+		local objtype = typeof(obj)
+		assert(typeof(obj) == "Instance", string.format("bad argument to #1 'getspecialinfo' (Instance expected, got %s)", objtype))
 		local info = specialinfo[obj.ClassName]
 		local props = {}
 		if info then
@@ -495,14 +505,16 @@ do -- syn library
 	local custom = {}
 	define("encrypt", function(cipher, data, key, nonce)
 		cipher = cipher:lower()
-		assert(cipher:find("eax"), "aes-eax is not supported")
-		assert(cipher:find("bf"), "Blowfish ciphers are not supported")
+		if cipher:find("eax") or cipher:find("bf") then
+			return ""
+		end
 		return crypt.custom_encrypt(data, key, nonce, ciphers[cipher:gsub("_", "-")])
 	end, custom)
 	define("decrypt", function(cipher, data, key, nonce)
 		cipher = cipher:lower()
-		assert(cipher:find("eax"), "aes-eax is not supported")
-		assert(cipher:find("bf"), "Blowfish ciphers are not supported")
+		if cipher:find("eax") or cipher:find("bf") then
+			return ""
+		end
 		return crypt.custom_decrypt(data, key, nonce, ciphers[cipher:gsub("_", "-")])
 	end, custom)
 	define("hash", function(alg, data)
@@ -525,13 +537,21 @@ do -- syn library
 	define("websocket", WebSocket, t)
 
 	define("secure_call", function(func, env, ...)
-		assert(typeof(func) == "function", "bad argument to #1 to 'secure_call' (function expected, got "..typeof(func)..")")
-		assert(typeof(env) == "Instance", "bad argument to #2 to 'secure_call' (Instance expected, got"..typeof(env)..")")
-		assert(env.ClassName == "LocalScript" or env.ClassName == "ModuleScript", "bad argument to #2 to 'secure_call' (LocalScript or ModuleScript expected, got "..env.ClassName..")")
+		local functype = typeof(func) 
+		local envtype = typeof(env)
+		assert(functype == "function", string.format("bad argument to #1 'secure_call' (function expected, got %s)", functype))
+		assert(envtype == "Instance", string.format("bad argument to #2 'secure_call' (Instance expected, got %s)", envtype))
+		local envclass = env.ClassName
+		assert(envclass == "LocalScript" or envclass == "ModuleScript", string.format("bad argument to #2 'secure_call' (LocalScript or ModuleScript expected, got %s)", envclass))
+		local _, fenv = xpcall(function()
+			return getsenv(env)
+		end, function()
+			return getfenv(func)
+		end)
 		return coroutine.wrap(function(...)
 			setidentity(2)
-			setfenv(0, getsenv(env))
-			setfenv(1, getsenv(env))
+			setfenv(0, fenv)
+			setfenv(1, fenv)
 			return func(...)
 		end)(...)
 	end, t)
