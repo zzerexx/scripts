@@ -19,6 +19,7 @@ if not getgenv().AimbotSettings then
 			Use_mousemoverel = true,
 			Strength = 100, -- 1% - 200%
 			AimType = "Hold", -- "Hold" or "Toggle"
+			AimAtNearestPart = false
 		},
 		AimAssist = {
 			Enabled = false,
@@ -56,6 +57,10 @@ if not getgenv().AimbotSettings then
 			Thickness = 2,
 			Offset = 0
 		},
+		Prediction = {
+			Enabled = false,
+			Strength = 2
+		},
 		Priority = {},
 		Whitelisted = {}, -- Username or User ID
 		WhitelistFriends = true, -- Automatically adds friends to the whitelist
@@ -69,7 +74,7 @@ end
 getgenv().OldInstance = nil
 
 local function Load(file)
-	return loadstring(game:HttpGet(string.format("https://raw.githubusercontent.com/zzerexx/scripts/main/%s.lua", file)))()
+	return loadstring(game:HttpGet(string.format("https://raw.githubusercontent.com/zzerexx/scripts/main/%s.lua", file)), file)()
 end
 
 local UI
@@ -94,6 +99,7 @@ local icons = {
 	['Fov Circle'] = "https://i.imgur.com/FwxEP7R.png",
 	['Trigger Bot'] = "https://i.imgur.com/4ighciz.png",
 	['Crosshair'] = "https://i.imgur.com/9riS2nl.png",
+	['Prediction'] = "https://i.imgur.com/opT8Y2s.png",
 	['Players'] = "https://i.imgur.com/rSSostV.png",
 	['Other'] = "https://i.imgur.com/2HCDHHU.png",
 	['Configs'] = "https://i.imgur.com/AAiWa00.png",
@@ -114,7 +120,7 @@ function page(title)
 	return UI.new({Title = title, ImageId = "UAIM_Icons\\"..title..".png", ImageSize = Vector2.new(20, 20)})
 end
 
-local version = "v1.1.17"
+local version = "v1.1.18"
 local aimbot = Load("UniversalAimbot")
 local cfg = Load("ConfigManager")
 local Material = Load("MaterialLuaRemake")
@@ -136,19 +142,25 @@ local Settings = page("Settings")
 local Fov = page("Fov Circle")
 local Trigger = page("Trigger Bot")
 local Crosshair = page("Crosshair")
+local Prediction = page("Prediction")
 local Players = page("Players")
 local Other = page("Other")
 local Configs = page("Configs")
 local Feedback = page("Feedback")
 local ss = getgenv().AimbotSettings
-local conn1,conn2,conn3
+local connections = {}
 local cfgname,selectedcfg = "",""
 local togglekey = Enum.KeyCode.RightControl
 local aimbottogglebtn, uitogglebtn
 
 local newsettings = {
 	IgnoreTransparency = true,
+	IgnoredTransparency = 0.5,
+	Aimbot = {
+		AimAtNearestPart = false
+	},
 	TriggerBot = {
+		Enabled = false,
 		Delay = 60,
 		Spam = true,
 		ClicksPerSecond = 10,
@@ -163,7 +175,11 @@ local newsettings = {
 		Length = 15,
 		Thickness = 2,
 		Offset = 0
-	}
+	},
+	Prediction = {
+		Enabled = false,
+		Strength = 2
+	},
 }
 for i,v in next, newsettings do
 	if ss[i] == nil then
@@ -219,9 +235,9 @@ cfg.Init("UAIM", {
 }, load)
 
 function destroy()
-	conn1:Disconnect()
-	conn2:Disconnect()
-	conn3:Disconnect()
+	for _,v in next, connections do
+		v:Disconnect()
+	end
 	aimbot:Destroy()
 	UI.UI:Destroy()
 	getgenv().UAIM = nil
@@ -234,23 +250,6 @@ function reload(safemode)
 		pcall(script)
 	else
 		script()
-	end
-end
-
-do
-	if Krnl and KRNL_LOADED then
-		task.delay(2, function()
-			UI.Banner({
-				Text = "<font size='24'><b><u>ATTENTION KRNL USERS</u></b></font><br />It appears that you're using Krnl. Universal Aimbot <i>(and all other aimbot scripts)</i> cannot function properly because the custom function that aimbot scripts need <b><u>IS FUCKED UP ON KRNL!</u></b><br /><b><u>Please</u></b> complain to the devs in the Krnl discord server about this issue!<i> (it has been fucked for several months)</i><br />Additionally, please <b><u>do not send bug reports</u></b> about aimbot 'not working' if you're using Krnl.",
-				Options = {"Ok", "Copy Discord"},
-				Callback = function(value)
-					if value == "Copy Discord" then
-						setclipboard("https://krnl.place/invite")
-						UI.Banner("Copied server invite to your clipboard!")
-					end
-				end
-		    })
-		end)
 	end
 end
 
@@ -299,6 +298,7 @@ do -- Aimbot
 		Min = 1,
 		Max = 200,
 		Def = s.Strength,
+		Suffix = "%",
 		Menu = {
 			Info = function()
 				UI.Banner("If you are experiencing shakiness, try raising the Refresh Rate to 10 (if its lower).\nAlternatively, you can lower the Strength.")
@@ -312,6 +312,18 @@ do -- Aimbot
 		end,
 		Options = {"Hold", "Toggle"},
 		Def = s.AimType
+	})
+	Aimbot.Toggle({
+		Text = "Aim at Nearest Part",
+		Callback = function(value)
+			aimbot:Set(type, "AimAtNearestPart", value)
+		end,
+		Enabled = s.AimAtNearestPart,
+		Menu = {
+			Info = function()
+				UI.Banner("Instead of aiming at one specific part, aimbot checks which part is the closest to the mouse and aims at it.")
+			end
+		}
 	})
 end
 
@@ -372,7 +384,8 @@ do -- Aim Assist
 		end,
 		Min = 1,
 		Max = 100,
-		Def = s.Strength
+		Def = s.Strength,
+		Suffix = "%"
 	})
 	Assist.Toggle({
 		Text = "Slow Sensitivity",
@@ -389,7 +402,8 @@ do -- Aim Assist
 		Min = 1,
 		Max = 10,
 		Def = s.SlowFactor,
-		Decimals = 2
+		Decimals = 2,
+		Suffix = "x"
 	})
 	Assist.Toggle({
 		Text = "Require Movement",
@@ -469,7 +483,7 @@ do -- Settings
 		Callback = function(value)
 			aimbot:Set(type, "MaximumDistance", value)
 		end,
-		Min = 0,
+		Min = 50,
 		Max = 2000,
 		Def = ss.MaximumDistance,
 		Suffix = " studs"
@@ -551,7 +565,12 @@ do -- Trigger Bot
 		Callback = function(value)
 			aimbot:Set(type, "Enabled", value)
 		end,
-		Enabled = s.Enabled
+		Enabled = s.Enabled,
+		Menu = {
+			Info = function()
+				UI.Banner("Trigger Bot may not work on some games.")
+			end
+		}
 	})
 	Trigger.Slider({
 		Text = "Delay",
@@ -564,22 +583,7 @@ do -- Trigger Bot
 		Suffix = " ms",
 		Menu = {
 			Info = function()
-				UI.Banner("This determines how long it waits before clicking.")
-			end
-		}
-	})
-	Trigger.Slider({
-		Text = "Delay Between Clicks",
-		Callback = function(value)
-			aimbot:Set(type, "Delay", value)
-		end,
-		Min = 0,
-		Max = 1000,
-		Def = s.DelayBetweenClicks,
-		Suffix = " ms",
-		Menu = {
-			Info = function()
-				UI.Banner("This determines how long it waits between each click while spamming. This only takes effect when <b>Spam</b> is enabled.")
+				UI.Banner("This determines how long Trigger Bot waits before clicking.\nAccurate delays are <b>not guaranteed</b> as <b>Refresh Rate</b> can affect how long it takes. If you want the <i>lowest possible delay</i>, set <b>Refresh Rate</b> to <b>0</b>.")
 			end
 		}
 	})
@@ -675,7 +679,8 @@ do -- Crosshair
 		Min = 1,
 		Max = 200,
 		Def = s.Length,
-		Decimals = 2
+		Decimals = 2,
+		Suffix = " px"
 	})
 	Crosshair.Slider({
 		Text = "Thickness",
@@ -685,7 +690,8 @@ do -- Crosshair
 		Min = 1,
 		Max = 200,
 		Def = s.Thickness,
-		Decimals = 2
+		Decimals = 2,
+		Suffix = " px"
 	})
 	Crosshair.Slider({
 		Text = "Offset",
@@ -695,7 +701,36 @@ do -- Crosshair
 		Min = 0,
 		Max = 200,
 		Def = s.Offset,
-		Decimals = 2
+		Decimals = 2,
+		Suffix = " px"
+	})
+end
+
+do -- Prediction
+	local type = "Prediction"
+	local s = ss[type]
+	Prediction.Toggle({
+		Text = "Enabled",
+		Callback = function(value)
+			aimbot:Set(type, "Enabled", value)
+		end,
+		Enabled = s.Enabled
+	})
+	Prediction.Slider({
+		Text = "Strength",
+		Callback = function(value)
+			aimbot:Set(type, "Strength", value)
+		end,
+		Min = 0,
+		Max = 20,
+		Def = s.Strength,
+		Decimals = 2,
+		Suffix = "x"
+	})
+	Prediction.Label({
+		Text = "Prediction is unavailable on Phantom Forces.",
+		Center = true,
+		Transparent = true
 	})
 end
 
@@ -722,8 +757,8 @@ do -- Players
 		dd:SetOptions(t)
 	end
 	update()
-	conn1 = players.PlayerAdded:Connect(update)
-	conn2 = players.PlayerRemoving:Connect(update)
+	table.insert(connections, players.PlayerAdded:Connect(update))
+	table.insert(connections, players.PlayerRemoving:Connect(update))
 	Players.Label({
 		Text = "━━ Whitelist ━━",
 		Center = true,
@@ -900,7 +935,7 @@ do -- Configs
 		Callback = function()
 			if not isempty(cfgname) then
 				save(cfgname)
-				UI.Banner("Successfully created: "..cfgname)
+				UI.Banner("Successfully created <b>"..cfgname.."</b>.")
 				refresh()
 			else
 				UI.Banner("Please enter a name for your config in the text box above.")
@@ -931,18 +966,26 @@ do -- Configs
 		Text = "Overwrite Selected Config",
 		Callback = function()
 			save(selectedcfg)
-			UI.Banner("Successfully overwritten: "..selectedcfg)
+			UI.Banner("Successfully overwritten <b>"..selectedcfg.."</b>.")
 		end
 	})
 	Configs.Button({
 		Text = "Delete Selected Config",
 		Callback = function()
 			if cfg.Valid(selectedcfg) then
-				cfg.Delete(selectedcfg)
-				UI.Banner("Successfully deleted: "..selectedcfg)
-				refresh()
+				UI.Banner({
+					Text = "Are you sure you want to delete <b>"..selectedcfg.."</b>?",
+					Options = {"Yes", "No"},
+					Callback = function(value)
+						if value == "Yes" then
+							cfg.Delete(selectedcfg)
+							UI.Banner("Successfully deleted <b>"..selectedcfg.."</b>.")
+							refresh()
+						end
+					end
+				})
 			else
-				UI.Banner(selectedcfg.." does not exist.")
+				UI.Banner("<b>"..selectedcfg.."</b> does not exist.")
 			end
 		end
 	})
@@ -1063,10 +1106,10 @@ do -- Feedback
 	end
 end
 
-conn3 = game:GetService("UserInputService").InputBegan:Connect(function(i, gp)
+table.insert(connections, game:GetService("UserInputService").InputBegan:Connect(function(i, gp)
 	if not gp and i.KeyCode == togglekey then
 		UI.Toggle()
 	end
-end)
+end))
 
 getgenv().UAIM_LOADING = false
