@@ -1,10 +1,10 @@
 --[[
-v1.1.17 Changes
-- Added a customizable crosshair with various options
-- Added `UseKeybind` for TriggerBot; if this is enabled, you must hold down your keybind to use triggerbot
+v1.1.18 Changes
+- Added Prediction
+- Added 'AimAtNearestPart' for Aimbot
 ]]
 
-local VERSION = "v1.1.17"
+local VERSION = "v1.1.18"
 
 if not getgenv().AimbotSettings then
 	getgenv().AimbotSettings = {
@@ -23,6 +23,7 @@ if not getgenv().AimbotSettings then
 			Use_mousemoverel = true,
 			Strength = 100, -- 1% - 200%
 			AimType = "Hold", -- "Hold" or "Toggle"
+			AimAtNearestPart = false
 		},
 		AimAssist = {
 			Enabled = false,
@@ -59,6 +60,10 @@ if not getgenv().AimbotSettings then
 			Length = 15,
 			Thickness = 2,
 			Offset = 0
+		},
+		Prediction = {
+			Enabled = false,
+			Strength = 2
 		},
 		Priority = {},
 		Whitelisted = {}, -- Username or User ID
@@ -106,7 +111,6 @@ local lower = string.lower
 local mouse = uis:GetMouseLocation()
 local osclock = os.clock
 local RaycastParamsnew = RaycastParams.new
-local FindFirstChild = game.FindFirstChild
 local taskwait = task.wait
 local taskspawn = task.spawn
 
@@ -126,9 +130,9 @@ elseif GameId == 1168263273 then -- bad business
 	do end
 elseif GameId == 2162282815 then -- rush point
 	ss.Ignore = {camera, player.Character, workspace.RaycastIgnore, workspace.DroppedWeapons, workspace.MapFolder.Map.Ramps, workspace.MapFolder.Map.Walls.MapWalls}
-elseif FindFirstChild(workspace, "Ignore") then
+elseif workspace:FindFirstChild("Ignore") then
 	tableinsert(ss.Ignore, workspace.Ignore)
-elseif FindFirstChild(workspace, "RaycastIgnore") then
+elseif workspace:FindFirstChild("RaycastIgnore") then
 	tableinsert(ss.Ignore, workspace.RaycastIgnore)
 end
 
@@ -174,21 +178,34 @@ elseif GameId == gids.bb then
 		end
 	end
 elseif GameId == gids.rp then
+	rp = true
 	-- CREDIT TO THIS DUDE FOR CRASH FIX https://v3rmillion.net/showthread.php?pid=8248169#pid8248169
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/Github-Account-39021832/Rush-Point-Fix-Crash/main/src.lua"))()
-	for _,v in next, getgc(true) do
-		if typeof(v) == "table" and rawget(v, "GetAllCharacters") then
-			rp = v
-		end
-	end
+	--loadstring(game:HttpGet("https://raw.githubusercontent.com/Github-Account-39021832/Rush-Point-Fix-Crash/main/src.lua"))()
 end
 
 local rootpart = (getchar and "Torso") or (ts and "Chest") or "HumanoidRootPart"
 
+local setidentity = setidentity or setthreadidentity or set_thread_identity or setthreadcontext or set_thread_context or (syn and syn.set_thread_identity) or nil
+function safecall(func, env, ...)
+	if not setidentity then
+		return func(...)
+	end
+
+	local suc, env = pcall(getsenv, env)
+	return coroutine.wrap(function(...)
+		setidentity(2)
+		if suc then
+			setfenv(0, env)
+			setfenv(1, env)
+		end
+		return func(...)
+	end)(...)
+end
+
 local oldfuncs = {}
 
 function IsAlive(plr)
-	local humanoid = FindFirstChild(plr.Character or game, "Humanoid")
+	local humanoid = plr.Character:FindFirstChild("Humanoid")
 	if humanoid and humanoid.Health > 0 then
 		return true
 	end
@@ -249,9 +266,9 @@ params.FilterType = Enum.RaycastFilterType.Blacklist
 params.IgnoreWater = true
 function IsVisible(plr, character, mycharacter, cf, targetpos, valid)
 	local char = character or GetChar(plr)
-	if ss.VisibleCheck and (valid or IsAlive(plr) and FindFirstChild(char, Aimbot.TargetPart)) then
+	if ss.VisibleCheck and (valid or IsAlive(plr) and char:FindFirstChild(Aimbot.TargetPart)) then
 		if getvis then
-			return getvis(player,plr)
+			return getvis(player, plr)
 		else
 			local mychar = mycharacter or GetChar(player)
 			tableinsert(Ignore, mychar)
@@ -296,10 +313,10 @@ function InFov(plr,Fov)
 	mouse = uis:GetMouseLocation()
 	if IsAlive(plr) then
 		local char = GetChar(plr)
-		if ts and FindFirstChild(char, "Body") then
+		if ts and char:FindFirstChild("Body") then
 			char = char.Body
 		end
-		local target = FindFirstChild(char, Aimbot.TargetPart)
+		local target = char:FindFirstChild(Aimbot.TargetPart)
 		if target then
 			local _, inViewport = WorldToViewportPoint(camera, target.Position)
 			if (FovCircle.Enabled or AimAssist.Enabled) and inViewport then
@@ -323,9 +340,6 @@ end
 
 do -- compatibility
 	if getchar then -- phantom forces
-		IsAlive = function(plr)
-			return getchar(plr) ~= nil
-		end
 		GetChar = function(plr)
 			local a = getchar(plr)
 			if a ~= nil then
@@ -333,16 +347,15 @@ do -- compatibility
 			end
 			return nil
 		end
+		IsAlive = GetChar
 	end
 	
 	if ts then -- bad business
-		hookfunction(PluginManager, error)
-		IsAlive = function(plr)
-			return characters:GetCharacter(plr) ~= nil
-		end
+		hookfunction(PluginManager, error) -- prevent crash
 		GetChar = function(plr)
 			return characters:GetCharacter(plr)
 		end
+		IsAlive = GetChar
 		GetTeam = function(plr)
 			return teams:GetPlayerTeam(plr, plr)
 		end
@@ -356,32 +369,20 @@ do -- compatibility
 	end
 
 	if rp then -- rush point
-		--[[ -- function method (shitty asf)
-		local getallchars = rp.GetAllCharacters
-		GetChar = function(plr)
-			for _,v in next, getallchars() do
-				if v.Name == plr.Name then
-					return v
-				end
-			end
-		end
-		]]
 		local mapfolder = workspace:WaitForChild("MapFolder")
 		local playerfolder = mapfolder:WaitForChild("Players")
-		local gamemode = mapfolder:WaitForChild("GameStats"):WaitForChild("GameMode")
+		local gamestats = mapfolder:WaitForChild("GameStats")
 		GetChar = function(plr)
-			return FindFirstChild(playerfolder, plr.Name)
+			return playerfolder:FindFirstChild(plr.Name)
 		end
 		IsAlive = GetChar
 		GetTeam = function(plr)
-			local char = GetChar(plr)
-			if char and FindFirstChild(char, "Team") then
-				return char.Team.Value
-			end
-			return nil
+			local char = GetChar(plr) if not char then return "" end
+			local team = char:FindFirstChild("Team") if not team then return "" end
+			return team.Value
 		end
 		IsFFA = function()
-			return gamemode.Value == "Deathmatch"
+			return gamestats.GameMode.Value == "Deathmatch"
 		end
 	end
 end
@@ -559,17 +560,35 @@ function update()
 		if (ads or ss.AlwaysActive) and dist <= ss.MaximumDistance then
 			if IsVisible(plr) and not IsWhitelisted(plr) then
 				local str = mathclamp(s.Strength, 1, (bot and 200) or (assist and 100))
-				if getchar then
-					str = mathclamp(str, 1, 65)
-				end
 				local target = Aimbot.TargetPart
-				if ts and FindFirstChild(char, "Body") then
+				if ts and char:FindFirstChild("Body") then
 					char = char.Body
 				end
+				if s.AimAtNearestPart then
+					mouse = uis:GetMouseLocation()
+					local closest = mathhuge
+					for _,v in next, bodyparts do
+						local part = char:FindFirstChild(v)
+						if part then
+							local vector = WorldToViewportPoint(camera, part.Position)
+							local mag = (mouse - Vector2new(vector.X, vector.Y)).Magnitude
+							if mag < closest then
+								closest = mag
+								target = part
+							end
+						end
+					end
+				else
+					target = char:FindFirstChild(target)
+				end
 				if bot then
-					target = FindFirstChild(char, target)
 					if InFov(plr) and target then
-						local vector = WorldToViewportPoint(camera, target.Position)
+						local position = target.Position
+						if ss.Prediction.Enabled then
+							local str = mathclamp(ss.Prediction.Strength, 1, 20) / 10
+							position += target.Velocity * str * (ccf.Position - target.Position).Magnitude / 100
+						end
+						local vector = WorldToViewportPoint(camera, position)
 						if Aimbot.Use_mousemoverel then
 							str /= 100
 							mousemoverel((vector.X - mouse.X) * str, (vector.Y - mouse.Y) * str)
@@ -586,7 +605,7 @@ function update()
 							factor = mathclamp(factor, 1, 10)
 							uis.MouseDeltaSensitivity = (inmaxfov and (olddelta / factor)) or olddelta
 						end
-						if (AimAssist.RequireMovement and FindFirstChild(mychar, "Humanoid") and mychar.Humanoid.MoveDirection.Magnitude > 0) or not AimAssist.RequireMovement or getchar then
+						if (AimAssist.RequireMovement and mychar:FindFirstChild("Humanoid") and mychar.Humanoid.MoveDirection.Magnitude > 0) or not AimAssist.RequireMovement or getchar then
 							local body = WorldToViewportPoint(camera, char[rootpart].Position)
 							local head = WorldToViewportPoint(camera, char.Head.Position)
 							local vector = body
@@ -623,7 +642,9 @@ function update()
 		if not triggering and Trigger.Enabled and target ~= nil and target:IsDescendantOf(char) and not mousedown then
 			taskspawn(function()
 				triggering = true
-				taskwait(Trigger.Delay / 1000)
+				if Trigger.Delay > 0 then
+					taskwait(Trigger.Delay / 1000)
+				end
 				target = Mouse.Target
 				if target ~= nil and target:IsDescendantOf(char) then
 					triggering = true
