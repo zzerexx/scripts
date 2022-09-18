@@ -4,7 +4,7 @@ my cool scripts
 ---
   
 # Universal Esp  
-Updated September 3, 2022  
+Updated September 19, 2022  
 v1.6.13  
 - Box Esp  
 - Tracers  
@@ -21,7 +21,7 @@ https://pastebin.com/raw/5zw0rLH9
 ```  
 [Documentation](https://zzerexx.gitbook.io/universal-script-api)  
 ### UI Version  
-Updated July 26, 2022  
+Updated September 19, 2022  
 ```lua
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua"))()
 loadstring(game:HttpGet("https://zzerexx.github.io/Universal/Esp.lua"))() -- Both loadstrings are the same, this one just looks better
@@ -36,36 +36,35 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/
   
 ## Update v1.6.13  
 Main Changes  
-- Added function 'esp:GetObjectFromId'; returns an object with the given Id
-- 'OutlineThickness' has been slightly changed; you may notice that its a bit thicker
+- removed the crash script fix for rush point (no longer needed)
   
 UI Changes  
-- Fixed Feedback page
-- Added bug report option on Feedback page
+- [full change log](https://github.com/zzerexx/scripts/commit/104d401c51cdb3860dca46eae47309fa6e3d718c)
   
 ---
   
 # Universal Aimbot  
-Updated June 30, 2022  
-v1.1.17  
+Updated September 19, 2022  
+v1.1.18  
 ```
 https://pastebin.com/raw/nwqE7v07
 ```  
 [Documentation](https://zzerexx.gitbook.io/universal-script-api)  
 ### UI Version  
-Updated July 26, 2022  
+Updated September 19, 2022  
 ```lua
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalAimbotUI.lua"))()
 loadstring(game:HttpGet("https://zzerexx.github.io/Universal/Aimbot.lua"))() -- Both loadstrings are the same, this one just looks better
 ```  
-## Update v1.1.17  
+## Update v1.1.18  
 Main Changes  
-- Added a customizable crosshair with various options
-- Added `UseKeybind` for TriggerBot; if this is enabled, you must hold down your keybind to use triggerbot
+- Added 'Prediction'
+- Added 'AimAtNearestPart' for 'Aimbot'
+	- this will make aimbot lock onto the nearest body part. useful for keeping your crosshair on-target without locking onto one specific body part
+- removed the crash script fix for rush point (no longer needed)
   
 UI Changes  
-- Fixed Feedback page
-- Added bug report option on Feedback page
+- updated to latest version
   
 ## NOTICE  
 ```
