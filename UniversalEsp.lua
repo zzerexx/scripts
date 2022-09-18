@@ -1,6 +1,6 @@
 --[[
 v1.6.13 Changes
-- Added function 'esp:GetObjectFromId'; returns an object with the given Id
+- Added function 'GetObjectFromId'; returns an object with the given Id
 - 'OutlineThickness' has been changed; you may notice that its a bit thicker
 ]]
 
@@ -198,7 +198,6 @@ local osclock = os.clock
 local next = next
 local tick = tick
 local typeof = typeof
-local FindFirstChild = game.FindFirstChild
 local GetMouseLocation = uis.GetMouseLocation
 
 local GameId = game.GameId
@@ -268,8 +267,9 @@ elseif GameId == gids.bb then
 		end
 	end
 elseif GameId == gids.rp then
+	rp = true
 	-- CREDIT TO THIS DUDE FOR CRASH FIX https://v3rmillion.net/showthread.php?pid=8248169#pid8248169
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/Github-Account-39021832/Rush-Point-Fix-Crash/main/src.lua"))()
+	--loadstring(game:HttpGet("https://raw.githubusercontent.com/Github-Account-39021832/Rush-Point-Fix-Crash/main/src.lua"))()
 end
 local From = {
 	UpperTorso = "Head",
@@ -321,14 +321,16 @@ local supportedparts = {
 	"MeshPart"
 }
 
-local setidentity = setthreadidentity or set_thread_identity or setthreadcontext or setidentity or (syn and syn.set_thread_identity)
+local setidentity = setidentity or setthreadidentity or set_thread_identity or setthreadcontext or set_thread_context or (syn and syn.set_thread_identity) or nil
 function safecall(func, env, ...)
-	if env ~= nil and typeof(env) == "Instance" then
-		env = getsenv(env)
+	if not setidentity then
+		return func(...)
 	end
+
+	local suc, env = pcall(getsenv, env)
 	return coroutine.wrap(function(...)
 		setidentity(2)
-		if env then
+		if suc then
 			setfenv(0, env)
 			setfenv(1, env)
 		end
@@ -343,7 +345,7 @@ function IsAlive(plr)
 		return true
 	end
 
-	local humanoid = FindFirstChild(plr.Character or game, "Humanoid")
+	local humanoid = plr.Character and plr.Character:FindFirstChild("Humanoid") or nil
 	if humanoid and humanoid.Health > 0 then
 		return true
 	end
@@ -363,7 +365,7 @@ function GetHealth(plr)
 		return {mathfloor(a.Health), mathfloor(a.MaxHealth)}
 	end
 
-	local a = FindFirstChild(plr.Character or game, "Humanoid")
+	local a = plr.Character and plr.Character:FindFirstChild("Humanoid") or nil
 	if a then
 		return {mathfloor(a.Health), mathfloor(a.MaxHealth)}
 	end
@@ -436,7 +438,7 @@ do -- compatibility
 		IsAlive = GetChar
 		GetHealth = function(plr)
 			local a = GetChar(plr)
-			local hp = FindFirstChild(a, "Health")
+			local hp = a:FindFirstChild("Health")
 			if hp then
 				return {mathfloor(hp.Value), mathfloor(hp.MaxHealth.Value)}
 			end
@@ -467,19 +469,23 @@ do -- compatibility
 		local playerfolder = mapfolder:WaitForChild("Players")
 		local gamestats = mapfolder:WaitForChild("GameStats")
 		GetChar = function(plr)
-			return FindFirstChild(playerfolder, plr.Name)
+			return playerfolder:FindFirstChild(plr.Name)
 		end
 		IsAlive = GetChar
+		GetHealth = function(plr)
+			local char = GetChar(plr) if not char then return {0, 100} end
+			local humanoid = char:FindFirstChildOfClass("Humanoid") if not humanoid then return {0, 100} end
+			return {mathfloor(humanoid.Health), mathfloor(humanoid.MaxHealth)}
+		end
 		GetTeam = function(plr)
-			local char = GetChar(plr)
-			if char and FindFirstChild(char, "Team") then
-				return char.Team.Value
-			end
-			return nil
+			local char = GetChar(plr) if not char then return "" end
+			local team = char:FindFirstChild("Team") if not team then return "" end
+			return team.Value
 		end
 		GetTeamColor = function(plr)
-			local char = GetChar(plr)
-			return (char and FindFirstChild(char, "Outline") and char.Outline.OutlineColor) or white
+			local char = GetChar(plr) if not char then return white end
+			local outline = char:FindFirstChild("OutlineESP") if not outline then return white end
+			return outline.OutlineColor
 		end
 		IsFFA = function()
 			return gamestats.GameMode.Value == "Deathmatch"
@@ -811,7 +817,7 @@ function Label(part,options)
 			a:Remove()
 			return
 		end
-		a:SetPart(FindFirstChild(p, part.Name))
+		a:SetPart(p:FindFirstChild(part.Name))
 	end)
 	OBJECTS[ID] = a
 	t = OBJECTS[ID]
@@ -865,7 +871,7 @@ function Cham(part,options)
 			a:Remove()
 			return
 		end
-		a:SetPart(FindFirstChild(p, part.Name))
+		a:SetPart(p:FindFirstChild(part.Name))
 	end)
 	OBJECTS[ID] = a
 	t = OBJECTS[ID]
@@ -953,10 +959,10 @@ function update()
 						bry = bly
 					end
 
-					if ts and FindFirstChild(char, "Body") then
+					if ts and char:FindFirstChild("Body") then
 						char = char.Body
 					end
-					if (type == "HeadDots" or type == "LookTracers") and FindFirstChild(char, "Head") then
+					if (type == "HeadDots" or type == "LookTracers") and char:FindFirstChild("Head") then
 						local headcf = char.Head.CFrame
 						head = WorldToViewportPoint(camera, headcf.Position)
 						if type == "LookTracers" then
@@ -1107,8 +1113,8 @@ function update()
 							SetProp(obj, "Thickness", thickness)
 	
 							for i2,v2 in next, obj do
-								local from = FindFirstChild(char, From[i2] or "")
-								local to = FindFirstChild(char, i2 or "")
+								local from = char:FindFirstChild(From[i2] or "")
+								local to = char:FindFirstChild(i2 or "")
 								local isoutline = find(i2, "Outline")
 								if not isoutline and from and find(from.ClassName, "Part") and to and find(to.ClassName, "Part") then
 									local pos1, in1 = WorldToViewportPoint(camera, from.Position)
@@ -1185,7 +1191,7 @@ function update()
 								end
 							end
 						elseif type == "HeadDots" then
-							if FindFirstChild(char, "Head") then
+							if char:FindFirstChild("Head") then
 								local thickness, outline, filled = s.Thickness, s.Outline, s.Filled
 								local dot, out = obj.Dot, obj.Outline
 								dot.Thickness = thickness 
@@ -1210,7 +1216,7 @@ function update()
 								SetProp(obj, "Visible", false)
 							end
 						elseif type == "LookTracers" then
-							if FindFirstChild(char, "Head") then
+							if char:FindFirstChild("Head") then
 								local thickness, outline = s.Thickness, s.Outline
 								local tracer, out = obj.Tracer, obj.Outline
 								tracer.Thickness = thickness
@@ -1383,7 +1389,7 @@ end
 function esp:GetObjects(a)
 	a = a or ""
 	local t = typeof(a)
-	if (t == "Instance" and a.ClassName == "Player") or (t == "string" and FindFirstChild(players, a)) then
+	if (t == "Instance" and a.ClassName == "Player") or (t == "string" and players:FindFirstChild(a)) then
 		local plr = (t == "string" and players[a]) or a
 		local objects = {
 			['Boxes'] = nil,
@@ -1468,7 +1474,7 @@ end
 function esp:Add(a)
 	a = a or ""
 	local t = typeof(a)
-	if (t == "Instance" and a.ClassName == "Player" or a.ClassName == "Model") or (t == "string" and FindFirstChild(players, a)) then
+	if (t == "Instance" and a.ClassName == "Player" or a.ClassName == "Model") or (t == "string" and players:FindFirstChild(a)) then
 		local plr = (t == "string" and players[a]) or a
 		if not hasesp(plr) then
 			doshit(plr)
@@ -1478,7 +1484,7 @@ end
 function esp:Remove(a)
 	a = a or ""
 	local t = typeof(a)
-	if (t == "Instance" and a.ClassName == "Player" or a.ClassName == "Model") or (t == "string" and FindFirstChild(players, a)) then
+	if (t == "Instance" and a.ClassName == "Player" or a.ClassName == "Model") or (t == "string" and players:FindFirstChild(a)) then
 		local plr = (t == "string" and players[a]) or a
 		if hasesp(plr) then
 			for _,v in next, OBJECTS do
