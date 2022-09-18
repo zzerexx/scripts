@@ -1,3 +1,29 @@
+--[[
+	Custom Game Features
+	- Phantom Forces
+		- Dropped Weapon Esp
+			- Show Ammo
+			- Duration Indicator
+		- Grenade Esp
+			- Check Grenade Radius
+		- Dog Tag Esp
+		- Flag Esp
+			- a lil buggy
+	- Bad Business
+		- Grenade Esp
+			- Check Grenade Radius
+		- there arent that many things that i could add to bad business
+	- Rush Point
+		- Dropped Weapon Esp
+			- Show Ammo
+			- Show Skin
+			- Show Owner
+		- Ability Esp
+			- Enable specific abilities
+			- Ignore teammate abilities
+		- Bomb Esp
+			- also checks if the bomb is being defused!
+]]
 repeat
 	task.wait(0.5)
 until not UAIM_LOADING
@@ -143,7 +169,7 @@ getgenv().OldInstance = nil
 getgenv().EspSettings.Names.OutlineThickness = 0 -- prevent error
 
 local function Load(file)
-	return loadstring(game:HttpGet(string.format("https://raw.githubusercontent.com/zzerexx/scripts/main/%s.lua", file)))()
+	return loadstring(game:HttpGet(string.format("https://raw.githubusercontent.com/zzerexx/scripts/main/%s.lua", file)), file)()
 end
 
 local UI
@@ -182,7 +208,8 @@ local icons = {
 	['Players'] = "https://i.imgur.com/rSSostV.png",
 	['NPC'] = "https://i.imgur.com/vnQqvnZ.png",
 	['Statistics'] = "https://i.imgur.com/l12YZmJ.png",
-	['Feedback'] = "https://i.imgur.com/rnLY3CC.png"
+	['Feedback'] = "https://i.imgur.com/rnLY3CC.png",
+	['Game'] = "https://i.imgur.com/GyzezXx.png"
 }
 for i,v in next, icons do
 	local folder = "UESP_Icons"
@@ -199,7 +226,7 @@ function page(title)
 	return UI.new({Title = title, ImageId = "UESP_Icons\\"..title..".png", ImageSize = Vector2.new(20, 20)})
 end
 
-local version = "v1.6.12"
+local version = "v1.6.13"
 local esp = Load("UniversalEsp")
 local cfg = Load("ConfigManager")
 local Material = Load("MaterialLuaRemake")
@@ -214,6 +241,28 @@ UI = Material.Load({
 	Theme = "Dark"
 })
 local players = game:GetService("Players")
+local camera = workspace.CurrentCamera
+
+local gids = { -- game ids
+	['arsenal'] = 111958650,
+	['pf'] = 113491250,
+	['pft'] = 115272207, -- pf test place
+	['pfu'] = 1256867479, -- pf unstable branch
+	['bb'] = 1168263273,
+	['rp'] = 2162282815, -- rush point
+}
+local gid = game.GameId 
+local Game, GamePage = nil, nil
+if gid == (gids.pf or gids.pft or gids.pfu) then
+	Game = "Phantom Forces"
+elseif gid == gids.bb then
+	Game = "Bad Business"
+elseif gid == gids.rp then
+	Game = "Rush Point"
+end
+if Game then
+	GamePage = UI.new({Title = Game, ImageId = "UESP_Icons\\Game.png", ImageSize = Vector2.new(20, 20)})
+end
 
 local Boxes = page("Boxes")
 local Tracers = page("Tracers")
@@ -232,11 +281,18 @@ local Stats = page("Statistics")
 local Feedback = page("Feedback")
 local ss = getgenv().EspSettings
 local loaded = false
-local conn1,conn2,conn3,conn4
+local connections = {}
 local cfgname,selectedcfg = "",""
 local addtonew = true
+local addtonpcs = false
 local togglekey = Enum.KeyCode.RightControl
 local esptogglebtn, uitogglebtn
+local SettingsLoaded = Instance.new("BindableEvent")
+local gamesettings = {
+	['Phantom Forces'] = nil,
+	['Bad Business'] = nil,
+	['Rush Point'] = nil
+}
 
 local newsettings = {
 	FaceCamera = false,
@@ -289,12 +345,13 @@ local function save(a)
 		ui = {
 			ToggleKey = togglekey.Name,
 			AddToNew = addtonew
-		}
+		},
+		gamesettings = gamesettings
 	})
 end
 local function load(a)
-	local settings = ((a.Data ~= nil and a.Data.settings ~= nil and a.Data.settings) or a.settings ~= nil and a.settings) or a
-	for i,v in next, settings do
+	local data = (a.Data or (a.settings ~= nil and a.settings)) or a
+	for i,v in next, data.settings do
 		if typeof(v) == "table" then
 			for i2,v2 in next, v do
 				esp:Set(i, i2, v2)
@@ -303,12 +360,16 @@ local function load(a)
 			esp:Set("Other", i, v)
 		end
 	end
+	if data.gamesettings ~= nil then
+		gamesettings = data.gamesettings
+		SettingsLoaded:Fire(data.gamesettings)
+	end
 	task.spawn(function()
 		repeat task.wait(0.25) until esptogglebtn ~= nil and uitogglebtn ~= nil
-		local key = settings.ToggleKey
+		local key = data.settings.ToggleKey
 		esptogglebtn:SetBind((typeof(key) == "EnumItem" and key) or Enum.KeyCode[key])
 		if a.Data ~= nil and a.Data.ui ~= nil then
-			local b,c = a.Data.ui.ToggleKey, a.Data.ui.AddToNew
+			local b,c = data.ui.ToggleKey, data.ui.AddToNew
 			if b then
 				togglekey = Enum.KeyCode[b]
 				uitogglebtn:SetBind(togglekey)
@@ -329,10 +390,9 @@ cfg.Init("UESP", {
 }, load)
 
 function destroy()
-	conn1:Disconnect()
-	conn2:Disconnect()
-	conn3:Disconnect()
-	conn4:Disconnect()
+	for _,v in next, connections do
+		v:Disconnect()
+	end
 	esp:Destroy()
 	UI:Destroy()
 	getgenv().UESP = nil
@@ -345,6 +405,729 @@ function reload(safemode)
 		pcall(script)
 	else
 		script()
+	end
+end
+
+do -- Game Specific
+	local objects = {}
+	local label = setmetatable({
+		Transparency = 1,
+		Color = Color3.new(1, 1, 1),
+		RainbowColor = false,
+		Size = 13,
+		Outline = true,
+		OutlineColor = Color3.new(0, 0, 0),
+		Font = (import and Drawing.Fonts.System) or Drawing.Fonts.Plex,
+		Offset = Vector2.zero
+	}, {
+		__call = function(self, obj, text, color)
+			local obj = esp.Label(obj, self)
+			table.insert(objects, obj)
+			obj:SetProp("Text", text)
+			if color then
+				obj:SetProp("Color", color)
+			end
+			return obj
+		end
+	})
+	local cham = setmetatable({
+		Transparency = 0.5,
+		Color = Color3.new(1, 1, 1),
+		RainbowColor = false,
+		Thickness = 1,
+		Filled = true
+	}, {
+		__call = function(self, obj, color)
+			local obj = esp.Cham(obj, self)
+			table.insert(objects, obj)
+			if color then
+				obj:SetProp("Color", color)
+			end
+			return obj
+		end
+	})
+	local white, red, orange, yellow, green = Color3.new(1, 1, 1), Color3.fromRGB(255, 0, 0), Color3.fromRGB(255, 150, 0), Color3.fromRGB(255, 255, 0), Color3.fromRGB(0, 255, 0)
+	local function SetProp(name, type, prop, value)
+		for _,v in next, objects do
+			if (name == "" or v.Part.Name:find(name)) and v.Type == type then
+				v:SetProp(prop, value)
+			end
+		end
+	end
+	local function Remove(name, type)
+		for _,v in next, objects do
+			if (name == "" or v.Part.Name:find(name)) and v.Type == type then
+				v:Remove()
+			end
+		end
+	end
+	if Game == "Phantom Forces" then
+		local content = game:GetService("ReplicatedStorage"):WaitForChild("Content")
+		local db = content:WaitForChild("ProductionContent"):WaitForChild("WeaponDatabase")
+		local tdb = content:WaitForChild("TestContent"):WaitForChild("WeaponDatabase")
+		local drops = workspace:WaitForChild("Ignore"):WaitForChild("GunDrop")
+		local misc = workspace:WaitForChild("Ignore"):WaitForChild("Misc")
+		local cache = {}
+		local settings = setmetatable({
+			Weapons = {
+				DroppedWeapons = false,
+				DroppedWeaponsChams = false,
+				ShowAmmo = false,
+				Duration = false,
+				Grenades = false,
+				CheckGrenadeRadius = false,
+			},
+			Misc = {
+				DogTags = false,
+				DogTagsChams = false,
+				Flags = false
+			},
+			Custom = {
+				LabelTransparency = 1,
+				ChamsTransparency = 1
+			}
+		}, {
+			__newindex = function(self)
+				gamesettings[Game] = self
+			end
+		})
+		gamesettings[Game] = settings
+		table.insert(connections, SettingsLoaded.Event:Connect(function(a)
+			settings = a[Game]
+		end))
+
+		GamePage.Label({
+			Text = "━━ Weapons ━━",
+			Center = true,
+			Transparent = true
+		})
+		GamePage.Toggle({
+			Text = "Dropped Weapon Esp (Label)",
+			Callback = function(value)
+				settings.Weapons.DroppedWeapons = value
+				if value == false then
+					Remove("Dropped", "Labels")
+				end
+			end,
+			Enabled = settings.Weapons.DroppedWeapons
+		})
+		GamePage.Toggle({
+			Text = "Dropped Weapon Esp (Chams)",
+			Callback = function(value)
+				settings.Weapons.DroppedWeaponsChams = value
+				if value == false then
+					Remove("Dropped", "Chams")
+				end
+			end,
+			Enabled = settings.Weapons.DroppedWeaponsChams,
+			Menu = {
+				Info = function()
+					UI.Banner("You may experience performance drops with this enabled.")
+				end
+			}
+		})
+		GamePage.Toggle({
+			Text = "Show Ammo",
+			Callback = function(value)
+				settings.Weapons.ShowAmmo = value
+			end,
+			Enabled = settings.Weapons.ShowAmmo
+		})
+		GamePage.Toggle({
+			Text = "Duration Indicator",
+			Callback = function(value)
+				settings.Weapons.Duration = value
+			end,
+			Enabled = settings.Weapons.Duration,
+			Menu = {
+				Info = function()
+					UI.Banner("Visualizes how much time the weapon has left until it despawns.\n<font color='rgb(255, 0, 0)'>Red</font> = 5s left\n<font color='rgb(255, 150, 0)'>Orange</font> = 10s left\n<font color='rgb(255, 255, 0)'>Yellow</font> = 15s left\n<font color='rgb(0, 255, 0)'>Green</font> = More than 20s left")
+				end
+			}
+		})
+		GamePage.Toggle({
+			Text = "Grenade Esp",
+			Callback = function(value)
+				settings.Weapons.Grenades = value
+				if value == false then
+					Remove("Trigger", "Labels")
+					Remove("Trigger", "Chams")
+				end
+			end,
+			Enabled = settings.Weapons.Grenades
+		})
+		GamePage.Toggle({
+			Text = "Check Grenade Radius",
+			Callback = function(value)
+				settings.Weapons.CheckGrenadeRadius = value
+			end,
+			Enabled = settings.Weapons.CheckGrenadeRadius,
+			Menu = {
+				Info = function()
+					UI.Banner("When you're within a grenade's blast radius, the esp color will change to red.")
+				end
+			}
+		})
+
+		GamePage.Label({
+			Text = "━━ Misc ━━",
+			Center = true,
+			Transparent = true
+		})
+		GamePage.Toggle({
+			Text = "Dog Tag Esp (Label)",
+			Callback = function(value)
+				settings.Misc.DogTags = value
+				if value == false then
+					Remove("DogTag", "Labels")
+				end
+			end,
+			Enabled = settings.Misc.DogTags
+		})
+		GamePage.Toggle({
+			Text = "Dog Tag Esp (Chams)",
+			Callback = function(value)
+				settings.Misc.DogTagsChams = value
+				if value == false then
+					Remove("DogTag", "Chams")
+				end
+			end,
+			Enabled = settings.Misc.DogTagsChams
+		})
+		GamePage.Toggle({
+			Text = "Flag Esp (Label)",
+			Callback = function(value)
+				settings.Misc.Flags = value
+			end,
+			Enabled = settings.Misc.Flags
+		})
+
+		GamePage.Label({
+			Text = "━━ Customize ━━",
+			Center = true,
+			Transparent = true
+		})
+		GamePage.Slider({
+			Text = "Label Transparency",
+			Callback = function(value)
+				SetProp("Dropped", "Labels", "Transparency", value)
+				SetProp("DogTag", "Labels", "Transparency", value)
+				SetProp("FlagDrop", "Labels", "Transparency", value)
+				settings.Custom.LabelTransparency = value
+				label.Transparency = value
+			end,
+			Min = 0,
+			Max = 1,
+			Def = settings.Custom.LabelTransparency,
+			Decimals = 2
+		})
+		GamePage.Slider({
+			Text = "Chams Transparency",
+			Callback = function(value)
+				SetProp("Dropped", "Chams", "Transparency", value)
+				SetProp("DogTag", "Chams", "Transparency", value)
+				settings.Custom.ChamsTransparency = value
+				cham.Transparency = value
+			end,
+			Min = 0,
+			Max = 1,
+			Def = settings.Custom.ChamsTransparency,
+			Decimals = 2
+		})
+
+		table.insert(connections, drops.ChildAdded:Connect(function(v)
+			local dropped = settings.Weapons.DroppedWeapons
+			local droppedchams = settings.Weapons.DroppedWeaponsChams
+			local showammo = settings.Weapons.ShowAmmo
+			local duration = settings.Weapons.Duration
+			local tags = settings.Misc.DogTags
+			local tagschams = settings.Misc.DogTagsChams
+			local flags = settings.Misc.Flags
+			
+			if v.Name == "Dropped" and (dropped or droppedchams) then
+				local gun = v:WaitForChild("Gun", 1)
+				local ammo = v:WaitForChild("Spare", 1)
+				if (not gun) or (not ammo) then return end
+				gun = gun.Value
+				ammo = ammo.Value
+
+				local module = db:FindFirstChild(gun, true) or tdb:FindFirstChild(gun, true)
+				local data = cache[gun] or require(module:FindFirstChildOfClass("ModuleScript"))
+				local totalammo = data.sparerounds + data.magsize
+				if not cache[gun] then
+					cache[gun] = data
+				end
+
+				if dropped then
+					local l = nil
+					local text = string.format("[ %s ]\n", gun)
+					if showammo then
+						text ..= string.format("[ %s/%s ]", ammo, totalammo)
+					end
+					if duration then
+						local timer = os.clock()
+						task.spawn(function()
+							repeat task.wait(0.1) until l ~= nil
+							repeat
+								local elapsed = os.clock() - timer
+								if elapsed <= 10 then
+									l:SetProp("Color", green)
+								elseif elapsed <= 15 then
+									l:SetProp("Color", yellow)
+								elseif elapsed <= 20 then
+									l:SetProp("Color", orange)
+								elseif elapsed >= 25 then
+									l:SetProp("Color", red)
+								end
+								task.wait(1)
+							until v == nil
+						end)
+					end
+					l = label(v, text)
+				end
+				if droppedchams then
+					cham(v)
+				end
+			elseif v.Name == "DogTag" and (tags or tagschams) then
+				local color = v:WaitForChild("TeamColor", 1).Value.Color
+				if not color then return end
+
+				if tags then
+					label(v.Tag, "[ Tag ]", color)
+				end
+				if tagschams then
+					cham(v.Tag, color)
+				end
+			elseif v.Name == "FlagDrop" and flags then
+				local color = v:WaitForChild("TeamColor", 1).Value.Color
+				if not color then return end
+
+				label(v, "[ Dropped Flag ]", color)
+			end
+		end))
+		table.insert(connections, misc.ChildAdded:Connect(function(v)
+			local grenades = settings.Weapons.Grenades
+			local flags = settings.Misc.Flags
+			local checkradius = settings.Weapons.CheckGrenadeRadius
+
+			if v.Name == "Trigger" and grenades then
+				v.Name ..= math.random(0, 999)
+
+				local meshid = v.MeshId
+				local radius = cache[meshid] or nil
+				if not cache[meshid] then
+					for _,v2 in next, db:GetDescendants() do
+						if v2:IsA("MeshPart") and meshid == v2.MeshId then
+							radius = require(v2.Parent.Parent:FindFirstChildOfClass("ModuleScript")).blastradius
+							cache[meshid] = radius
+						end
+					end
+					if not radius then
+						for _,v2 in next, tdb:GetDescendants() do
+							if v2:IsA("MeshPart") and meshid == v2.MeshId then
+								radius = require(v2.Parent.Parent:FindFirstChildOfClass("ModuleScript")).blastradius
+								cache[meshid] = radius
+							end
+						end
+					end
+				end
+
+				local l = label(v, "[ Grenade ]", green)
+				local c = cham(v, green)
+				if checkradius then
+					task.spawn(function()
+						repeat
+							local mag = (camera.CFrame.Position - v.Position).Magnitude
+							if mag <= radius then
+								l:SetProp("Color", red)
+								l:SetProp("Text", "[ Grenade ]\n[!]")
+								c:SetProp("Color", red)
+							else
+								l:SetProp("Color", green)
+								l:SetProp("Text", "[ Grenade ]")
+								c:SetProp("Color", green)
+							end
+							task.wait(0.1)
+						until v == nil
+					end)
+				end
+			elseif v.Name == "FlagCarry" and flags then
+				local color = v:WaitForChild("Base", 1):WaitForChild("PointLight", 1).Color
+				if not color then return end
+
+				label(v, "[ Flag Carry ]", color)
+			end
+		end))
+	elseif Game == "Bad Business" then
+		local throwables = workspace:WaitForChild("Throwables")
+		local items = game:GetService("ReplicatedStorage"):WaitForChild("Items")
+		local configs = items:WaitForChild("Base")
+		local equipment = configs:WaitForChild("Equipment")
+		local cache = {}
+		local settings = setmetatable({
+			Weapons = {
+				Grenades = false,
+				CheckGrenadeRadius = false,
+			},
+			Custom = {
+				LabelTransparency = 1,
+				ChamsTransparency = 1
+			}
+		}, {
+			__newindex = function(self)
+				gamesettings[Game] = self
+			end
+		})
+		gamesettings[Game] = settings
+		table.insert(connections, SettingsLoaded.Event:Connect(function(a)
+			settings = a[Game]
+		end))
+
+		GamePage.Label({
+			Text = "━━ Weapons ━━",
+			Center = true,
+			Transparent = true
+		})
+		GamePage.Toggle({
+			Text = "Grenade Esp",
+			Callback = function(value)
+				settings.Weapons.Grenades = value
+				if value == false then
+					for _,v in next, equipment:GetChildren() do
+						Remove(v.Name, "Labels")
+						Remove(v.Name, "Chams")
+					end
+				end
+			end,
+			Enabled = settings.Weapons.Grenades
+		})
+		GamePage.Toggle({
+			Text = "Check Grenade Radius",
+			Callback = function(value)
+				settings.Weapons.CheckGrenadeRadius = value
+			end,
+			Enabled = settings.Weapons.CheckGrenadeRadius,
+			Menu = {
+				Info = function()
+					UI.Banner("When you're within a grenade's blast radius, the esp color will change to red.")
+				end
+			}
+		})
+
+		GamePage.Label({
+			Text = "━━ Customize ━━",
+			Center = true,
+			Transparent = true
+		})
+		GamePage.Slider({
+			Text = "Label Transparency",
+			Callback = function(value)
+				for _,v in next, equipment:GetChildren() do
+					SetProp(v.Name, "Labels", "Transparency", value)
+				end
+				settings.Custom.LabelTransparency = value
+				label.Transparency = value
+			end,
+			Min = 0,
+			Max = 1,
+			Def = settings.Custom.LabelTransparency,
+			Decimals = 2
+		})
+		GamePage.Slider({
+			Text = "Chams Transparency",
+			Callback = function(value)
+				for _,v in next, equipment:GetChildren() do
+					SetProp(v.Name, "Chams", "Transparency", value)
+				end
+				settings.Custom.ChamsTransparency = value
+				cham.Transparency = value
+			end,
+			Min = 0,
+			Max = 1,
+			Def = settings.Custom.ChamsTransparency,
+			Decimals = 2
+		})
+
+		table.insert(connections, throwables.ChildAdded:Connect(function(v)
+			local grenades = settings.Weapons.Grenades
+			local checkradius = settings.Weapons.CheckGrenadeRadius
+
+			local name = v.Name
+			local item = equipment:FindFirstChild(name)
+			if item and grenades then
+				v.Name ..= math.random(0, 999)
+
+				local radius = cache[name] or nil
+				if not cache[name] then
+					radius = require(item.Config).Damage.Radius
+					cache[name] = radius
+				end
+
+				local l = label(v, "[ Grenade ]", green)
+				local c = cham(v, green)
+				if checkradius then
+					task.spawn(function()
+						repeat
+							local mag = (camera.CFrame.Position - v:GetPivot().Position).Magnitude
+							if mag <= radius then
+								l:SetProp("Color", red)
+								l:SetProp("Text", "[ Grenade ]\n[!]")
+								c:SetProp("Color", red)
+							else
+								l:SetProp("Color", green)
+								l:SetProp("Text", "[ Grenade ]")
+								c:SetProp("Color", green)
+							end
+							task.wait(0.1)
+						until v == nil
+					end)
+				end
+			end
+		end))
+	elseif Game == "Rush Point" then
+		local weapons = workspace:WaitForChild("DroppedWeapons")
+		local mapfolder = workspace:WaitForChild("MapFolder")
+		local bombfolder = mapfolder:WaitForChild("Bomb", 1) if not bombfolder then bombfolder = game end
+		local raycastignore = workspace:WaitForChild("RaycastIgnore", 1)
+		local myname = players.LocalPlayer.Name
+		local settings = setmetatable({
+			Weapons = {
+				DroppedWeapons = false,
+				DroppedWeaponsChams = false,
+				DroppedWeaponsData = {
+					Ammo = false,
+					Skin = false,
+					Owner = false,
+				}
+			},
+			Misc = {
+				Abilities = false,
+				EnabledAbilities = {
+					Proto = true,
+					Zyla = true,
+					Kane = true,
+					Sentient = true
+				},
+				IgnoreTeamAbilities = false,
+				Bomb = false
+			},
+			Custom = {
+				LabelTransparency = 1,
+				ChamsTransparency = 1
+			}
+		}, {
+			__newindex = function(self)
+				gamesettings[Game] = self
+			end
+		})
+		gamesettings[Game] = settings
+		table.insert(connections, SettingsLoaded.Event:Connect(function(a)
+			settings = a[Game]
+		end))
+
+		local function IsTeamAbility(v)
+			local myteam = players[myname]:WaitForChild("Team", 1) if not myteam then return "" end
+			local team = v:WaitForChild("Team", 1) if not team then return "" end
+			return myteam.Value == team.Value
+		end
+		local function GetTeamColor(v)
+			local owner = v:WaitForChild("Owner", 1) if not owner then return white end
+			local character = mapfolder.Players:FindFirstChild(owner.Value.Name) if not character then return white end
+			local outline = character:FindFirstChild("OutlineESP") if not outline then return white end
+			return outline.OutlineColor
+		end
+
+		GamePage.Label({
+			Text = "━━ Weapons ━━",
+			Center = true,
+			Transparent = true
+		})
+		GamePage.Toggle({
+			Text = "Dropped Weapon Esp (Labels)",
+			Callback = function(value)
+				settings.Weapons.DroppedWeapons = value
+			end,
+			Enabled = settings.Weapons.DroppedWeapons
+		})
+		GamePage.Toggle({
+			Text = "Dropped Weapon Esp (Chams)",
+			Callback = function(value)
+				settings.Weapons.DroppedWeaponsChams = value
+			end,
+			Enabled = settings.Weapons.DroppedWeaponsChams
+		})
+		GamePage.ChipSet({
+			Text = "Dropped Weapon Esp Data",
+			Callback = function(value)
+				settings.Weapons.DroppedWeaponsData = value
+			end,
+			Options = settings.Weapons.DroppedWeaponsData
+		})
+
+		GamePage.Label({
+			Text = "━━ Misc ━━",
+			Center = true,
+			Transparent = true
+		})
+		GamePage.Toggle({
+			Text = "Ability Esp",
+			Callback = function(value)
+				settings.Misc.Abilities = value
+			end,
+			Enabled = settings.Misc.Abilities
+		})
+		GamePage.ChipSet({
+			Text = "Enabled Abilities",
+			Callback = function(value)
+				settings.Misc.EnabledAbilities = value
+			end,
+			Options = settings.Misc.EnabledAbilities
+		})
+		GamePage.Toggle({
+			Text = "Ignore Team Abilities",
+			Callback = function(value)
+				settings.Misc.IgnoreTeamAbilities = value
+			end,
+			Enabled = settings.Misc.IgnoreTeamAbilities
+		})
+		GamePage.Toggle({
+			Text = "Bomb Esp",
+			Callback = function(value)
+				settings.Misc.Bomb = value
+			end,
+			Enabled = settings.Misc.Bomb
+		})
+
+		GamePage.Label({
+			Text = "━━ Customize ━━",
+			Center = true,
+			Transparent = true
+		})
+		GamePage.Slider({
+			Text = "Label Transparency",
+			Callback = function(value)
+				SetProp("", "Labels", "Transparency", value)
+				settings.Custom.LabelTransparency = value
+				label.Transparency = value
+			end,
+			Min = 0,
+			Max = 1,
+			Def = settings.Custom.LabelTransparency,
+			Decimals = 2
+		})
+		GamePage.Slider({
+			Text = "Chams Transparency",
+			Callback = function(value)
+				SetProp("", "Chams", "Transparency", value)
+				settings.Custom.ChamsTransparency = value
+				cham.Transparency = value
+			end,
+			Min = 0,
+			Max = 1,
+			Def = settings.Custom.ChamsTransparency,
+			Decimals = 2
+		})
+
+		table.insert(connections, weapons.ChildAdded:Connect(function(v)
+			local dropped = settings.Weapons.DroppedWeapons
+			local droppedchams = settings.Weapons.DroppedWeaponsChams
+			local droppeddata = settings.Weapons.DroppedWeaponsData
+
+			local name = v.Name
+			if dropped then
+				local text = string.format("[ %s ]", name)
+				if name ~= "Bomb" then
+					if droppeddata.Ammo then
+						local ammo = v:WaitForChild("Bullets", 1).Value
+						local reserve = v:WaitForChild("ReserveAmmo", 1).Value
+						text ..= string.format("\n[ %s ]", ammo.."/"..reserve)
+					end
+					if droppeddata.Skin then
+						local skin = v:WaitForChild("Skin", 1).Value
+						text ..= string.format("\n[ %s ]", skin)
+					end
+					if droppeddata.Owner then
+						local owner = v:WaitForChild("Owner", 1).Value.Name
+						text ..= string.format("\n[ %s ]", owner)
+					end
+				end
+				label(v, text)
+			end
+			if droppedchams then
+				cham(v:WaitForChild("HitBox", 1))
+			end
+		end))
+		local length = 6 -- turret things
+		local size = Vector3.new(0.075, 0.075, length)
+		local offset = CFrame.new(0, 0, -(length / 2))
+		table.insert(connections, mapfolder:WaitForChild("Players").ChildAdded:Connect(function(v)
+			local name = v.Name
+			local enabled = settings.Misc.EnabledAbilities
+			local ignoreteam = settings.Misc.IgnoreTeamAbilities
+			if settings.Misc.Abilities and (ignoreteam and not IsTeamAbility(v) or not ignoreteam) then
+				if enabled.Proto and name == "Humbug" then -- Proto's Scan
+					local teamcolor = GetTeamColor(v)
+					local scan = v:WaitForChild("Scan", 1)
+					local l = label(scan, "[ Humbug ]")
+					local c = cham(scan)
+					l:SetProp("Color", teamcolor)
+					c:SetProp("Color", teamcolor)
+				elseif enabled.Zyla and v:FindFirstChild("CloneTag") then -- Zyla's Clone
+					
+				elseif enabled.Kane and name == "Kane Explosive" then -- Kane's Explosives
+					local teamcolor = GetTeamColor(v)
+					local part = v:WaitForChild("Part", 1)
+					local l = label(part, "[ Kane Explosive ]")
+					local c = cham(part)
+					l:SetProp("Color", teamcolor)
+					c:SetProp("Color", teamcolor)
+				elseif enabled.Sentient and name == "Combat Turret" then -- Sentient's Turret
+					local teamcolor = GetTeamColor(v)
+					local l = label(v, "[ Turret ]")
+					local c = cham(v)
+					l:SetProp("Color", teamcolor)
+					c:SetProp("Color", teamcolor)
+
+					local gun = v:WaitForChild("Object", 1):WaitForChild("Gun", 1)
+					local a = Instance.new("Part")
+					a.Anchored = true
+					a.CanCollide = false
+					a.Transparency = 1
+					a.Size = size
+					a.CFrame = gun.CFrame:ToWorldSpace(offset)
+					a.Name = ""
+					a.Parent = raycastignore
+					local c2 = cham(a)
+					c2:SetProp("Color", teamcolor)
+					local changed = v:GetPropertyChangedSignal("CFrame"):Connect(function()
+						a.CFrame = gun.CFrame:ToWorldSpace(offset)
+					end)
+					local conn;conn = v.AncestryChanged:Connect(function()
+						c2:Remove()
+						a:Destroy()
+						changed:Disconnect()
+						conn:Disconnect()
+					end)
+				end
+			end
+		end))
+		table.insert(connections, bombfolder.ChildAdded:Connect(function(v)
+			if v.Name == "Bomb" then
+				local l = label(v, "[ Bomb Planted ]")
+				local c = cham(v)
+				local defusing = v:WaitForChild("Defusing", 1)
+				local changed = defusing:GetPropertyChangedSignal("Value"):Connect(function()
+					local d = defusing.Value
+					l:SetProp("Color", d and red or white)
+					l:SetProp("Text", d and "[ Bomb Planted ]\n[ DEFUSING ]" or "[ Bomb Planted ]")
+					c:SetProp("Color", d and red or white)
+				end)
+				local conn;conn = v.AncestryChanged:Connect(function()
+					changed:Disconnect()
+					conn:Disconnect()
+				end)
+			end
+		end))
 	end
 end
 
@@ -621,7 +1404,7 @@ do -- Names
 		end,
 		Menu = {
 			Info = function()
-				UI.Banner("This is the Distance measurement. For example, if this is 'studs' then it will show '100studs'")
+				UI.Banner("This is the Distance measurement. For example, if this is <b>studs</b> then it will show <b>100studs</b>")
 			end
 		}
 	})
@@ -637,7 +1420,7 @@ do -- Names
 		Def = s.HealthDataType,
 		Menu = {
 			Info = function()
-				UI.Banner("This changes the format the health is shown in.\nPercentage: [ 100% ] | Value: [ 100/100 ]")
+				UI.Banner("This changes the format the health is shown in.\n- Percentage: [ 100% ]\n- Value: [ 100/100 ]")
 			end
 		}
 	})
@@ -1340,7 +2123,7 @@ do -- Configs
 		Callback = function()
 			if not isempty(cfgname) then
 				save(cfgname)
-				UI.Banner("Successfully created: "..cfgname)
+				UI.Banner("Successfully created <b>"..cfgname.."</b>.")
 				refresh()
 			else
 				UI.Banner("Please enter a name for your config in the text box above.")
@@ -1371,18 +2154,26 @@ do -- Configs
 		Text = "Overwrite Selected Config",
 		Callback = function()
 			save(selectedcfg)
-			UI.Banner("Successfully overwritten: "..selectedcfg)
+			UI.Banner("Successfully overwritten <b>"..selectedcfg.."</b>.")
 		end
 	})
 	Configs.Button({
 		Text = "Delete Selected Config",
 		Callback = function()
 			if cfg.Valid(selectedcfg) then
-				cfg.Delete(selectedcfg)
-				UI.Banner("Successfully deleted: "..selectedcfg)
-				refresh()
+				UI.Banner({
+					Text = "Are you sure you want to delete <b>"..selectedcfg.."</b>?",
+					Options = {"Yes", "No"},
+					Callback = function(value)
+						if value == "Yes" then
+							cfg.Delete(selectedcfg)
+							UI.Banner("Successfully deleted <b>"..selectedcfg.."</b>.")
+							refresh()
+						end
+					end
+				})
 			else
-				UI.Banner(selectedcfg.." does not exist.")
+				UI.Banner("<b>"..selectedcfg.."</b> does not exist.")
 			end
 		end
 	})
@@ -1424,8 +2215,8 @@ do -- Players
 		dd:SetOptions(t)
 	end
 	update()
-	conn1 = players.PlayerAdded:Connect(update)
-	conn2 = players.PlayerRemoving:Connect(update)
+	table.insert(connections, players.PlayerAdded:Connect(update))
+	table.insert(connections, players.PlayerRemoving:Connect(update))
 
 	Players.Label({
 		Text = "━━ Esp Manager ━━",
@@ -1583,6 +2374,18 @@ do -- NPC
 				end
 			end
 		end
+	})
+	NPC.Toggle({
+		Text = "Add esp to NPCs when created",
+		Callback = function(value)
+			addtonpcs = value
+		end,
+		Enabled = false,
+		Menu = {
+			Info = function()
+				UI.Banner("When NPCs are created, esp will automatically be added to them.")
+			end
+		}
 	})
 
 	NPC.ColorPicker({
@@ -1748,17 +2551,25 @@ do -- Feedback
 	end
 end
 
-conn3 = game:GetService("UserInputService").InputBegan:Connect(function(i, gp)
+table.insert(connections, game:GetService("UserInputService").InputBegan:Connect(function(i, gp)
 	if not gp and i.KeyCode == togglekey then
 		UI.Toggle()
 	end
-end)
-conn4 = players.PlayerAdded:Connect(function(plr)
+end))
+table.insert(connections, players.PlayerAdded:Connect(function(plr)
 	if not addtonew then
 		task.wait(0.5)
 		esp:Remove(plr)
 	end
-end)
+end))
+table.insert(connections, workspace.DescendantAdded:Connect(function(obj)
+	if addtonpcs then
+		local model = obj:FindFirstAncestorOfClass("Model")
+		if obj:IsA("Humanoid") and model then
+			esp:Add(model)
+		end
+	end
+end))
 
 loaded = true
 getgenv().UESP_LOADING = false
