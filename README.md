@@ -23,7 +23,7 @@ https://pastebin.com/raw/5zw0rLH9
 ### UI Version  
 Updated September 19, 2022  
 ```lua
-loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua", "UniversalEspUI"))()
 loadstring(game:HttpGet("https://zzerexx.github.io/Universal/Esp.lua"))() -- Both loadstrings are the same, this one just looks better
 ```  
 ### Performance Version  
@@ -31,7 +31,7 @@ Updated May 28, 2022
 Boxes, Names, zero customizability, optimized asf  
 Supports `SetFunction` and `ResetFunction` for compatibility!  
 ```lua
-loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspPerformance.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspPerformance.lua", "UniversalEspPerformance"))()
 ```  
   
 ## Update v1.6.13  
@@ -53,7 +53,7 @@ https://pastebin.com/raw/nwqE7v07
 ### UI Version  
 Updated September 19, 2022  
 ```lua
-loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalAimbotUI.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalAimbotUI.lua", "UniversalAimbotUI"))()
 loadstring(game:HttpGet("https://zzerexx.github.io/Universal/Aimbot.lua"))() -- Both loadstrings are the same, this one just looks better
 ```  
 ## Update v1.1.18  
