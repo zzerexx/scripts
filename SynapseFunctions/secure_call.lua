@@ -35,4 +35,4 @@ local function secure_call(func, env, ...)
 	end)(...)
 end
 
-return secure_call
+return newcclosure(secure_call)
