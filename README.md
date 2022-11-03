@@ -4,8 +4,8 @@ my cool scripts
 ---
   
 # Universal Esp  
-Updated September 19, 2022  
-v1.6.13  
+Updated November 3, 2022  
+v1.6.14  
 - Box Esp  
 - Tracers  
 - Name Esp  
@@ -21,12 +21,12 @@ https://pastebin.com/raw/5zw0rLH9
 ```  
 [Documentation](https://zzerexx.gitbook.io/universal-script-api)  
 ### UI Version  
-Updated September 19, 2022  
+Updated November 3, 2022  
 ```lua
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua", "UniversalEspUI"))()
 loadstring(game:HttpGet("https://zzerexx.github.io/Universal/Esp.lua"))() -- Both loadstrings are the same, this one just looks better
 ```  
-### Performance Version  
+### Performance Version (Outdated)  
 Updated May 28, 2022  
 Boxes, Names, zero customizability, optimized asf  
 Supports `SetFunction` and `ResetFunction` for compatibility!  
@@ -34,37 +34,38 @@ Supports `SetFunction` and `ResetFunction` for compatibility!
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspPerformance.lua", "UniversalEspPerformance"))()
 ```  
   
-## Update v1.6.13  
-Main Changes  
-- removed the crash script fix for rush point (no longer needed)
-  
-UI Changes  
-- [full change log](https://github.com/zzerexx/scripts/commit/104d401c51cdb3860dca46eae47309fa6e3d718c)
+## Update v1.6.14  
+- Added 'Method' for MouseVisibility
+    - "Radius" (Legacy)  Checks if the esp object is within a certain radius from the mouse position
+    - "Hover"  (New)     Checks if the mouse position is hovering over the esp object
+        - "Hover" uses the "HoverRadius" option for it's radius
+- Added custom features for Murder Mystery 2
+- Updated Phantom Forces compatibility for the new rewrite
+
+UI Changes
+- Sending feedback will now send your hashed user id
   
 ---
   
 # Universal Aimbot  
-Updated September 19, 2022  
-v1.1.18  
+Updated November 3, 2022  
+v1.1.19  
 ```
 https://pastebin.com/raw/nwqE7v07
 ```  
 [Documentation](https://zzerexx.gitbook.io/universal-script-api)  
 ### UI Version  
-Updated September 19, 2022  
+Updated November 3, 2022  
 ```lua
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalAimbotUI.lua", "UniversalAimbotUI"))()
 loadstring(game:HttpGet("https://zzerexx.github.io/Universal/Aimbot.lua"))() -- Both loadstrings are the same, this one just looks better
 ```  
-## Update v1.1.18  
+## Update v1.1.19  
 Main Changes  
-- Added 'Prediction'
-- Added 'AimAtNearestPart' for 'Aimbot'
-	- this will make aimbot lock onto the nearest body part. useful for keeping your crosshair on-target without locking onto one specific body part
-- removed the crash script fix for rush point (no longer needed)
-  
-UI Changes  
-- updated to latest version
+- Updated Phantom Forces compatibility for the new rewrite
+
+UI Changes
+- Sending feedback will now send your hashed user id
   
 ## NOTICE  
 ```
