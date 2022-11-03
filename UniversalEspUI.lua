@@ -23,6 +23,8 @@
 			- Ignore teammate abilities
 		- Bomb Esp
 			- also checks if the bomb is being defused!
+	- Murder Mystery 2
+		- Gun Esp
 ]]
 repeat
 	task.wait(0.5)
@@ -41,6 +43,8 @@ if not EspSettings then
 			Enabled = true, -- makes any drawing objects transparent when they are near your mouse
 			Radius = 60,
 			Transparency = 0.3,
+			Method = "Hover", -- "Radius" or "Hover"
+			HoverRadius = 50,
 			Selected = { -- set any of these to false to ignore them
 				Boxes = true,
 				Tracers = true,
@@ -80,7 +84,7 @@ if not EspSettings then
 			RainbowColor = false,
 			Outline = true,
 			OutlineColor = Color3.fromRGB(0,0,0),
-			OutlineThickness = 3,
+			OutlineThickness = 1,
 			Thickness = 1
 		},
 		Tracers = {
@@ -91,7 +95,7 @@ if not EspSettings then
 			RainbowColor = false,
 			Outline = true,
 			OutlineColor = Color3.fromRGB(0,0,0),
-			OutlineThickness = 3,
+			OutlineThickness = 1,
 			Origin = "Top", -- "Top" or "Center" or "Bottom" or "Mouse"
 			Thickness = 1
 		},
@@ -119,7 +123,7 @@ if not EspSettings then
 			RainbowColor = false,
 			Outline = true,
 			OutlineColor = Color3.fromRGB(0,0,0),
-			OutlineThickness = 3,
+			OutlineThickness = 1,
 			Thickness = 1
 		},
 		HealthBars = {
@@ -130,7 +134,7 @@ if not EspSettings then
 			RainbowColor = false,
 			Outline = true,
 			OutlineColor = Color3.fromRGB(0,0,0),
-			OutlineThickness = 3,
+			OutlineThickness = 1,
 			Origin = "None", -- "None" or "Left" or "Right"
 			OutlineBarOnly = true
 		},
@@ -142,7 +146,7 @@ if not EspSettings then
 			RainbowColor = false,
 			Outline = true,
 			OutlineColor = Color3.fromRGB(0,0,0),
-			OutlineThickness = 3,
+			OutlineThickness = 1,
 			Thickness = 1,
 			Filled = false,
 			Scale = 1
@@ -155,7 +159,7 @@ if not EspSettings then
 			RainbowColor = false,
 			Outline = true,
 			OutlineColor = Color3.fromRGB(0,0,0),
-			OutlineThickness = 3,
+			OutlineThickness = 1,
 			Thickness = 1,
 			Length = 5
 		}
@@ -226,8 +230,8 @@ function page(title)
 	return UI.new({Title = title, ImageId = "UESP_Icons\\"..title..".png", ImageSize = Vector2.new(20, 20)})
 end
 
-local version = "v1.6.13"
-local esp = Load("UniversalEsp")
+local version = "v1.6.14"
+local esp = esp or Load("UniversalEsp")
 local cfg = Load("ConfigManager")
 local Material = Load("MaterialLuaRemake")
 UI = Material.Load({
@@ -242,6 +246,8 @@ UI = Material.Load({
 })
 local players = game:GetService("Players")
 local camera = workspace.CurrentCamera
+local RunService = game:GetService("RunService")
+local uis = game:GetService("UserInputService")
 
 local gids = { -- game ids
 	['arsenal'] = 111958650,
@@ -250,6 +256,7 @@ local gids = { -- game ids
 	['pfu'] = 1256867479, -- pf unstable branch
 	['bb'] = 1168263273,
 	['rp'] = 2162282815, -- rush point
+	['mm2'] = 66654135
 }
 local gid = game.GameId 
 local Game, GamePage = nil, nil
@@ -259,6 +266,8 @@ elseif gid == gids.bb then
 	Game = "Bad Business"
 elseif gid == gids.rp then
 	Game = "Rush Point"
+elseif gid == gids.mm2 then
+	Game = "Murder Mystery 2"
 end
 if Game then
 	GamePage = UI.new({Title = Game, ImageId = "UESP_Icons\\Game.png", ImageSize = Vector2.new(20, 20)})
@@ -303,6 +312,10 @@ local newsettings = {
 	},
 	HeadDots = {
 		Scale = 1
+	},
+	MouseVisibility = {
+		Method = "Hover",
+		HoverRadius = 50,
 	},
 	Highlights = {
 		Enabled = false,
@@ -362,7 +375,7 @@ local function load(a)
 	end
 	if data.gamesettings ~= nil then
 		gamesettings = data.gamesettings
-		SettingsLoaded:Fire(data.gamesettings)
+		SettingsLoaded:Fire(gamesettings)
 	end
 	task.spawn(function()
 		repeat task.wait(0.25) until esptogglebtn ~= nil and uitogglebtn ~= nil
@@ -493,7 +506,10 @@ do -- Game Specific
 		})
 		gamesettings[Game] = settings
 		table.insert(connections, SettingsLoaded.Event:Connect(function(a)
-			settings = a[Game]
+			local data = a[Game]
+			if data then
+				settings = a[Game]
+			end
 		end))
 
 		GamePage.Label({
@@ -780,7 +796,10 @@ do -- Game Specific
 		})
 		gamesettings[Game] = settings
 		table.insert(connections, SettingsLoaded.Event:Connect(function(a)
-			settings = a[Game]
+			local data = a[Game]
+			if data then
+				settings = a[Game]
+			end
 		end))
 
 		GamePage.Label({
@@ -922,7 +941,10 @@ do -- Game Specific
 		})
 		gamesettings[Game] = settings
 		table.insert(connections, SettingsLoaded.Event:Connect(function(a)
-			settings = a[Game]
+			local data = a[Game]
+			if data then
+				settings = a[Game]
+			end
 		end))
 
 		local function IsTeamAbility(v)
@@ -1126,6 +1148,104 @@ do -- Game Specific
 					changed:Disconnect()
 					conn:Disconnect()
 				end)
+			end
+		end))
+	elseif Game == "Murder Mystery 2" then
+		local settings = setmetatable({
+			Misc = {
+				GunEsp = false,
+				GunEspChams = false,
+			},
+			Custom = {
+				LabelTransparency = 1,
+				ChamsTransparency = 1
+			}
+		}, {
+			__newindex = function(self)
+				gamesettings[Game] = self
+			end
+		})
+		gamesettings[Game] = settings
+		table.insert(connections, SettingsLoaded.Event:Connect(function(a)
+			local data = a[Game]
+			if data then
+				settings = a[Game]
+			end
+		end))
+
+		GamePage.Label({
+			Text = "━━ Misc ━━",
+			Center = true,
+			Transparent = true
+		})
+		GamePage.Toggle({
+			Text = "Gun Esp (Labels)",
+			Callback = function(value)
+				settings.Misc.GunEsp = value
+				if value then
+					local gun = workspace:FindFirstChild("GunDrop")
+					if gun then
+						label(gun, "Gun")
+					end
+				end
+			end,
+			Enabled = settings.Misc.GunEsp
+		})
+		GamePage.Toggle({
+			Text = "Gun Esp (Chams)",
+			Callback = function(value)
+				settings.Misc.GunEspChams = value
+				if value then
+					local gun = workspace:FindFirstChild("GunDrop")
+					if gun then
+						cham(gun)
+					end
+				end
+			end,
+			Enabled = settings.Misc.GunEspChams
+		})
+
+		GamePage.Label({
+			Text = "━━ Customize ━━",
+			Center = true,
+			Transparent = true
+		})
+		GamePage.Slider({
+			Text = "Label Transparency",
+			Callback = function(value)
+				SetProp("", "Labels", "Transparency", value)
+				settings.Custom.LabelTransparency = value
+				label.Transparency = value
+			end,
+			Min = 0,
+			Max = 1,
+			Def = settings.Custom.LabelTransparency,
+			Decimals = 2
+		})
+		GamePage.Slider({
+			Text = "Chams Transparency",
+			Callback = function(value)
+				SetProp("", "Chams", "Transparency", value)
+				settings.Custom.ChamsTransparency = value
+				cham.Transparency = value
+			end,
+			Min = 0,
+			Max = 1,
+			Def = settings.Custom.ChamsTransparency,
+			Decimals = 2
+		})
+
+		table.insert(connections, workspace.ChildAdded:Connect(function(v)
+			local gun = settings.Misc.GunEsp
+			local gunchams = settings.Misc.GunEspChams
+
+			if v.Name == "GunDrop" then
+				if gun then
+					label(v, "Gun")
+				end
+				if gunchams then
+					cham(v)
+				end
 			end
 		end))
 	end
@@ -1921,7 +2041,12 @@ do -- MouseVisibility
 		Min = 10,
 		Max = 150,
 		Def = s.Radius,
-		Suffix = " px"
+		Suffix = " px",
+		Menu = {
+			Info = function()
+				UI.Banner("This only takes effect when <b>Method</b> is set to <b>Radius</b>.")
+			end
+		}
 	})
 	MouseVisibility.Slider({
 		Text = "Transparency",
@@ -1932,6 +2057,68 @@ do -- MouseVisibility
 		Max = 1,
 		Def = s.Transparency,
 		Decimals = 2
+	})
+	MouseVisibility.Dropdown({
+		Text = "Method",
+		Callback = function(value)
+			esp:Set(type, "Method", value)
+		end,
+		Options = {
+			"Hover",
+			"Radius"
+		},
+		Def = s.Method,
+		Menu = {
+			Info = function()
+				UI.Banner("<b>Hover</b> is recommended. <b>Radius</b> is an older method which has flaws.")
+			end
+		}
+	})
+	MouseVisibility.Slider({
+		Text = "Hover Radius",
+		Callback = function(value)
+			esp:Set(type, "HoverRadius", value)
+		end,
+		Min = 0,
+		Max = 150,
+		Def = s.HoverRadius,
+		Suffix = " px",
+		Menu = {
+			Info = function()
+				UI.Banner("This only takes effect when <b>Method</b> is set to <b>Hover</b>.")
+			end
+		}
+	})
+	local conn, obj = nil
+	MouseVisibility.Toggle({
+		Text = "Show Hover Radius",
+		Callback = function(value)
+			if value and not conn and not obj then
+				obj = Drawing.new("Square")
+				obj.Visible = true
+				obj.Color = Color3.new(0, 1, 0)
+				obj.Transparency = 1
+				obj.ZIndex = 1000
+				obj.Thickness = 1
+				conn = RunService.Heartbeat:Connect(function()
+					local size = esp:Get(type, "HoverRadius")
+					obj.Size = Vector2.new(size * 2, size * 2)
+
+					local mouse = uis:GetMouseLocation()
+					obj.Position = Vector2.new(mouse.X - size, mouse.Y - size)
+				end)
+			else
+				if conn then
+					conn:Disconnect()
+					conn = nil
+				end
+				if obj then
+					obj:Remove()
+					obj = nil
+				end
+			end
+		end,
+		Enabled = false
 	})
 	local selected = s.Selected
 	MouseVisibility.ChipSet({
@@ -2457,6 +2644,12 @@ do -- Feedback
 
 	local Http = game:GetService("HttpService")
 	local request = request or http_request or (http and http.request) or (syn and syn.request) or nil
+	local Hash
+	local information = {
+		"The name of the game you're in",
+		"The name of the exploit you're currently using",
+		"Your <b>hashed</b> user id"
+	}
 	local errors = {
 		[2] = "The feedback system is receiving too many requests at the moment.",
 		[3] = "You are sending too many requests.",
@@ -2490,6 +2683,14 @@ do -- Feedback
 				sending = true
 				UI.Banner("Sending feedback...")
 
+				if not Hash then
+					Hash = Load("Libraries/Hash")
+				end
+
+				local Hashed, HashedId = pcall(function()
+					return Hash.sha384(tostring(players.LocalPlayer.UserId))
+				end)
+
 				local gameicon = Http:JSONDecode(game:HttpGet(string.format("https://thumbnails.roblox.com/v1/places/gameicons?placeIds=%s&size=128x128&format=Png&isCircular=false", game.PlaceId))).data[1].imageUrl
 
 				local req = request({
@@ -2502,7 +2703,7 @@ do -- Feedback
 						content = "",
 						embeds = {{
 							title = string.format("Universal %s %s", script, bug and "Bug Report" or "Feedback"),
-							description = string.format("`%s`", msg),
+							description = string.format("`%s`%s", msg, (Hashed and ("\n\n`UserId Hash\n"..HashedId.."`") or "")),
 							timestamp = DateTime.now():ToIsoDate(),
 							color = bug and 0xFF0000 or 0x00FFFF,
 							image = {
@@ -2521,19 +2722,19 @@ do -- Feedback
 
 				if not req.Success then
 					sending = false
-					UI.Banner("Failed to send feedback; Request failed")
+					UI.Banner("Failed to send feedback; Request failed\nStatus Code: "..req.StatusCode)
 					return
 				end
 				
 				--local status = Http:JSONDecode(req.Body).status
 				--UI.Banner(status == 0 and "Thank you for your feedback!" or "Failed to send feedback")
 				--UI.Banner((status == 10 and "Thank you for your feedback!") or ("Failed to send feedback;\n"..errors[status]))
-				UI.Banner("Thank you for your feedback")
+				UI.Banner("Thank you for your feedback.")
 				sending = false
 			end,
 			Menu = {
 				Info = function()
-					UI.Banner("Sending feedback will also send the following information:\n- The name of the game that you're in\n- The name of the exploit you're currently using")
+					UI.Banner("Sending feedback will also send the following information:\n- "..table.concat(information, "\n- "))
 				end
 			}
 		})
@@ -2551,7 +2752,7 @@ do -- Feedback
 	end
 end
 
-table.insert(connections, game:GetService("UserInputService").InputBegan:Connect(function(i, gp)
+table.insert(connections, uis.InputBegan:Connect(function(i, gp)
 	if not gp and i.KeyCode == togglekey then
 		UI.Toggle()
 	end
