@@ -1,10 +1,17 @@
 --[[
-v1.6.13 Changes
-- Added function 'GetObjectFromId'; returns an object with the given Id
-- 'OutlineThickness' has been changed; you may notice that its a bit thicker
+v1.6.14 Changes
+- Added 'Method' for MouseVisibility
+	- "Radius" (Legacy)  Checks if the esp object is within a certain radius from the mouse position
+	- "Hover"  (New)	 Checks if the mouse position is hovering over the esp object
+		- "Hover" uses the "HoverRadius" option for it's radius
+- Added custom features for Murder Mystery 2
+- Updated Phantom Forces compatibility for the new rewrite
+
+UI Changes
+- Sending feedback will now send your hashed user id
 ]]
 
-local VERSION = "v1.6.13"
+local VERSION = "v1.6.14"
 
 if not EspSettings then
 	getgenv().EspSettings = {
@@ -19,6 +26,8 @@ if not EspSettings then
 			Enabled = true, -- makes any drawing objects transparent when they are near your mouse
 			Radius = 60,
 			Transparency = 0.3,
+			Method = "Hover", -- "Radius" or "Hover" | Hover is newest method and is a lot more accurate than Radius
+			HoverRadius = 50,
 			Selected = { -- set any of these to false to ignore them
 				Boxes = true,
 				Tracers = true,
@@ -192,6 +201,8 @@ local mathfloor = math.floor
 local mathclamp = math.clamp
 local mathhuge = math.huge
 local mathabs = math.abs
+local mathmin = math.min
+local mathmax = math.max
 local lower = string.lower
 local find = string.find
 local osclock = os.clock
@@ -215,6 +226,7 @@ local gids = { -- game ids
 	['pfu'] = 1256867479, -- pf unstable branch
 	['bb'] = 1168263273,
 	['rp'] = 2162282815, -- rush point
+	['mm2'] = 66654135
 }
 local zindex = {
 	['Boxes'] = 2,
@@ -249,13 +261,20 @@ local Base = {
 }
 local origins = {}
 local white, black = fromRGB(255,255,255), fromRGB(0,0,0)
-local getchar, gethealth, ts, characters, teams, rp
+local replication, ts, characters, teams, rp
 if (GameId == gids.pf) or (GameId == gids.pft) or (GameId == gids.pfu) then
+	--[[ old
 	for _,v in next, getgc(true) do
 		if typeof(v) == "table" and rawget(v, "getbodyparts") then
 			getchar = rawget(v, "getbodyparts")
 		elseif typeof(v) == "table" and rawget(v, "getplayerhealth") then
 			gethealth = rawget(v, "getplayerhealth")
+		end
+	end]]
+	for _,v in next, getgc(true) do
+		if typeof(v) == "table" and rawget(v, "new") and tostring(getfenv(v.new).script) == "ReplicationObject" then
+			replication = v
+			break
 		end
 	end
 elseif GameId == gids.bb then
@@ -390,9 +409,14 @@ function IsFFA()
 	local t = {}
 	for _,v in next, players:GetPlayers() do
 		local team = GetTeam(v)
-		if team == nil then return true end
+		if team == nil then
+			return true
+		end
+
 		team = team.Name or team
-		if not t[team] then
+		if t[team] then
+			return true
+		else
 			tableinsert(t, team)
 		end
 	end
@@ -400,17 +424,42 @@ function IsFFA()
 end
 
 do -- compatibility
-	if getchar then -- phantom forces
+	if replication then -- phantom forces
+		local playercache = {}
+		local function GetPlayerObject(plr)
+			local cached = playercache[plr]
+			if cached then
+				return playercache[plr]
+			end
+
+			local obj
+			for _,v in next, getgc(true) do -- i hate this code so much
+				if typeof(v) == "table" and rawget(v, "_player") and v._player == plr and rawget(v, "_healthstate") then
+					obj = v
+					break
+				end
+			end
+			playercache[plr] = obj
+			return obj
+		end
+
 		GetChar = function(plr)
-			local a = getchar(plr)
-			if a ~= nil then
-				return a.torso.Parent
+			local obj = GetPlayerObject(plr)
+			if obj ~= nil then
+				local thirdPersonObject = obj._thirdPersonObject
+				if thirdPersonObject then
+					return thirdPersonObject:getCharacterHash().head.Parent
+				end
 			end
 			return nil
 		end
 		IsAlive = GetChar
 		GetHealth = function(plr)
-			return {mathfloor(gethealth(plr, plr)), 100}
+			local obj = GetPlayerObject(plr)
+			if obj ~= nil then
+				return {mathfloor(obj._healthstate.health0), 100}
+			end
+			return nil
 		end
 	end
 	
@@ -491,12 +540,40 @@ do -- compatibility
 			return gamestats.GameMode.Value == "Deathmatch"
 		end
 	end
+
+	if GameId == gids.mm2 then
+		local sheriff = Color3.new(0, 0, 1)
+		local murderer = Color3.new(1, 0, 0)
+		local innocent = Color3.new(0, 1, 0)
+		GetTeam = function(plr)
+			local backpack = plr.Backpack
+			local char = GetChar(plr)
+			if (backpack and backpack:FindFirstChild("Gun")) or (char and char:FindFirstChild("Gun")) then
+				return "Sheriff"
+			elseif (backpack and backpack:FindFirstChild("Knife")) or (char and char:FindFirstChild("Knife")) then
+				return "Murderer"
+			end
+			return "Innocent"
+		end
+		GetTeamColor = function(plr)
+			local backpack = plr.Backpack
+			local char = GetChar(plr)
+			if (backpack and backpack:FindFirstChild("Gun")) or (char and char:FindFirstChild("Gun")) then
+				return sheriff
+			elseif (backpack and backpack:FindFirstChild("Knife")) or (char and char:FindFirstChild("Knife")) then
+				return murderer
+			end
+			return innocent
+		end
+	end
 end
 
 oldfuncs.alive = IsAlive
 oldfuncs.character = GetChar
 oldfuncs.health = GetHealth
 oldfuncs.team = GetTeam
+oldfuncs.teamcolor = GetTeamColor
+
 oldfuncs.ffa = IsFFA
 
 ----
@@ -901,6 +978,45 @@ function update()
 	origins.mouse = mousepos
 	local ffa, myteam, ccf, camfov = IsFFA(), GetTeam(player), camera.CFrame.Position, camera.FieldOfView
 	local rainbow = fromHSV(tick() % 5 / 5, 1, 1)
+
+	local teamcheck = ss.TeamCheck
+	local maxdist = ss.MaximumDistance
+	local alignpoints = ss.AlignPoints
+
+	local names = ss.Names
+	local healthbars = ss.HealthBars
+
+	local mv_enabled = mousevis.Enabled
+	local mv_selected
+	local mv_transparency
+	local mv_method
+	local mv_radius
+	local mv_hoverradius
+	if mv_enabled then
+		mv_selected = mousevis.Selected
+		mv_transparency = mousevis.Transparency
+		mv_method = mousevis.Method and lower(mousevis.Method) or nil
+		mv_radius = mousevis.Radius
+		mv_hoverradius = mousevis.HoverRadius or 10
+	end
+
+	local hl_enabled = highlights.Enabled
+	local hl_players
+	local hl_color
+	local hl_transparency
+	local hl_ontop
+	if hl_enabled then
+		hl_players = highlights.Players
+		hl_color = highlights.Color 
+		hl_transparency = highlights.transparency
+		hl_ontop = highlights.AlwaysOnTop
+	end
+
+	local npc_overrides = npcs.Overrides
+	local npc_color = npcs.Color
+	local npc_transparency = npcs.Transparency
+	local npc_rainbow = npcs.Rainbow
+
 	for _,v in next, OBJECTS do
 		if not v.Destroyed then
 			if v.Player == nil and not v.Options then
@@ -915,7 +1031,7 @@ function update()
 			local c0, c1, c2, c3, c4, c5, c6, c7, c8 -- part corner positions shit
 			local head, ltracerto -- head dots and look tracers shit
 			local team, teamcolor -- team shit
-			local char, health, maxhealth, mag, mousemag, render -- other shit
+			local char, health, maxhealth, mag, overlapping, render -- other shit
 			local s = v.Options or ss[type] -- settings shit
 			local isalive = plr and IsAlive(plr)
 			if VISIBLE and isalive and s and s.Enabled then
@@ -924,7 +1040,7 @@ function update()
 				cf, size = char:GetBoundingBox()
 				team, teamcolor = GetTeam(plr), GetTeamColor(plr)
 				mag = (ccf - cf.Position).Magnitude
-				render = (ffa or (not ss.TeamCheck or (not ffa and ss.TeamCheck and team ~= myteam))) and mag <= ss.MaximumDistance
+				render = (ffa or (not teamcheck or (not ffa and teamcheck and team ~= myteam))) and mag <= maxdist
 				if render then
 					if ss.FaceCamera then
 						cf = CFramenew(cf.Position, ccf)
@@ -943,7 +1059,7 @@ function update()
 					brx, bry = br.X, br.Y
 					z = mathclamp(1000 / tlz, 8, 12)
 
-					if ss.FaceCamera and ss.AlignPoints then
+					if ss.FaceCamera and alignpoints then
 						if tly < try then
 							tly += mathabs(tly - try) / 2
 						else
@@ -969,19 +1085,44 @@ function update()
 							ltracerto = WorldToViewportPoint(camera, (headcf * CFramenew(0, 0, -s.Length)).Position)
 						end
 					end
-					if mousevis.Enabled then
-						local mags = {}
-						tableinsert(mags, (mousepos - Vector2new(mid.X, mid.Y)).Magnitude)
-						tableinsert(mags, (mousepos - Vector2new(tlx, tly)).Magnitude)
-						tableinsert(mags, (mousepos - Vector2new(trx, try)).Magnitude)
-						tableinsert(mags, (mousepos - Vector2new(blx, bly)).Magnitude)
-						tableinsert(mags, (mousepos - Vector2new(brx, bry)).Magnitude)
-						
-						tablesort(mags, function(a,b)
-							return a < b
-						end)
+					if mv_enabled then
+						local method = mv_method
+						if method == "radius" or not method then
+							local mags = {}
+							tableinsert(mags, (mousepos - Vector2new(mid.X, mid.Y)).Magnitude)
+							tableinsert(mags, (mousepos - Vector2new(tlx, tly)).Magnitude)
+							tableinsert(mags, (mousepos - Vector2new(trx, try)).Magnitude)
+							tableinsert(mags, (mousepos - Vector2new(blx, bly)).Magnitude)
+							tableinsert(mags, (mousepos - Vector2new(brx, bry)).Magnitude)
+							
+							tablesort(mags, function(a,b)
+								return a < b
+							end)
 
-						mousemag = mags[1]
+							overlapping = mags[1] <= mv_radius
+						elseif method == "hover" then
+							local x_min = mathmin(tlx, trx, blx, brx) - mv_hoverradius
+							local x_max = mathmax(tlx, trx, blx, brx) + mv_hoverradius
+
+							local y_min_offset = 0
+							local y_max_offset = 0
+							if names.Enabled then
+								y_min_offset = names.Size - 2
+								if names.ShowHealth or names.ShowDistance then
+									y_max_offset += names.Size + 2
+								end
+							end
+							if healthbars.Enabled then
+								y_max_offset += z 
+							end
+							local y_min = mathmin(tly, try, bly, bry) - y_min_offset - mv_hoverradius
+							local y_max = mathmax(tly, try, bly, bry) + y_max_offset + mv_hoverradius
+
+							local mousex = mousepos.X
+							local mousey = mousepos.Y
+
+							overlapping = mousex > x_min and mousex < x_max and mousey > y_min and mousey < y_max
+						end
 					end
 				end
 			elseif VISIBLE and v.Part then
@@ -1018,20 +1159,20 @@ function update()
 				if plr and isalive and s and s.Enabled then
 					SetProp(obj, "Visible", render)
 					if s.Enabled and inViewport and render then
-						local highlight = highlights.Enabled and tablefind(highlights.Players, plr.Name)
-						local certified_npc = isnpc and npcs.Overrides[type]
-						local color =		(highlight and highlights.Color) or
-											 (certified_npc and (npcs.RainbowColor and rainbow or npcs.Color)) or
+						local highlight = hl_enabled and tablefind(hl_players, plr.Name)
+						local certified_npc = isnpc and npc_overrides[type]
+						local color =		(highlight and hl_color) or
+											 (certified_npc and (npc_rainbow and rainbow or npc_color)) or
 											 (s.RainbowColor and rainbow) or
 											 (s.UseTeamColor and teamcolor) or
 											 s.Color
-						local transparency = (mousevis.Enabled and mousevis.Selected[type] and mousemag <= mousevis.Radius and mousevis.Transparency) or
-											 (certified_npc and npcs.Transparency) or
-											 (highlight and highlights.Transparency) or
+						local transparency = (mv_enabled and mv_selected[type] and overlapping and mv_transparency) or
+											 (certified_npc and npc_transparency) or
+											 (highlight and hl_transparency) or
 											 s.Transparency
 						--
 						
-						ApplyZIndex(obj, type, highlight and highlights.AlwaysOnTop)
+						ApplyZIndex(obj, type, highlight and hl_ontop)
 						SetProp(obj, "Transparency", transparency)
 						SetProp(obj, "Color", color)
 						if type == "Boxes" then
@@ -1445,7 +1586,7 @@ function esp:GetTotalObjects()
 				if v2.Visible then
 					data.VisibleObjects += 1
 				end
-				if v2.NPC then
+				if v.NPC then
 					data.NPCObjects += 1
 				end
 				if find(i2, "Outline") then
