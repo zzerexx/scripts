@@ -120,8 +120,8 @@ function page(title)
 	return UI.new({Title = title, ImageId = "UAIM_Icons\\"..title..".png", ImageSize = Vector2.new(20, 20)})
 end
 
-local version = "v1.1.18"
-local aimbot = Load("UniversalAimbot")
+local version = "v1.1.19"
+local aimbot = aimbot or Load("UniversalAimbot")
 local cfg = Load("ConfigManager")
 local Material = Load("MaterialLuaRemake")
 UI = Material.Load({
@@ -179,7 +179,7 @@ local newsettings = {
 	Prediction = {
 		Enabled = false,
 		Strength = 2
-	},
+	}
 }
 for i,v in next, newsettings do
 	if ss[i] == nil then
@@ -1012,6 +1012,12 @@ do -- Feedback
 
 	local Http = game:GetService("HttpService")
 	local request = request or http_request or (http and http.request) or (syn and syn.request) or nil
+	local Hash
+	local information = {
+		"The name of the game you're in",
+		"The name of the exploit you're currently using",
+		"Your <b>hashed</b> user id"
+	}
 	local errors = {
 		[2] = "The feedback system is receiving too many requests at the moment.",
 		[3] = "You are sending too many requests.",
@@ -1045,6 +1051,14 @@ do -- Feedback
 				sending = true
 				UI.Banner("Sending feedback...")
 
+				if not Hash then
+					Hash = Load("Libraries/Hash")
+				end
+
+				local Hashed, HashedId = pcall(function()
+					return Hash.sha384(tostring(players.LocalPlayer.UserId))
+				end)
+
 				local gameicon = Http:JSONDecode(game:HttpGet(string.format("https://thumbnails.roblox.com/v1/places/gameicons?placeIds=%s&size=128x128&format=Png&isCircular=false", game.PlaceId))).data[1].imageUrl
 
 				local req = request({
@@ -1057,7 +1071,7 @@ do -- Feedback
 						content = "",
 						embeds = {{
 							title = string.format("Universal %s %s", script, bug and "Bug Report" or "Feedback"),
-							description = string.format("`%s`", msg),
+							description = string.format("`%s`%s", msg, (Hashed and ("\n\n`UserId Hash\n"..HashedId.."`") or "")),
 							timestamp = DateTime.now():ToIsoDate(),
 							color = bug and 0xFF0000 or 0x00FFFF,
 							image = {
@@ -1076,19 +1090,19 @@ do -- Feedback
 
 				if not req.Success then
 					sending = false
-					UI.Banner("Failed to send feedback; Request failed")
+					UI.Banner("Failed to send feedback; Request failed\nStatus Code: "..req.StatusCode)
 					return
 				end
 				
 				--local status = Http:JSONDecode(req.Body).status
 				--UI.Banner(status == 0 and "Thank you for your feedback!" or "Failed to send feedback")
 				--UI.Banner((status == 10 and "Thank you for your feedback!") or ("Failed to send feedback;\n"..errors[status]))
-				UI.Banner("Thank you for your feedback")
+				UI.Banner("Thank you for your feedback.")
 				sending = false
 			end,
 			Menu = {
 				Info = function()
-					UI.Banner("Sending feedback will also send the following information:\n- The name of the game that you're in\n- The name of the exploit you're currently using")
+					UI.Banner("Sending feedback will also send the following information:\n- "..table.concat(information, "\n- "))
 				end
 			}
 		})
