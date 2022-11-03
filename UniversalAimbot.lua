@@ -1,10 +1,9 @@
 --[[
-v1.1.18 Changes
-- Added Prediction
-- Added 'AimAtNearestPart' for Aimbot
+v1.1.19 Changes
+- Updated Phantom Forces compatibility for the new rewrite
 ]]
 
-local VERSION = "v1.1.18"
+local VERSION = "v1.1.19"
 
 if not getgenv().AimbotSettings then
 	getgenv().AimbotSettings = {
@@ -157,15 +156,26 @@ local gids = { -- game ids
 	['pfu'] = 1256867479, -- pf unstable branch
 	['bb'] = 1168263273,
 	['rp'] = 2162282815, -- rush point
+	['mm2'] = 66654135
 }
-local getchar, getvis, ts, characters, teams, rp
+local replication, raycast, ts, characters, teams, rp
 if (GameId == gids.pf) or (GameId == gids.pft) or (GameId == gids.pfu) then
-	for _,v in next, getgc(true) do
+	--[[for _,v in next, getgc(true) do
 		if typeof(v) == "table" then
 			if rawget(v, "getbodyparts") then
 				getchar = rawget(v, "getbodyparts")
 			elseif rawget(v, "getplayervisible") then
 				getvis = rawget(v, "getplayervisible") -- it was that easy smh
+			end
+		end
+	end]]
+	for _,v in next, getgc(true) do
+		if typeof(v) == "table" then
+			if rawget(v, "new") and tostring(getfenv(v.new).script) == "ReplicationObject" then
+				replication = v
+			end
+			if rawget(v, "checkOcclusion") then
+				raycast = v
 			end
 		end
 	end
@@ -205,9 +215,10 @@ end
 local oldfuncs = {}
 
 function IsAlive(plr)
-	local humanoid = plr.Character:FindFirstChild("Humanoid")
+	local char = plr.Character
+	local humanoid = char and char:FindFirstChild("Humanoid")
 	if humanoid and humanoid.Health > 0 then
-		return true
+		return char
 	end
 	return false
 end
@@ -224,9 +235,14 @@ function IsFFA()
 	local t = {}
 	for _,v in next, players:GetPlayers() do
 		local team = GetTeam(v)
-		if team == nil then return true end
+		if team == nil then
+			return true
+		end
+
 		team = team.Name or team
-		if not t[team] then
+		if t[team] then
+			return true
+		else
 			tableinsert(t, team)
 		end
 	end
@@ -245,15 +261,18 @@ function ClosestPlayer()
 		end
 	end
 	for _,v in next, players:GetPlayers() do
-		if v ~= player and IsAlive(v) then
-			local cf = GetChar(v):GetPivot()
-			local vector, inViewport = WorldToViewportPoint(camera, cf.Position)
-			if inViewport then
-				local mag = (Vector2new(mouse.X, mouse.Y) - Vector2new(vector.X, vector.Y)).Magnitude
-				local team = GetTeam(v)
-				if mag < closest and ((team ~= nil and team ~= myteam) or team == nil or not ss.TeamCheck) then
-					plr = v
-					closest = mag
+		if v ~= player then
+			local char = GetChar(v)
+			if char ~= nil then
+				local cf = char:GetPivot()
+				local vector, inViewport = WorldToViewportPoint(camera, cf.Position)
+				if inViewport then
+					local mag = (Vector2new(mouse.X, mouse.Y) - Vector2new(vector.X, vector.Y)).Magnitude
+					local team = GetTeam(v)
+					if mag < closest and ((team ~= nil and team ~= myteam) or team == nil or not ss.TeamCheck) then
+						plr = v
+						closest = mag
+					end
 				end
 			end
 		end
@@ -267,29 +286,25 @@ params.IgnoreWater = true
 function IsVisible(plr, character, mycharacter, cf, targetpos, valid)
 	local char = character or GetChar(plr)
 	if ss.VisibleCheck and (valid or IsAlive(plr) and char:FindFirstChild(Aimbot.TargetPart)) then
-		if getvis then
-			return getvis(player, plr)
-		else
-			local mychar = mycharacter or GetChar(player)
-			tableinsert(Ignore, mychar)
-			params.FilterDescendantsInstances = Ignore
-			local cf = cf or camera.CFrame.Position
-			local targetpos = targetpos or char[Aimbot.TargetPart].Position
-			local result = workspace:Raycast(cf, (targetpos - cf).Unit * 500,params)
-			if result then
-				local ins = result.Instance
-				local isdes = ins:IsDescendantOf(char)
-				local model = ins:FindFirstAncestorOfClass("Model")
-				if ss.IgnoreTransparency then
-					if ins.Transparency > ss.IgnoredTransparency and not (model ~= nil and model:FindFirstChildOfClass("Humanoid")) and not isdes then
-						tableinsert(Ignore, ins)
-						return IsVisible(plr, char, mychar, cf, targetpos, true)
-					elseif isdes then
-						return true
-					end
+		local mychar = mycharacter or GetChar(player)
+		tableinsert(Ignore, mychar)
+		params.FilterDescendantsInstances = Ignore
+		local cf = cf or camera.CFrame.Position
+		local targetpos = targetpos or char[Aimbot.TargetPart].Position
+		local result = workspace:Raycast(cf, (targetpos - cf).Unit * 500, params)
+		if result then
+			local ins = result.Instance
+			local isdes = ins:IsDescendantOf(char)
+			local model = ins:FindFirstAncestorOfClass("Model")
+			if ss.IgnoreTransparency then
+				if ins.Transparency > ss.IgnoredTransparency and not (model ~= nil and model:FindFirstChildOfClass("Humanoid")) and not isdes then
+					tableinsert(Ignore, ins)
+					return IsVisible(plr, char, mychar, cf, targetpos, true)
 				elseif isdes then
 					return true
 				end
+			elseif isdes then
+				return true
 			end
 		end
 	elseif not ss.VisibleCheck and IsAlive(plr) then
@@ -339,15 +354,49 @@ function InFov(plr,Fov)
 end
 
 do -- compatibility
-	if getchar then -- phantom forces
+	if replication then -- phantom forces
+		local playercache = {}
+		local function GetPlayerObject(plr)
+			local cached = playercache[plr]
+			if cached then
+				return playercache[plr]
+			end
+
+			local obj
+			for _,v in next, getgc(true) do -- i hate this code so much
+				if typeof(v) == "table" and rawget(v, "_player") and v._player == plr and rawget(v, "_healthstate") then
+					obj = v
+					break
+				end
+			end
+			playercache[plr] = obj
+			return obj
+		end
+
 		GetChar = function(plr)
-			local a = getchar(plr)
-			if a ~= nil then
-				return a.torso.Parent
+			if plr == player then return nil end
+			local obj = GetPlayerObject(plr)
+			if obj ~= nil then
+				local thirdPersonObject = obj._thirdPersonObject
+				if thirdPersonObject then
+					return thirdPersonObject:getCharacterHash().head.Parent
+				end
 			end
 			return nil
 		end
 		IsAlive = GetChar
+		local raycastobj = raycast.new(false, true)
+		IsVisible = function(plr)
+			local obj = GetPlayerObject(plr)
+			if obj ~= nil then
+				local thirdPersonObject = obj._thirdPersonObject
+				if thirdPersonObject then
+					local head = thirdPersonObject:getCharacterHash().head
+					return raycast.checkOcclusion(raycastobj, camera.CFrame.Position, head.Position.Unit * 100)
+				end
+			end
+			return nil
+		end
 	end
 	
 	if ts then -- bad business
@@ -383,6 +432,23 @@ do -- compatibility
 		end
 		IsFFA = function()
 			return gamestats.GameMode.Value == "Deathmatch"
+		end
+	end
+
+	if GameId == gids.mm2 then
+		local sheriff = nil
+		local murderer = nil
+		GetTeam = function(plr)
+			local backpack = plr.Backpack
+			local char = GetChar(plr)
+			if (backpack and backpack:FindFirstChild("Gun")) or (char and char:FindFirstChild("Gun")) then
+				sheriff = plr
+				return "Sheriff"
+			elseif (backpack and backpack:FindFirstChild("Knife")) or (char and char:FindFirstChild("Knife")) then
+				murderer = plr
+				return "Murderer"
+			end
+			return sheriff == player and "Sheriff" or "Innocent"
 		end
 	end
 end
