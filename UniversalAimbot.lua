@@ -173,10 +173,11 @@ if (GameId == gids.pf) or (GameId == gids.pft) or (GameId == gids.pfu) then
 		if typeof(v) == "table" then
 			if rawget(v, "new") and tostring(getfenv(v.new).script) == "ReplicationObject" then
 				replication = v
+				break
 			end
-			if rawget(v, "checkOcclusion") then
+			--[[if rawget(v, "checkOcclusion") then
 				raycast = v
-			end
+			end]]
 		end
 	end
 elseif GameId == gids.bb then
@@ -385,7 +386,7 @@ do -- compatibility
 			return nil
 		end
 		IsAlive = GetChar
-		local raycastobj = raycast.new(false, true)
+		--[[local raycastobj = raycast.new(false, true)
 		IsVisible = function(plr)
 			local obj = GetPlayerObject(plr)
 			if obj ~= nil then
@@ -396,7 +397,7 @@ do -- compatibility
 				end
 			end
 			return nil
-		end
+		end]]
 	end
 	
 	if ts then -- bad business
