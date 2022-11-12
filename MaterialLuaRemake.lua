@@ -263,6 +263,7 @@ local MLRemake = {
 	UIListLayout_11 = Instance.new("UIListLayout"),
 	Button_8 = Instance.new("TextButton"),
 	UICorner_66 = Instance.new("UICorner"),
+	UIStroke = Instance.new("UIStroke"),
 }
 local library
 
@@ -272,6 +273,7 @@ end
 
 MLRemake.MLRemake.Name = "MLRemake"
 MLRemake.MLRemake.Parent = (gethui and gethui()) or (get_hidden_ui and get_hidden_ui()) or game.CoreGui
+MLRemake.MLRemake.IgnoreGuiInset = true
 
 MLRemake.Topbar.Name = "Topbar"
 MLRemake.Topbar.Parent = MLRemake.MLRemake
@@ -314,6 +316,7 @@ MLRemake.Buttons.BorderSizePixel = 0
 MLRemake.Buttons.Size = UDim2.new(1, 0, 1, 0)
 MLRemake.Buttons.ZIndex = 8
 MLRemake.Buttons.CanvasSize = UDim2.new(0, 0, 0, 0)
+MLRemake.Buttons.ScrollingDirection = Enum.ScrollingDirection.Y
 MLRemake.Buttons.ScrollBarThickness = 0
 
 MLRemake.UIListLayout.Parent = MLRemake.Buttons
@@ -333,6 +336,7 @@ MLRemake.Example.Text = "Page"
 MLRemake.Example.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Example.TextSize = 14.000
 MLRemake.Example.TextTransparency = 0.400
+MLRemake.Example.TextTruncate = Enum.TextTruncate.AtEnd
 MLRemake.Example.TextXAlignment = Enum.TextXAlignment.Left
 
 MLRemake.UIPadding.Parent = MLRemake.Example
@@ -402,6 +406,7 @@ MLRemake.Title.Font = Enum.Font.GothamMedium
 MLRemake.Title.Text = "Material Lua"
 MLRemake.Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Title.TextSize = 16.000
+MLRemake.Title.TextTruncate = Enum.TextTruncate.AtEnd
 MLRemake.Title.TextXAlignment = Enum.TextXAlignment.Left
 
 MLRemake.Icon_2.Name = "Icon"
@@ -425,6 +430,7 @@ MLRemake.SubTitle.Font = Enum.Font.Gotham
 MLRemake.SubTitle.Text = "Remake Version"
 MLRemake.SubTitle.TextColor3 = Color3.fromRGB(150, 150, 150)
 MLRemake.SubTitle.TextSize = 14.000
+MLRemake.SubTitle.TextTruncate = Enum.TextTruncate.AtEnd
 MLRemake.SubTitle.TextXAlignment = Enum.TextXAlignment.Left
 MLRemake.SubTitle.TextYAlignment = Enum.TextYAlignment.Top
 
@@ -452,6 +458,7 @@ MLRemake.Example_2.BackgroundTransparency = 1.000
 MLRemake.Example_2.BorderSizePixel = 0
 MLRemake.Example_2.Size = UDim2.new(1, 0, 1, 0)
 MLRemake.Example_2.CanvasSize = UDim2.new(0, 0, 0, 0)
+MLRemake.Example_2.ScrollingDirection = Enum.ScrollingDirection.Y
 MLRemake.Example_2.ScrollBarThickness = 0
 
 MLRemake.Button.Name = "Button"
@@ -464,6 +471,7 @@ MLRemake.Button.AutoButtonColor = false
 MLRemake.Button.Font = Enum.Font.Gotham
 MLRemake.Button.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Button.TextSize = 14.000
+MLRemake.Button.TextTruncate = Enum.TextTruncate.AtEnd
 MLRemake.Button.TextXAlignment = Enum.TextXAlignment.Left
 
 MLRemake.UICorner_4.CornerRadius = UDim.new(0, 4)
@@ -500,6 +508,7 @@ MLRemake.Toggle.Font = Enum.Font.Gotham
 MLRemake.Toggle.Text = "Toggle"
 MLRemake.Toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Toggle.TextSize = 14.000
+MLRemake.Toggle.TextTruncate = Enum.TextTruncate.AtEnd
 MLRemake.Toggle.TextXAlignment = Enum.TextXAlignment.Left
 
 MLRemake.UICorner_5.CornerRadius = UDim.new(0, 6)
@@ -568,6 +577,7 @@ MLRemake.Label.Font = Enum.Font.Gotham
 MLRemake.Label.Text = "Dropdown"
 MLRemake.Label.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Label.TextSize = 14.000
+MLRemake.Label.TextTruncate = Enum.TextTruncate.AtEnd
 MLRemake.Label.TextXAlignment = Enum.TextXAlignment.Left
 
 MLRemake.Option.Name = "Option"
@@ -583,6 +593,7 @@ MLRemake.Option.Font = Enum.Font.Gotham
 MLRemake.Option.Text = "Option"
 MLRemake.Option.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Option.TextSize = 14.000
+MLRemake.Option.TextTruncate = Enum.TextTruncate.AtEnd
 MLRemake.Option.TextXAlignment = Enum.TextXAlignment.Right
 
 MLRemake.Dropdown_2.Name = "Dropdown"
@@ -618,6 +629,7 @@ MLRemake.Option_2.AutoButtonColor = false
 MLRemake.Option_2.Font = Enum.Font.Gotham
 MLRemake.Option_2.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Option_2.TextSize = 14.000
+MLRemake.Option_2.TextTruncate = Enum.TextTruncate.AtEnd
 MLRemake.Option_2.TextXAlignment = Enum.TextXAlignment.Left
 
 MLRemake.UICorner_10.CornerRadius = UDim.new(0, 4)
@@ -690,6 +702,7 @@ MLRemake.TextBox.PlaceholderText = "Text Box"
 MLRemake.TextBox.Text = ""
 MLRemake.TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.TextBox.TextSize = 14.000
+MLRemake.TextBox.TextTruncate = Enum.TextTruncate.AtEnd
 MLRemake.TextBox.TextXAlignment = Enum.TextXAlignment.Left
 
 MLRemake.UIPadding_8.Parent = MLRemake.TextBox
@@ -733,6 +746,7 @@ MLRemake.Label_2.ZIndex = 2
 MLRemake.Label_2.Font = Enum.Font.Gotham
 MLRemake.Label_2.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Label_2.TextSize = 14.000
+MLRemake.Label_2.TextTruncate = Enum.TextTruncate.AtEnd
 MLRemake.Label_2.TextXAlignment = Enum.TextXAlignment.Left
 
 MLRemake.UIPadding_9.Parent = MLRemake.Label_2
@@ -778,6 +792,7 @@ MLRemake.Label_3.Font = Enum.Font.Gotham
 MLRemake.Label_3.Text = "Slider"
 MLRemake.Label_3.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Label_3.TextSize = 14.000
+MLRemake.Label_3.TextTruncate = Enum.TextTruncate.AtEnd
 MLRemake.Label_3.TextXAlignment = Enum.TextXAlignment.Left
 
 MLRemake.Bar.Name = "Bar"
@@ -876,6 +891,7 @@ MLRemake.Input.PlaceholderText = "Value"
 MLRemake.Input.Text = "0"
 MLRemake.Input.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Input.TextSize = 12.000
+MLRemake.Input.TextTruncate = Enum.TextTruncate.AtEnd
 
 MLRemake.UICorner_19.CornerRadius = UDim.new(0, 4)
 MLRemake.UICorner_19.Parent = MLRemake.Input
@@ -905,6 +921,7 @@ MLRemake.Value.Font = Enum.Font.Gotham
 MLRemake.Value.Text = "0"
 MLRemake.Value.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Value.TextSize = 14.000
+MLRemake.Value.TextTruncate = Enum.TextTruncate.AtEnd
 MLRemake.Value.TextXAlignment = Enum.TextXAlignment.Right
 
 MLRemake.ColorPicker.Name = "ColorPicker"
@@ -931,6 +948,7 @@ MLRemake.Label_4.Font = Enum.Font.Gotham
 MLRemake.Label_4.Text = "Color Picker"
 MLRemake.Label_4.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Label_4.TextSize = 14.000
+MLRemake.Label_4.TextTruncate = Enum.TextTruncate.AtEnd
 MLRemake.Label_4.TextXAlignment = Enum.TextXAlignment.Left
 
 MLRemake.Color.Name = "Color"
@@ -946,6 +964,7 @@ MLRemake.Color.Font = Enum.Font.Gotham
 MLRemake.Color.Text = "255, 255, 255"
 MLRemake.Color.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Color.TextSize = 14.000
+MLRemake.Color.TextTruncate = Enum.TextTruncate.AtEnd
 MLRemake.Color.TextXAlignment = Enum.TextXAlignment.Right
 
 MLRemake.Picker.Name = "Picker"
@@ -1258,6 +1277,7 @@ MLRemake.HEX.PlaceholderText = "HEX"
 MLRemake.HEX.Text = ""
 MLRemake.HEX.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.HEX.TextSize = 12.000
+MLRemake.HEX.TextTruncate = Enum.TextTruncate.AtEnd
 
 MLRemake.UICorner_37.CornerRadius = UDim.new(0, 4)
 MLRemake.UICorner_37.Parent = MLRemake.HEX
@@ -1274,6 +1294,7 @@ MLRemake.RGB.PlaceholderText = "RGB"
 MLRemake.RGB.Text = ""
 MLRemake.RGB.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.RGB.TextSize = 12.000
+MLRemake.RGB.TextTruncate = Enum.TextTruncate.AtEnd
 
 MLRemake.UICorner_38.CornerRadius = UDim.new(0, 4)
 MLRemake.UICorner_38.Parent = MLRemake.RGB
@@ -1376,6 +1397,7 @@ MLRemake.Keybind.Font = Enum.Font.Gotham
 MLRemake.Keybind.Text = "Keybind"
 MLRemake.Keybind.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Keybind.TextSize = 14.000
+MLRemake.Keybind.TextTruncate = Enum.TextTruncate.AtEnd
 MLRemake.Keybind.TextXAlignment = Enum.TextXAlignment.Left
 
 MLRemake.UICorner_41.CornerRadius = UDim.new(0, 4)
@@ -1399,6 +1421,7 @@ MLRemake.Bind_old.Font = Enum.Font.Gotham
 MLRemake.Bind_old.Text = "Unknown"
 MLRemake.Bind_old.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Bind_old.TextSize = 14.000
+MLRemake.Bind_old.TextTruncate = Enum.TextTruncate.AtEnd
 MLRemake.Bind_old.TextXAlignment = Enum.TextXAlignment.Right
 
 MLRemake.Menu_8.Name = "Menu"
@@ -1463,6 +1486,7 @@ MLRemake.Label_9.Font = Enum.Font.Gotham
 MLRemake.Label_9.Text = "Chip Set"
 MLRemake.Label_9.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Label_9.TextSize = 14.000
+MLRemake.Label_9.TextTruncate = Enum.TextTruncate.AtEnd
 MLRemake.Label_9.TextXAlignment = Enum.TextXAlignment.Left
 
 MLRemake.Dropdown_3.Name = "Dropdown"
@@ -1507,6 +1531,7 @@ MLRemake.Button_5.Font = Enum.Font.Gotham
 MLRemake.Button_5.Text = "Option"
 MLRemake.Button_5.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Button_5.TextSize = 14.000
+MLRemake.Button_5.TextTruncate = Enum.TextTruncate.AtEnd
 MLRemake.Button_5.TextXAlignment = Enum.TextXAlignment.Left
 
 MLRemake.UICorner_46.CornerRadius = UDim.new(0, 4)
@@ -1616,6 +1641,7 @@ MLRemake.Label_10.Font = Enum.Font.Gotham
 MLRemake.Label_10.Text = "Table"
 MLRemake.Label_10.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Label_10.TextSize = 14.000
+MLRemake.Label_10.TextTruncate = Enum.TextTruncate.AtEnd
 MLRemake.Label_10.TextXAlignment = Enum.TextXAlignment.Left
 
 MLRemake.Dropdown_4.Name = "Dropdown"
@@ -1769,6 +1795,7 @@ MLRemake.Label_11.Font = Enum.Font.Gotham
 MLRemake.Label_11.Text = "Progress Bar"
 MLRemake.Label_11.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Label_11.TextSize = 14.000
+MLRemake.Label_11.TextTruncate = Enum.TextTruncate.AtEnd
 MLRemake.Label_11.TextXAlignment = Enum.TextXAlignment.Left
 
 MLRemake.Bar_5.Name = "Bar"
@@ -1856,6 +1883,7 @@ MLRemake.Label_12.Font = Enum.Font.Gotham
 MLRemake.Label_12.Text = "Banner"
 MLRemake.Label_12.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Label_12.TextSize = 12.000
+MLRemake.Label_12.TextTruncate = Enum.TextTruncate.AtEnd
 MLRemake.Label_12.TextWrapped = true
 MLRemake.Label_12.TextXAlignment = Enum.TextXAlignment.Left
 MLRemake.Label_12.TextYAlignment = Enum.TextYAlignment.Top
@@ -1885,6 +1913,7 @@ MLRemake.Buttons_2.Position = UDim2.new(0, 0, 1, 25)
 MLRemake.Buttons_2.Size = UDim2.new(1, 0, 0, 20)
 MLRemake.Buttons_2.ZIndex = 6
 MLRemake.Buttons_2.CanvasSize = UDim2.new(0, 0, 0, 0)
+MLRemake.Buttons_2.ScrollingDirection = Enum.ScrollingDirection.X
 MLRemake.Buttons_2.ScrollBarThickness = 0
 
 MLRemake.Example_3.Name = "Example"
@@ -1936,6 +1965,7 @@ MLRemake.Buttons_3.BackgroundTransparency = 1.000
 MLRemake.Buttons_3.BorderSizePixel = 0
 MLRemake.Buttons_3.Size = UDim2.new(1, 0, 1, 0)
 MLRemake.Buttons_3.ZIndex = 2
+MLRemake.Buttons_3.ScrollingDirection = Enum.ScrollingDirection.X
 MLRemake.Buttons_3.ScrollBarThickness = 0
 
 MLRemake.UIListLayout_8.Parent = MLRemake.Buttons_3
@@ -1981,6 +2011,7 @@ MLRemake.Example_5.ZIndex = 4
 MLRemake.Example_5.Font = Enum.Font.Gotham
 MLRemake.Example_5.TextColor3 = Color3.fromRGB(0, 0, 0)
 MLRemake.Example_5.TextSize = 12.000
+MLRemake.Example_5.TextTruncate = Enum.TextTruncate.AtEnd
 MLRemake.Example_5.TextXAlignment = Enum.TextXAlignment.Left
 
 MLRemake.UIPadding_30.Parent = MLRemake.Example_5
@@ -2020,6 +2051,7 @@ MLRemake.Title_2.Font = Enum.Font.Gotham
 MLRemake.Title_2.Text = "Material Lua"
 MLRemake.Title_2.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Title_2.TextSize = 16.000
+MLRemake.Title_2.TextTruncate = Enum.TextTruncate.AtEnd
 MLRemake.Title_2.TextXAlignment = Enum.TextXAlignment.Left
 
 MLRemake.UIPadding_31.Parent = MLRemake.Title_2
@@ -2152,6 +2184,7 @@ MLRemake.Title_3.Font = Enum.Font.GothamMedium
 MLRemake.Title_3.Text = "Material Lua Remake"
 MLRemake.Title_3.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Title_3.TextSize = 16.000
+MLRemake.Title_3.TextTruncate = Enum.TextTruncate.AtEnd
 MLRemake.Title_3.TextXAlignment = Enum.TextXAlignment.Left
 MLRemake.Title_3.TextYAlignment = Enum.TextYAlignment.Top
 
@@ -2189,6 +2222,7 @@ MLRemake.Buttons_4.Position = UDim2.new(0, 0, 1, 0)
 MLRemake.Buttons_4.Size = UDim2.new(1, 0, 0, 20)
 MLRemake.Buttons_4.ZIndex = 21
 MLRemake.Buttons_4.CanvasSize = UDim2.new(0, 0, 0, 0)
+MLRemake.Buttons_4.ScrollingDirection = Enum.ScrollingDirection.X
 MLRemake.Buttons_4.ScrollBarThickness = 0
 
 MLRemake.UIListLayout_11.Parent = MLRemake.Buttons_4
@@ -2206,10 +2240,15 @@ MLRemake.Button_8.Font = Enum.Font.GothamBold
 MLRemake.Button_8.Text = "OK"
 MLRemake.Button_8.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Button_8.TextSize = 14.000
+MLRemake.Button_8.TextTruncate = Enum.TextTruncate.AtEnd
 MLRemake.Button_8.TextWrapped = true
 
 MLRemake.UICorner_66.CornerRadius = UDim.new(0, 4)
 MLRemake.UICorner_66.Parent = MLRemake.Button_8
+
+MLRemake.UIStroke.Parent = MLRemake.Notif
+MLRemake.UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+MLRemake.UIStroke.Color = Color3.fromRGB(150, 150, 150)
 
 -- Module Scripts:
 
@@ -2573,6 +2612,11 @@ do -- MLRemake.MLRemake.UI
 				end
 				ApplyDefaultProps("Banner", t)
 				
+				if LAST_UI == nil or LAST_UI.Parent == nil then
+					LAST_UI = p
+					LAST_BANNER = nil
+					BANNER_VISIBLE = false
+				end
 				if LAST_BANNER and BANNER_VISIBLE then
 					hide(LAST_BANNER)
 				end
@@ -3200,7 +3244,7 @@ do -- MLRemake.MLRemake.UI
 				
 				local function set(text)
 					if a.Destroyed then return end
-					new.Text = text
+					new.Text = tostring(text)
 				end
 				local function get()
 					if a.Destroyed then return end
@@ -3271,6 +3315,7 @@ do -- MLRemake.MLRemake.UI
 				
 				local function set(value)
 					if a.Destroyed then return end
+					if typeof(value) ~= "boolean" then return end
 					toggled = value
 					toggle.Indicator.Position = (t.Enabled and UDim2new(0.5, 0, 0.5, 0)) or UDim2new(0, 0, 0.5, 0)
 					t.Callback(value)
@@ -3289,7 +3334,7 @@ do -- MLRemake.MLRemake.UI
 				
 				function a:SetText(text)
 					if a.Destroyed then return end
-					new.Text = text
+					new.Text = tostring(text)
 				end
 				function a:GetText()
 					if a.Destroyed then return end
@@ -3391,6 +3436,7 @@ do -- MLRemake.MLRemake.UI
 				
 				local function set(value)
 					if a.Destroyed then return end
+					if typeof(value) ~= "table" then return end
 					options = value
 					amount = #value
 					refresh()
@@ -3409,7 +3455,7 @@ do -- MLRemake.MLRemake.UI
 		
 				function a:SetText(text)
 					if a.Destroyed then return end
-					new.Label.Text = text
+					new.Label.Text = tostring(text)
 				end
 				function a:GetText()
 					if a.Destroyed then return end
@@ -3478,9 +3524,9 @@ do -- MLRemake.MLRemake.UI
 				
 				local a = {Destroyed = false, Object = new}
 				
-				local function set(text)
+				local function set(text, placeholder)
 					if a.Destroyed then return end
-					new.PlaceholderText = text
+					new[placeholder and "PlaceholderText" or "Text"] = tostring(text)
 				end
 				local function get()
 					if a.Destroyed then return end
@@ -3488,14 +3534,14 @@ do -- MLRemake.MLRemake.UI
 				end
 				
 				function a:Set(text)
-					set(text)
+					set(text, false)
 				end
 				function a:Get()
 					return get()
 				end
 		
 				function a:SetText(text)
-					set(text)
+					set(text, true)
 				end
 				function a:GetText()
 					return get()
@@ -3780,6 +3826,7 @@ do -- MLRemake.MLRemake.UI
 				
 				local function set(value)
 					if a.Destroyed then return end
+					if typeof(value) ~= "number" then return end
 					lastvalue = value
 					val.Text = ui.AddAffixes(value, t)
 					t.Callback(value)
@@ -3798,7 +3845,7 @@ do -- MLRemake.MLRemake.UI
 		
 				function a:SetText(text)
 					if a.Destroyed then return end
-					new.Label.Text = text
+					new.Label.Text = tostring(text)
 				end
 				function a:GetText()
 					if a.Destroyed then return end
@@ -3810,6 +3857,7 @@ do -- MLRemake.MLRemake.UI
 				end
 				function a:SetMin(value)
 					if a.Destroyed then return end
+					if typeof(value) ~= "number" then return end
 					min = value
 					t.Min = value
 					conn:Disconnect()
@@ -3817,6 +3865,7 @@ do -- MLRemake.MLRemake.UI
 				end
 				function a:SetMax(value)
 					if a.Destroyed then return end
+					if typeof(value) ~= "number" then return end
 					max = value
 					t.Max = value
 					conn:Disconnect()
@@ -3856,7 +3905,6 @@ do -- MLRemake.MLRemake.UI
 						CSKnew(0, Color3new(val, val, val)),
 						CSKnew(1, fromHSV(hue, 1, 1))
 					}
-					warn(hue)
 					ui.SetSliderValue(s.Picker.Hue, floor(hue * 360), {Tween = tween, Max = 360})
 					ui.SetSliderValue(s.Picker.Saturation, floor(sat * 100), {Tween = tween})
 					ui.SetSliderValue(s.Picker.Value, floor(val * 100), {Tween = tween})
@@ -3925,7 +3973,7 @@ do -- MLRemake.MLRemake.UI
 				hex.FocusLost:Connect(function()
 					local suc, color = pcall(Color3.fromHex, hex.Text)
 					if suc then
-						ui.SetPickerPreview(new, color, true)
+						ui.SetPickerPreview(new, color, true, true)
 						t.Callback(color)
 					end
 				end)
@@ -3937,7 +3985,7 @@ do -- MLRemake.MLRemake.UI
 							color[i] = clamp(tonumber(v), 0, 255)
 						end
 						color = fromRGB(color[1], color[2], color[3])
-						ui.SetPickerPreview(new, color, true)
+						ui.SetPickerPreview(new, color, true, true)
 						t.Callback(color)
 					end
 				end)
@@ -3959,6 +4007,7 @@ do -- MLRemake.MLRemake.UI
 				
 				task.spawn(function()
 					while true do
+						if new == nil or new.Parent == nil then break end
 						if rgbenabled then
 							local c = fromHSV(tick() % 5 / 5, 1, 1)
 							t.Callback(c)
@@ -3972,6 +4021,7 @@ do -- MLRemake.MLRemake.UI
 				
 				local function set(value)
 					if a.Destroyed then return end
+					if typeof(value) ~= "Color3" then return end
 					color = value
 					hue, sat, val = value:ToHSV()
 					ui.SetPickerPreview(new, color, true)
@@ -3991,7 +4041,7 @@ do -- MLRemake.MLRemake.UI
 		
 				function a:SetText(text)
 					if a.Destroyed then return end
-					new.Label.Text = text
+					new.Label.Text = tostring(text)
 				end
 				function a:GetText()
 					if a.Destroyed then return end
@@ -4074,6 +4124,8 @@ do -- MLRemake.MLRemake.UI
 				
 				local function set(value)
 					if a.Destroyed then return end
+					if typeof(value) ~= "EnumItem" and typeof(value) ~= "string" then return end
+					if typeof(value) == "EnumItem" and (value.EnumType == "KeyCode" or value.EnumType == "UserInputType") then return end
 					keybind = value
 					ui.SetBindLabel(new, value)
 					t.Callback(value)
@@ -4092,7 +4144,7 @@ do -- MLRemake.MLRemake.UI
 		
 				function a:SetText(text)
 					if a.Destroyed then return end
-					new.Text = text
+					new.Text = tostring(text)
 				end
 				function a:GetText()
 					if a.Destroyed then return end
@@ -4229,6 +4281,7 @@ do -- MLRemake.MLRemake.UI
 				
 				local function set(value)
 					if a.Destroyed then return end
+					if typeof(value) ~= "table" then return end
 					table.sort(value, function(a,b)
 						return a < b
 					end)
@@ -4254,7 +4307,7 @@ do -- MLRemake.MLRemake.UI
 		
 				function a:SetText(text)
 					if a.Destroyed then return end
-					new.Label.Text = text
+					new.Label.Text = tostring(text)
 				end
 				function a:GetText()
 					if a.Destroyed then return end
@@ -4356,6 +4409,7 @@ do -- MLRemake.MLRemake.UI
 				
 				local function set(value)
 					if a.Destroyed then return end
+					if typeof(value) ~= "table" then return end
 					table.sort(value, function(a,b)
 						return a < b
 					end)
@@ -4380,7 +4434,7 @@ do -- MLRemake.MLRemake.UI
 		
 				function a:SetText(text)
 					if a.Destroyed then return end
-					new.Label.Text = text
+					new.Label.Text = tostring(text)
 				end
 				function a:GetText()
 					if a.Destroyed then return end
@@ -4426,6 +4480,7 @@ do -- MLRemake.MLRemake.UI
 				new.Label.Text = t.Text
 				
 				local function SetValue(value)
+					if bar == nil or bar.Parent == nil then return end
 					local percent = (value - min) / (max - min)
 					bar.Progress:TweenSize(UDim2new(percent, 0, 1, 0), "Out", "Sine", 0.4, true)
 					val.Text = ui.AddAffixes((t.Percent and Round(percent * 100, 2)) or value, t, true)
@@ -4446,6 +4501,7 @@ do -- MLRemake.MLRemake.UI
 				
 				local function set(value)
 					if a.Destroyed then return end
+					if typeof(value) ~= "number" then return end
 					SetValue(value)
 				end
 				local function get()
@@ -4462,7 +4518,7 @@ do -- MLRemake.MLRemake.UI
 		
 				function a:SetText(text)
 					if a.Destroyed then return end
-					new.Label.Text = text
+					new.Label.Text = tostring(text)
 				end
 				function a:GetText()
 					if a.Destroyed then return end
