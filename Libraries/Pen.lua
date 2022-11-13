@@ -125,6 +125,7 @@ local funcs = {
 		local obj = drawhistory[index]
 		if obj then
 			obj:Destroy()
+			table.remove(drawhistory, index)
 			index -= 1
 		end
 	end,
