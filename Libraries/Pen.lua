@@ -68,6 +68,7 @@ local pen = {
 		index += 1
 	
 		local obj = Drawing.new("Line")
+		obj.ZIndex = props.layer
 		obj.Visible = true
 		obj.Transparency = props.opacity
 		obj.Color = props.color
@@ -131,7 +132,9 @@ local funcs = {
 	end,
 	erase = function()
 		for _,v in next, drawhistory do
-			v:Destroy()
+			pcall(function()
+				v:Destroy()
+			end)
 		end
 		index = 0
 	end
