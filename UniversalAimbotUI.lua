@@ -242,7 +242,7 @@ function destroy()
 	UI.UI:Destroy()
 	getgenv().UAIM = nil
 end
-local script = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalAimbotUI.lua"))
+local script = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalAimbotUI.lua"), "UniversalAimbotUI")
 function reload(safemode)
 	destroy()
 	task.wait(0.5)
@@ -256,6 +256,13 @@ end
 do -- Aimbot
 	local type = "Aimbot"
 	local s = ss[type]
+	if Krnl and KRNL_LOADED then
+		Aimbot.Label({
+			Text = "Warning: Aimbot is buggy on Krnl.",
+			Center = true,
+			Transparent = true
+		})
+	end
 	Aimbot.Toggle({
 		Text = "Enabled",
 		Callback = function(value)
@@ -264,7 +271,7 @@ do -- Aimbot
 		Enabled = s.Enabled
 	})
 	Aimbot.Dropdown({
-		Text = "Target Part",
+		Text = "Target Body Part",
 		Callback = function(value)
 			aimbot:Set(type, "TargetPart", value)
 		end,
@@ -277,7 +284,7 @@ do -- Aimbot
 		}
 	})
 	Aimbot.TextField({
-		Text = "Target Part (Custom)",
+		Text = "Target Body Part (Custom)",
 		Type = "Default",
 		Callback = function(value)
 			aimbot:Set(type, "TargetPart", value)
@@ -1007,6 +1014,13 @@ do -- Configs
 end
 
 do -- Feedback
+	Feedback.Label({
+		Text = "Feedback system is currently unavailable.",
+		Center = true,
+		Transparent = true
+	})
+
+	--[[
 	local url = "https://websec.services/send/628d301f5db848748d1e31b1"
 	local script = "Aimbot"
 
@@ -1118,6 +1132,7 @@ do -- Feedback
 			Transparent = true
 		})
 	end
+	]]
 end
 
 table.insert(connections, game:GetService("UserInputService").InputBegan:Connect(function(i, gp)
