@@ -410,7 +410,7 @@ function destroy()
 	UI:Destroy()
 	getgenv().UESP = nil
 end
-local script = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua"))
+local script = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua"), "UniversalEspUI")
 function reload(safemode)
 	destroy()
 	task.wait(0.5)
@@ -2639,6 +2639,13 @@ do -- Stats
 end
 
 do -- Feedback
+	Feedback.Label({
+		Text = "Feedback system is currently unavailable.",
+		Center = true,
+		Transparent = true
+	})
+
+	--[[
 	local url = "https://websec.services/send/628d301f5db848748d1e31b1"
 	local script = "Esp"
 
@@ -2750,6 +2757,7 @@ do -- Feedback
 			Transparent = true
 		})
 	end
+	]]
 end
 
 table.insert(connections, uis.InputBegan:Connect(function(i, gp)
