@@ -1,13 +1,13 @@
 assert(import, "you are not using script ware")
 
-local _, version;_, version = xpcall(function()
+local _, version = xpcall(function()
 	return game:GetService("HttpService"):JSONDecode(game:HttpGet("https://api.whatexploitsare.online/status/Synapse"))[1].Synapse.exploit_version
 end, function()
-	return "2.19.1b"
+	return "2.20.6c"
 end)
 
 --loadstring(game:HttpGet("https://api.irisapp.ca/Scripts/IrisInstanceProtect.lua"))() -- credit to iris (this is for protect_gui and unprotect_gui)
-local hash = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/HashLib.lua"))()
+local hash = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/HashLib.lua"), "HashLib")()
 local hashlibalgs = {"sha1", "sha224"}
 local hashalgs = {
 	"md5", "sha1", "sha224", "sha256", "sha384", "sha512", "sha3-256", "sha3-384", "sha3-512",
@@ -63,10 +63,10 @@ getgenv().Drawing.Fonts = {
 	['Monospace'] = 2
 }
 local oldmt = getrawmetatable(game)
-local none = newcclosure(function() end)
+local none = newcclosure(function() end, "none")
 
 local function define(name, value, parent)
-	local lol = (typeof(value) == "function" and islclosure(value) and newcclosure(value)) or value
+	local lol = (typeof(value) == "function" and islclosure(value) and newcclosure(value, name)) or value
 	if parent ~= nil then
 		parent[name] = lol
 	else
@@ -85,8 +85,8 @@ end
 
 do -- hooks
 	local headers = game:GetService("HttpService"):JSONDecode(request({Url = "https://httpbin.org/get"}).Body).headers
-	local Fingerprint = headers['Sw-Fingerprint']
-	local UserIdentifier = headers['Sw-User-Identifier']
+	local Fingerprint = headers['Sw-Fingerprint']:lower()
+	local UserIdentifier = headers['Sw-User-Identifier']:lower()
 	local UserAgent = "synx/"..version
 	local oldr;oldr = hookfunction(request, function(options)
 		local h = options.Headers or {}
@@ -178,9 +178,9 @@ do -- hooks
 		return olds(game, s, name)
 	end)
 
-	hookfunction(decompile, function(a) -- decompile fix thing
-		return "-- Disassembled with the Script-Ware disassembler.\n\n"..disassemble(a)
-	end)
+	local disassemble = loadstring(game:HttpGet("https://raw.githubusercontent.com/TheSeaweedMonster/Luau/main/decompile.lua"), "Disassembler")()
+	define("disassemble", disassemble)
+	define("decompile", disassemble)
 
 	do -- secure_call things
 		local oldt;oldt = hookfunction(getrenv().debug.traceback, function(lol) -- prevent debug.traceback detection
@@ -209,6 +209,11 @@ do -- hooks
 			local thread = v.Thread
 			if thread then
 				a[i].State = thread -- scriptware uses .Thread instead of .State
+			end
+
+			local object = v.Object
+			if object then
+				a[i].__OBJECT = a[i] -- for 'isconnectionenabled' function
 			end
 		end
 		return a
@@ -279,9 +284,11 @@ do -- syn_
 	define("syn_getcallingscript", getcallingscript)
 	define("syn_isactive", isrbxactive)
 	define("syn_websocket_connect", function(a)
+		assert(typeof(a) == "string", string.format("bad argument #1 to 'syn_websocket_connect' (string expected, got %s)", typeof(a)))
 		return WebSocket.connect(a)
 	end)
 	define("syn_websocket_close", function(a)
+		assert(a.OnMessage ~= nil, "ws connection expected")
 		a:Close()
 	end)
 end
@@ -300,6 +307,7 @@ do -- misc
 	define("getpcdprop", getpcd)
 	define("getsynasset", getcustomasset)
 	define("htgetf", function(url)
+		assert(typeof(url) == "string", string.format("bad argument #1 to 'htgetf' (string expected, got %s)", typeof(url)))
 		return game:HttpGetAsync(url)
 	end)
 	define("gbmt", function()
@@ -310,9 +318,13 @@ do -- misc
 		}
 	end)
 	define("getpropvalue", function(obj, prop)
+		assert(typeof(obj) == "Instance", string.format("bad argument #1 to 'getpropvalue' (Instance expected, got %s)", typeof(obj)))
+		assert(typeof(prop) == "string", string.format("bad argument #2 to 'getpropvalue' (string expected, got %s)", typeof(prop)))
 		return cloneref(obj)[prop]
 	end)
 	define("setpropvalue", function(obj, prop, value)
+		assert(typeof(obj) == "Instance", string.format("bad argument #1 to 'setpropvalue' (Instance expected, got %s)", typeof(obj)))
+		assert(typeof(prop) == "string", string.format("bad argument #2 to 'setpropvalue' (string expected, got %s)", typeof(prop)))
 		obj = cloneref(obj)
 		local conn1 = obj:GetPropertyChangedSignal(prop)
 		local conn2 = obj.Changed
@@ -329,8 +341,7 @@ do -- misc
 		return false
 	end)
 	define("getspecialinfo", function(obj)
-		local objtype = typeof(obj)
-		assert(typeof(obj) == "Instance", string.format("bad argument to #1 'getspecialinfo' (Instance expected, got %s)", objtype))
+		assert(typeof(obj) == "Instance", string.format("bad argument #1 to 'getspecialinfo' (Instance expected, got %s)", typeof(obj)))
 		local info = specialinfo[obj.ClassName]
 		local props = {}
 		if info then
@@ -339,6 +350,13 @@ do -- misc
 			end
 		end
 		return props
+	end)
+	define("getvirtualinputmanager", function()
+		return cloneref(game:GetService("VirtualInputManager")) -- not exactly sure whats different about this 're-implementation'
+	end)
+	define("isconnectionenabled", function(object)
+		assert(rawget(object, "__OBJECT") ~= nil, "bad argument #1 to 'isconnectionenabled' (synapse signal expected)")
+		return rawget(object, "Enabled")
 	end)
 end
 
@@ -522,7 +540,7 @@ do -- syn library
 
 		local HashLib = table.find(hashlibalgs, alg)
 		local SwLib = table.find(hashalgs, alg)
-		assert(HashLib or SwLib, "bad argument to #1 to 'hash' (non-existant hash algorithm)")
+		assert(HashLib or SwLib, "bad argument #1 to 'hash' (non-existant hash algorithm)")
 		if HashLib then -- using hash lib for 'sha1' and 'sha224' cuz they return the same thing when using the built-in hash function
 			return hash[alg:gsub("-", "_")](data)
 		end
@@ -539,10 +557,10 @@ do -- syn library
 	define("secure_call", function(func, env, ...)
 		local functype = typeof(func) 
 		local envtype = typeof(env)
-		assert(functype == "function", string.format("bad argument to #1 'secure_call' (function expected, got %s)", functype))
-		assert(envtype == "Instance", string.format("bad argument to #2 'secure_call' (Instance expected, got %s)", envtype))
+		assert(functype == "function", string.format("bad argument #1 to 'secure_call' (function expected, got %s)", functype))
+		assert(envtype == "Instance", string.format("bad argument #2 to 'secure_call' (Instance expected, got %s)", envtype))
 		local envclass = env.ClassName
-		assert(envclass == "LocalScript" or envclass == "ModuleScript", string.format("bad argument to #2 'secure_call' (LocalScript or ModuleScript expected, got %s)", envclass))
+		assert(envclass == "LocalScript" or envclass == "ModuleScript", string.format("bad argument #2 to 'secure_call' (LocalScript or ModuleScript expected, got %s)", envclass))
 		local _, fenv = xpcall(function()
 			return getsenv(env)
 		end, function()
