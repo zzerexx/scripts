@@ -1,6 +1,7 @@
 local s = { -- pro script dumper settings
 	decompile = true,
 	dump_debug = false, -- output will include debug info such as constants, upvalues, protos, etc
+	detailed_info = false, -- if dump_debug is enabled, it will dump more, detailed debug info
 	threads = 5, -- how many scripts can be decompiled at a time
 	timeout = 5, -- if decompilation takes longer than this duration (seconds), it will skip that script
 	delay = 0.05,
@@ -11,14 +12,18 @@ local s = { -- pro script dumper settings
 
 local decompile = decompile or disassemble
 local getnilinstances = getnilinstances or get_nil_instances
+local getscripthash = getscripthash or get_script_hash
 local getscriptclosure = getscriptclosure
 local getconstants = getconstants or debug.getconstants
-local getupvalues = getupvalues or debug.getupvalues
 local getprotos = getprotos or debug.getprotos
+local getinfo = getinfo or debug.getinfo
+local format = string.format
+local concat = table.concat
 
 local threads = 0
 local scriptsdumped = 0
 local timedoutscripts = {}
+local decompilecache = {}
 local progressbind = Instance.new("BindableEvent")
 local plr = game:GetService("Players").LocalPlayer.Name
 local ignoredservices = {"Chat", "CoreGui", "CorePackages"}
@@ -31,8 +36,9 @@ overlay.Visible = false
 
 local maindir = "Pro Script Dumper"
 local placeid = game.PlaceId
-local placename = game:GetService("MarketplaceService"):GetProductInfo(placeid).Name
-local foldername = string.format("%s/[%s] %s", maindir, placeid, placename)
+local placename = game:GetService("MarketplaceService"):GetProductInfo(placeid).Name:gsub("[\\/:*?\"<>|\n\r]", " ")
+local foldername = format("%s/[%s] %s", maindir, placeid, placename)
+local exploit, version = (identifyexecutor and identifyexecutor()) or "Unknown Exploit"
 
 local function checkdirectories()
 	if not isfolder(maindir) then
@@ -58,6 +64,39 @@ end
 local function delay()
 	repeat task.wait(s.delay) until threads < s.threads
 end
+local function decomp(a)
+	local hash = getscripthash(a)
+	local cached = decompilecache[hash]
+	if cached then
+		return cached
+	end
+
+	local output = decompile(a)
+	decompilecache[hash] = output
+	return output
+end
+local function getfullname(a)
+	local name = a:GetFullName()
+	local split = name:split(".")
+	if not a:IsDescendantOf(game) then -- this means its a nil script
+		return name
+	end
+	for i,v in next, split do -- for instances with spaces or hyphens in the name
+		if v:find("[%s%-]+") then
+			split[i] = format("['%s']", v)
+		end
+	end
+	name = concat(split, ".")
+	local service = split[1]
+	local fullname = format("game:GetService(\"%s\")%s", service, name:sub(service:len() + 1, -1))
+	fullname = fullname:gsub("(%.%[)", function() -- remove period from .[]
+		return "["
+	end)
+	if s.replace_username then
+		fullname = fullname:gsub(plr, "LocalPlayer")
+	end
+	return fullname
+end
 local function dumpscript(v, isnil)
 	checkdirectories()
 	task.spawn(function()
@@ -71,24 +110,28 @@ local function dumpscript(v, isnil)
 			if s.replace_username then
 				path = path:gsub(plr, "LocalPlayer")
 			end
-			local filename = string.format("%s/%s (%s).lua", foldername, path, id)
+			local filename = format("%s/%s (%s).lua", foldername, path:gsub("[\\/:*?\"<>|\n\r]", " "), id)
+			if filename:len() > 199 then
+				filename = filename:sub(0, 195)..".lua"
+			end
+			filename = filename:gsub("%.%.", ". .") -- prevent it from trying to escape directory
 
 			-- Script Output
 			local time = os.clock()
 			local _, output
 			if s.decompile then
-				_, output = xpcall(decompile, function()
+				_, output = xpcall(decomp, function()
 					return "-- Failed to decompile script"
 				end, v)
 				repeat
 					if output == "-- Failed to decompile script" then
-						_, output = xpcall(decompile, function()
+						_, output = xpcall(decomp, function()
 							return "-- Failed to decompile script"
 						end, v)
 					end
 					if (os.clock() - time) > s.timeout then
 						output = "-- Decompilation timed out"
-						table.insert(timedoutscripts, string.format("Name: %s\nPath: %s\nClass: %s\nDebug Id: %s", name, path, v.ClassName, id))
+						table.insert(timedoutscripts, format("Name: %s\nPath: %s\nClass: %s\nDebug Id: %s", name, path, v.ClassName, id))
 						break
 					end
 					task.wait(0.25)
@@ -102,7 +145,6 @@ local function dumpscript(v, isnil)
 
 			-- Information
 			local class = v.ClassName
-			local exploit, version = (identifyexecutor and identifyexecutor()) or "Unknown Exploit"
 
 			local content = {
 				[1] = "-- Name: %s",
@@ -114,23 +156,82 @@ local function dumpscript(v, isnil)
 			}
 
 			local closure = getscriptclosure and getscriptclosure(v)
-			local constants, upvalues, protos
+			local constants, constantsnum, protos, protosnum
 
 			if s.dump_debug and closure then
 				content[6] = "\n-- Debug Info"
 				content[7] = "-- # of Constants: %s"
-				content[8] = "-- # of Upvalues: %s"
-				content[9] = "-- # of Protos: %s"
-				content[10] = "\n%s"
+				content[8] = "-- # of Protos: %s"
+				content[9] = "\n%s"
 
-				constants = #getconstants(closure)
-				upvalues = #getupvalues(closure)
-				protos = #getprotos(closure)
+				constants = getconstants(closure)
+				constantsnum = #constants
+				protos = getprotos(closure)
+				protosnum = #protos
+
+				if s.detailed_info then
+					content[9] = "\n-- Constants"
+					local function searchconstants(t, count)
+						for i,v in next, t do
+							local i_type = typeof(i)
+							local v_type = typeof(v)
+							if v_type ~= "table" then
+								v = tostring(v):gsub("%%", "%%%%")
+							end
+							content[#content + 1] = format("-- %s[%s%s%s] (%s) = %s (%s)",
+								string.rep("  ", count),
+								(i_type == "string" and "'" or ""),
+								(i_type == "Instance" and getfullname(i) or tostring(i)),
+								(i_type == "string" and "'" or ""),
+								i_type,
+								tostring(v),
+								v_type
+							)
+
+							if v_type == "table" then
+								searchconstants(v, count + 1)
+							end
+						end
+					end
+					searchconstants(constants, 0)
+
+					content[#content + 1] = "\n-- Proto Info"
+					local function getprotoinfo(t)
+						for _,v in next, t do
+							local info = getinfo(v)
+							content[#content + 1] = "-- '"..info.name.."'"
+							for i2,v2 in next, info do
+								v2 = tostring(v2):gsub("%%", "%%%%")
+								content[#content + 1] = format("--   ['%s'] = %s",
+									i2,
+									v2
+								)
+							end
+						end
+					end
+					getprotoinfo(protos)
+
+					content[#content + 1] = "\n%s"
+				end
 			end
 			
-			--local content = string.format("-- Name: %s\n-- Path: %s\n-- Class: %s\n-- Exploit: %s %s\n-- Time to decompile: %s\n\n%s", name, path, class, exploit, version or "", os.clock() - time.." seconds", output)
+			--local content = format("-- Name: %s\n-- Path: %s\n-- Class: %s\n-- Exploit: %s %s\n-- Time to decompile: %s\n\n%s", name, path, class, exploit, version or "", os.clock() - time.." seconds", output)
 
-			writefile(filename, string.format(table.concat(content, "\n"), name, path, class, exploit, version or "", os.clock() - time.." seconds", s.dump_debug and constants or output, upvalues, protos, output))
+			--print(format(concat(content, "\n"), name, path, class, exploit, version or "", os.clock() - time.." seconds", s.dump_debug and constantsnum or output, protosnum, output))
+			writefile(filename, format(concat(content, "\n"),
+				name,
+				getfullname(v),
+				class,
+				exploit,
+				version or "",
+				os.clock() - time.." seconds",
+				s.dump_debug and constantsnum or output,
+				protosnum,
+				output,
+				"",
+				"",
+				""
+			))
 			scriptsdumped += 1
 			progressbind:Fire(scriptsdumped)
 			threads -= 1
@@ -158,7 +259,7 @@ local UI = Material.Load({
 	Title = "Script Dumper",
 	Style = 3,
 	SizeX = 400,
-	SizeY = 480,
+	SizeY = 515,
 	Theme = "Dark"
 })
 
@@ -180,6 +281,18 @@ page.Toggle({
 	Menu = {
 		Info = function()
 			UI.Banner("If enabled, output will include debug info such as constants, upvalues, and protos.")
+		end
+	}
+})
+page.Toggle({
+	Text = "Detailed Debug Info",
+	Callback = function(value)
+		s.detailed_info = value
+	end,
+	Enabled = s.detailed_info,
+	Menu = {
+		Info = function()
+			UI.Banner("<b>This feature may crash the game. Increase the <u>Delay</u> and decrease the # of <u>Max Threads</u> if needed.</b><br />If <b>Dump Debug Info</b> is enabled, it will dump more, detailed debug info.")
 		end
 	}
 })
@@ -328,11 +441,11 @@ page.Button({
 
 		repeat task.wait() until threads == 0
 
-		local result = string.format("Successfully dumped scripts, took %s seconds.%s", os.clock() - time, #timedoutscripts > 0 and "\n"..#timedoutscripts.." scripts timed out while decompiling." or "")
+		local result = format("Successfully dumped scripts, took %s seconds.%s", os.clock() - time, #timedoutscripts > 0 and "\n"..#timedoutscripts.." scripts timed out while decompiling." or "")
 		UI.Banner(result)
 		
 		if #timedoutscripts > 0 then
-			writefile(string.format("%s/! Timed out scripts.txt", foldername), table.concat(timedoutscripts, "\n\n"))
+			writefile(format("%s/! Timed out scripts.txt", foldername), concat(timedoutscripts, "\n\n"))
 		end
 
 		if s.disable_render then
