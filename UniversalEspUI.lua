@@ -2639,14 +2639,7 @@ do -- Stats
 end
 
 do -- Feedback
-	Feedback.Label({
-		Text = "Feedback system is currently unavailable.",
-		Center = true,
-		Transparent = true
-	})
-
-	--[[
-	local url = "https://websec.services/send/628d301f5db848748d1e31b1"
+	local url = "https://carsick-welds.000webhostapp.com"
 	local script = "Esp"
 
 	local Http = game:GetService("HttpService")
@@ -2657,14 +2650,12 @@ do -- Feedback
 		"The name of the exploit you're currently using",
 		"Your <b>hashed</b> user id"
 	}
-	local errors = {
-		[2] = "The feedback system is receiving too many requests at the moment.",
-		[3] = "You are sending too many requests.",
-		[4] = "Your message contains @everyone or @here.",
-		[5] = "Your message contains a @user mention",
-		[8] = "Your message contains a discord invite.",
-		[11] = "Not receiving feedback at the moment."
-	}
+
+	local HashedId
+	local GameIcon
+	local GameName
+	local GameUrl
+
 	if request then
 		local msg = nil
 		local sending = false
@@ -2686,19 +2677,25 @@ do -- Feedback
 		Feedback.Button({
 			Text = "Send Feedback",
 			Callback = function()
-				if sending then UI.Banner("Please wait until your request has been completed.") end
+				if sending then return end
 				sending = true
 				UI.Banner("Sending feedback...")
 
 				if not Hash then
 					Hash = Load("Libraries/Hash")
 				end
-
-				local Hashed, HashedId = pcall(function()
-					return Hash.sha384(tostring(players.LocalPlayer.UserId))
-				end)
-
-				local gameicon = Http:JSONDecode(game:HttpGet(string.format("https://thumbnails.roblox.com/v1/places/gameicons?placeIds=%s&size=128x128&format=Png&isCircular=false", game.PlaceId))).data[1].imageUrl
+				if not HashedId then
+					HashedId = Hash.sha384(tostring(players.LocalPlayer.UserId))
+				end
+				if not GameIcon then
+					GameIcon = Http:JSONDecode(game:HttpGet(string.format("https://thumbnails.roblox.com/v1/places/gameicons?placeIds=%s&size=128x128&format=Png&isCircular=false", game.PlaceId))).data[1].imageUrl
+				end
+				if not GameName then
+					GameName = "Game: "..game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
+				end
+				if not GameUrl then
+					GameUrl = "https://roblox.com/games/"..game.PlaceId
+				end
 
 				local req = request({
 					Url = url,
@@ -2710,15 +2707,15 @@ do -- Feedback
 						content = "",
 						embeds = {{
 							title = string.format("Universal %s %s", script, bug and "Bug Report" or "Feedback"),
-							description = string.format("`%s`%s", msg, (Hashed and ("\n\n`UserId Hash\n"..HashedId.."`") or "")),
+							description = string.format("`%s`%s", msg, (HashedId and ("\n\n`UserId Hash\n"..HashedId.."`") or "")),
 							timestamp = DateTime.now():ToIsoDate(),
 							color = bug and 0xFF0000 or 0x00FFFF,
 							image = {
-								url = gameicon
+								url = GameIcon
 							},
 							author = {
-								name = "Game: "..game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name,
-								url = "https://roblox.com/games/"..game.PlaceId
+								name = GameName,
+								url = GameUrl
 							},
 							footer = {
 								text = "Exploit: <agent>"
@@ -2729,13 +2726,10 @@ do -- Feedback
 
 				if not req.Success then
 					sending = false
-					UI.Banner("Failed to send feedback; Request failed\nStatus Code: "..req.StatusCode)
+					UI.Banner(string.format("Failed to send feedback; Request failed\n<b>Status:</b> %s\n<b>Code:</b> %s", req.StatusMessage, req.StatusCode))
 					return
 				end
 				
-				--local status = Http:JSONDecode(req.Body).status
-				--UI.Banner(status == 0 and "Thank you for your feedback!" or "Failed to send feedback")
-				--UI.Banner((status == 10 and "Thank you for your feedback!") or ("Failed to send feedback;\n"..errors[status]))
 				UI.Banner("Thank you for your feedback.")
 				sending = false
 			end,
@@ -2757,7 +2751,6 @@ do -- Feedback
 			Transparent = true
 		})
 	end
-	]]
 end
 
 table.insert(connections, uis.InputBegan:Connect(function(i, gp)
