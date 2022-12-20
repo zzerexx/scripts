@@ -1,5 +1,6 @@
 -- credit: https://v3rmillion.net/showthread.php?tid=1195926
 if not bypassloaded and (game.PlaceId == 292439477 or game.PlaceId == 299659045) then
+	local RunService = game:GetService("RunService")
 	local ReplicatedFirst = game:GetService("ReplicatedFirst")
 	ReplicatedFirst.ChildAdded:Connect(function(a)
 		if a:IsA("Actor") then
