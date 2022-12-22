@@ -155,63 +155,67 @@ local function dumpscript(v, isnil)
 				[6] = "\n%s"
 			}
 
-			local closure = getscriptclosure and getscriptclosure(v)
+			local gotclosure, closure = pcall(getscriptclosure, v)
 			local constants, constantsnum, protos, protosnum
 
-			if s.dump_debug and closure then
-				content[6] = "\n-- Debug Info"
-				content[7] = "-- # of Constants: %s"
-				content[8] = "-- # of Protos: %s"
-				content[9] = "\n%s"
+			if s.dump_debug then
+				if gotclosure then
+					content[6] = "\n-- Debug Info"
+					content[7] = "-- # of Constants: %s"
+					content[8] = "-- # of Protos: %s"
+					content[9] = "\n%s"
 
-				constants = getconstants(closure)
-				constantsnum = #constants
-				protos = getprotos(closure)
-				protosnum = #protos
+					constants = getconstants(closure)
+					constantsnum = #constants
+					protos = getprotos(closure)
+					protosnum = #protos
 
-				if s.detailed_info then
-					content[9] = "\n-- Constants"
-					local function searchconstants(t, count)
-						for i,v in next, t do
-							local i_type = typeof(i)
-							local v_type = typeof(v)
-							if v_type ~= "table" then
-								v = tostring(v):gsub("%%", "%%%%")
-							end
-							content[#content + 1] = format("-- %s[%s%s%s] (%s) = %s (%s)",
-								string.rep("  ", count),
-								(i_type == "string" and "'" or ""),
-								(i_type == "Instance" and getfullname(i) or tostring(i)),
-								(i_type == "string" and "'" or ""),
-								i_type,
-								tostring(v),
-								v_type
-							)
-
-							if v_type == "table" then
-								searchconstants(v, count + 1)
-							end
-						end
-					end
-					searchconstants(constants, 0)
-
-					content[#content + 1] = "\n-- Proto Info"
-					local function getprotoinfo(t)
-						for _,v in next, t do
-							local info = getinfo(v)
-							content[#content + 1] = "-- '"..info.name.."'"
-							for i2,v2 in next, info do
-								v2 = tostring(v2):gsub("%%", "%%%%")
-								content[#content + 1] = format("--   ['%s'] = %s",
-									i2,
-									v2
+					if s.detailed_info then
+						content[9] = "\n-- Constants"
+						local function searchconstants(t, count)
+							for i,v in next, t do
+								local i_type = typeof(i)
+								local v_type = typeof(v)
+								if v_type ~= "table" then
+									v = tostring(v):gsub("%%", "%%%%")
+								end
+								content[#content + 1] = format("-- %s[%s%s%s] (%s) = %s (%s)",
+									string.rep("  ", count),
+									(i_type == "string" and "'" or ""),
+									(i_type == "Instance" and getfullname(i) or tostring(i)),
+									(i_type == "string" and "'" or ""),
+									i_type,
+									tostring(v),
+									v_type
 								)
+
+								if v_type == "table" then
+									searchconstants(v, count + 1)
+								end
 							end
 						end
-					end
-					getprotoinfo(protos)
+						searchconstants(constants, 0)
 
-					content[#content + 1] = "\n%s"
+						content[#content + 1] = "\n-- Proto Info"
+						local function getprotoinfo(t)
+							for _,v in next, t do
+								local info = getinfo(v)
+								content[#content + 1] = "-- '"..info.name.."'"
+								for i2,v2 in next, info do
+									v2 = tostring(v2):gsub("%%", "%%%%")
+									content[#content + 1] = format("--   ['%s'] = %s",
+										i2,
+										v2
+									)
+								end
+							end
+						end
+						getprotoinfo(protos)
+
+						content[#content + 1] = "\n%s"
+					end
+				else
+					content[6] = "\n-- Debug Info (Could not get script closure)"
 				end
 			end
 			
@@ -237,17 +241,18 @@ local function dumpscript(v, isnil)
 			threads -= 1
 		end
 
+		local function queue()
+			delay()
+			if threads < s.threads then
+				dump()
+			else
+				queue()
+			end
+		end
+
 		if threads < s.threads then
 			dump()
 		else
-			local function queue()
-				delay()
-				if threads < s.threads then
-					dump()
-				else
-					queue()
-				end
-			end
 			queue()
 		end
 	end)
