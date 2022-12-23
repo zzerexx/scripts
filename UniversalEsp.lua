@@ -1,17 +1,17 @@
 --[[
-v1.6.14 Changes
-- Added 'Method' for MouseVisibility
-	- "Radius" (Legacy)  Checks if the esp object is within a certain radius from the mouse position
-	- "Hover"  (New)	 Checks if the mouse position is hovering over the esp object
-		- "Hover" uses the "HoverRadius" option for it's radius
-- Added custom features for Murder Mystery 2
-- Updated Phantom Forces compatibility for the new rewrite
+v1.7.0 Changes
+- Universal Esp rewrite
+  - UESP now utilizes Parallel Luau! (https://create.roblox.com/docs/scripting/luau/parallel-luau)
+  - With these changes, UESP performs up to 60% more efficiently than before!
+- Fixed for Phantom Forces (kinda)
+  - Universal Esp will now prompt you that you need to put a bypass script in your autoexec folder.
+  - Bypass script made by Spoorloos
 
 UI Changes
-- Sending feedback will now send your hashed user id
+- No UI changes
 ]]
 
-local VERSION = "v1.6.14"
+local VERSION = "v1.7.0"
 
 if not EspSettings then
 	getgenv().EspSettings = {
@@ -209,6 +209,12 @@ local osclock = os.clock
 local next = next
 local tick = tick
 local typeof = typeof
+local taskspawn = task.spawn
+local taskdesync = task.desynchronize
+local tasksync = task.synchronize
+local taskwait = task.wait
+local profbegin = debug and debug.profilebegin or function() end
+local profend = debug and debug.profileend or function() end
 local GetMouseLocation = uis.GetMouseLocation
 
 local GameId = game.GameId
@@ -259,24 +265,19 @@ local Base = {
 	"Outline",
 	"OutlineColor"
 }
-local origins = {}
 local white, black = fromRGB(255,255,255), fromRGB(0,0,0)
-local replication, ts, characters, teams, rp
+local getEntry, ts, characters, teams, rp
 if (GameId == gids.pf) or (GameId == gids.pft) or (GameId == gids.pfu) then
-	--[[ old
-	for _,v in next, getgc(true) do
-		if typeof(v) == "table" and rawget(v, "getbodyparts") then
-			getchar = rawget(v, "getbodyparts")
-		elseif typeof(v) == "table" and rawget(v, "getplayerhealth") then
-			gethealth = rawget(v, "getplayerhealth")
-		end
-	end]]
-	for _,v in next, getgc(true) do
-		if typeof(v) == "table" and rawget(v, "new") and tostring(getfenv(v.new).script) == "ReplicationObject" then
-			replication = v
-			break
-		end
+	local require = rawget(getrenv().shared, "require")
+	if require == nil then
+		setclipboard('loadstring(game:HttpGet("https://raw.githubusercontent.com/Spoorloos/scripts/main/pf-actor-bypass.lua"))()')
+		local a = Instance.new("Message", game.CoreGui)
+		a.Text = "-- Universal Esp Notice --\n\nA script has been copied to your clipboard.\nPlease put this script in your exploit's autoexec folder and rejoin the game.\n(this script is required to bypass the new update)\n\nbypass was created by Spoorloos"
+		return
 	end
+	local _cache = rawget(debug.getupvalue(require, 1), "_cache")
+	local ReplicationInterface = rawget(rawget(_cache, "ReplicationInterface"), "module")
+	getEntry = rawget(ReplicationInterface, "getEntry")
 elseif GameId == gids.bb then
 	for _,v in next, getgc(true) do
 		if typeof(v) == "table" and rawget(v, "InitProjectile") and rawget(v, "TS") then
@@ -339,6 +340,8 @@ local supportedparts = {
 	"WedgePart",
 	"MeshPart"
 }
+
+local PlayerObjects = {}
 
 local setidentity = setidentity or setthreadidentity or set_thread_identity or setthreadcontext or set_thread_context or (syn and syn.set_thread_identity) or nil
 function safecall(func, env, ...)
@@ -424,21 +427,15 @@ function IsFFA()
 end
 
 do -- compatibility
-	if replication then -- phantom forces
+	if getEntry then -- phantom forces
 		local playercache = {}
 		local function GetPlayerObject(plr)
 			local cached = playercache[plr]
 			if cached then
-				return playercache[plr]
+				return cached
 			end
 
-			local obj
-			for _,v in next, getgc(true) do -- i hate this code so much
-				if typeof(v) == "table" and rawget(v, "_player") and v._player == plr and rawget(v, "_healthstate") then
-					obj = v
-					break
-				end
-			end
+			local obj = getEntry(plr)
 			playercache[plr] = obj
 			return obj
 		end
@@ -573,19 +570,18 @@ oldfuncs.character = GetChar
 oldfuncs.health = GetHealth
 oldfuncs.team = GetTeam
 oldfuncs.teamcolor = GetTeamColor
-
 oldfuncs.ffa = IsFFA
 
 ----
 
-function ternary(condition,val1,val2)
+function ternary(condition, truevalue, falsevalue)
 	if condition then
-		return val1
+		return truevalue
 	end
-	return val2
+	return falsevalue
 end
 
-function ApplyZIndex(obj,name,ontop)
+function ApplyZIndex(obj, name, ontop)
 	if ZIndexEnabled then
 		local idx = (ontop and zindex_ontop[name]) or zindex[name]
 		for i,v in next, obj do
@@ -593,7 +589,8 @@ function ApplyZIndex(obj,name,ontop)
 		end
 	end
 end
-function SetProp(obj,prop,value,outline)
+function SetProp(obj, prop, value, outline)
+	taskdesync()
 	for i,v in next, obj do
 		if (OUTLINES and outline and find(i, "Outline")) or (not outline and OUTLINES) then
 			v[prop] = value
@@ -712,118 +709,108 @@ local Object = {
 			Outline = Drawingnew("Line"),
 			Tracer = Drawingnew("Line")
 		}
+	end,
+	Labels = function()
+		return {
+			Label = Drawingnew("Text")
+		}
+	end,
+	Chams = function()
+		return {
+			Top = Drawingnew("Quad"),
+			Bottom = Drawingnew("Quad"),
+			Left = Drawingnew("Quad"),
+			Right = Drawingnew("Quad"),
+			Front = Drawingnew("Quad"),
+			Back = Drawingnew("Quad")
+		}
 	end
 }
-function NewObject(type)
+local RemoveFunction = {
+	Boxes = function(self)
+		if self.Destroyed then return end
+		self.Object.Box:Remove()
+		self.Object.Outline:Remove()
+		self.Destroyed = true
+	end,
+	Tracers = function(self)
+		if self.Destroyed then return end
+		self.Object.Tracer:Remove()
+		self.Object.Outline:Remove()
+		self.Destroyed = true
+	end,
+	Names = function(self)
+		if self.Destroyed then return end
+		self.Object.Name:Remove()
+		self.Object.Data:Remove()
+		self.Destroyed = true
+	end,
+	Skeletons = function(self)
+		if self.Destroyed then return end
+		for _,v in next, self.Object do
+			v:Remove()
+		end
+		self.Destroyed = true
+	end,
+	HealthBars = function(self)
+		if self.Destroyed then return end
+		self.Object.Bar:Remove()
+		self.Object.Outline:Remove()
+		self.Destroyed = true
+	end,
+	HeadDots = function(self)
+		if self.Destroyed then return end
+		self.Object.Dot:Remove()
+		self.Object.Outline:Remove()
+		self.Destroyed = true
+	end,
+	LookTracers = function(self)
+		if self.Destroyed then return end
+		self.Object.Tracer:Remove()
+		self.Object.Outline:Remove()
+		self.Destroyed = true
+	end,
+	Labels = function(self)
+		if self.Destroyed then return end
+		self.Object.Label:Remove()
+		self.AncestryChanged:Disconnect()
+		self.Destroyed = true
+	end,
+	Chams = function(self)
+		if self.Destroyed then return end
+		self.Object.Top:Remove()
+		self.Object.Bottom:Remove()
+		self.Object.Left:Remove()
+		self.Object.Right:Remove()
+		self.Object.Front:Remove()
+		self.Object.Back:Remove()
+		self.AncestryChanged:Disconnect()
+		self.Destroyed = true
+	end
+}
+function NewObject(type) -- create the actual drawing objects
 	local obj = Object[type]()
 	SetProp(obj, "Visible", false)
 	ApplyZIndex(obj, type)
 	return obj
 end
-function NewCharacterObject(objs, type, plr)
+function NewCharacterObject(objs, type, plr) -- create data object for players and npcs
 	ID += 1
 
-	return {
+	local t = {
 		Object = objs,
 		Type = type,
 		Player = plr,
 		NPC = plr.ClassName ~= "Player",
 		Destroyed = false,
-		Id = ID
+		Id = ID,
+		Remove = RemoveFunction[type]
 	}
-end
-function Box(plr)
-	local type = "Boxes"
-	local objects = NewObject(type)
-	SetProp(objects, "Filled", false)
-	local a = NewCharacterObject(objects, type, plr)
-	function a:Remove()
-		if a.Destroyed then return end
-		objects.Box:Remove()
-		objects.Outline:Remove()
-		a.Destroyed = true
-	end
-	OBJECTS[ID] = a
-end
-function Tracer(plr)
-	local type = "Tracers"
-	local objects = NewObject(type)
-	local a = NewCharacterObject(objects, type, plr)
-	function a:Remove()
-		if a.Destroyed then return end
-		objects.Tracer:Remove()
-		objects.Outline:Remove()
-		a.Destroyed = true
-	end
-	OBJECTS[ID] = a
-end
-function Name(plr)
-	local type = "Names"
-	local objects = NewObject(type)
-	SetProp(objects, "Center", true)
-	local a = NewCharacterObject(objects, type, plr)
-	function a:Remove()
-		if a.Destroyed then return end
-		objects.Name:Remove()
-		objects.Data:Remove()
-		a.Destroyed = true
-	end
-	OBJECTS[ID] = a
-end
-function Skeleton(plr)
-	local type = "Skeletons"
-	local objects = NewObject(type)
-	local a = NewCharacterObject(objects, type, plr)
-	function a:Remove()
-		if a.Destroyed then return end
-		for _,v in next, objects do
-			v:Remove()
-		end
-		a.Destroyed = true
-	end
-	OBJECTS[ID] = a
-end
-function HealthBar(plr)
-	local type = "HealthBars"
-	local objects = NewObject(type)
-	SetProp(objects, "Thickness", 1)
-	objects.Bar.Filled = true
-	objects.Outline.Filled = false
-	if ZIndexEnabled then objects.Outline.ZIndex = 2 end
-	local a = NewCharacterObject(objects, type, plr)
-	function a:Remove()
-		if a.Destroyed then return end
-		objects.Bar:Remove()
-		objects.Outline:Remove()
-		a.Destroyed = true
-	end
-	OBJECTS[ID] = a
-end
-function HeadDot(plr)
-	local type = "HeadDots"
-	local objects = NewObject(type)
-	local a = NewCharacterObject(objects, type, plr)
-	function a:Remove()
-		if a.Destroyed then return end
-		objects.Dot:Remove()
-		objects.Outline:Remove()
-		a.Destroyed = true
-	end
-	OBJECTS[ID] = a
-end
-function LookTracer(plr)
-	local type = "LookTracers"
-	local objects = NewObject(type)
-	local a = NewCharacterObject(objects, type, plr)
-	function a:Remove()
-		if a.Destroyed then return end
-		objects.Tracer:Remove()
-		objects.Outline:Remove()
-		a.Destroyed = true
-	end
-	OBJECTS[ID] = a
-end
 
+	OBJECTS[ID] = t
+
+	return t
+end
 local props = {
 	Labels = {
 		Text = "string",
@@ -844,16 +831,779 @@ local props = {
 		Filled = "boolean"
 	}
 }
-function Label(part,options)
+function PartSetPart(self, p) -- SetPart function for labels and chams
+	assert(typeof(p) == "Instance", ("Universal Esp: bad argument #1 to 'SetPart' (Instance expected, got %s)"):format(typeof(p)))
+	assert(tablefind(supportedparts, p.ClassName), ("Universal Esp: bad argument #1 to 'SetPart' (BasePart or Model expected, got %s)"):format(p.ClassName))
+	self.Part = p
+end
+function PartSetProp(self, prop, value) -- SetProp function for labels and chams
+	assert(prop ~= nil, "Universal Esp: bad argument #1 to 'SetProp' (property is nil)")
+	assert(self.Options[prop] ~= nil, "Universal Esp: bad argument #1 to 'SetProp' (invalid property)")
+	local expected, got = props[self.Type][prop], typeof(value)
+	assert(expected == got,("Universal Esp: bad argument to #2 'SetProp' (%s expected, got %s)"):format(expected, got))
+	self.Options[prop] = value
+end
+function NewPartObject(objs, type, part, options) -- create data object for parts and models
 	ID += 1
+	tasksync()
 
-	local type = "Labels"
-	local objects = {
-		Label = Drawingnew("Text")
+	local t = {
+		Object = objs,
+		Type = type,
+		Part = part,
+		Options = options,
+		Destroyed = false,
+		Id = ID,
+		AncestryChanged = nil,
+		SetPart = PartSetPart,
+		SetProp = PartSetProp,
+		Remove = RemoveFunction[type]
 	}
-	objects.Label.Visible = false
-	objects.Label.Center = true
+	t.AncestryChanged = part.AncestryChanged:Connect(function(_, parent)
+		if parent == nil then
+			t:Remove()
+		end
+		t:SetPart(parent:FindFirstChild(part.Name))
+	end)
+	taskdesync()
 
+	OBJECTS[ID] = t
+
+	return t
+end
+
+local ss = getgenv().EspSettings
+local origins = {}
+local mousepos = Vector2.zero
+local ffa = IsFFA()
+local myteam = GetTeam(player)
+local ccf = camera.CFrame.Position
+local camfov = camera.FieldOfView
+local rainbow = fromHSV(tick() % 5 / 5, 1, 1)
+local teamcheck = ss.TeamCheck
+local maxdist = ss.MaximumDistance
+local facecamera = ss.FaceCamera
+local alignpoints = ss.AlignPoints
+local refreshrate = ss.RefreshRate / 1000
+
+local mv_enabled = mousevis.Enabled
+local mv_selected = mousevis.Selected
+local mv_transparency = mousevis.Transparency
+local mv_method = mousevis.Method and lower(mousevis.Method) or nil
+local mv_radius = mousevis.Radius
+local mv_hoverradius = mousevis.HoverRadius or 10
+
+local hl_enabled = highlights.Enabled
+local hl_players = highlights.Players
+local hl_color = highlights.Color 
+local hl_transparency = highlights.Transparency
+local hl_ontop = highlights.AlwaysOnTop
+
+local npc_overrides = npcs.Overrides
+local npc_color = npcs.Color
+local npc_transparency = npcs.Transparency
+local npc_rainbow = npcs.Rainbow
+
+local Boxes = ss.Boxes
+local Tracers = ss.Tracers
+local Names = ss.Names
+local Skeletons = ss.Skeletons
+local HealthBars = ss.HealthBars
+local HeadDots = ss.HeadDots
+local LookTracers = ss.LookTracers
+function UpdateVariables() -- set variables once per frame so it doesnt have to do it multiple times
+	ss = getgenv().EspSettings
+	mousepos = GetMouseLocation(uis)
+	local x, y = camera.ViewportSize.X, camera.ViewportSize.Y
+	origins = {
+		top = Vector2new(x / 2, 0),
+		center = Vector2new(x / 2, y / 2),
+		bottom = Vector2new(x / 2, y),
+		mouse = mousepos
+	}
+	ffa = IsFFA()
+	myteam = GetTeam(player)
+	ccf = camera.CFrame.Position
+	camfov = camera.FieldOfView
+	rainbow = fromHSV(tick() % 5 / 5, 1, 1)
+	teamcheck = ss.TeamCheck
+	maxdist = ss.MaximumDistance
+	facecamera = ss.FaceCamera
+	alignpoints = ss.AlignPoints
+	refreshrate = ss.RefreshRate / 1000
+	mv_enabled = mousevis.Enabled
+	mv_selected = mousevis.Selected
+	mv_transparency = mousevis.Transparency
+	mv_method = mousevis.Method and lower(mousevis.Method) or nil
+	mv_radius = mousevis.Radius
+	mv_hoverradius = mousevis.HoverRadius
+	hl_enabled = highlights.Enabled
+	hl_players = highlights.Players
+	hl_color = highlights.Color 
+	hl_transparency = highlights.Transparency
+	hl_ontop = highlights.Always
+	npc_overrides = npcs.Overrides
+	npc_color = npcs.Color
+	npc_transparency = npcs.Transparency
+	npc_rainbow = npcs.Rainbow
+	ss = getgenv().EspSettings
+	Boxes = ss.Boxes
+	Tracers = ss.Tracers
+	Names = ss.Names
+	Skeletons = ss.Skeletons
+	HealthBars = ss.HealthBars
+	HeadDots = ss.HeadDots
+	LookTracers = ss.LookTracers
+end
+UpdateVariables()
+local conn2 = RunService.Heartbeat:Connect(UpdateVariables)
+function UpdateObjects(self) -- update esp objects for players and npcs
+	taskdesync()
+
+	local plr, isnpc = self.Player, self.NPC
+	local cf, size, mid, inViewport, tl, tr, bl, br
+	local tlx, tly, tlz, trx, try, blx, bly, brx, bry, z
+	local head, ltracerto
+	local team, teamcolor
+	local char, health, maxhealth, mag, overlapping, render
+	local isalive = plr and IsAlive(plr)
+
+	local objs = self.Objects
+	local box = objs.Box.Object
+	local tracer = objs.Tracer.Object
+	local name = objs.Name.Object
+	local skeleton = objs.Skeleton.Object
+	local bar = objs.HealthBar.Object
+	local dot = objs.HeadDot.Object
+	local ltracer = objs.LookTracer.Object
+
+	if VISIBLE and isalive then
+		local hp = GetHealth(plr)
+		char, health, maxhealth = GetChar(plr), hp[1], hp[2]
+		tasksync()
+		cf, size = char:GetBoundingBox()
+		taskdesync()
+		team, teamcolor = GetTeam(plr), GetTeamColor(plr)
+		mag = (ccf - cf.Position).Magnitude
+		render = (ffa or (not teamcheck or (not ffa and teamcheck and team ~= myteam))) and mag <= maxdist
+		mid, inViewport = WorldToViewportPoint(camera, cf.Position)
+
+		local BOXES = Boxes.Enabled
+		local TRACERS = Tracers.Enabled
+		local NAMES = Names.Enabled
+		local SKELETONS = Skeletons.Enabled
+		local HEALTHBARS = HealthBars.Enabled
+		local HEADDOTS = HeadDots.Enabled
+		local LOOKTRACERS = LookTracers.Enabled
+
+		SetProp(box, "Visible", render and inViewport and BOXES)
+		SetProp(tracer, "Visible", render and inViewport and TRACERS)
+		SetProp(name, "Visible", render and inViewport and NAMES)
+		SetProp(skeleton, "Visible", render and inViewport and SKELETONS)
+		SetProp(bar, "Visible", render and inViewport and HEALTHBARS)
+		SetProp(dot, "Visible", render and inViewport and HEADDOTS)
+		SetProp(ltracer, "Visible", render and inViewport and LOOKTRACERS)
+
+		if render and inViewport then
+			do
+				if facecamera then
+					cf = CFramenew(cf.Position, ccf)
+				end
+				size /= 2
+				local x, y = size.X, size.Y
+				--mid, inViewport = WorldToViewportPoint(camera, cf.Position)
+				tl = WorldToViewportPoint(camera, (cf * CFramenew(-x,  y, 0)).Position)
+				tr = WorldToViewportPoint(camera, (cf * CFramenew( x,  y, 0)).Position)
+				bl = WorldToViewportPoint(camera, (cf * CFramenew(-x, -y, 0)).Position)
+				br = WorldToViewportPoint(camera, (cf * CFramenew( x, -y, 0)).Position)
+	
+				tlx, tly, tlz = tl.X, tl.Y, tl.Z
+				trx, try = tr.X, tr.Y
+				blx, bly = bl.X, bl.Y
+				brx, bry = br.X, br.Y
+				z = mathclamp(1000 / tlz, 8, 12)
+	
+				if facecamera and alignpoints then
+					if tly < try then
+						tly += mathabs(tly - try) / 2
+					else
+						tly += mathabs(try - tly) / 2
+					end
+					try = tly
+	
+					if bly < bry then
+						bly += mathabs(bly - bry) / 2
+					else
+						bly += mathabs(bry - bly) / 2
+					end
+					bry = bly
+				end
+	
+				if ts and char:FindFirstChild("Body") then -- BAD BUSINESS
+					char = char.Body
+				end
+	
+				if mv_enabled then
+					local method = mv_method
+					if method == "radius" or not method then
+						local mags = {}
+						tableinsert(mags, (mousepos - Vector2new(mid.X, mid.Y)).Magnitude)
+						tableinsert(mags, (mousepos - Vector2new(tlx, tly)).Magnitude)
+						tableinsert(mags, (mousepos - Vector2new(trx, try)).Magnitude)
+						tableinsert(mags, (mousepos - Vector2new(blx, bly)).Magnitude)
+						tableinsert(mags, (mousepos - Vector2new(brx, bry)).Magnitude)
+						
+						tablesort(mags, function(a,b)
+							return a < b
+						end)
+	
+						overlapping = mags[1] <= mv_radius
+					elseif method == "hover" then
+						local x_min = mathmin(tlx, trx, blx, brx) - mv_hoverradius
+						local x_max = mathmax(tlx, trx, blx, brx) + mv_hoverradius
+	
+						local y_min_offset = 0
+						local y_max_offset = 0
+						if Names.Enabled then
+							y_min_offset = Names.Size - 2
+							if Names.ShowHealth or Names.ShowDistance then
+								y_max_offset += Names.Size + 2
+							end
+						end
+						if HealthBars.Enabled then
+							y_max_offset += z 
+						end
+						local y_min = mathmin(tly, try, bly, bry) - y_min_offset - mv_hoverradius
+						local y_max = mathmax(tly, try, bly, bry) + y_max_offset + mv_hoverradius
+	
+						local mousex = mousepos.X
+						local mousey = mousepos.Y
+	
+						overlapping = mousex > x_min and mousex < x_max and mousey > y_min and mousey < y_max
+					end
+				end
+			end
+
+			local highlight = hl_enabled and tablefind(hl_players, plr.Name)
+
+			if BOXES then
+				local type = "Boxes"
+				local certified_npc = isnpc and npc_overrides[type]
+				local color =		(highlight and hl_color) or 
+									 (certified_npc and (npc_rainbow and rainbow or npc_color)) or
+									 (Boxes.RainbowColor and rainbow) or
+									 (Boxes.UseTeamColor and teamcolor) or
+									 Boxes.Color
+				local transparency = (mv_enabled and mv_selected[type] and overlapping and mv_transparency) or
+									 (certified_npc and npc_transparency) or
+									 (highlight and hl_transparency) or
+									 Boxes.Transparency
+				ApplyZIndex(box, type, highlight and hl_ontop)
+				SetProp(box, "Color", color)
+				SetProp(box, "Transparency", transparency)
+
+				local box, out = box.Box, box.Outline
+				box.Thickness = Boxes.Thickness
+				box.PointA = Vector2new(trx, try)
+				box.PointB = Vector2new(tlx, tly)
+				box.PointC = Vector2new(blx, bly)
+				box.PointD = Vector2new(brx, bry)
+
+				if OUTLINES then
+					out.Visible = Boxes.Outline and box.Visible
+					if Boxes.Outline then
+						out.Color = Boxes.OutlineColor
+						out.Thickness = Boxes.Thickness + (Boxes.OutlineThickness * 2)
+						out.PointA = box.PointA
+						out.PointB = box.PointB
+						out.PointC = box.PointC
+						out.PointD = box.PointD
+					end
+				end
+			end
+	
+			if TRACERS then
+				local type = "Tracers"
+				local certified_npc = isnpc and npc_overrides[type]
+				local color =		(highlight and hl_color) or 
+									 (certified_npc and (npc_rainbow and rainbow or npc_color)) or
+									 (Tracers.RainbowColor and rainbow) or
+									 (Tracers.UseTeamColor and teamcolor) or
+									 Tracers.Color
+				local transparency = (mv_enabled and mv_selected[type] and overlapping and mv_transparency) or
+									 (certified_npc and npc_transparency) or
+									 (highlight and hl_transparency) or
+									 Tracers.Transparency
+				ApplyZIndex(tracer, type, highlight and hl_ontop)
+				SetProp(tracer, "Color", color)
+				SetProp(tracer, "Transparency", transparency)
+
+				local thickness, outline, origin = Tracers.Thickness, Tracers.Outline, lower(Tracers.Origin)
+				local tracer, out = tracer.Tracer, tracer.Outline
+				tracer.Thickness = thickness
+
+				local from = origins[origin]
+				local to = Vector2new(tlx + (trx - tlx) / 2, tly + (try - tly) / 2)
+				tracer.From = from
+				tracer.To = to
+				if origin == "bottom" then
+					to = Vector2new(blx + (brx - blx) / 2, bly + (bry - bly) / 2)
+					tracer.To = to
+				end
+
+				if OUTLINES then
+					out.Visible = outline and tracer.Visible
+					if outline then
+						out.Color = Tracers.OutlineColor
+						out.Thickness = thickness + (Tracers.OutlineThickness * 2)
+						out.From = from
+						out.To = to
+					end
+				end
+			end
+	
+			if NAMES then
+				local type = "Names"
+				local certified_npc = isnpc and npc_overrides[type]
+				local color =		(highlight and hl_color) or 
+									 (certified_npc and (npc_rainbow and rainbow or npc_color)) or
+									 (Names.RainbowColor and rainbow) or
+									 (Names.UseTeamColor and teamcolor) or
+									 Names.Color
+				local transparency = (mv_enabled and mv_selected[type] and overlapping and mv_transparency) or
+									 (certified_npc and npc_transparency) or
+									 (highlight and hl_transparency) or
+									 Names.Transparency
+				ApplyZIndex(name, type, highlight and hl_ontop)
+				SetProp(name, "Color", color)
+				SetProp(name, "Transparency", transparency)
+
+				SetProp(name, "Size", Names.Size)
+				SetProp(name, "Outline", Names.Outline)
+				SetProp(name, "OutlineColor", Names.OutlineColor)
+				SetProp(name, "Font", Names.Font)
+				local name, data = name.Name, name.Data
+				local h,l = (tly > try and tly) or try, (tly < try and tly) or try
+				
+				name.Position = Vector2new(tlx + (trx - tlx) / 2, (h + (l - h) / 2) - (Names.Size + 2))
+				data.Position = Vector2new(blx + (brx - blx) / 2, bly + (bry - bly) / 2)
+				if ss.HealthBars.Enabled then
+					data.Position = Vector2new(data.Position.X, data.Position.Y + z)
+				end
+
+				if isnpc then
+					name.Text = "[NPC] "
+				end
+				name.Text = (Names.UseDisplayName and plr.DisplayName) or plr.Name
+
+				data.Text = ""
+				if Names.ShowDistance then
+					data.Text = "[ "..mathfloor(mag)..Names.DistanceDataType.." ]"
+				end
+				if Names.ShowHealth then
+					local a = lower(Names.HealthDataType)
+					if a == "percentage" then
+						data.Text = data.Text.." [ "..mathfloor((health / maxhealth) * 100).."% ]"
+					elseif a == "value" then
+						data.Text = data.Text.." [ "..mathfloor(health).."/"..mathfloor(maxhealth).." ]"
+					end
+				end
+			end
+	
+			if SKELETONS then
+				local type = "Skeletons"
+				local certified_npc = isnpc and npc_overrides[type]
+				local color =		(highlight and hl_color) or 
+									 (certified_npc and (npc_rainbow and rainbow or npc_color)) or
+									 (Skeletons.RainbowColor and rainbow) or
+									 (Skeletons.UseTeamColor and teamcolor) or
+									 Skeletons.Color
+				local transparency = (mv_enabled and mv_selected[type] and overlapping and mv_transparency) or
+									 (certified_npc and npc_transparency) or
+									 (highlight and hl_transparency) or
+									 Skeletons.Transparency
+				ApplyZIndex(skeleton, type, highlight and hl_ontop)
+				SetProp(skeleton, "Color", color)
+				SetProp(skeleton, "Transparency", transparency)
+				
+				local thickness, othickness, outline = Skeletons.Thickness, Skeletons.OutlineThickness, Skeletons.Outline
+				SetProp(skeleton, "Thickness", thickness)
+
+				for i2,v2 in next, skeleton do
+					local from = char:FindFirstChild(From[i2] or "")
+					local to = char:FindFirstChild(i2 or "")
+					local isoutline = find(i2, "Outline")
+					if not isoutline and from and find(from.ClassName, "Part") and to and find(to.ClassName, "Part") then
+						local pos1, in1 = WorldToViewportPoint(camera, from.Position)
+						local pos2, in2 = WorldToViewportPoint(camera, to.Position)
+						v2.Visible = in1 and in2
+						if in1 and in2 then
+							v2.From = Vector2new(pos1.X, pos1.Y)
+							v2.To = Vector2new(pos2.X, pos2.Y)
+						end
+					end
+				end
+				if OUTLINES then
+					for i2,v2 in next, skeleton do
+						if find(i2, "Outline") then
+							local name = i2:gsub("Outline","")
+							local v3 = skeleton[name]
+							v2.Visible = outline and v3.Visible
+							if v2.Visible then
+								v2.Color = Skeletons.OutlineColor
+								v2.Thickness = thickness + (othickness * 2)
+								v2.From = v3.From
+								v2.To = v3.To
+							end
+						end
+					end
+				end
+			end
+	
+			if HEALTHBARS then
+				local type = "HealthBars"
+				local certified_npc = isnpc and npc_overrides[type]
+				local color =		(highlight and hl_color) or 
+									 (certified_npc and (npc_rainbow and rainbow or npc_color)) or
+									 (HealthBars.RainbowColor and rainbow) or
+									 (HealthBars.UseTeamColor and teamcolor) or
+									 HealthBars.Color
+				local transparency = (mv_enabled and mv_selected[type] and overlapping and mv_transparency) or
+									 (certified_npc and npc_transparency) or
+									 (highlight and hl_transparency) or
+									 HealthBars.Transparency
+				ApplyZIndex(bar, type, highlight and hl_ontop)
+				SetProp(bar, "Color", color)
+				SetProp(bar, "Transparency", transparency)
+
+				local outline, origin, baronly = HealthBars.Outline, HealthBars.Origin:lower(), HealthBars.OutlineBarOnly
+				local bar, out = bar.Bar, bar.Outline
+				health = mathclamp(health, 0, maxhealth) / maxhealth
+				local left, right = blx, brx
+				local lefty, righty = bly, bry
+
+				if origin == "left" then
+					left = (blx < brx and blx) or brx
+					right = (blx > brx and blx) or brx
+
+					lefty = (blx < brx and bly) or bry
+					righty = (blx > brx and bly) or bry
+				elseif origin == "right" then
+					left = (blx < brx and brx) or blx
+					right = (blx > brx and brx) or blx
+
+					lefty = (blx < brx and bry) or bly
+					righty = (blx > brx and bry) or bly
+				end
+
+				bar.PointA = Vector2new(
+					left + (right - left) * health,
+					(lefty + (righty - lefty) * health) + 5
+				)
+				bar.PointB = Vector2new(
+					left,
+					lefty + 5
+				)
+				bar.PointC = Vector2new(
+					left,
+					lefty + z
+				)
+				bar.PointD = Vector2new(
+					left + (right - left) * health,
+					(lefty + (righty - lefty) * health) + z
+				)
+
+				if OUTLINES then
+					out.Visible = outline and bar.Visible
+					if outline then
+						out.Color = HealthBars.OutlineColor
+						out.Thickness = HealthBars.OutlineThickness * 2
+						out.PointA = (baronly and bar.PointA) or Vector2new(brx, bry + 5)
+						out.PointB = (baronly and bar.PointB) or Vector2new(blx, bly + 5)
+						out.PointC = (baronly and bar.PointC) or Vector2new(blx, bly + z)
+						out.PointD = (baronly and bar.PointD) or Vector2new(brx, bry + z)
+					end
+				end
+			end
+	
+			if HEADDOTS then
+				local type = "HeadDots"
+				local certified_npc = isnpc and npc_overrides[type]
+				local color =		(highlight and hl_color) or 
+									 (certified_npc and (npc_rainbow and rainbow or npc_color)) or
+									 (HeadDots.RainbowColor and rainbow) or
+									 (HeadDots.UseTeamColor and teamcolor) or
+									 HeadDots.Color
+				local transparency = (mv_enabled and mv_selected[type] and overlapping and mv_transparency) or
+									 (certified_npc and npc_transparency) or
+									 (highlight and hl_transparency) or
+									 HeadDots.Transparency
+				ApplyZIndex(dot, type, highlight and hl_ontop)
+				SetProp(dot, "Color", color)
+				SetProp(dot, "Transparency", transparency)
+
+				head = char:FindFirstChild("Head")
+				if head then
+					local headcf = head.CFrame
+					head = WorldToViewportPoint(camera, headcf.Position)
+				end
+
+				if head then
+					local thickness, outline, filled = HeadDots.Thickness, HeadDots.Outline, HeadDots.Filled
+					local dot, out = dot.Dot, dot.Outline
+					dot.Thickness = thickness 
+					dot.Filled = filled
+
+					local pos = Vector2new(head.X, head.Y)
+					local radius = z / ((mag / 60) * (camfov / 70)) * HeadDots.Scale
+					dot.Position = pos
+					dot.Radius = radius
+
+					if OUTLINES then
+						out.Visible = outline and dot.Visible
+						if outline  then
+							local othickness = thickness + (HeadDots.OutlineThickness * 2)
+							out.Color = HeadDots.OutlineColor
+							out.Thickness = (filled and thickness + (othickness - 1)) or othickness
+							out.Position = pos
+							out.Radius = (filled and radius + 1) or radius
+						end
+					end
+				else
+					SetProp(dot, "Visible", false)
+				end
+			end
+	
+			if LOOKTRACERS then
+				local type = "LookTracers"
+				local certified_npc = isnpc and npc_overrides[type]
+				local color =		(highlight and hl_color) or 
+									 (certified_npc and (npc_rainbow and rainbow or npc_color)) or
+									 (LookTracers.RainbowColor and rainbow) or
+									 (LookTracers.UseTeamColor and teamcolor) or
+									 LookTracers.Color
+				local transparency = (mv_enabled and mv_selected[type] and overlapping and mv_transparency) or
+									 (certified_npc and npc_transparency) or
+									 (highlight and hl_transparency) or
+									 LookTracers.Transparency
+				ApplyZIndex(ltracer, type, highlight and hl_ontop)
+				SetProp(ltracer, "Color", color)
+				SetProp(ltracer, "Transparency", transparency)
+
+				head = char:FindFirstChild("Head")
+				if head then
+					local headcf = head.CFrame
+					head = WorldToViewportPoint(camera, headcf.Position)
+					ltracerto = WorldToViewportPoint(camera, (headcf * CFramenew(0, 0, -LookTracers.Length)).Position)
+				end
+
+				if head then
+					local thickness, outline = LookTracers.Thickness, LookTracers.Outline
+					local tracer, out = ltracer.Tracer, ltracer.Outline
+					tracer.Thickness = thickness
+
+					local from = Vector2new(head.X, head.Y)
+					local to = Vector2new(ltracerto.X, ltracerto.Y)
+					tracer.From = from
+					tracer.To = to
+
+					if OUTLINES then
+						out.Visible = outline and tracer.Visible
+						if outline then
+							out.Color = LookTracers.OutlineColor
+							out.Thickness = thickness + (LookTracers.OutlineThickness * 2)
+							out.From = from
+							out.To = to
+						end
+					end
+				else
+					SetProp(ltracer, "Visible", false)
+				end
+			end
+		end
+	else
+		SetProp(box, "Visible", false)
+		SetProp(tracer, "Visible", false)
+		SetProp(name, "Visible", false)
+		SetProp(skeleton, "Visible", false)
+		SetProp(bar, "Visible", false)
+		SetProp(dot, "Visible", false)
+		SetProp(ltracer, "Visible", false)
+	end
+end
+function UpdatePartObjects(self) -- update esp objects for parts and models
+	taskdesync()
+
+	local part = self.Part
+	local type = self.Type
+	local obj = self.Objects
+	local s = self.Options
+
+	local cf, size, inViewport
+	local c0, c1, c2, c3, c4, c5, c6, c7, c8
+
+	if VISIBLE then
+		local class = part.ClassName
+		if find(class, "Part") or find(class, "Operation") then
+			cf, size = part.CFrame, part.Size / 2
+		elseif class == "Model" then
+			tasksync()
+			cf, size = part:GetBoundingBox()
+			taskdesync()
+			size /= 2
+		end
+		local x, y, z = size.X, size.Y, size.Z
+		c0, inViewport = WorldToViewportPoint(camera,cf.Position)
+		if type == "Chams" and inViewport then
+			c1 = WorldToViewportPoint(camera, (cf * CFramenew( x,  y,  z)).Position)
+			c2 = WorldToViewportPoint(camera, (cf * CFramenew(-x,  y,  z)).Position)
+			c3 = WorldToViewportPoint(camera, (cf * CFramenew(-x, -y,  z)).Position)
+			c4 = WorldToViewportPoint(camera, (cf * CFramenew( x, -y,  z)).Position)
+			c5 = WorldToViewportPoint(camera, (cf * CFramenew( x,  y, -z)).Position)
+			c6 = WorldToViewportPoint(camera, (cf * CFramenew(-x,  y, -z)).Position)
+			c7 = WorldToViewportPoint(camera, (cf * CFramenew(-x, -y, -z)).Position)
+			c8 = WorldToViewportPoint(camera, (cf * CFramenew( x, -y, -z)).Position)
+
+			c1 = Vector2new(c1.X, c1.Y)
+			c2 = Vector2new(c2.X, c2.Y)
+			c3 = Vector2new(c3.X, c3.Y)
+			c4 = Vector2new(c4.X, c4.Y)
+			c5 = Vector2new(c5.X, c5.Y)
+			c6 = Vector2new(c6.X, c6.Y)
+			c7 = Vector2new(c7.X, c7.Y)
+			c8 = Vector2new(c8.X, c8.Y)
+		end
+
+		SetProp(obj, "Visible", inViewport)
+
+		if inViewport then
+			local color = (s.RainbowColor and rainbow) or s.Color
+			SetProp(obj, "Transparency", s.Transparency)
+			SetProp(obj, "Color", color)
+			if type == "Labels" then
+				local label = obj.Label
+				label.Text = s.Text
+				label.Size = s.Size
+				label.Outline = s.Outline
+				label.OutlineColor = s.OutlineColor
+				label.Font = s.Font
+
+				label.Position = Vector2new(c0.X, c0.Y - (s.Size) / 2) + s.Offset
+			elseif type == "Chams" then
+				local t, b, l, r, f, bb = obj.Top, obj.Bottom, obj.Left, obj.Right, obj.Front, obj.Back
+				SetProp(obj, "Filled", s.Filled)
+				SetProp(obj, "Thickness", s.Thickness)
+
+				t.PointA = c5
+				t.PointB = c6
+				t.PointC = c2
+				t.PointD = c1
+
+				b.PointA = c4
+				b.PointB = c3
+				b.PointC = c7
+				b.PointD = c8
+
+				l.PointA = c2
+				l.PointB = c6
+				l.PointC = c7
+				l.PointD = c3
+
+				r.PointA = c5
+				r.PointB = c1
+				r.PointC = c4
+				r.PointD = c8
+
+				f.PointA = c1
+				f.PointB = c2
+				f.PointC = c3
+				f.PointD = c4
+
+				bb.PointA = c5
+				bb.PointB = c6
+				bb.PointC = c7
+				bb.PointD = c8
+			end
+		end
+	else
+		SetProp(obj, "Visible", false)
+	end
+end
+function UpdateParallel(self) -- begin the loop that calls the update function
+	taskdesync()
+	taskspawn(function()
+		while true do
+			taskdesync()
+			local clock = osclock()
+			if refreshrate > 0 and (clock - self.LastUpdate) < refreshrate then
+				taskwait()
+				continue
+			end
+			self.LastUpdate = clock
+
+			if self.Destroyed then
+				break
+			end
+			self:Update()
+			taskwait()
+		end
+	end)
+end
+
+function NewDrawing(type, target, options) -- create esp objects and data objects
+	local drawobjs = NewObject(type)
+	local obj = (options ~= nil and NewPartObject(drawobjs, type, target, options)) or NewCharacterObject(drawobjs, type, target)
+	return drawobjs, obj
+end
+function NewPlayer(plr)
+	local Box, BoxObj = NewDrawing("Boxes", plr)
+	SetProp(Box, "Filled", false)
+
+	local Tracer, TracerObj = NewDrawing("Tracers", plr)
+
+	local Name, NameObj = NewDrawing("Names", plr)
+	SetProp(Name, "Center", true)
+
+	local Skeleton, SkeletonObj = NewDrawing("Skeletons", plr)
+
+	local HealthBar, HealthBarObj = NewDrawing("HealthBars", plr)
+	SetProp(HealthBar, "Thickness", 1)
+	HealthBar.Bar.Filled = true
+	HealthBar.Outline.Filled = false
+
+	local HeadDot, HeadDotObj = NewDrawing("HeadDots", plr)
+
+	local LookTracer, LookTracerObj = NewDrawing("LookTracers", plr)
+
+	local t = {}
+	t.Destroyed = false
+	t.Player = plr
+	t.NPC = plr.ClassName ~= "Player"
+	t.Objects = {
+		Box = BoxObj,
+		Tracer = TracerObj,
+		Name = NameObj,
+		Skeleton = SkeletonObj,
+		HealthBar = HealthBarObj,
+		HeadDot = HeadDotObj,
+		LookTracer = LookTracerObj
+	}
+	t.Update = UpdateObjects
+	t.LastUpdate = osclock()
+	t.Destroy = function(self)
+		if self.Destroyed then return end
+		self.Destroyed = true
+		for _,v in next, self.Objects do
+			v:Remove()
+		end
+	end
+
+	PlayerObjects[plr] = t
+
+	UpdateParallel(t)
+end
+
+function NewLabel(part, options)
 	local o = {
 		Text = options.Text or part.Name,
 		Transparency = options.Transparency or 1,
@@ -865,53 +1615,33 @@ function Label(part,options)
 		Font = options.Font or Fonts.UI,
 		Offset = options.Offset or Vector2new()
 	}
-	
-	ApplyZIndex(objects, type)
-	local a,c,t = {Object = objects, Type = type, Part = part, Options = o, Destroyed = false, Id = ID}
-	function a:SetPart(p)
-		assert(typeof(p) == "Instance",("Universal Esp: bad argument #1 to 'SetPart' (Instance expected, got %s)"):format(typeof(p)))
-		assert(table.find(supportedparts, part.ClassName),("Universal Esp: bad argument to #1 'SetPart' (Part or Model expected, got %s)"):format(p.ClassName))
-		a.Part = p
-		t.Part = p
-	end
-	function a:SetProp(prop,value)
-		assert(prop ~= nil,"Universal Esp: bad argument #1 to 'SetProp' (property is nil)")
-		assert(o[prop] ~= nil,"Universal Esp: bad argument #1 to 'SetProp' (invalid property)")
-		local expected, got = props[type][prop], typeof(value)
-		assert(expected == got,("Universal Esp: bad argument to #2 'SetProp' (%s expected, got %s)"):format(expected, got))
-		if o[prop] == nil then return end
-		o[prop] = value
-		t.Options[prop] = value
-	end
-	function a:Remove()
-		if a.Destroyed then return end
-		objects.Label:Remove()
-		c:Disconnect()
-		a.Destroyed = true
-	end
-	c = part.AncestryChanged:Connect(function(_,p)
-		if p == nil then
-			a:Remove()
-			return
-		end
-		a:SetPart(p:FindFirstChild(part.Name))
-	end)
-	OBJECTS[ID] = a
-	t = OBJECTS[ID]
-	return a
-end
-function Cham(part,options)
-	ID += 1
 
-	local type = "Chams"
-	local objects = {
-		Top = Drawingnew("Quad"),
-		Bottom = Drawingnew("Quad"),
-		Left = Drawingnew("Quad"),
-		Right = Drawingnew("Quad"),
-		Front = Drawingnew("Quad"),
-		Back = Drawingnew("Quad")
-	}
+	local Label, LabelObj = NewDrawing("Labels", part, o)
+	Label.Label.Visible = false
+	Label.Label.Center = true
+
+	local t = {}
+	t.Destroyed = false
+	t.Part = part
+	t.Options = o
+	t.Objects = LabelObj.Object
+	t.Type = "Labels"
+	t.Update = UpdatePartObjects
+	t.LastUpdate = osclock()
+	t.Destroy = function(self)
+		if self.Destroyed then return end
+		self.Destroyed = true
+		for _,v in next, self.Objects do
+			v:Remove()
+		end
+	end
+
+	PlayerObjects[part] = t
+	UpdateParallel(t)
+
+	return LabelObj
+end
+function NewCham(part, options)
 	local o = {
 		Transparency = options.Transparency or 1,
 		Color = options.Color or white,
@@ -919,536 +1649,31 @@ function Cham(part,options)
 		Thickness = options.Thickness or 3,
 		Filled = ternary(options.Filled ~= nil, options.Filled, true)
 	}
-	ApplyZIndex(objects, type)
-	local a,c,t = {Object = objects, Type = type, Part = part, Options = o, Destroyed = false, Id = ID}
-	function a:SetPart(p)
-		assert(typeof(p) == "Instance",("Universal Esp: bad argument #1 to 'SetPart' (Instance expected, got %s)"):format(typeof(p)))
-		assert(table.find(supportedparts, part.ClassName),("Universal Esp: bad argument to #1 'SetPart' (Part or Model expected, got %s)"):format(p.ClassName))
-		a.Part = p
-		t.Part = p
-	end
-	function a:SetProp(prop,value)
-		assert(prop ~= nil,"Universal Esp: bad argument #1 to 'SetProp' (property is nil)")
-		assert(o[prop] ~= nil,"Universal Esp: bad argument #1 to 'SetProp' (invalid property)")
-		local expected, got = props[type][prop], typeof(value)
-		assert(expected == got,("Universal Esp: bad argument to #2 'SetProp' (%s expected, got %s)"):format(expected, got))
-		o[prop] = value
-		t.Options[prop] = value
-	end
-	function a:Remove()
-		if a.Destroyed then return end
-		for _,v in next, objects do
+
+	local Cham, ChamObj = NewDrawing("Chams", part, o)
+
+	local t = {}
+	t.Destroyed = false
+	t.Part = part
+	t.Options = o
+	t.Type = "Chams"
+	t.Objects = ChamObj.Object
+	t.Update = UpdatePartObjects
+	t.LastUpdate = osclock()
+	t.Destroy = function(self)
+		if self.Destroyed then return end
+		self.Destroyed = true
+		for _,v in next, self.Objects do
 			v:Remove()
 		end
-		c:Disconnect()
-		a.Destroyed = true
 	end
-	c = part.AncestryChanged:Connect(function(_,p)
-		if p == nil then
-			a:Remove()
-			return
-		end
-		a:SetPart(p:FindFirstChild(part.Name))
-	end)
-	OBJECTS[ID] = a
-	t = OBJECTS[ID]
-	return a
+
+	PlayerObjects[part] = t
+	UpdateParallel(t)
+
+	return ChamObj
 end
 
-function updateorigins()
-	local x, y = camera.ViewportSize.X, camera.ViewportSize.Y
-	origins = {
-		top = Vector2new(x / 2, 0),
-		center = Vector2new(x / 2, y / 2),
-		bottom = Vector2new(x / 2, y),
-		mouse = GetMouseLocation(uis)
-	}
-end
-updateorigins()
-local conn1 = camera:GetPropertyChangedSignal("ViewportSize"):Connect(updateorigins)
-
-local lastupdate, refresh = osclock(), ss.RefreshRate
-function update()
-	refresh = mathclamp(ss.RefreshRate, 0, mathhuge)
-	if osclock() - lastupdate < (refresh / 1000) then
-		return
-	end
-	lastupdate = osclock()
-	local mousepos = GetMouseLocation(uis)
-	origins.mouse = mousepos
-	local ffa, myteam, ccf, camfov = IsFFA(), GetTeam(player), camera.CFrame.Position, camera.FieldOfView
-	local rainbow = fromHSV(tick() % 5 / 5, 1, 1)
-
-	local teamcheck = ss.TeamCheck
-	local maxdist = ss.MaximumDistance
-	local alignpoints = ss.AlignPoints
-
-	local names = ss.Names
-	local healthbars = ss.HealthBars
-
-	local mv_enabled = mousevis.Enabled
-	local mv_selected
-	local mv_transparency
-	local mv_method
-	local mv_radius
-	local mv_hoverradius
-	if mv_enabled then
-		mv_selected = mousevis.Selected
-		mv_transparency = mousevis.Transparency
-		mv_method = mousevis.Method and lower(mousevis.Method) or nil
-		mv_radius = mousevis.Radius
-		mv_hoverradius = mousevis.HoverRadius or 10
-	end
-
-	local hl_enabled = highlights.Enabled
-	local hl_players
-	local hl_color
-	local hl_transparency
-	local hl_ontop
-	if hl_enabled then
-		hl_players = highlights.Players
-		hl_color = highlights.Color 
-		hl_transparency = highlights.transparency
-		hl_ontop = highlights.AlwaysOnTop
-	end
-
-	local npc_overrides = npcs.Overrides
-	local npc_color = npcs.Color
-	local npc_transparency = npcs.Transparency
-	local npc_rainbow = npcs.Rainbow
-
-	for _,v in next, OBJECTS do
-		if not v.Destroyed then
-			if v.Player == nil and not v.Options then
-				v:Remove()
-			elseif v.Part == nil and v.Options then
-				v:Remove()
-			end
-	
-			local plr, part, obj, type, isnpc = v.Player, v.Part, v.Object, v.Type, v.NPC -- objects shit
-			local cf, size, mid, inViewport, tl, tr, bl, br -- boxes shit
-			local tlx, tly, tlz, trx, try, blx, bly, brx, bry, z -- boxes corner axes shit
-			local c0, c1, c2, c3, c4, c5, c6, c7, c8 -- part corner positions shit
-			local head, ltracerto -- head dots and look tracers shit
-			local team, teamcolor -- team shit
-			local char, health, maxhealth, mag, overlapping, render -- other shit
-			local s = v.Options or ss[type] -- settings shit
-			local isalive = plr and IsAlive(plr)
-			if VISIBLE and isalive and s and s.Enabled then
-				local hp = GetHealth(plr)
-				char, health, maxhealth = GetChar(plr), hp[1], hp[2]
-				cf, size = char:GetBoundingBox()
-				team, teamcolor = GetTeam(plr), GetTeamColor(plr)
-				mag = (ccf - cf.Position).Magnitude
-				render = (ffa or (not teamcheck or (not ffa and teamcheck and team ~= myteam))) and mag <= maxdist
-				if render then
-					if ss.FaceCamera then
-						cf = CFramenew(cf.Position, ccf)
-					end
-					size /= 2
-					local x, y = size.X, size.Y
-					mid, inViewport = WorldToViewportPoint(camera, cf.Position)
-					tl = WorldToViewportPoint(camera, (cf * CFramenew(-x,  y, 0)).Position)
-					tr = WorldToViewportPoint(camera, (cf * CFramenew( x,  y, 0)).Position)
-					bl = WorldToViewportPoint(camera, (cf * CFramenew(-x, -y, 0)).Position)
-					br = WorldToViewportPoint(camera, (cf * CFramenew( x, -y, 0)).Position)
-
-					tlx, tly, tlz = tl.X, tl.Y, tl.Z
-					trx, try = tr.X, tr.Y
-					blx, bly = bl.X, bl.Y
-					brx, bry = br.X, br.Y
-					z = mathclamp(1000 / tlz, 8, 12)
-
-					if ss.FaceCamera and alignpoints then
-						if tly < try then
-							tly += mathabs(tly - try) / 2
-						else
-							tly += mathabs(try - tly) / 2
-						end
-						try = tly
-
-						if bly < bry then
-							bly += mathabs(bly - bry) / 2
-						else
-							bly += mathabs(bry - bly) / 2
-						end
-						bry = bly
-					end
-
-					if ts and char:FindFirstChild("Body") then
-						char = char.Body
-					end
-					if (type == "HeadDots" or type == "LookTracers") and char:FindFirstChild("Head") then
-						local headcf = char.Head.CFrame
-						head = WorldToViewportPoint(camera, headcf.Position)
-						if type == "LookTracers" then
-							ltracerto = WorldToViewportPoint(camera, (headcf * CFramenew(0, 0, -s.Length)).Position)
-						end
-					end
-					if mv_enabled then
-						local method = mv_method
-						if method == "radius" or not method then
-							local mags = {}
-							tableinsert(mags, (mousepos - Vector2new(mid.X, mid.Y)).Magnitude)
-							tableinsert(mags, (mousepos - Vector2new(tlx, tly)).Magnitude)
-							tableinsert(mags, (mousepos - Vector2new(trx, try)).Magnitude)
-							tableinsert(mags, (mousepos - Vector2new(blx, bly)).Magnitude)
-							tableinsert(mags, (mousepos - Vector2new(brx, bry)).Magnitude)
-							
-							tablesort(mags, function(a,b)
-								return a < b
-							end)
-
-							overlapping = mags[1] <= mv_radius
-						elseif method == "hover" then
-							local x_min = mathmin(tlx, trx, blx, brx) - mv_hoverradius
-							local x_max = mathmax(tlx, trx, blx, brx) + mv_hoverradius
-
-							local y_min_offset = 0
-							local y_max_offset = 0
-							if names.Enabled then
-								y_min_offset = names.Size - 2
-								if names.ShowHealth or names.ShowDistance then
-									y_max_offset += names.Size + 2
-								end
-							end
-							if healthbars.Enabled then
-								y_max_offset += z 
-							end
-							local y_min = mathmin(tly, try, bly, bry) - y_min_offset - mv_hoverradius
-							local y_max = mathmax(tly, try, bly, bry) + y_max_offset + mv_hoverradius
-
-							local mousex = mousepos.X
-							local mousey = mousepos.Y
-
-							overlapping = mousex > x_min and mousex < x_max and mousey > y_min and mousey < y_max
-						end
-					end
-				end
-			elseif VISIBLE and v.Part then
-				local class = part.ClassName
-				if find(class, "Part") or find(class, "Operation") then
-					cf, size = part.CFrame, part.Size / 2
-				elseif class == "Model" then
-					cf, size = part:GetBoundingBox()
-					size /= 2
-				end
-				local x, y, z = size.X, size.Y, size.Z
-				c0, inViewport = WorldToViewportPoint(camera,cf.Position)
-				if type == "Chams" then
-					c1 = WorldToViewportPoint(camera, (cf * CFramenew( x,  y,  z)).Position)
-					c2 = WorldToViewportPoint(camera, (cf * CFramenew(-x,  y,  z)).Position)
-					c3 = WorldToViewportPoint(camera, (cf * CFramenew(-x, -y,  z)).Position)
-					c4 = WorldToViewportPoint(camera, (cf * CFramenew( x, -y,  z)).Position)
-					c5 = WorldToViewportPoint(camera, (cf * CFramenew( x,  y, -z)).Position)
-					c6 = WorldToViewportPoint(camera, (cf * CFramenew(-x,  y, -z)).Position)
-					c7 = WorldToViewportPoint(camera, (cf * CFramenew(-x, -y, -z)).Position)
-					c8 = WorldToViewportPoint(camera, (cf * CFramenew( x, -y, -z)).Position)
-
-					c1 = Vector2new(c1.X, c1.Y)
-					c2 = Vector2new(c2.X, c2.Y)
-					c3 = Vector2new(c3.X, c3.Y)
-					c4 = Vector2new(c4.X, c4.Y)
-					c5 = Vector2new(c5.X, c5.Y)
-					c6 = Vector2new(c6.X, c6.Y)
-					c7 = Vector2new(c7.X, c7.Y)
-					c8 = Vector2new(c8.X, c8.Y)
-				end
-			end
-			if VISIBLE then
-				if plr and isalive and s and s.Enabled then
-					SetProp(obj, "Visible", render)
-					if s.Enabled and inViewport and render then
-						local highlight = hl_enabled and tablefind(hl_players, plr.Name)
-						local certified_npc = isnpc and npc_overrides[type]
-						local color =		(highlight and hl_color) or
-											 (certified_npc and (npc_rainbow and rainbow or npc_color)) or
-											 (s.RainbowColor and rainbow) or
-											 (s.UseTeamColor and teamcolor) or
-											 s.Color
-						local transparency = (mv_enabled and mv_selected[type] and overlapping and mv_transparency) or
-											 (certified_npc and npc_transparency) or
-											 (highlight and hl_transparency) or
-											 s.Transparency
-						--
-						
-						ApplyZIndex(obj, type, highlight and hl_ontop)
-						SetProp(obj, "Transparency", transparency)
-						SetProp(obj, "Color", color)
-						if type == "Boxes" then
-							local box, out = obj.Box, obj.Outline
-							box.Thickness = s.Thickness
-
-							box.PointA = Vector2new(trx, try)
-							box.PointB = Vector2new(tlx, tly)
-							box.PointC = Vector2new(blx, bly)
-							box.PointD = Vector2new(brx, bry)
-
-							if OUTLINES then
-								out.Visible = s.Outline and box.Visible
-								if s.Outline then
-									out.Color = s.OutlineColor
-									out.Thickness = s.Thickness + (s.OutlineThickness * 2)
-									out.PointA = box.PointA
-									out.PointB = box.PointB
-									out.PointC = box.PointC
-									out.PointD = box.PointD
-								end
-							end
-						elseif type == "Tracers" then
-							local thickness, outline, origin = s.Thickness, s.Outline, lower(s.Origin)
-							local tracer, out = obj.Tracer, obj.Outline
-							tracer.Thickness = thickness
-
-							local from = origins[origin]
-							local to = Vector2new(tlx + (trx - tlx) / 2, tly + (try - tly) / 2)
-							tracer.From = from
-							tracer.To = to
-							if origin == "bottom" then
-								to = Vector2new(blx + (brx - blx) / 2, bly + (bry - bly) / 2)
-								tracer.To = to
-							end
-
-							if OUTLINES then
-								out.Visible = outline and tracer.Visible
-								if outline then
-									out.Color = s.OutlineColor
-									out.Thickness = thickness + (s.OutlineThickness * 2)
-									out.From = from
-									out.To = to
-								end
-							end
-						elseif type == "Names" then
-							SetProp(obj, "Size", s.Size)
-							SetProp(obj, "Outline", s.Outline)
-							SetProp(obj, "OutlineColor", s.OutlineColor)
-							SetProp(obj, "Font", s.Font)
-							local name, data = obj.Name, obj.Data
-							local h,l = (tly > try and tly) or try, (tly < try and tly) or try
-							
-							name.Position = Vector2new(tlx + (trx - tlx) / 2, (h + (l - h) / 2) - (s.Size + 2))
-							data.Position = Vector2new(blx + (brx - blx) / 2, bly + (bry - bly) / 2)
-							if ss.HealthBars.Enabled then
-								data.Position = Vector2new(data.Position.X, data.Position.Y + z)
-							end
-
-							if isnpc then
-								name.Text = "[NPC] "
-							end
-							name.Text = (s.UseDisplayName and plr.DisplayName) or plr.Name
-
-							data.Text = ""
-							if s.ShowDistance then
-								data.Text = "[ "..mathfloor(mag)..s.DistanceDataType.." ]"
-							end
-							if s.ShowHealth then
-								local a = lower(s.HealthDataType)
-								if a == "percentage" then
-									data.Text = data.Text.." [ "..mathfloor((health / maxhealth) * 100).."% ]"
-								elseif a == "value" then
-									data.Text = data.Text.." [ "..mathfloor(health).."/"..mathfloor(maxhealth).." ]"
-								end
-							end
-						elseif type == "Skeletons" then
-							local thickness, othickness, outline = s.Thickness, s.OutlineThickness, s.Outline
-							SetProp(obj, "Thickness", thickness)
-	
-							for i2,v2 in next, obj do
-								local from = char:FindFirstChild(From[i2] or "")
-								local to = char:FindFirstChild(i2 or "")
-								local isoutline = find(i2, "Outline")
-								if not isoutline and from and find(from.ClassName, "Part") and to and find(to.ClassName, "Part") then
-									local pos1, in1 = WorldToViewportPoint(camera, from.Position)
-									local pos2, in2 = WorldToViewportPoint(camera, to.Position)
-									v2.Visible = in1 and in2
-									if in1 and in2 then
-										v2.From = Vector2new(pos1.X, pos1.Y)
-										v2.To = Vector2new(pos2.X, pos2.Y)
-									end
-								end
-							end
-							if OUTLINES then
-								for i2,v2 in next, obj do
-									if find(i2, "Outline") then
-										local name = i2:gsub("Outline","")
-										local v3 = obj[name]
-										v2.Visible = outline and v3.Visible
-										if v2.Visible then
-											v2.Color = s.OutlineColor
-											v2.Thickness = thickness + (othickness * 2)
-											v2.From = v3.From
-											v2.To = v3.To
-										end
-									end
-								end
-							end
-						elseif type == "HealthBars" then
-							local outline, origin, baronly = s.Outline, s.Origin:lower(), s.OutlineBarOnly
-							local bar, out = obj.Bar, obj.Outline
-							health = mathclamp(health, 0, maxhealth) / maxhealth
-							local left, right = blx, brx
-							local lefty, righty = bly, bry
-
-							if origin == "left" then
-								left = (blx < brx and blx) or brx
-								right = (blx > brx and blx) or brx
-
-								lefty = (blx < brx and bly) or bry
-								righty = (blx > brx and bly) or bry
-							elseif origin == "right" then
-								left = (blx < brx and brx) or blx
-								right = (blx > brx and brx) or blx
-
-								lefty = (blx < brx and bry) or bly
-								righty = (blx > brx and bry) or bly
-							end
-
-							bar.PointA = Vector2new(
-								left + (right - left) * health,
-								(lefty + (righty - lefty) * health) + 5
-							)
-							bar.PointB = Vector2new(
-								left,
-								lefty + 5
-							)
-							bar.PointC = Vector2new(
-								left,
-								lefty + z
-							)
-							bar.PointD = Vector2new(
-								left + (right - left) * health,
-								(lefty + (righty - lefty) * health) + z
-							)
-	
-							if OUTLINES then
-								out.Visible = outline and bar.Visible
-								if outline then
-									out.Color = s.OutlineColor
-									out.Thickness = s.OutlineThickness * 2
-									out.PointA = (baronly and bar.PointA) or Vector2new(brx, bry + 5)
-									out.PointB = (baronly and bar.PointB) or Vector2new(blx, bly + 5)
-									out.PointC = (baronly and bar.PointC) or Vector2new(blx, bly + z)
-									out.PointD = (baronly and bar.PointD) or Vector2new(brx, bry + z)
-								end
-							end
-						elseif type == "HeadDots" then
-							if char:FindFirstChild("Head") then
-								local thickness, outline, filled = s.Thickness, s.Outline, s.Filled
-								local dot, out = obj.Dot, obj.Outline
-								dot.Thickness = thickness 
-								dot.Filled = filled
-
-								local pos = Vector2new(head.X, head.Y)
-								local radius = z / ((mag / 60) * (camfov / 70)) * s.Scale
-								dot.Position = pos
-								dot.Radius = radius
-
-								if OUTLINES then
-									out.Visible = outline and dot.Visible
-									if outline  then
-										local othickness = thickness + (s.OutlineThickness * 2)
-										out.Color = s.OutlineColor
-										out.Thickness = (filled and thickness + (othickness - 1)) or othickness
-										out.Position = pos
-										out.Radius = (filled and radius + 1) or radius
-									end
-								end
-							else
-								SetProp(obj, "Visible", false)
-							end
-						elseif type == "LookTracers" then
-							if char:FindFirstChild("Head") then
-								local thickness, outline = s.Thickness, s.Outline
-								local tracer, out = obj.Tracer, obj.Outline
-								tracer.Thickness = thickness
-
-								local from = Vector2new(head.X, head.Y)
-								local to = Vector2new(ltracerto.X, ltracerto.Y)
-								tracer.From = from
-								tracer.To = to
-
-								if OUTLINES then
-									out.Visible = outline and tracer.Visible
-									if outline then
-										out.Color = s.OutlineColor
-										out.Thickness = thickness + (s.OutlineThickness * 2)
-										out.From = from
-										out.To = to
-									end
-								end
-							else
-								SetProp(obj, "Visible", false)
-							end
-						end
-					end
-				elseif part then
-					SetProp(obj, "Visible", inViewport)
-					if inViewport then
-						local color = (s.RainbowColor and rainbow) or s.Color
-						SetProp(obj, "Transparency", s.Transparency)
-						SetProp(obj, "Color", color)
-						if type == "Labels" then
-							local label = obj.Label
-							label.Text = s.Text
-							label.Size = s.Size
-							label.Outline = s.Outline
-							label.OutlineColor = s.OutlineColor
-							label.Font = s.Font
-	
-							label.Position = Vector2new(c0.X, c0.Y - (s.Size) / 2) + s.Offset
-						elseif type == "Chams" then
-							local t, b, l, r, f, bb = obj.Top, obj.Bottom, obj.Left, obj.Right, obj.Front, obj.Back
-							SetProp(obj, "Filled", s.Filled)
-							SetProp(obj, "Thickness", s.Thickness)
-	
-							t.PointA = c5
-							t.PointB = c6
-							t.PointC = c2
-							t.PointD = c1
-	
-							b.PointA = c4
-							b.PointB = c3
-							b.PointC = c7
-							b.PointD = c8
-	
-							l.PointA = c2
-							l.PointB = c6
-							l.PointC = c7
-							l.PointD = c3
-	
-							r.PointA = c5
-							r.PointB = c1
-							r.PointC = c4
-							r.PointD = c8
-	
-							f.PointA = c1
-							f.PointB = c2
-							f.PointC = c3
-							f.PointD = c4
-	
-							bb.PointA = c5
-							bb.PointB = c6
-							bb.PointC = c7
-							bb.PointD = c8
-						end
-					end
-				end
-				if not inViewport or (v.Options == nil and not ss[type].Enabled) then
-					SetProp(obj, "Visible", false)
-				end
-			else
-				SetProp(obj, "Visible", false)
-			end
-		end
-	end
-end
-
---local conn2 = RunService.RenderStepped:Connect(update)
-local name = ""
-for _ = 1, math.random(16, 24) do
-	name ..= string.char(math.random(97, 122))
-end
-RunService:BindToRenderStep(name, 0, update)
 if typeof(ss.ToggleKey) == "EnumItem" then
 	ss.ToggleKey = ss.ToggleKey.Name
 end
@@ -1457,21 +1682,13 @@ local conn3 = uis.InputBegan:Connect(function(i,gp)
 		VISIBLE = not VISIBLE
 	end
 end)
-function doshit(v)
-	Box(v)
-	Skeleton(v)
-	LookTracer(v)
-	Tracer(v)
-	HeadDot(v)
-	HealthBar(v)
-	Name(v)
-end
 for _,v in next, players:GetPlayers() do
 	if v ~= player then
-		doshit(v)
+		NewPlayer(v)
 	end
 end
-local conn4 = players.PlayerAdded:Connect(doshit)
+tasksync()
+local conn4 = players.PlayerAdded:Connect(NewPlayer)
 
 local esp = {Version = VERSION}
 local destroyed = false
@@ -1520,12 +1737,12 @@ end
 function esp.Label(part,options)
 	assert(typeof(part) == "Instance", ("Universal Esp: bad argument to #1 'Label' (Instance expected, got %s)"):format(typeof(part)))
 	assert(table.find(supportedparts, part.ClassName),("Universal Esp: bad argument to #1 'Label' (Part or Model expected, got %s)"):format(part.ClassName))
-	return Label(part, options or {})
+	return NewLabel(part, options or {})
 end
 function esp.Cham(part,options)
 	assert(typeof(part) == "Instance",("Universal Esp: bad argument to #1 'Cham' (Instance expected, got %s)"):format(typeof(part)))
 	assert(table.find(supportedparts, part.ClassName),("Universal Esp: bad argument to #1 'Cham' (Part or Model expected, got %s)"):format(part.ClassName))
-	return Cham(part, options or {})
+	return NewCham(part, options or {})
 end
 function esp:GetObjects(a)
 	a = a or ""
@@ -1618,7 +1835,7 @@ function esp:Add(a)
 	if (t == "Instance" and a.ClassName == "Player" or a.ClassName == "Model") or (t == "string" and players:FindFirstChild(a)) then
 		local plr = (t == "string" and players[a]) or a
 		if not hasesp(plr) then
-			doshit(plr)
+			NewPlayer(plr)
 		end
 	end
 end
@@ -1686,13 +1903,14 @@ function esp:ResetFunction(a)
 end
 function esp:Destroy()
 	if destroyed then return end
-	conn1:Disconnect()
-	--conn2:Disconnect()
+	conn2:Disconnect()
 	conn3:Disconnect()
 	conn4:Disconnect()
-	RunService:UnbindFromRenderStep(name)
+	for _,v in next, PlayerObjects do
+		v:Destroy()
+	end
 	for _,v in next, OBJECTS do
-		v:Remove()
+		--v:Remove()
 	end
 	destroyed = true
 end
