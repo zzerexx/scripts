@@ -1,9 +1,14 @@
 --[[
-v1.1.19 Changes
-- Updated Phantom Forces compatibility for the new rewrite
+v1.1.20 Changes
+- Fixed for Phantom Forces (kinda)
+  - Universal Aimbot will now prompt you that you need to put a bypass script in your autoexec folder.
+  - Bypass script made by Spoorloos
+
+UI Changes
+- No UI changes
 ]]
 
-local VERSION = "v1.1.19"
+local VERSION = "v1.1.20"
 
 if not getgenv().AimbotSettings then
 	getgenv().AimbotSettings = {
@@ -158,28 +163,18 @@ local gids = { -- game ids
 	['rp'] = 2162282815, -- rush point
 	['mm2'] = 66654135
 }
-local replication, raycast, ts, characters, teams, rp
+local getEntry, raycast, ts, characters, teams, rp
 if (GameId == gids.pf) or (GameId == gids.pft) or (GameId == gids.pfu) then
-	--[[for _,v in next, getgc(true) do
-		if typeof(v) == "table" then
-			if rawget(v, "getbodyparts") then
-				getchar = rawget(v, "getbodyparts")
-			elseif rawget(v, "getplayervisible") then
-				getvis = rawget(v, "getplayervisible") -- it was that easy smh
-			end
-		end
-	end]]
-	for _,v in next, getgc(true) do
-		if typeof(v) == "table" then
-			if rawget(v, "new") and tostring(getfenv(v.new).script) == "ReplicationObject" then
-				replication = v
-				break
-			end
-			--[[if rawget(v, "checkOcclusion") then
-				raycast = v
-			end]]
-		end
+	local require = rawget(getrenv().shared, "require")
+	if require == nil then
+		setclipboard('loadstring(game:HttpGet("https://raw.githubusercontent.com/Spoorloos/scripts/main/pf-actor-bypass.lua"))()')
+		local a = Instance.new("Message", game.CoreGui)
+		a.Text = "-- Universal Esp Notice --\n\nA script has been copied to your clipboard.\nPlease put this script in your exploit's autoexec folder and rejoin the game.\n(this script is required to bypass the new update)\n\nbypass was created by Spoorloos"
+		return
 	end
+	local _cache = rawget(debug.getupvalue(require, 1), "_cache")
+	local ReplicationInterface = rawget(rawget(_cache, "ReplicationInterface"), "module")
+	getEntry = rawget(ReplicationInterface, "getEntry")
 elseif GameId == gids.bb then
 	for _,v in next, getgc(true) do
 		if typeof(v) == "table" and rawget(v, "InitProjectile") and rawget(v, "TS") then
@@ -315,7 +310,7 @@ function IsVisible(plr, character, mycharacter, cf, targetpos, valid)
 end
 task.spawn(function() -- update ignore list (i have no idea if i even need this but whatever)
 	while true do
-		if typeof(ss.Ignore) == "table" then
+		if ss ~= nil and typeof(ss.Ignore) == "table" then
 			for _,v in next, ss.Ignore do
 				tableinsert(Ignore, v)
 			end
@@ -355,21 +350,15 @@ function InFov(plr,Fov)
 end
 
 do -- compatibility
-	if replication then -- phantom forces
+	if getEntry then -- phantom forces
 		local playercache = {}
 		local function GetPlayerObject(plr)
 			local cached = playercache[plr]
 			if cached then
-				return playercache[plr]
+				return cached
 			end
 
-			local obj
-			for _,v in next, getgc(true) do -- i hate this code so much
-				if typeof(v) == "table" and rawget(v, "_player") and v._player == plr and rawget(v, "_healthstate") then
-					obj = v
-					break
-				end
-			end
+			local obj = getEntry(plr)
 			playercache[plr] = obj
 			return obj
 		end
@@ -386,18 +375,6 @@ do -- compatibility
 			return nil
 		end
 		IsAlive = GetChar
-		--[[local raycastobj = raycast.new(false, true)
-		IsVisible = function(plr)
-			local obj = GetPlayerObject(plr)
-			if obj ~= nil then
-				local thirdPersonObject = obj._thirdPersonObject
-				if thirdPersonObject then
-					local head = thirdPersonObject:getCharacterHash().head
-					return raycast.checkOcclusion(raycastobj, camera.CFrame.Position, head.Position.Unit * 100)
-				end
-			end
-			return nil
-		end]]
 	end
 	
 	if ts then -- bad business
