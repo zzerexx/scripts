@@ -4,8 +4,8 @@ my cool scripts
 ---
   
 # Universal Esp  
-Updated November 3, 2022  
-v1.6.14  
+Updated December 23, 2022  
+v1.7.0  
 - Box Esp  
 - Tracers  
 - Name Esp  
@@ -34,22 +34,22 @@ Supports `SetFunction` and `ResetFunction` for compatibility!
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspPerformance.lua", "UniversalEspPerformance"))()
 ```  
   
-## Update v1.6.14  
-- Added 'Method' for MouseVisibility
-    - "Radius" (Legacy)  Checks if the esp object is within a certain radius from the mouse position
-    - "Hover"  (New)     Checks if the mouse position is hovering over the esp object
-        - "Hover" uses the "HoverRadius" option for it's radius
-- Added custom features for Murder Mystery 2
-- Updated Phantom Forces compatibility for the new rewrite
+## Update v1.7.0  
+- Universal Esp rewrite
+  - UESP now utilizes Parallel Luau! (https://create.roblox.com/docs/scripting/luau/parallel-luau)
+  - With these changes, UESP performs up to 60% more efficiently than before!
+- Fixed for Phantom Forces (kinda)
+  - Universal Esp will now prompt you that you need to put a bypass script in your autoexec folder.
+  - Bypass script made by Spoorloos
 
 UI Changes
-- Sending feedback will now send your hashed user id
+- No UI changes
   
 ---
   
 # Universal Aimbot  
-Updated November 3, 2022  
-v1.1.19  
+Updated December 23, 2022  
+v1.1.20  
 ```
 https://pastebin.com/raw/nwqE7v07
 ```  
@@ -60,18 +60,17 @@ Updated November 3, 2022
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalAimbotUI.lua", "UniversalAimbotUI"))()
 loadstring(game:HttpGet("https://zzerexx.github.io/Universal/Aimbot.lua"))() -- Both loadstrings are the same, this one just looks better
 ```  
-## Update v1.1.19  
-Main Changes  
-- Updated Phantom Forces compatibility for the new rewrite
+## Update v1.1.20  
+- Fixed for Phantom Forces (kinda)
+  - Universal Aimbot will now prompt you that you need to put a bypass script in your autoexec folder.
+  - Bypass script made by Spoorloos
 
 UI Changes
-- Sending feedback will now send your hashed user id
+- No UI changes
   
 ## NOTICE  
-```
-You are allowed to use Universal Esp and Aimbot in your script as long as you credit me (zzerexx or zzerexx#3970)
-Read UniversalScriptAPI.md for more info
-```  
+You are allowed to use Universal Esp and Aimbot in your script as long as you credit me (zzerexx or zzerexx#3970)  
+Read [Universal Script API](https://zzerexx.gitbook.io/universal-script-api) for more info
   
 ---
   
