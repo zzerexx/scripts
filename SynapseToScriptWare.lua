@@ -3,7 +3,7 @@ assert(import, "you are not using script ware")
 local _, version = xpcall(function()
 	return game:GetService("HttpService"):JSONDecode(game:HttpGet("https://api.whatexploitsare.online/status/Synapse"))[1].Synapse.exploit_version
 end, function()
-	return "2.20.6c"
+	return "2.22.0c"
 end)
 
 --loadstring(game:HttpGet("https://api.irisapp.ca/Scripts/IrisInstanceProtect.lua"))() -- credit to iris (this is for protect_gui and unprotect_gui)
@@ -358,6 +358,18 @@ do -- misc
 		assert(rawget(object, "__OBJECT") ~= nil, "bad argument #1 to 'isconnectionenabled' (synapse signal expected)")
 		return rawget(object, "Enabled")
 	end)
+	define("isactor", function()
+		return false
+	end)
+	define("checkparallel", function()
+		local suc = pcall(task.synchronize)
+		if suc then
+			task.desynchronize()
+			print("desynced")
+			return true
+		end
+		return false
+	end)
 end
 
 do -- get_ (who even uses these??)
@@ -572,6 +584,72 @@ do -- syn library
 			setfenv(1, fenv)
 			return func(...)
 		end)(...)
+	end, t)
+
+	local actors = {}
+	local on_actor_created = Instance.new("BindableEvent")
+	game.DescendantAdded:Connect(function(v)
+		if v:IsA("Actor") then
+			on_actor_created:Fire(v)
+			table.insert(actors, v)
+		end
+	end)
+	for _,v in next, game:GetDescendants() do
+		if v:IsA("Actor") then
+			table.insert(actors, v)
+		end
+	end
+	define("on_actor_created", on_actor_created.Event, t)
+	define("getactors", function()
+		return actors
+	end)
+	define("run_on_actor", function(actor, code) -- This does not actually run on the actor's state (waiting for sw implementation)
+		assert(typeof(actor) == "Instance", ("bad argument #1 to 'run_on_actor' (Instance expected, got %s)"):format(typeof(actor)))
+		assert(actor.ClassName == "Actor", ("bad argument #1 to 'run_on_actor' (Actor expected, got %s)"):format(actor.ClassName))
+		assert(typeof(code) == "string", ("bad argument #2 to 'run_on_actor' (string expected, got %s)"):format(typeof(code)))
+
+		loadstring(code, "run_on_actor")()
+	end, t)
+
+	local comm_channels = {}
+	define("create_comm_channel", function()
+		local id = game:GetService("HttpService"):GenerateGUID(false)
+		local bindable = Instance.new("BindableEvent")
+		local object = newproxy(true)
+		getmetatable(object).__index = function(_, i)
+			if i == "bro" then
+				return bindable
+			end
+		end
+		local event = setmetatable({
+			__OBJECT = object
+		}, {
+			__type = "SynSignal",
+			__index = function(self, i)
+				if i == "Connect" then
+					return function(_, callback)
+						print(callback)
+						return self.__OBJECT.bro.Event:Connect(callback)
+					end
+				elseif i == "Fire" then
+					return function(_, ...)
+						return self.__OBJECT.bro:Fire(...)
+					end
+				end
+			end,
+			__newindex = function()
+				erroruiconsole("SynSignal table is readonly.")
+			end
+		})
+		comm_channels[id] = event
+		return id, event
+	end, t)
+	define("get_comm_channel", function(id)
+		local channel = comm_channels[id]
+		if not channel then
+			erroruiconsole("bad argument #1 to 'get_comm_channel' (invalid communication channel)")
+		end
+		return channel
 	end, t)
 
 	local unavailable = {
