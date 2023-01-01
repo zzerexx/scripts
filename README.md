@@ -4,8 +4,8 @@ my cool scripts
 ---
   
 # Universal Esp  
-Updated December 23, 2022  
-v1.7.0  
+Updated January 1, 2022  
+v1.7.1  
 - Box Esp  
 - Tracers  
 - Name Esp  
@@ -34,13 +34,8 @@ Supports `SetFunction` and `ResetFunction` for compatibility!
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspPerformance.lua", "UniversalEspPerformance"))()
 ```  
   
-## Update v1.7.0  
-- Universal Esp rewrite
-  - UESP now utilizes Parallel Luau! (https://create.roblox.com/docs/scripting/luau/parallel-luau)
-  - With these changes, UESP performs up to 60% more efficiently than before!
-- Fixed for Phantom Forces (kinda)
-  - Universal Esp will now prompt you that you need to put a bypass script in your autoexec folder.
-  - Bypass script made by Spoorloos
+## Update v1.7.1  
+- Made a few synchronization changes to prevent errors on Synapse
 
 UI Changes
 - No UI changes
