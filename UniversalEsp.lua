@@ -1,17 +1,12 @@
 --[[
-v1.7.0 Changes
-- Universal Esp rewrite
-  - UESP now utilizes Parallel Luau! (https://create.roblox.com/docs/scripting/luau/parallel-luau)
-  - With these changes, UESP performs up to 60% more efficiently than before!
-- Fixed for Phantom Forces (kinda)
-  - Universal Esp will now prompt you that you need to put a bypass script in your autoexec folder.
-  - Bypass script made by Spoorloos
+v1.7.1 Changes
+- Made a few synchronization changes to prevent errors on Synapse
 
 UI Changes
 - No UI changes
 ]]
 
-local VERSION = "v1.7.0"
+local VERSION = "v1.7.1"
 
 if not EspSettings then
 	getgenv().EspSettings = {
@@ -590,7 +585,7 @@ function ApplyZIndex(obj, name, ontop)
 	end
 end
 function SetProp(obj, prop, value, outline)
-	taskdesync()
+	tasksync()
 	for i,v in next, obj do
 		if (OUTLINES and outline and find(i, "Outline")) or (not outline and OUTLINES) then
 			v[prop] = value
@@ -789,9 +784,11 @@ local RemoveFunction = {
 	end
 }
 function NewObject(type) -- create the actual drawing objects
+	tasksync()
 	local obj = Object[type]()
 	SetProp(obj, "Visible", false)
 	ApplyZIndex(obj, type)
+	taskdesync()
 	return obj
 end
 function NewCharacterObject(objs, type, plr) -- create data object for players and npcs
