@@ -1,5 +1,5 @@
 local function Load(file)
-    return loadstring(game:HttpGet(string.format("https://raw.githubusercontent.com/zzerexx/scripts/main/%s.lua", file)), file)()
+	return loadstring(game:HttpGet(string.format("https://raw.githubusercontent.com/zzerexx/scripts/main/%s.lua", file)), file)()
 end
 
 local RunService = game:GetService("RunService")
@@ -102,100 +102,97 @@ do -- Configs
 	local Configs = UI.new("Configs")
 	local selectedcfg = nil
 	local cfgname = ""
-    local list
-    local function isempty(s)
-        return s:gsub(" ","") == ""
-    end
-    local function refresh()
-        list:SetOptions(cfg.Get())
-    end
+	local list
+	local function isempty(s)
+		return s:gsub(" ","") == ""
+	end
+	local function refresh()
+		list:SetOptions(cfg.Get())
+	end
 
-    Configs.TextField({
-        Text = "Config Name",
-        Type = "Default",
-        Callback = function(value)
-            if not isempty(value) then
-                cfgname = value
-            end
-        end
-    })
-    Configs.Button({
-        Text = "Create New Config",
-        Callback = function()
-            if not isempty(cfgname) then
-                cfg.Save(cfgname, ss)
-                UI.Banner("Successfully created <b>"..cfgname.."</b>.")
-                refresh()
-            else
-                UI.Banner("Please enter a name for your config in the text box above.")
-            end 
-        end
-    })
-    list = Configs.Dropdown({
-        Text = "Your Configs",
-        Callback = function(value)
-            selectedcfg = value
-			print("selected", selectedcfg)
-        end,
-        Options = {},
-		Def = "Default"
-    })
-    refresh()
-    Configs.Button({
-        Text = "Load Selected Config",
-        Callback = function()
-			ss = cfg.Load(selectedcfg).Data
-			print(ss)
-			table.foreach(cfg.Load(selectedcfg), print)
-		end,
-        Menu = {
-            Info = function()
-                UI.Banner("Your settings will not apply to the UI. (cuz im lazy)")
-            end
-        }
-    })
-    Configs.Button({
-        Text = "Overwrite Selected Config",
-        Callback = function()
-			cfg.Save(selectedcfg, ss)
-            UI.Banner("Successfully overwritten <b>"..selectedcfg.."</b>.")
+	Configs.TextField({
+		Text = "Config Name",
+		Type = "Default",
+		Callback = function(value)
+			if not isempty(value) then
+				cfgname = value
+			end
 		end
-    })
-    Configs.Button({
-        Text = "Delete Selected Config",
-        Callback = function()
-            if cfg.Valid(selectedcfg) then
-                UI.Banner({
-                    Text = "Are you sure you want to delete <b>"..selectedcfg.."</b>?",
-                    Options = {"Yes", "No"},
-                    Callback = function(value)
-                        if value == "Yes" then
-                            cfg.Delete(selectedcfg)
-                            UI.Banner("Successfully deleted <b>"..selectedcfg.."</b>.")
-                            refresh()
-                        end
-                    end
-                })
-            else
-                UI.Banner("<b>"..selectedcfg.."</b> does not exist.")
-            end
-        end
-    })
-    Configs.Button({
-        Text = "Set Selected Config as Default",
-        Callback = function()
-            cfg.SetDefault(selectedcfg)
-        end,
-        Menu = {
-            Info = function()
-                UI.Banner("This will overwrite your current default config!")
-            end
-        }
-    })
-    Configs.Button({
-        Text = "Refresh Config List",
-        Callback = refresh
-    })
+	})
+	Configs.Button({
+		Text = "Create New Config",
+		Callback = function()
+			if not isempty(cfgname) then
+				cfg.Save(cfgname, ss)
+				UI.Banner("Successfully created <b>"..cfgname.."</b>.")
+				refresh()
+			else
+				UI.Banner("Please enter a name for your config in the text box above.")
+			end 
+		end
+	})
+	list = Configs.Dropdown({
+		Text = "Your Configs",
+		Callback = function(value)
+			selectedcfg = value
+		end,
+		Options = {},
+		Def = "Default"
+	})
+	refresh()
+	Configs.Button({
+		Text = "Load Selected Config",
+		Callback = function()
+			ss = cfg.Load(selectedcfg).Data
+		end,
+		Menu = {
+			Info = function()
+				UI.Banner("Your settings will not apply to the UI. (cuz im lazy)")
+			end
+		}
+	})
+	Configs.Button({
+		Text = "Overwrite Selected Config",
+		Callback = function()
+			cfg.Save(selectedcfg, ss)
+			UI.Banner("Successfully overwritten <b>"..selectedcfg.."</b>.")
+		end
+	})
+	Configs.Button({
+		Text = "Delete Selected Config",
+		Callback = function()
+			if cfg.Valid(selectedcfg) then
+				UI.Banner({
+					Text = "Are you sure you want to delete <b>"..selectedcfg.."</b>?",
+					Options = {"Yes", "No"},
+					Callback = function(value)
+						if value == "Yes" then
+							cfg.Delete(selectedcfg)
+							UI.Banner("Successfully deleted <b>"..selectedcfg.."</b>.")
+							refresh()
+						end
+					end
+				})
+			else
+				UI.Banner("<b>"..selectedcfg.."</b> does not exist.")
+			end
+		end
+	})
+	Configs.Button({
+		Text = "Set Selected Config as Default",
+		Callback = function()
+			cfg.SetDefault(selectedcfg)
+		end,
+		Menu = {
+			Info = function()
+				UI.Banner("This will overwrite your current default config!")
+			end
+		}
+	})
+	Configs.Button({
+		Text = "Refresh Config List",
+		Callback = refresh
+	})
 end
 
 local last = os.clock()
@@ -205,8 +202,8 @@ heartbeat = RunService.Heartbeat:Connect(function()
 		return
 	end
 	last = clock
-    if ss.collect then
-        task.spawn(function()
+	if ss.collect then
+		task.spawn(function()
 			for _,v in next, DropsFolder:GetChildren() do
 				if v.Name ~= "EXPIRED LOL" then
 					GrabDrops:FireServer(v:GetAttribute("TotalValue"))
@@ -214,7 +211,7 @@ heartbeat = RunService.Heartbeat:Connect(function()
 				v:Destroy()
 			end
 		end)
-    end
+	end
 	if ss.deposit then
 		DepositDrops:FireServer()
 	end
