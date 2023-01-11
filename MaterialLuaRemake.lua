@@ -1027,6 +1027,7 @@ MLRemake.Menu_7.Image = "http://www.roblox.com/asset/?id=9147554930"
 MLRemake.Value.Name = "Value"
 MLRemake.Value.Parent = MLRemake.Slider
 MLRemake.Value.AnchorPoint = Vector2.new(1, 0)
+MLRemake.Value.AutomaticSize = Enum.AutomaticSize.X
 MLRemake.Value.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Value.BackgroundTransparency = 1.000
 MLRemake.Value.BorderSizePixel = 0
@@ -2283,12 +2284,12 @@ do -- MLRemake.MLRemake.UI
 	script.Name = "UI"
 	local function module_script()
 		-- this shit is so messy ong
-
+		
 		local uis = game:GetService("UserInputService")
 		local ts = game:GetService("TweenService")
 		local textservice = game:GetService("TextService")
 		local mouse = game:GetService("Players").LocalPlayer:GetMouse()
-
+		
 		-- ui stuffs
 		local topbar = script.Parent.Topbar
 		local main = topbar.Main
@@ -2308,7 +2309,7 @@ do -- MLRemake.MLRemake.UI
 		local dim2 = main.BackgroundDim2
 		local banner = main.Banner
 		local notification = topbar.Parent.Notifications.Notif
-
+		
 		-- constants / placeholders
 		local sine = Enum.EasingStyle.Sine
 		local out = Enum.EasingDirection.Out
@@ -2316,7 +2317,7 @@ do -- MLRemake.MLRemake.UI
 		local bind = Instance.new("BindableEvent")
 		local nocolor = Color3.fromRGB(255, 255, 255)
 		local inf = math.huge
-
+		
 		-- variables
 		local UI_LOADED = false
 		local UI_SIZE_X = 400
@@ -2325,7 +2326,7 @@ do -- MLRemake.MLRemake.UI
 		local ENABLED_IMAGE = "rbxassetid://9122106066"
 		local DISABLED_IMAGE = "rbxassetid://9122119502"
 		local mousedown = false
-
+		
 		-- aliases
 		local clamp = math.clamp
 		local floor = math.floor 
@@ -2340,7 +2341,7 @@ do -- MLRemake.MLRemake.UI
 		local TweenInfonew = TweenInfo.new
 		local CSnew = ColorSequence.new
 		local CSKnew = ColorSequenceKeypoint.new
-
+		
 		local defaults = {
 			Load = {
 				Title = "Material Lua Remake",
@@ -2452,16 +2453,16 @@ do -- MLRemake.MLRemake.UI
 				Percent = true,
 			}
 		}
-
+		
 		topbar.Visible = false
-
+		
 		task.spawn(function()
 			game:GetService("ContentProvider"):PreloadAsync({
 				"rbxassetid://9122106066", -- chipset enabled img
 				"rbxassetid://9122119502", -- chipset disabled img
 			})
 		end)
-
+		
 		function CheckInvalidProps(a, b)
 			for i,v in next, defaults[a] do
 				if b[i] ~= nil and typeof(b[i]) ~= typeof(v) then
@@ -2469,7 +2470,7 @@ do -- MLRemake.MLRemake.UI
 				end
 			end
 		end
-
+		
 		function ApplyDefaultProps(a,b)
 			for i,v in next, defaults[a] do
 				if b[i] == nil then
@@ -2483,25 +2484,25 @@ do -- MLRemake.MLRemake.UI
 		function GetTextSize(label, text)
 			return textservice:GetTextSize(text, label.TextSize, label.Font, label.AbsoluteSize)
 		end
-
+		
 		local ToggleOn = UDim2new(0.5, 0, 0.5, 0)
 		local ToggleOff = UDim2new(0, 0, 0.5, 0)
-
+		
 		local ID = 0
 		local ui = {}
-
+		
 		uis.InputEnded:Connect(function(i,gp)
 			if i.UserInputType.Name == "MouseButton1" then
 				mousedown = false
 			end
 		end)
-
+		
 		do -- UI Effects
 			local GeneralInfo = TweenInfo.new(0.25, sine, out)
 			function ui.Tween(object, properties, tweeninfo, callback)
 				ts:Create(object, tweeninfo or GeneralInfo, properties):Play()
 			end
-
+			
 			local RIPPLE_DURATION = 0.65
 			function ui.Ripple(a, p)
 				a.AutoButtonColor = false
@@ -2512,7 +2513,7 @@ do -- MLRemake.MLRemake.UI
 				a.Activated:Connect(function()
 					local abp = a.AbsolutePosition
 					local abs = a.AbsoluteSize
-
+		
 					local new = ripple:Clone()
 					new.Size = UDim2new(0, 0, 0, 0)
 					new.Position = UDim2new(
@@ -2529,14 +2530,14 @@ do -- MLRemake.MLRemake.UI
 					new:Destroy()
 				end)
 			end
-
+			
 			local FOCUS_DURATION = 0.225
 			function ui.Focus(a, p)
 				a.Focused:Connect(function()
 					local new = focus:Clone()
 					new.Visible = true
 					new.Parent = p or a
-
+					
 					local padding = (p ~= nil and p.Parent:FindFirstChild("UIPadding")) or a.Parent:FindFirstChild("UIPadding")
 					padding = (padding ~= nil and padding.PaddingLeft.Offset + padding.PaddingRight.Offset) or 0
 					new:TweenSize(UDim2new(1, padding, 0, 1), "Out", "Quad", FOCUS_DURATION, true)
@@ -2548,14 +2549,14 @@ do -- MLRemake.MLRemake.UI
 					end)
 				end)
 			end
-
+			
 			function ui.Dim1(value, main)
 				ui.Tween(main.BackgroundDim, {BackgroundTransparency = (value and 0.75) or 1})
 			end
 			function ui.Dim2(value, main)
 				ui.Tween(main.BackgroundDim2, {BackgroundTransparency = (value and 0.75) or 1})
 			end
-
+			
 			local DRAG_SPEED = 0.075
 			local DRAG_INFO = TweenInfo.new(DRAG_SPEED)
 			function ui.SmoothDrag(a)
@@ -2564,13 +2565,13 @@ do -- MLRemake.MLRemake.UI
 				local start = nil
 				local pos = nil
 				local startpos = nil
-
+		
 				local function Update(i)
 					local delta = i.Position - start
 					local pos = UDim2new(startpos.X.Scale, startpos.X.Offset + delta.X, startpos.Y.Scale, startpos.Y.Offset + delta.Y)
 					ui.Tween(a, {Position = pos}, DRAG_INFO)
 				end
-
+		
 				a.InputBegan:Connect(function(i)
 					if i.UserInputType.Name == "MouseButton1" and uis:GetFocusedTextBox() == nil then
 						toggle = true
@@ -2595,14 +2596,14 @@ do -- MLRemake.MLRemake.UI
 				end)
 			end
 		end
-
+		
 		do -- Banner
 			local BANNER_TRANSPARENCY = 0.75
 			local BANNER_TWEENINFO = TweenInfonew(0.45, sine, out)
 			local BANNER_VISIBLE = false
 			local LAST_BANNER = nil
 			local LAST_UI = nil
-
+			
 			local function show(a)
 				for _,v in next, a.Buttons:GetChildren() do
 					if v:IsA("TextButton") then
@@ -2639,7 +2640,7 @@ do -- MLRemake.MLRemake.UI
 					t = {Text = t}
 				end
 				ApplyDefaultProps("Banner", t)
-
+				
 				if LAST_UI == nil or LAST_UI.Parent == nil then
 					LAST_UI = p
 					LAST_BANNER = nil
@@ -2651,19 +2652,19 @@ do -- MLRemake.MLRemake.UI
 				if LAST_UI ~= nil and LAST_UI ~= p then
 					ui.Dim2(false, LAST_UI)
 				end
-
+				
 				local new = banner:Clone()
 				new.Name = "Banner"
 				new.Label.Text = t.Text
 				new.Label.RichText = true
 				new.Label.Font = t.Font or Enum.Font[t.Font]
 				new.Parent = p or main
-
+		
 				ui.Dim2(true, p)
 				BANNER_VISIBLE = true
 				LAST_BANNER = new
 				LAST_UI = p
-
+		
 				for _,v in next, t.Options do
 					local new2 = new.Buttons.Example:Clone()
 					new2.Name = v
@@ -2672,9 +2673,9 @@ do -- MLRemake.MLRemake.UI
 					new2.BackgroundTransparency = BANNER_TRANSPARENCY
 					new2.TextTransparency = BANNER_TRANSPARENCY
 					new2.Parent = new.Buttons
-
+					
 					taskwait()
-
+					
 					new2.Size = UDim2new(0, new2.TextBounds.X + 20, 0, 20)
 					new2.Activated:Connect(function()
 						ui.Dim2(false, p)
@@ -2683,14 +2684,14 @@ do -- MLRemake.MLRemake.UI
 						hide(new)
 						t.Callback(v)
 					end)
-
+		
 					taskdelay(0.1, function()
 						ui.Tween(new2, {BackgroundTransparency = 0, TextTransparency = 0}, BANNER_TWEENINFO)
 					end)
-
+		
 					ui.Ripple(new2)
 				end
-
+		
 				if style == 4 then
 					new.AnchorPoint = Vector2new(0, 1)
 					new.Position = UDim2new(0, navsize + 10, 1, 0)
@@ -2704,7 +2705,7 @@ do -- MLRemake.MLRemake.UI
 				local bound = new.Label.TextBounds.Y
 				new.Label.Size = UDim2new(1, 0, 1, 0)
 				new.Size = UDim2new(1, -20 - ((style == 4 and navsize) or 0), 0, clamp(bound + 45, 100, inf))
-
+		
 				taskdelay(0.1, function()
 					if style == 4 then
 						new:TweenPosition(UDim2new(0, navsize + 10, 1, -10), "Out", "Sine", 0.35)
@@ -2717,31 +2718,31 @@ do -- MLRemake.MLRemake.UI
 				new.Visible = true
 			end
 		end
-
+		
 		do -- Notify incomplete
 			local NOTIF_TWEENINFO = TweenInfonew(0.35, sine, out)
 			local NOTIF_VISIBLE = false
 			local NOTIFS = {}
 			local NOTIF_COUNT = 0
-
+			
 			local function show(a)
 				if NOTIF_COUNT > 0 then
 					for _,v in next, NOTIFS do
 						v:TweenPosition(UDim2new())
 					end
 				else
-
+					
 				end
 			end
 			local function hide(a)
-
+				
 			end
 			function ui.Notify(t, p)
 				if typeof(t) == "string" then
 					t = {Text = t}
 				end
 				ApplyDefaultProps("Banner", t)
-
+		
 				local new = notification:Clone()
 				new.Name = "Notification"
 				new.Title.Text = t.Title
@@ -2749,7 +2750,7 @@ do -- MLRemake.MLRemake.UI
 				new.Parent = p or main
 			end
 		end
-
+		
 		do -- UI Core
 			function ui.UpdateCanvasSize(page)
 				task.spawn(function()
@@ -2765,12 +2766,12 @@ do -- MLRemake.MLRemake.UI
 				table.sort(t, function(a,b)
 					return a < b
 				end)
-
+			
 				local menubtn = p.Menu
 				local main = p:FindFirstAncestor("Main")
 				local menu = main.ObjectMenu
 				local list = menu.UIListLayout
-
+				
 				menubtn.Visible = true
 				menubtn.Activated:Connect(function()
 					if LAST_BUTTON ~= menubtn then
@@ -2808,7 +2809,7 @@ do -- MLRemake.MLRemake.UI
 						menu.Visible = false
 					end
 				end)
-
+				
 				taskdelay(0.5, function()
 					for _,v in next, o do
 						local pos = v.Position
@@ -2826,13 +2827,13 @@ do -- MLRemake.MLRemake.UI
 				end
 				return asset
 			end
-
+			
 			function ui.Load(t)
 				UI_LOADED = false
 				ApplyDefaultProps("Load", t)
-
+				
 				local new = script.Parent:Clone()
-
+				
 				-- gui protection
 				local container = (gethui and gethui()) or (get_hidden_ui and get_hidden_ui()) or game.CoreGui
 				if getgenv then
@@ -2845,7 +2846,7 @@ do -- MLRemake.MLRemake.UI
 				else
 					new.Parent = game:GetService("Players").LocalPlayer.PlayerGui
 				end
-
+				
 				local hookmetamethod = hookmetamethod or (hookfunction and getrawmetatable and newcclosure and function(obj, method, f)
 					return hookfunction(getrawmetatable(obj)[method], newcclosure(f))
 				end) or nil
@@ -2861,9 +2862,9 @@ do -- MLRemake.MLRemake.UI
 						return old(...)
 					end)
 				end
-
+				
 				new.Name = "MATERIAL_"..t.Title
-
+		
 				local topbar = new.Topbar
 				local main = topbar.Main
 				local pages = main.Pages
@@ -2883,54 +2884,54 @@ do -- MLRemake.MLRemake.UI
 				local dim2 = main.BackgroundDim2
 				local banner = main.Banner
 				local notification = topbar.Parent.Notifications.Notif
-
+				
 				local Theme = {
 					MainFrame = main,
-
+		
 					Minimise = minimize,
 					MinimiseAccent = nil,
 					Maximise = nil,
 					MaximiseAccent = nil,
-
+		
 					NavBar = {{navigator, "BackgroundColor3"}},
 					NavBarAccent = nil,
 					NavBarInvert = nil,
-
+		
 					TitleBar = topbar,
 					TitleBarAccent = {{topbar.Title, "BackgroundColor3"}},
-
+		
 					Overlay = nil,
-
+		
 					Banner = main.Banner,
 					BannerAccent = {main.BackgroundDim2, main.Banner.Label},
-
+		
 					Content = nil,
-
+		
 					Button = ex.Button,
 					ButtonAccent = nil,
-
+		
 					ChipSet = Color3.fromRGB(219, 68, 103),
 					ChipSetAccent = Color3.fromRGB(255,255,255),
-
+		
 					DataTable = Color3.fromRGB(219, 68, 103),
 					DataTableAccent = Color3.fromRGB(255,255,255),
-
+		
 					Slider = Color3.fromRGB(255,255,255),
 					SliderAccent = Color3.fromRGB(219, 68, 103),
-
+		
 					Toggle = Color3.fromRGB(219, 68, 103),
 					ToggleAccent = Color3.fromRGB(255,255,255),
-
+		
 					Dropdown = Color3.fromRGB(255,255,255),
 					DropdownAccent = Color3.fromRGB(219, 68, 103),
-
+		
 					ColorPicker = Color3.fromRGB(255,255,255),
 					ColorPickerAccent = Color3.fromRGB(219, 68, 103),
-
+		
 					TextField = Color3.fromRGB(175,175,175),
 					TextFieldAccent = Color3.fromRGB(255,255,255)
 				}
-
+				
 				local function ColorOverride(t) -- not finished
 					for _,info in next, t do
 						if info ~= nil then
@@ -2940,7 +2941,7 @@ do -- MLRemake.MLRemake.UI
 						end
 					end
 				end
-
+				
 				local UI_SIZE_X = clamp(t.SizeX, 275, inf)
 				local UI_SIZE_Y = t.SizeY
 				local FIRST_PAGE = true
@@ -2949,13 +2950,13 @@ do -- MLRemake.MLRemake.UI
 				local MAX_BTN_COLOR = fromRGB(150, 250, 170)
 				local STYLE = clamp(t.Style, 1, 4)
 				local NAV_SIZE = clamp(t.NavigatorSize, 0, UI_SIZE_X)
-
+				
 				local res = workspace.CurrentCamera.ViewportSize
 				topbar.Visible = true
 				topbar.Position = UDim2new(0, (res.X / 2) - (UI_SIZE_X / 2), 0, (res.Y / 2) - ((UI_SIZE_Y + 30) / 2))
 				topbar.Size = UDim2new(0, 0, 0, 30)
 				topbar.Main.Size = UDim2new(0, 0, 0, UI_SIZE_Y)
-
+				
 				topbar.Title.TextTransparency = 1
 				topbar.Title.Text = t.Title
 				topbar.SubTitle.TextTransparency = 1
@@ -2966,7 +2967,7 @@ do -- MLRemake.MLRemake.UI
 					topbar.SubTitle.Visible = not t.ShowInNavigator
 					ui.Tween(topbar.SubTitle, {TextTransparency = 0}, TweenInfonew(0.75, sine, out))
 				end)
-
+				
 				navigator.Size = UDim2new(0, NAV_SIZE, 1, 0)
 				navigator.Position = UDim2new(0, -NAV_SIZE, 0, 0)
 				navigator.Icon.Visible = t.ShowInNavigator
@@ -2985,11 +2986,11 @@ do -- MLRemake.MLRemake.UI
 					navigator.Title.Position = UDim2new(0, 8, 0, 5)
 					navigator.SubTitle.Position = UDim2new(0, 8, 0, 28)
 				end
-
-
+				
+				
 				menubtn.ImageTransparency = 1
 				minimize.BackgroundTransparency = 1
-
+				
 				tabs.Visible = false
 				pages.Visible = false
 				overlay.Visible = true
@@ -3000,7 +3001,7 @@ do -- MLRemake.MLRemake.UI
 					end
 				end
 				ui.SmoothDrag(topbar)
-
+				
 				if STYLE == 1 or STYLE == 2 then
 					menubtn.Visible = false
 					topbar.Title.Position = UDim2new(0, 0, 0, 0)
@@ -3017,18 +3018,18 @@ do -- MLRemake.MLRemake.UI
 					banner.Size = UDim2new(1, -20 - NAV_SIZE, 0, 100)
 					UI_SIZE_X += NAV_SIZE
 				end
-
+				
 				task.spawn(function() -- loading animation
 					local fadeinfo = TweenInfonew(0.75, sine, out)
 					local info = {"Out", "Sine", 1.25, true}
 					topbar:TweenSize(UDim2new(0, UI_SIZE_X, 0, 30), unpack(info))
 					main:TweenSize(UDim2new(0, UI_SIZE_X, 0, UI_SIZE_Y), unpack(info))
-
+					
 					taskwait(1.25)
 					ui.Tween(overlay, {BackgroundTransparency = 1}, TweenInfonew(0.5, sine, out))
 					ui.Tween(topbar.Title, {TextTransparency = 0}, fadeinfo)
 					ui.Tween(minimize, {BackgroundTransparency = 0}, fadeinfo)
-
+					
 					if STYLE == 1 or STYLE == 2 then
 						tabs.Visible = true
 						tabs.Position = UDim2new(0, 10, 0, 35)
@@ -3044,14 +3045,14 @@ do -- MLRemake.MLRemake.UI
 						pages:TweenPosition(UDim2new(0, NAV_SIZE, 1, 0), "Out", "Sine", 0.75)
 						pages:TweenSize(UDim2new(1, -NAV_SIZE, 1, 0))
 					end
-
+					
 					pages.Visible = true
 					pages.Position = UDim2new(0, 0, 1, 25)
 					pages:TweenPosition(UDim2new(0, 0, 1, 0), "Out", "Sine", 0.75)
 					taskwait(0.8)
 					UI_LOADED = true
 				end)
-
+				
 				local Minimized = false
 				minimize.Activated:Connect(function()
 					Minimized = not Minimized
@@ -3070,20 +3071,20 @@ do -- MLRemake.MLRemake.UI
 						fillmain.Visible = true
 					end
 				end)
-
+		
 				local Navigating = false
 				menubtn.Activated:Connect(function()
 					Navigating = not Navigating
 					navigator:TweenPosition(UDim2new(0, (not Navigating and -NAV_SIZE) or 0, 0, 0), "Out", "Sine", 0.2, true)
 					ui.Dim1(Navigating, main)
 				end)
-
-
-
+				
+				
+				
 				local UI = {}
-
+				
 				local PageOpened = Instance.new("BindableEvent")
-
+				
 				local PAGE_INDEX = 0
 				local OPEN_PAGE_INFO = TweenInfonew(0.2, sine, out)
 				local OPEN_COUNT = {}
@@ -3121,7 +3122,7 @@ do -- MLRemake.MLRemake.UI
 					else
 						title = t
 					end
-
+					
 					local discriminator = ""
 					if pages:FindFirstChild("PAGE_"..title) then
 						discriminator = "_"
@@ -3129,7 +3130,7 @@ do -- MLRemake.MLRemake.UI
 							discriminator = discriminator..string.char(math.random(97, 122))
 						end
 					end
-
+					
 					local function open()
 						UI.OpenPage("PAGE_"..title..discriminator)
 						if STYLE ~= 4 and STYLE ~= 5 then
@@ -3138,7 +3139,7 @@ do -- MLRemake.MLRemake.UI
 						Navigating = false
 						ui.Dim1(false, main)
 					end
-
+		
 					local newnav = pagebtns.Example:Clone()
 					newnav.Visible = true
 					newnav.Parent = pagebtns
@@ -3146,13 +3147,13 @@ do -- MLRemake.MLRemake.UI
 					newnav.Text = title
 					newnav.Activated:Connect(open)
 					pagebtns.CanvasSize = UDim2new(0, 0, 0, pagebtns.UIListLayout.AbsoluteContentSize.Y + 3)
-
+					
 					local img = t.ImageId or t.ImageID
 					if img ~= nil then
 						newnav.Icon.Visible = true
 						newnav.Icon.Image = ui.GetAsset(img)
 						newnav.UIPadding.PaddingLeft = UDim.new(0, 38)
-
+						
 						local size = t.ImageSize
 						if size ~= nil then
 							local x = clamp(size.X, 0, 30)
@@ -3161,7 +3162,7 @@ do -- MLRemake.MLRemake.UI
 							newnav.Icon.Position = UDim2new(0, -34 + ((30 - x) / 2), 0, (30 - y) / 2)
 						end
 					end
-
+					
 					local newtab = pagetabs.Example:Clone()
 					newtab.Visible = true
 					newtab.Parent = pagetabs
@@ -3171,25 +3172,25 @@ do -- MLRemake.MLRemake.UI
 					newtab.Activated:Connect(open)
 					ui.Ripple(newtab)
 					pagetabs.CanvasSize = UDim2new(0, pagetabs.UIListLayout.AbsoluteContentSize.X, 0, 0)
-
+		
 					local newpage = ex:Clone()
 					newpage.Parent = pages
 					newpage.Visible = FIRST_PAGE
 					newpage.Name = "PAGE_"..title..discriminator
-
+					
 					if FIRST_PAGE then
 						FIRST_PAGE = false
 						FIRST_PAGE_OBJ = newpage
 						newnav.TextTransparency = 0
 						newnav.Line.BackgroundColor3 = fromRGB(120, 120, 120)
 					end
-
+					
 					for _,v in next, newpage:GetChildren() do
 						if not v:IsA("UIListLayout") then
 							v.Visible = false
 						end
 					end
-
+					
 					local function newfunc(name)
 						return function(t)
 							return ui[name](t, newpage, ex)
@@ -3215,7 +3216,7 @@ do -- MLRemake.MLRemake.UI
 							newpage:Destroy()
 						end,
 					}
-
+					
 					return funcs
 				end
 				function UI.Toggle(vis)
@@ -3229,7 +3230,7 @@ do -- MLRemake.MLRemake.UI
 					return ui.Banner(t, main, STYLE, NAV_SIZE)
 				end
 				function UI.Notify(t)
-
+					
 				end
 				function UI:Destroy()
 					if getgenv then
@@ -3237,21 +3238,21 @@ do -- MLRemake.MLRemake.UI
 					end
 					new:Destroy()
 				end
-
+		
 				UI.New = UI.new
 				UI.UI = new
 				UI.PageOpened = PageOpened.Event
-
+				
 				return UI
 			end
 		end
-
+		
 		do -- Button
 			function ui.Button(t, p, ex)
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("Button", t)
-
+		
 				local new = ex.Button:Clone()
 				new.Name = "Button#"..id
 				new.Parent = p or ex
@@ -3259,16 +3260,16 @@ do -- MLRemake.MLRemake.UI
 				new.Text = t.Text
 				new.TextXAlignment = Enum.TextXAlignment[(t.Center and "Center" or "Left")]
 				new.Activated:Connect(t.Callback)
-
+				
 				ui.Ripple(new)
 				ui.UpdateCanvasSize(p or ex)
-
+				
 				if t.Menu ~= nil then
 					ui.InitMenu(t.Menu, new, {})
 				end
-
+				
 				local a = {Destroyed = false, Object = new}
-
+				
 				local function set(text)
 					if a.Destroyed then return end
 					new.Text = tostring(text)
@@ -3277,14 +3278,14 @@ do -- MLRemake.MLRemake.UI
 					if a.Destroyed then return end
 					return new.Text
 				end
-
+				
 				function a:Set(text)
 					set(text)
 				end
 				function a:Get()
 					return get()
 				end
-
+				
 				function a:SetText(text)
 					set(text)
 				end
@@ -3300,19 +3301,19 @@ do -- MLRemake.MLRemake.UI
 					new:Destroy()
 					a.Destroyed = true
 				end
-
+				
 				return a
 			end
 		end
-
+		
 		do -- Toggle
 			function ui.Toggle(t, p, ex)
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("Toggle", t)
-
+		
 				local toggled = t.Enabled
-
+		
 				local new = ex.Toggle:Clone()
 				local toggle = new.Toggle
 				new.Name = "Toggle#"..id
@@ -3331,17 +3332,17 @@ do -- MLRemake.MLRemake.UI
 						ui.Tween(toggle.Indicator, {BackgroundColor3 = Color3.fromRGB(90, 90, 90)})
 					end
 				end)
-
+				
 				ui.Ripple(new)
 				ui.UpdateCanvasSize(p or ex)
 				t.Callback(toggled)
-
+				
 				if t.Menu ~= nil then
 					ui.InitMenu(t.Menu, new, {new.Toggle})
 				end
-
+				
 				local a = {Destroyed = false, Object = new}
-
+				
 				local function set(value)
 					if a.Destroyed then return end
 					if typeof(value) ~= "boolean" then return end
@@ -3359,9 +3360,9 @@ do -- MLRemake.MLRemake.UI
 					if a.Destroyed then return end
 					return toggled
 				end
-
+				
 				set(toggled)
-
+				
 				function a:SetText(text)
 					if a.Destroyed then return end
 					new.Text = tostring(text)
@@ -3385,22 +3386,22 @@ do -- MLRemake.MLRemake.UI
 					new:Destroy()
 					a.Destroyed = true
 				end
-
+		
 				return a
 			end
 		end
-
+		
 		do -- Dropdown
 			function ui.Dropdown(t, p, ex)
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("Dropdown", t)
-
+				
 				local toggled = false
 				local options = t.Options
 				local amount = #options
 				local selected = t.Def
-
+				
 				local new = ex.Dropdown:Clone()
 				local dropdown = new.Dropdown
 				new.Name = "Dropdown#"..id
@@ -3408,7 +3409,7 @@ do -- MLRemake.MLRemake.UI
 				new.Visible = true
 				new.Label.Text = t.Text
 				new.Option.Text = t.Def
-
+				
 				local function refresh()
 					for _,v in next, dropdown:GetChildren() do
 						if v:IsA("TextButton") and v.Name ~= "Option" then
@@ -3428,7 +3429,7 @@ do -- MLRemake.MLRemake.UI
 								ui.UpdateCanvasSize(p or ex)
 								t.Callback(v)
 							end)
-
+		
 							ui.Ripple(new2)
 						end
 					end
@@ -3438,7 +3439,7 @@ do -- MLRemake.MLRemake.UI
 					end
 				end
 				refresh()
-
+				
 				local list = dropdown.UIListLayout
 				new.Button.Activated:Connect(function()
 					toggled = not toggled
@@ -3453,17 +3454,17 @@ do -- MLRemake.MLRemake.UI
 					end
 					ui.UpdateCanvasSize(new.Parent)
 				end)
-
+				
 				ui.Ripple(new.Button, new.RippleHolder)
 				ui.UpdateCanvasSize(p or ex)
 				--t.Callback(selected)]]
-
+				
 				if t.Menu ~= nil then
 					ui.InitMenu(t.Menu, new, {new.Option, new.Indicator})
 				end
-
+				
 				local a = {Destroyed = false, Object = new}
-
+				
 				local function set(value)
 					if a.Destroyed then return end
 					if typeof(value) ~= "table" then return end
@@ -3475,14 +3476,14 @@ do -- MLRemake.MLRemake.UI
 					if a.Destroyed then return end
 					return options
 				end
-
+				
 				function a:Set(value)
 					set(value)
 				end
 				function a:Get()
 					return get()
 				end
-
+		
 				function a:SetText(text)
 					if a.Destroyed then return end
 					new.Label.Text = tostring(text)
@@ -3506,20 +3507,20 @@ do -- MLRemake.MLRemake.UI
 					new:Destroy()
 					a.Destroyed = false
 				end
-
+		
 				return a
 			end
 		end
-
+		
 		do -- Text Box / Text Field
 			function ui.TextBox(t, p, ex)
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("TextBox", t)
-
+				
 				local type = t.Type:lower()
 				local hiddentext = type == "hidden" or type == "password"
-
+				
 				local new = ex.TextBox:Clone()
 				local hidden = new.Hidden
 				local cursor = new.Cursor
@@ -3534,12 +3535,12 @@ do -- MLRemake.MLRemake.UI
 				new.ClearTextOnFocus = t.ClearOnFocus
 				new.TextXAlignment = Enum.TextXAlignment[(t.Center and "Center" or "Left")]
 				hidden.ClearTextOnFocus = t.ClearOnFocus
-
+				
 				if hiddentext then
 					hidden.Font = Enum.Font.Code -- to make the text size match the • symbols
 					hidden.TextSize = 12
 				end
-
+				
 				local function changed()
 					task.wait()
 					hiddencursor = hidden.CursorPosition
@@ -3568,7 +3569,7 @@ do -- MLRemake.MLRemake.UI
 						box.Size = UDim2new(0, 1, 1, -12)
 					end
 				end
-
+				
 				new.Focused:Connect(function()
 					local hiddenfocused = hiddenfocused
 					local hiddencursor = hiddencursor
@@ -3586,7 +3587,7 @@ do -- MLRemake.MLRemake.UI
 					cursor.Visible = true
 					changed()
 				end)
-
+				
 				hidden:GetPropertyChangedSignal("CursorPosition"):Connect(changed)
 				hidden:GetPropertyChangedSignal("SelectionStart"):Connect(changed)
 				hidden:GetPropertyChangedSignal("Text"):Connect(function()
@@ -3605,16 +3606,16 @@ do -- MLRemake.MLRemake.UI
 					cursor.Visible = false
 					box.Visible = false
 				end)
-
+				
 				ui.Focus(hidden, new)
 				ui.UpdateCanvasSize(p or ex)
-
+				
 				if t.Menu ~= nil then
 					ui.InitMenu(t.Menu, new, {})
 				end
-
+				
 				local a = {Destroyed = false, Object = new}
-
+				
 				local function set(text, placeholder)
 					if a.Destroyed then return end
 					new[placeholder and "PlaceholderText" or "Text"] = tostring(text)
@@ -3623,14 +3624,14 @@ do -- MLRemake.MLRemake.UI
 					if a.Destroyed then return end
 					return new[placeholder and "PlaceholderText" or "Text"]
 				end
-
+				
 				function a:Set(text)
 					set(text, false)
 				end
 				function a:Get()
 					return get()
 				end
-
+		
 				function a:SetText(text)
 					set(text, true)
 				end
@@ -3646,17 +3647,17 @@ do -- MLRemake.MLRemake.UI
 					new:Destroy()
 					a.Destroyed = true
 				end
-
+		
 				return a
 			end
 		end
-
+		
 		do -- Label
 			function ui.Label(t, p, ex)
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("Label", t)
-
+				
 				local new = ex.Label:Clone()
 				new.Name = "Label#"..id
 				new.Parent = p or ex
@@ -3665,20 +3666,20 @@ do -- MLRemake.MLRemake.UI
 				new.BackgroundTransparency = (t.Transparent and 1) or 0
 				new.RichText = true
 				new.Font = t.Font or Enum.Font[t.Font]
-
+				
 				local function SetText(...) -- support multiple args to easily concatenate multiple strings
 					local args = {...}
 					for i,v in next, args do
 						args[i] = tostring(v)
 					end
-
+		
 					local suc, str = pcall(function()
 						return table.concat(args, " ")
 					end)
-
+		
 					if suc and str then
 						new.Text = str
-
+						
 						-- Resize accordingly
 						new.Size = UDim2new(1, 0, 0, clamp(new.TextBounds.Y + 16, 30, inf))
 					else
@@ -3687,15 +3688,15 @@ do -- MLRemake.MLRemake.UI
 				end
 				t.Event.Event:Connect(SetText)
 				SetText(t.Text)
-
+				
 				ui.UpdateCanvasSize(p or ex)
-
+				
 				if t.Menu ~= nil then
 					ui.InitMenu(t.Menu, new, {})
 				end
-
+				
 				local a = {Destroyed = false, Object = new}
-
+				
 				local function set(...)
 					if a.Destroyed then return end
 					SetText(...)
@@ -3704,14 +3705,14 @@ do -- MLRemake.MLRemake.UI
 					if a.Destroyed then return end
 					return new.Text
 				end
-
+				
 				function a:Set(...)
 					set(...)
 				end
 				function a:Get()
 					return get()
 				end
-
+				
 				function a:SetText(...)
 					set(...)
 				end
@@ -3727,11 +3728,11 @@ do -- MLRemake.MLRemake.UI
 					new:Destroy()
 					a.Destroyed = true
 				end
-
+		
 				return a
 			end
 		end
-
+		
 		do -- Slider
 			function ui.AddAffixes(value, t, ignore)
 				if t.ReturnAsPercent and false then -- removed
@@ -3743,10 +3744,10 @@ do -- MLRemake.MLRemake.UI
 				end
 				return value
 			end
-
+			
 			local SLIDER_TWEEN_TIME = 0.05
 			local SLIDER_SET_TWEEN_TIME = 0.4
-
+			
 			function ui.SetSliderValue(s, value, t)
 				task.spawn(function()
 					repeat
@@ -3759,7 +3760,7 @@ do -- MLRemake.MLRemake.UI
 					local min = math.max(t.Min or 0, 0)
 					local max = t.Max or 100
 					value = clamp(value, min, max)
-
+					
 					local percent = (value - min) / (max - min)
 					--local pos = UDim2new(0, clamp(bar.AbsoluteSize.X / percent, 0, bar.AbsoluteSize.X), 0.5, 0)
 					local pos = UDim2new(percent, 0, 0.5, 0)
@@ -3770,9 +3771,9 @@ do -- MLRemake.MLRemake.UI
 						indicator.Position = pos
 						progress.Size = UDim2new(percent, 0, 1, 0)
 					end
-
+					
 					ui.Tween(bar.Progress, {BackgroundColor3 = (percent == 1 and fromRGB(250, 250, 250)) or fromRGB(90, 90, 90)}, TweenInfonew(0.5, sine, out)) -- Tween bar progress color to white when at 100%
-
+					
 					local afv = ui.AddAffixes(value, t)
 					s.Value.Text = ui.AddAffixes(value, t, true)
 					if s:FindFirstChild("Input") then
@@ -3794,16 +3795,16 @@ do -- MLRemake.MLRemake.UI
 				local dec = t.Decimals or 0
 				local lastvalue = nil
 				local lastpercent = nil
-
+				
 				local pre, suf = t.Prefix or "", t.Suffix or ""
-
+				
 				return slider.MouseButton1Down:Connect(function()
 					mousedown = true
 					while true do
 						if not mousedown then break end
-
+						
 						local pos = clamp(mouse.X - bar.AbsolutePosition.X, 0, bar.AbsoluteSize.X)
-
+						
 						indicator.Position = UDim2new(
 							0,
 							pos,
@@ -3815,12 +3816,12 @@ do -- MLRemake.MLRemake.UI
 						--old code local value = Round((floor(indicator.Position.X.Offset / bar.AbsoluteSize.X * 1000) / 1000) * max, dec)
 						local percent = (value - min) / (max - min)
 						indicator.AnchorPoint = Vector2new(percent, 0.5)
-
+						
 						bar.Progress.Size = UDim2new(percent, 0, 1, 0)
 						ui.Tween(bar.Progress, {BackgroundColor3 = (percent == 1 and fromRGB(250, 250, 250)) or fromRGB(90, 90, 90)}, TweenInfonew(0.5, sine, out)) -- Tween bar progress color to white when at 100%
-
+						
 						s.Value.Text = ui.AddAffixes(value, t, true)
-
+		
 						lastvalue = value
 						lastpercent = percent
 						taskwait()
@@ -3832,14 +3833,14 @@ do -- MLRemake.MLRemake.UI
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("Slider", t)
-
+				
 				local toggled = t.Enabled
 				local min = math.max(t.Min, 0)
 				local max = t.Max
 				local def = clamp(t.Def, min, max)
 				local lastvalue = def
 				local pre, suf = t.Prefix, t.Suffix
-
+				
 				local new = ex.Slider:Clone()
 				local toggle = new.Toggle
 				local indicator = toggle.Indicator
@@ -3852,17 +3853,17 @@ do -- MLRemake.MLRemake.UI
 				new.Visible = true
 				new.Label.Text = t.Text
 				new.Value.Text = def
-
+				
 				bar.Indicator.Visible = not t.Filled
 				bar.Progress.Visible = t.Filled
-
+				
 				ui.SetSliderValue(new, def, t)
 				ui.UpdateCanvasSize(p or ex)
-
+				
 				if t.Menu ~= nil then
 					ui.InitMenu(t.Menu, new, (t.Toggle and {val, input, toggle}) or {val, input})
 				end
-
+				
 				-- toggle stuff
 				if not t.Toggle then
 					toggle.Visible = false
@@ -3884,25 +3885,25 @@ do -- MLRemake.MLRemake.UI
 						end
 					end)
 				end
-
+				
 				t.Tween = true
 				input.FocusLost:Connect(function() -- notes so i dont forget
 					local a = input.Text:gsub("%a%p%s%c%x%z", "") -- Removes all letters (a), punctuation (p), spaces (s), hexadecimals (x), and null characters (z)
 					if a == "" then return end -- If all characters were removed, end thread
-
+					
 					local value = a:gsub("[^%d{.}]", "") -- Removes all other characters except for numbers AND decimal points ({.} keeps the decimals)
 					value = tonumber(value) -- Convert to number
-
+					
 					if a:match("%%$") then -- Checks if last character is a %
 						--value = max * (value / 100)
 						value = (1 - (value / 100)) * min + (value / 100) * max
 					end
-
+					
 					value = clamp(value, min, max)
 					ui.SetSliderValue(new, value, t)
 					lastvalue = value
 				end)
-
+				
 				-- slider stuff
 				local conn
 				local function init()
@@ -3914,9 +3915,9 @@ do -- MLRemake.MLRemake.UI
 					end)
 				end
 				init()
-
+				
 				local a = {Destroyed = false, Object = new}
-
+				
 				local function set(value)
 					if a.Destroyed then return end
 					if typeof(value) ~= "number" then return end
@@ -3928,14 +3929,14 @@ do -- MLRemake.MLRemake.UI
 					if a.Destroyed then return end
 					return lastvalue
 				end
-
+				
 				function a:Set(value)
 					set(value)
 				end
 				function a:Get()
 					return get()
 				end
-
+		
 				function a:SetText(text)
 					if a.Destroyed then return end
 					new.Label.Text = tostring(text)
@@ -3983,11 +3984,11 @@ do -- MLRemake.MLRemake.UI
 					new:Destroy()
 					a.Destroyed = true
 				end
-
+		
 				return a
 			end
 		end
-
+		
 		do -- Color Picker
 			function ui.SetPickerPreview(s, color, tween, toggled)
 				s.Color.Text = format("%s, %s, %s", floor(color.R * 255), floor(color.G * 255), floor(color.B * 255))
@@ -4007,15 +4008,15 @@ do -- MLRemake.MLRemake.UI
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("ColorPicker", t)
-
+				
 				if t.Default ~= nil then
 					t.Def = t.Default
 				end
-
+		
 				local toggled = false
 				local color = t.Def
 				local hue, sat, val = color:ToHSV()
-
+		
 				local new = ex.ColorPicker:Clone()
 				local picker = new.Picker
 				new.Name = "ColorPicker#"..id
@@ -4024,11 +4025,11 @@ do -- MLRemake.MLRemake.UI
 				new.Label.Text = t.Text
 				new.Color.Text = format("%s, %s, %s", floor(color.R * 255), floor(color.G * 255), floor(color.B * 255))
 				new.Preview.BackgroundColor3 = color
-
+				
 				ui.SetSliderValue(picker.Hue, floor(hue * 360), {Max = 360})
 				ui.SetSliderValue(picker.Saturation, floor(sat * 100))
 				ui.SetSliderValue(picker.Value, floor(val * 100))
-
+				
 				-- dropdown
 				new.Button.Activated:Connect(function()
 					toggled = not toggled
@@ -4041,7 +4042,7 @@ do -- MLRemake.MLRemake.UI
 					end
 					ui.UpdateCanvasSize(new.Parent)
 				end)
-
+				
 				-- HSV bars
 				ui.InitSlider(picker.Hue, {Max = 360}, function(_, value, percent)
 					hue = percent
@@ -4058,7 +4059,7 @@ do -- MLRemake.MLRemake.UI
 					ui.SetPickerPreview(new, fromHSV(hue, sat, val), false, toggled)
 					t.Callback(fromHSV(hue, sat, val))
 				end)
-
+				
 				-- custom section
 				local hex = picker.Custom.HEX
 				local rgb = picker.Custom.RGB
@@ -4086,18 +4087,18 @@ do -- MLRemake.MLRemake.UI
 				rainbow.Activated:Connect(function()
 					rgbenabled = not rgbenabled
 				end)
-
+				
 				ui.Ripple(new.Button, new.RippleHolder)
 				ui.Ripple(picker.Custom.Rainbow)
 				ui.Focus(picker.Custom.HEX)
 				ui.Focus(picker.Custom.RGB)
 				ui.UpdateCanvasSize(p or ex)
 				t.Callback(color)
-
+				
 				if t.Menu ~= nil then
 					ui.InitMenu(t.Menu, new, {new.Color, new.Preview})
 				end
-
+				
 				task.spawn(function()
 					while true do
 						if new == nil or new.Parent == nil then break end
@@ -4109,9 +4110,9 @@ do -- MLRemake.MLRemake.UI
 						taskwait()
 					end
 				end)
-
+				
 				local a = {Destroyed = false, Object = new}
-
+				
 				local function set(value)
 					if a.Destroyed then return end
 					if typeof(value) ~= "Color3" then return end
@@ -4124,14 +4125,14 @@ do -- MLRemake.MLRemake.UI
 					if a.Destroyed then return end
 					return fromHSV(hue, sat, val)
 				end
-
+				
 				function a:Set(value)
 					set(value)
 				end
 				function a:Get()
 					return get()
 				end
-
+		
 				function a:SetText(text)
 					if a.Destroyed then return end
 					new.Label.Text = tostring(text)
@@ -4155,11 +4156,11 @@ do -- MLRemake.MLRemake.UI
 					new:Destroy()
 					a.Destroyed = true
 				end
-
+		
 				return a
 			end
 		end
-
+		
 		do -- Keybind
 			local ignore = {
 				"None",
@@ -4174,22 +4175,22 @@ do -- MLRemake.MLRemake.UI
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("Keybind", t)
-
+				
 				local listening = false
 				local keybind = t.Def
-
+		
 				local new = ex.Keybind:Clone()
 				new.Name = "Keybind#"..id
 				new.Parent = p or ex
 				new.Visible = true
 				new.Text = t.Text
 				ui.SetBindLabel(new, keybind)
-
+				
 				new.Activated:Connect(function()
 					if not listening then
 						listening = true
 						ui.SetBindLabel(new, ". . .")
-
+						
 						local conn;conn = uis.InputBegan:Connect(function(i)
 							local keyboard = i.UserInputType.Name == "Keyboard"
 							local mouse = i.UserInputType.Name:find("Mouse")
@@ -4204,17 +4205,17 @@ do -- MLRemake.MLRemake.UI
 						end)
 					end
 				end)
-
+				
 				ui.Ripple(new)
 				ui.UpdateCanvasSize(p or ex)
 				t.Callback(t.Def)
-
+				
 				if t.Menu ~= nil then
 					ui.InitMenu(t.Menu, new, {new.Bind})
 				end
-
+				
 				local a = {Destroyed = false, Object = new}
-
+				
 				local function set(value)
 					if a.Destroyed then return end
 					if typeof(value) ~= "EnumItem" and typeof(value) ~= "string" then return end
@@ -4227,14 +4228,14 @@ do -- MLRemake.MLRemake.UI
 					if a.Destroyed then return end
 					return keybind
 				end
-
+				
 				function a:Set(value)
 					set(value)
 				end
 				function a:Get()
 					return get()
 				end
-
+		
 				function a:SetText(text)
 					if a.Destroyed then return end
 					new.Text = tostring(text)
@@ -4258,35 +4259,35 @@ do -- MLRemake.MLRemake.UI
 					new:Destroy()
 					a.Destroyed = true
 				end
-
+		
 				return a
 			end
 		end
-
+		
 		do -- Chip Set / Data Table
 			function ui.ChipSet(t, p, ex)
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("ChipSet", t)
-
+		
 				local toggled = false
 				local amount = 0
 				local data = t.Options
-
+				
 				for i,v in next, t.Options do
 					amount += 1
 				end
 				table.sort(t.Options, function(a,b)
 					return a < b
 				end)
-
+		
 				local new = ex.ChipSet:Clone()
 				local dropdown = new.Dropdown
 				new.Name = "ChipSet#"..id
 				new.Parent = p or ex
 				new.Visible = true
 				new.Label.Text = t.Text
-
+				
 				local function refresh()
 					for _,v in next, dropdown:GetChildren() do
 						if v:IsA("Frame") and v.Name ~= "Option" then
@@ -4325,10 +4326,10 @@ do -- MLRemake.MLRemake.UI
 							end
 							new2.Enabled.Activated:Connect(activated)
 							new2.Button.Activated:Connect(activated)
-
+		
 							ui.Ripple(new2.Enabled, new2.Button)
 							ui.Ripple(new2.Button)
-
+							
 							if menu then
 								ui.InitMenu(v.Menu, new2, {})
 							end
@@ -4340,7 +4341,7 @@ do -- MLRemake.MLRemake.UI
 					end
 				end
 				refresh()
-
+		
 				local list = dropdown.UIListLayout
 				new.Button.Activated:Connect(function()
 					toggled = not toggled
@@ -4355,7 +4356,7 @@ do -- MLRemake.MLRemake.UI
 					end
 					ui.UpdateCanvasSize(new.Parent)
 				end)
-
+				
 				ui.UpdateCanvasSize(p or ex)
 				ui.Ripple(new.Button, new.RippleHolder)
 				local aa = data
@@ -4365,13 +4366,13 @@ do -- MLRemake.MLRemake.UI
 					end
 				end
 				t.Callback(aa)
-
+				
 				if t.Menu ~= nil then
 					ui.InitMenu(t.Menu, new, {new.Indicator})
 				end
-
+				
 				local a = {Destroyed = false, Object = new}
-
+				
 				local function set(value)
 					if a.Destroyed then return end
 					if typeof(value) ~= "table" then return end
@@ -4390,14 +4391,14 @@ do -- MLRemake.MLRemake.UI
 					if a.Destroyed then return end
 					return data
 				end
-
+				
 				function a:Set(value)
 					set(value)
 				end
 				function a:Get()
 					return get()
 				end
-
+		
 				function a:SetText(text)
 					if a.Destroyed then return end
 					new.Label.Text = tostring(text)
@@ -4421,28 +4422,28 @@ do -- MLRemake.MLRemake.UI
 					new:Destroy()
 					a.Destroyed = true
 				end
-
+		
 				return a
 			end
 		end
-
+		
 		do -- Table
 			function ui.Table(t, p, ex)
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("Table", t)
-
+		
 				local toggled = false
 				local data = t.Data
 				local amount = 0
-
+				
 				for _,_ in next, data do
 					amount += 1
 				end
 				table.sort(data, function(a,b)
 					return a < b
 				end)
-
+		
 				local new = ex.Table:Clone()
 				local dropdown = new.Dropdown
 				new.Name = "Table#"..id
@@ -4452,7 +4453,7 @@ do -- MLRemake.MLRemake.UI
 				dropdown.Info.Visible = t.ShowInfo
 				dropdown.Info.Key.Text = t.Key
 				dropdown.Info.Value.Text = t.Value
-
+		
 				local function refresh()
 					for _,v in next, dropdown:GetChildren() do
 						if v:IsA("Frame") and v.Name ~= "Info" then
@@ -4475,7 +4476,7 @@ do -- MLRemake.MLRemake.UI
 					end
 				end
 				refresh()
-
+		
 				local list = dropdown.UIListLayout
 				new.Button.Activated:Connect(function()
 					toggled = not toggled
@@ -4490,16 +4491,16 @@ do -- MLRemake.MLRemake.UI
 					end
 					ui.UpdateCanvasSize(new.Parent)
 				end)
-
+		
 				ui.Ripple(new.Button, new.RippleHolder)
 				ui.UpdateCanvasSize(p or ex)
-
+		
 				if t.Menu ~= nil then
 					ui.InitMenu(t.Menu, new, {new.Option, new.Indicator})
 				end
-
+		
 				local a = {Destroyed = false, Object = new}
-
+				
 				local function set(value)
 					if a.Destroyed then return end
 					if typeof(value) ~= "table" then return end
@@ -4517,14 +4518,14 @@ do -- MLRemake.MLRemake.UI
 					if a.Destroyed then return end
 					return data
 				end
-
+				
 				function a:Set(value)
 					set(value)
 				end
 				function a:Get()
 					return get()
 				end
-
+		
 				function a:SetText(text)
 					if a.Destroyed then return end
 					new.Label.Text = tostring(text)
@@ -4548,21 +4549,21 @@ do -- MLRemake.MLRemake.UI
 					new:Destroy()
 					a.Destroyed = true
 				end
-
+		
 				return a
 			end
 		end
-
+		
 		do -- Progress Bar
 			function ui.ProgressBar(t, p, ex)
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("ProgressBar", t)
-
+		
 				local def, min, max = t.Def, t.Min, t.Max
 				local lastvalue = t.Def
 				local pre, suf = t.Prefix, t.Suffix
-
+		
 				local new = ex.ProgressBar:Clone()
 				local bar = new.Bar 
 				local slider = bar.Indicator
@@ -4571,27 +4572,27 @@ do -- MLRemake.MLRemake.UI
 				new.Parent = p or ex
 				new.Visible = true
 				new.Label.Text = t.Text
-
+				
 				local function SetValue(value)
 					if bar == nil or bar.Parent == nil then return end
 					local percent = (value - min) / (max - min)
 					bar.Progress:TweenSize(UDim2new(percent, 0, 1, 0), "Out", "Sine", 0.4, true)
 					val.Text = ui.AddAffixes((t.Percent and Round(percent * 100, 2)) or value, t, true)
 					lastvalue = value
-
+					
 					ui.Tween(bar.Progress, {BackgroundColor3 = (percent == 1 and fromRGB(250, 250, 250)) or fromRGB(90, 90, 90)}, TweenInfonew(0.5, sine, out))
 				end
 				t.Event.Event:Connect(SetValue)
-
+				
 				SetValue(def)
 				ui.UpdateCanvasSize(p or ex)
-
+		
 				if t.Menu ~= nil then
 					ui.InitMenu(t.Menu, new, (t.Toggle and {val}) or {val})
 				end
-
+				
 				local a = {Destroyed = false, Object = new}
-
+				
 				local function set(value)
 					if a.Destroyed then return end
 					if typeof(value) ~= "number" then return end
@@ -4601,14 +4602,14 @@ do -- MLRemake.MLRemake.UI
 					if a.Destroyed then return end
 					return lastvalue
 				end
-
+				
 				function a:Set(value)
 					set(value)
 				end
 				function a:Get()
 					return get()
 				end
-
+		
 				function a:SetText(text)
 					if a.Destroyed then return end
 					new.Label.Text = tostring(text)
@@ -4650,11 +4651,11 @@ do -- MLRemake.MLRemake.UI
 					new:Destroy()
 					a.Destroyed = true
 				end
-
+		
 				return a
 			end
 		end
-
+		
 		return ui
 	end
 	fake_module_scripts[script] = module_script
