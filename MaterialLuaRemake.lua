@@ -4789,7 +4789,7 @@ do -- MLRemake.MLRemake.UI
 					toggled = not toggled
 					if toggled then
 						new.Fill.Visible = true
-						new:TweenSize(UDim2new(1, 0, 0, 135), "Out", "Sine", 0.15, true)
+						new:TweenSize(UDim2new(1, 0, 0, 140), "Out", "Sine", 0.15, true)
 						ui.Tween(new.PickerNew.Value.Bar.Indicator.Top, {BackgroundTransparency = 0})
 						ui.Tween(new.PickerNew.Value.Bar.Indicator.Bottom, {BackgroundTransparency = 0})
 					else
