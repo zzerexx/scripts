@@ -28,7 +28,7 @@
 ]]
 repeat
 	task.wait(0.5)
-until not UAIM_LOADING
+until not UAIM_LOADING and not USCRIPT_LOADING
 getgenv().UESP_LOADING = true
 if not EspSettings then
 	getgenv().EspSettings = {
@@ -230,7 +230,7 @@ function page(title)
 	return UI.new({Title = title, ImageId = "UESP_Icons\\"..title..".png", ImageSize = Vector2.new(20, 20)})
 end
 
-local version = "v1.6.14"
+local version = "v1.7.1"
 local esp = esp or Load("UniversalEsp")
 local cfg = Load("ConfigManager")
 local Material = Load("MaterialLuaRemake")
@@ -350,6 +350,12 @@ for i,v in next, newsettings do
 			end
 		end
 	end
+end
+
+local function newconn(signal, callback)
+	local conn = signal:Connect(callback)
+	table.insert(connections, conn)
+	return conn
 end
 
 local function save(a)
@@ -505,12 +511,12 @@ do -- Game Specific
 			end
 		})
 		gamesettings[Game] = settings
-		table.insert(connections, SettingsLoaded.Event:Connect(function(a)
+		newconn(SettingsLoaded.Event, function(a)
 			local data = a[Game]
 			if data then
 				settings = a[Game]
 			end
-		end))
+		end)
 
 		GamePage.Label({
 			Text = "━━ Weapons ━━",
@@ -651,7 +657,7 @@ do -- Game Specific
 			Decimals = 2
 		})
 
-		table.insert(connections, drops.ChildAdded:Connect(function(v)
+		newconn(drops.ChildAdded, function(v)
 			local dropped = settings.Weapons.DroppedWeapons
 			local droppedchams = settings.Weapons.DroppedWeaponsChams
 			local showammo = settings.Weapons.ShowAmmo
@@ -720,8 +726,8 @@ do -- Game Specific
 
 				label(v, "[ Dropped Flag ]", color)
 			end
-		end))
-		table.insert(connections, misc.ChildAdded:Connect(function(v)
+		end)
+		newconn(misc.ChildAdded, function(v)
 			local grenades = settings.Weapons.Grenades
 			local flags = settings.Misc.Flags
 			local checkradius = settings.Weapons.CheckGrenadeRadius
@@ -773,7 +779,7 @@ do -- Game Specific
 
 				label(v, "[ Flag Carry ]", color)
 			end
-		end))
+		end)
 	elseif Game == "Bad Business" then
 		local throwables = workspace:WaitForChild("Throwables")
 		local items = game:GetService("ReplicatedStorage"):WaitForChild("Items")
@@ -795,12 +801,12 @@ do -- Game Specific
 			end
 		})
 		gamesettings[Game] = settings
-		table.insert(connections, SettingsLoaded.Event:Connect(function(a)
+		newconn(SettingsLoaded.Event, function(a)
 			local data = a[Game]
 			if data then
 				settings = a[Game]
 			end
-		end))
+		end)
 
 		GamePage.Label({
 			Text = "━━ Weapons ━━",
@@ -867,7 +873,7 @@ do -- Game Specific
 			Decimals = 2
 		})
 
-		table.insert(connections, throwables.ChildAdded:Connect(function(v)
+		newconn(throwables.ChildAdded, function(v)
 			local grenades = settings.Weapons.Grenades
 			local checkradius = settings.Weapons.CheckGrenadeRadius
 
@@ -902,7 +908,7 @@ do -- Game Specific
 					end)
 				end
 			end
-		end))
+		end)
 	elseif Game == "Rush Point" then
 		local weapons = workspace:WaitForChild("DroppedWeapons")
 		local mapfolder = workspace:WaitForChild("MapFolder")
@@ -940,12 +946,12 @@ do -- Game Specific
 			end
 		})
 		gamesettings[Game] = settings
-		table.insert(connections, SettingsLoaded.Event:Connect(function(a)
+		newconn(SettingsLoaded.Event, function(a)
 			local data = a[Game]
 			if data then
 				settings = a[Game]
 			end
-		end))
+		end)
 
 		local function IsTeamAbility(v)
 			local myteam = players[myname]:WaitForChild("Team", 1) if not myteam then return "" end
@@ -1050,7 +1056,7 @@ do -- Game Specific
 			Decimals = 2
 		})
 
-		table.insert(connections, weapons.ChildAdded:Connect(function(v)
+		newconn(weapons.ChildAdded, function(v)
 			local dropped = settings.Weapons.DroppedWeapons
 			local droppedchams = settings.Weapons.DroppedWeaponsChams
 			local droppeddata = settings.Weapons.DroppedWeaponsData
@@ -1078,11 +1084,11 @@ do -- Game Specific
 			if droppedchams then
 				cham(v:WaitForChild("HitBox", 1))
 			end
-		end))
+		end)
 		local length = 6 -- turret things
 		local size = Vector3.new(0.075, 0.075, length)
 		local offset = CFrame.new(0, 0, -(length / 2))
-		table.insert(connections, mapfolder:WaitForChild("Players").ChildAdded:Connect(function(v)
+		newconn(mapfolder:WaitForChild("Players").ChildAdded, function(v)
 			local name = v.Name
 			local enabled = settings.Misc.EnabledAbilities
 			local ignoreteam = settings.Misc.IgnoreTeamAbilities
@@ -1132,8 +1138,8 @@ do -- Game Specific
 					end)
 				end
 			end
-		end))
-		table.insert(connections, bombfolder.ChildAdded:Connect(function(v)
+		end)
+		newconn(bombfolder.ChildAdded, function(v)
 			if v.Name == "Bomb" then
 				local l = label(v, "[ Bomb Planted ]")
 				local c = cham(v)
@@ -1149,7 +1155,7 @@ do -- Game Specific
 					conn:Disconnect()
 				end)
 			end
-		end))
+		end)
 	elseif Game == "Murder Mystery 2" then
 		local settings = setmetatable({
 			Misc = {
@@ -1166,12 +1172,12 @@ do -- Game Specific
 			end
 		})
 		gamesettings[Game] = settings
-		table.insert(connections, SettingsLoaded.Event:Connect(function(a)
+		newconn(SettingsLoaded.Event, function(a)
 			local data = a[Game]
 			if data then
 				settings = a[Game]
 			end
-		end))
+		end)
 
 		GamePage.Label({
 			Text = "━━ Misc ━━",
@@ -1235,7 +1241,7 @@ do -- Game Specific
 			Decimals = 2
 		})
 
-		table.insert(connections, workspace.ChildAdded:Connect(function(v)
+		newconn(workspace.ChildAdded, function(v)
 			local gun = settings.Misc.GunEsp
 			local gunchams = settings.Misc.GunEspChams
 
@@ -1247,7 +1253,7 @@ do -- Game Specific
 					cham(v)
 				end
 			end
-		end))
+		end)
 	end
 end
 
@@ -1271,7 +1277,7 @@ do -- Boxes
 		Def = s.Transparency,
 		Decimals = 2
 	})
-	Boxes.ColorPicker({
+	Boxes.ColorPickerNew({
 		Text = "Color",
 		Default = s.Color,
 		Callback = function(value)
@@ -1299,7 +1305,7 @@ do -- Boxes
 		end,
 		Enabled = s.Outline
 	})
-	Boxes.ColorPicker({
+	Boxes.ColorPickerNew({
 		Text = "Outline Color",
 		Default = s.OutlineColor,
 		Callback = function(value)
@@ -1350,7 +1356,7 @@ do -- Tracers
 		Def = s.Transparency,
 		Decimals = 2
 	})
-	Tracers.ColorPicker({
+	Tracers.ColorPickerNew({
 		Text = "Color",
 		Default = s.Color,
 		Callback = function(value)
@@ -1378,7 +1384,7 @@ do -- Tracers
 		end,
 		Enabled = s.Outline
 	})
-	Tracers.ColorPicker({
+	Tracers.ColorPickerNew({
 		Text = "Outline Color",
 		Default = s.OutlineColor,
 		Callback = function(value)
@@ -1437,7 +1443,7 @@ do -- Names
 		Def = s.Transparency,
 		Decimals = 2
 	})
-	Names.ColorPicker({
+	Names.ColorPickerNew({
 		Text = "Color",
 		Default = s.Color,
 		Callback = function(value)
@@ -1465,7 +1471,7 @@ do -- Names
 		end,
 		Enabled = s.Outline
 	})
-	Names.ColorPicker({
+	Names.ColorPickerNew({
 		Text = "Outline Color",
 		Default = s.OutlineColor,
 		Callback = function(value)
@@ -1566,7 +1572,7 @@ do -- Skeletons
 		Def = s.Transparency,
 		Decimals = 2
 	})
-	Skeletons.ColorPicker({
+	Skeletons.ColorPickerNew({
 		Text = "Color",
 		Default = s.Color,
 		Callback = function(value)
@@ -1594,7 +1600,7 @@ do -- Skeletons
 		end,
 		Enabled = s.Outline
 	})
-	Skeletons.ColorPicker({
+	Skeletons.ColorPickerNew({
 		Text = "Outline Color",
 		Default = s.OutlineColor,
 		Callback = function(value)
@@ -1645,7 +1651,7 @@ do -- HealthBars
 		Def = s.Transparency,
 		Decimals = 2
 	})
-	HealthBars.ColorPicker({
+	HealthBars.ColorPickerNew({
 		Text = "Color",
 		Default = s.Color,
 		Callback = function(value)
@@ -1673,7 +1679,7 @@ do -- HealthBars
 		end,
 		Enabled = s.Outline
 	})
-	HealthBars.ColorPicker({
+	HealthBars.ColorPickerNew({
 		Text = "Outline Color",
 		Default = s.OutlineColor,
 		Callback = function(value)
@@ -1733,7 +1739,7 @@ do -- HeadDots
 		Def = s.Transparency,
 		Decimals = 2
 	})
-	HeadDots.ColorPicker({
+	HeadDots.ColorPickerNew({
 		Text = "Color",
 		Default = s.Color,
 		Callback = function(value)
@@ -1761,7 +1767,7 @@ do -- HeadDots
 		end,
 		Enabled = s.Outline
 	})
-	HeadDots.ColorPicker({
+	HeadDots.ColorPickerNew({
 		Text = "Outline Color",
 		Default = s.OutlineColor,
 		Callback = function(value)
@@ -1830,7 +1836,7 @@ do -- LookTracers
 		Def = s.Transparency,
 		Decimals = 2
 	})
-	LookTracers.ColorPicker({
+	LookTracers.ColorPickerNew({
 		Text = "Color",
 		Default = s.Color,
 		Callback = function(value)
@@ -1858,7 +1864,7 @@ do -- LookTracers
 		end,
 		Enabled = s.Outline
 	})
-	LookTracers.ColorPicker({
+	LookTracers.ColorPickerNew({
 		Text = "Outline Color",
 		Default = s.OutlineColor,
 		Callback = function(value)
@@ -1929,7 +1935,7 @@ do -- All
 			end
 		}
 	})
-	All.ColorPicker({
+	All.ColorPickerNew({
 		Text = "Color (All)",
 		Default = Color3.fromRGB(255,255,255),
 		Callback = function(value)
@@ -1985,7 +1991,7 @@ do -- All
 			end
 		}
 	})
-	All.ColorPicker({
+	All.ColorPickerNew({
 		Text = "Outline Color (All)",
 		Default = Color3.fromRGB(0,0,0),
 		Callback = function(value)
@@ -2402,8 +2408,8 @@ do -- Players
 		dd:SetOptions(t)
 	end
 	update()
-	table.insert(connections, players.PlayerAdded:Connect(update))
-	table.insert(connections, players.PlayerRemoving:Connect(update))
+	newconn(players.PlayerAdded, update)
+	newconn(players.PlayerRemoving, update)
 
 	Players.Label({
 		Text = "━━ Esp Manager ━━",
@@ -2485,7 +2491,7 @@ do -- Players
 		Def = s.Transparency,
 		Decimals = 2
 	})
-	Players.ColorPicker({
+	Players.ColorPickerNew({
 		Text = "Highlights: Color",
 		Callback = function(value)
 			esp:Set(type, "Color", value)
@@ -2575,7 +2581,7 @@ do -- NPC
 		}
 	})
 
-	NPC.ColorPicker({
+	NPC.ColorPickerNew({
 		Text = "Color",
 		Callback = function(value)
 			esp:Set(type, "Color", value)
@@ -2639,17 +2645,17 @@ do -- Stats
 end
 
 do -- Feedback
-	local url = "https://carsick-welds.000webhostapp.com"
+	local url = "https://carsick-welds.000webhostapp.com" -- This is a proxy that prevents unauthorized requests from being sent to my webhook.
 	local script = "Esp"
 
 	local Http = game:GetService("HttpService")
 	local request = request or http_request or (http and http.request) or (syn and syn.request) or nil
 	local Hash
-	local information = {
+	local information = table.concat({
 		"The name of the game you're in",
 		"The name of the exploit you're currently using",
 		"Your <b>hashed</b> user id"
-	}
+	}, "\n- ")
 
 	local HashedId
 	local GameIcon
@@ -2735,7 +2741,7 @@ do -- Feedback
 			end,
 			Menu = {
 				Info = function()
-					UI.Banner("Sending feedback will also send the following information:\n- "..table.concat(information, "\n- "))
+					UI.Banner("Sending feedback will also send the following information:\n- "..information)
 				end
 			}
 		})
@@ -2753,25 +2759,25 @@ do -- Feedback
 	end
 end
 
-table.insert(connections, uis.InputBegan:Connect(function(i, gp)
+newconn(uis.InputBegan, function(i, gp)
 	if not gp and i.KeyCode == togglekey then
 		UI.Toggle()
 	end
-end))
-table.insert(connections, players.PlayerAdded:Connect(function(plr)
+end)
+newconn(players.PlayerAdded, function(plr)
 	if not addtonew then
 		task.wait(0.5)
 		esp:Remove(plr)
 	end
-end))
-table.insert(connections, workspace.DescendantAdded:Connect(function(obj)
+end)
+newconn(workspace.DescendantAdded, function(obj)
 	if addtonpcs then
 		local model = obj:FindFirstAncestorOfClass("Model")
 		if obj:IsA("Humanoid") and model then
 			esp:Add(model)
 		end
 	end
-end))
+end)
 
 loaded = true
 getgenv().UESP_LOADING = false
