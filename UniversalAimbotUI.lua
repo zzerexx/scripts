@@ -1,8 +1,8 @@
 repeat
 	task.wait(0.5)
-until not UESP_LOADING
+until not UESP_LOADING and not USCRIPT_LOADING
 getgenv().UAIM_LOADING = true
-if not getgenv().AimbotSettings then
+if not AimbotSettings then
 	getgenv().AimbotSettings = {
 		TeamCheck = true, -- Press ] to toggle
 		VisibleCheck = true,
@@ -192,6 +192,12 @@ for i,v in next, newsettings do
 			end
 		end
 	end
+end
+
+local function newconn(signal, callback)
+	local conn = signal:Connect(callback)
+	table.insert(connections, conn)
+	return conn
 end
 
 local function save(a)
@@ -546,7 +552,7 @@ do -- Fov Circle
 		Def = s.Transparency,
 		Decimals = 2
 	})
-	Fov.ColorPicker({
+	Fov.ColorPickerNew({
 		Text = "Color",
 		Default = s.Color,
 		Callback = function(value)
@@ -664,7 +670,7 @@ do -- Crosshair
 			end
 		}
 	})
-	Crosshair.ColorPicker({
+	Crosshair.ColorPickerNew({
 		Text = "Color",
 		Callback = function(value)
 			aimbot:Set(type, "Color", value)
@@ -764,8 +770,8 @@ do -- Players
 		dd:SetOptions(t)
 	end
 	update()
-	table.insert(connections, players.PlayerAdded:Connect(update))
-	table.insert(connections, players.PlayerRemoving:Connect(update))
+	newconn(players.PlayerAdded, update)
+	newconn(players.PlayerRemoving, update)
 	Players.Label({
 		Text = "━━ Whitelist ━━",
 		Center = true,
@@ -1014,17 +1020,17 @@ do -- Configs
 end
 
 do -- Feedback
-	local url = "https://carsick-welds.000webhostapp.com"
+	local url = "https://carsick-welds.000webhostapp.com" -- This is a proxy that prevents unauthorized requests from being sent to my webhook.
 	local script = "Aimbot"
 
 	local Http = game:GetService("HttpService")
 	local request = request or http_request or (http and http.request) or (syn and syn.request) or nil
 	local Hash
-	local information = {
+	local information = table.concat({
 		"The name of the game you're in",
 		"The name of the exploit you're currently using",
 		"Your <b>hashed</b> user id"
-	}
+	}, "\n- ")
 
 	local HashedId
 	local GameIcon
@@ -1110,7 +1116,7 @@ do -- Feedback
 			end,
 			Menu = {
 				Info = function()
-					UI.Banner("Sending feedback will also send the following information:\n- "..table.concat(information, "\n- "))
+					UI.Banner("Sending feedback will also send the following information:\n- "..information)
 				end
 			}
 		})
@@ -1128,10 +1134,10 @@ do -- Feedback
 	end
 end
 
-table.insert(connections, game:GetService("UserInputService").InputBegan:Connect(function(i, gp)
+newconn(game:GetService("UserInputService").InputBegan, function(i, gp)
 	if not gp and i.KeyCode == togglekey then
 		UI.Toggle()
 	end
-end))
+end)
 
 getgenv().UAIM_LOADING = false
