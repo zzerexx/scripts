@@ -21,7 +21,7 @@ https://pastebin.com/raw/5zw0rLH9
 ```  
 [Documentation](https://zzerexx.gitbook.io/universal-script-api)  
 ### UI Version  
-Updated November 3, 2022  
+Updated January 29, 2023  
 ```lua
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspUI.lua", "UniversalEspUI"))()
 loadstring(game:HttpGet("https://zzerexx.github.io/Universal/Esp.lua"))() -- Both loadstrings are the same, this one just looks better
@@ -38,7 +38,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/
 - Made a few synchronization changes to prevent errors on Synapse
 
 UI Changes
-- No UI changes
+- Added new color pickers
   
 ---
   
@@ -50,7 +50,7 @@ https://pastebin.com/raw/nwqE7v07
 ```  
 [Documentation](https://zzerexx.gitbook.io/universal-script-api)  
 ### UI Version  
-Updated November 3, 2022  
+Updated January 29, 2023  
 ```lua
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalAimbotUI.lua", "UniversalAimbotUI"))()
 loadstring(game:HttpGet("https://zzerexx.github.io/Universal/Aimbot.lua"))() -- Both loadstrings are the same, this one just looks better
@@ -61,7 +61,7 @@ loadstring(game:HttpGet("https://zzerexx.github.io/Universal/Aimbot.lua"))() -- 
   - Bypass script made by Spoorloos
 
 UI Changes
-- No UI changes
+- Added new color pickers
   
 ## NOTICE  
 You are allowed to use Universal Esp and Aimbot in your script as long as you credit me (zzerexx or zzerexx#3970)  
