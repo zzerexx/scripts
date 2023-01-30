@@ -227,44 +227,87 @@ local MLRemake = {
 	Indicator_10 = Instance.new("Frame"),
 	Menu_13 = Instance.new("ImageButton"),
 	Value_7 = Instance.new("TextLabel"),
-	BackgroundDim = Instance.new("Frame"),
-	Banner = Instance.new("Frame"),
+	ColorPickerNew = Instance.new("Frame"),
+	UIPadding_30 = Instance.new("UIPadding"),
 	UICorner_59 = Instance.new("UICorner"),
 	Label_12 = Instance.new("TextLabel"),
-	UIPadding_30 = Instance.new("UIPadding"),
+	Color_2 = Instance.new("TextLabel"),
+	Button_8 = Instance.new("TextButton"),
+	Fill_6 = Instance.new("Frame"),
+	Preview_2 = Instance.new("Frame"),
 	UICorner_60 = Instance.new("UICorner"),
+	RippleHolder_5 = Instance.new("Frame"),
+	Menu_14 = Instance.new("ImageButton"),
+	PickerNew = Instance.new("Frame"),
+	UICorner_61 = Instance.new("UICorner"),
 	UIPadding_31 = Instance.new("UIPadding"),
+	HueSaturation = Instance.new("Frame"),
+	Hue_2 = Instance.new("UIGradient"),
+	Bar_6 = Instance.new("Frame"),
+	Saturation_2 = Instance.new("UIGradient"),
+	UICorner_62 = Instance.new("UICorner"),
+	Indicator_11 = Instance.new("Frame"),
+	X = Instance.new("Frame"),
+	Y = Instance.new("Frame"),
+	Slider_6 = Instance.new("TextButton"),
+	UICorner_63 = Instance.new("UICorner"),
+	Value_8 = Instance.new("Frame"),
+	Bar_7 = Instance.new("Frame"),
+	UIGradient_5 = Instance.new("UIGradient"),
+	UICorner_64 = Instance.new("UICorner"),
+	Progress_6 = Instance.new("Frame"),
+	Slider_7 = Instance.new("TextButton"),
+	Indicator_12 = Instance.new("Frame"),
+	UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint"),
+	Top = Instance.new("Frame"),
+	Bottom = Instance.new("Frame"),
+	Value_9 = Instance.new("TextLabel"),
+	RGB_2 = Instance.new("TextBox"),
+	UICorner_65 = Instance.new("UICorner"),
+	HEX_2 = Instance.new("TextBox"),
+	UICorner_66 = Instance.new("UICorner"),
+	Rainbow_2 = Instance.new("TextButton"),
+	UICorner_67 = Instance.new("UICorner"),
+	RainbowText_2 = Instance.new("TextLabel"),
+	UIGradient_6 = Instance.new("UIGradient"),
+	BackgroundDim = Instance.new("Frame"),
+	Banner = Instance.new("Frame"),
+	UICorner_68 = Instance.new("UICorner"),
+	Label_13 = Instance.new("TextLabel"),
+	UIPadding_32 = Instance.new("UIPadding"),
+	UICorner_69 = Instance.new("UICorner"),
+	UIPadding_33 = Instance.new("UIPadding"),
 	Buttons_2 = Instance.new("ScrollingFrame"),
 	Example_3 = Instance.new("TextButton"),
-	UICorner_61 = Instance.new("UICorner"),
+	UICorner_70 = Instance.new("UICorner"),
 	UIListLayout_7 = Instance.new("UIListLayout"),
 	BackgroundDim2 = Instance.new("Frame"),
 	Tabs = Instance.new("Frame"),
-	UICorner_62 = Instance.new("UICorner"),
+	UICorner_71 = Instance.new("UICorner"),
 	Buttons_3 = Instance.new("ScrollingFrame"),
 	UIListLayout_8 = Instance.new("UIListLayout"),
 	Example_4 = Instance.new("TextButton"),
-	UICorner_63 = Instance.new("UICorner"),
+	UICorner_72 = Instance.new("UICorner"),
 	ObjectMenu = Instance.new("Frame"),
 	UIListLayout_9 = Instance.new("UIListLayout"),
 	Example_5 = Instance.new("TextButton"),
-	UIPadding_32 = Instance.new("UIPadding"),
-	UICorner_64 = Instance.new("UICorner"),
+	UIPadding_34 = Instance.new("UIPadding"),
+	UICorner_73 = Instance.new("UICorner"),
 	Focus = Instance.new("Frame"),
 	FillTopbar = Instance.new("Frame"),
 	FillMain = Instance.new("Frame"),
 	Notifications = Instance.new("Frame"),
 	UIListLayout_10 = Instance.new("UIListLayout"),
 	Notif = Instance.new("Frame"),
-	UICorner_65 = Instance.new("UICorner"),
-	UIPadding_33 = Instance.new("UIPadding"),
+	UICorner_74 = Instance.new("UICorner"),
+	UIPadding_35 = Instance.new("UIPadding"),
 	Title_3 = Instance.new("TextLabel"),
-	Label_13 = Instance.new("TextLabel"),
+	Label_14 = Instance.new("TextLabel"),
 	Line_4 = Instance.new("Frame"),
 	Buttons_4 = Instance.new("ScrollingFrame"),
 	UIListLayout_11 = Instance.new("UIListLayout"),
-	Button_8 = Instance.new("TextButton"),
-	UICorner_66 = Instance.new("UICorner"),
+	Button_9 = Instance.new("TextButton"),
+	UICorner_75 = Instance.new("UICorner"),
 	UIStroke = Instance.new("UIStroke"),
 }
 local library
@@ -1970,6 +2013,337 @@ MLRemake.Value_7.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Value_7.TextSize = 14.000
 MLRemake.Value_7.TextXAlignment = Enum.TextXAlignment.Right
 
+MLRemake.ColorPickerNew.Name = "ColorPickerNew"
+MLRemake.ColorPickerNew.Parent = MLRemake.Example_2
+MLRemake.ColorPickerNew.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+MLRemake.ColorPickerNew.Size = UDim2.new(1, 0, 0, 30)
+MLRemake.ColorPickerNew.ZIndex = 2
+
+MLRemake.UIPadding_30.Parent = MLRemake.ColorPickerNew
+MLRemake.UIPadding_30.PaddingLeft = UDim.new(0, 8)
+MLRemake.UIPadding_30.PaddingRight = UDim.new(0, 10)
+
+MLRemake.UICorner_59.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_59.Parent = MLRemake.ColorPickerNew
+
+MLRemake.Label_12.Name = "Label"
+MLRemake.Label_12.Parent = MLRemake.ColorPickerNew
+MLRemake.Label_12.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Label_12.BackgroundTransparency = 1.000
+MLRemake.Label_12.BorderSizePixel = 0
+MLRemake.Label_12.Size = UDim2.new(1, 0, 0, 30)
+MLRemake.Label_12.ZIndex = 2
+MLRemake.Label_12.Font = Enum.Font.Gotham
+MLRemake.Label_12.Text = "Color Picker"
+MLRemake.Label_12.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Label_12.TextSize = 14.000
+MLRemake.Label_12.TextTruncate = Enum.TextTruncate.AtEnd
+MLRemake.Label_12.TextXAlignment = Enum.TextXAlignment.Left
+
+MLRemake.Color_2.Name = "Color"
+MLRemake.Color_2.Parent = MLRemake.ColorPickerNew
+MLRemake.Color_2.AnchorPoint = Vector2.new(1, 0)
+MLRemake.Color_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Color_2.BackgroundTransparency = 1.000
+MLRemake.Color_2.BorderSizePixel = 0
+MLRemake.Color_2.Position = UDim2.new(1, -25, 0, 0)
+MLRemake.Color_2.Size = UDim2.new(0.25, 0, 0, 30)
+MLRemake.Color_2.ZIndex = 2
+MLRemake.Color_2.Font = Enum.Font.Gotham
+MLRemake.Color_2.Text = "255, 255, 255"
+MLRemake.Color_2.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Color_2.TextSize = 14.000
+MLRemake.Color_2.TextTruncate = Enum.TextTruncate.AtEnd
+MLRemake.Color_2.TextXAlignment = Enum.TextXAlignment.Right
+
+MLRemake.Button_8.Name = "Button"
+MLRemake.Button_8.Parent = MLRemake.ColorPickerNew
+MLRemake.Button_8.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Button_8.BackgroundTransparency = 1.000
+MLRemake.Button_8.BorderSizePixel = 0
+MLRemake.Button_8.Size = UDim2.new(1, 0, 0, 30)
+MLRemake.Button_8.ZIndex = 3
+MLRemake.Button_8.AutoButtonColor = false
+MLRemake.Button_8.Font = Enum.Font.SourceSans
+MLRemake.Button_8.Text = ""
+MLRemake.Button_8.TextColor3 = Color3.fromRGB(0, 0, 0)
+MLRemake.Button_8.TextSize = 14.000
+
+MLRemake.Fill_6.Name = "Fill"
+MLRemake.Fill_6.Parent = MLRemake.ColorPickerNew
+MLRemake.Fill_6.BackgroundColor3 = Color3.fromRGB(55, 55, 55)
+MLRemake.Fill_6.BorderSizePixel = 0
+MLRemake.Fill_6.Position = UDim2.new(0, -8, 0, 30)
+MLRemake.Fill_6.Size = UDim2.new(1, 18, 0, 5)
+MLRemake.Fill_6.Visible = false
+MLRemake.Fill_6.ZIndex = 2
+
+MLRemake.Preview_2.Name = "Preview"
+MLRemake.Preview_2.Parent = MLRemake.ColorPickerNew
+MLRemake.Preview_2.AnchorPoint = Vector2.new(1, 0)
+MLRemake.Preview_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Preview_2.Position = UDim2.new(1, 0, 0, 5)
+MLRemake.Preview_2.Size = UDim2.new(0, 20, 0, 20)
+MLRemake.Preview_2.ZIndex = 2
+
+MLRemake.UICorner_60.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_60.Parent = MLRemake.Preview_2
+
+MLRemake.RippleHolder_5.Name = "RippleHolder"
+MLRemake.RippleHolder_5.Parent = MLRemake.ColorPickerNew
+MLRemake.RippleHolder_5.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.RippleHolder_5.BackgroundTransparency = 1.000
+MLRemake.RippleHolder_5.BorderSizePixel = 0
+MLRemake.RippleHolder_5.Position = UDim2.new(0, -8, 0, 0)
+MLRemake.RippleHolder_5.Size = UDim2.new(1, 18, 0, 30)
+MLRemake.RippleHolder_5.ZIndex = 2
+
+MLRemake.Menu_14.Name = "Menu"
+MLRemake.Menu_14.Parent = MLRemake.ColorPickerNew
+MLRemake.Menu_14.AnchorPoint = Vector2.new(1, 0)
+MLRemake.Menu_14.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Menu_14.BackgroundTransparency = 1.000
+MLRemake.Menu_14.BorderSizePixel = 0
+MLRemake.Menu_14.Position = UDim2.new(1, 0, 0, 5)
+MLRemake.Menu_14.Size = UDim2.new(0, 20, 0, 20)
+MLRemake.Menu_14.Visible = false
+MLRemake.Menu_14.ZIndex = 3
+MLRemake.Menu_14.Image = "http://www.roblox.com/asset/?id=9147554930"
+
+MLRemake.PickerNew.Name = "PickerNew"
+MLRemake.PickerNew.Parent = MLRemake.ColorPickerNew
+MLRemake.PickerNew.BackgroundColor3 = Color3.fromRGB(55, 55, 55)
+MLRemake.PickerNew.BorderSizePixel = 0
+MLRemake.PickerNew.ClipsDescendants = true
+MLRemake.PickerNew.Position = UDim2.new(0, -8, 0, 30)
+MLRemake.PickerNew.Size = UDim2.new(1, 18, 1, -30)
+MLRemake.PickerNew.ZIndex = 3
+
+MLRemake.UICorner_61.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_61.Parent = MLRemake.PickerNew
+
+MLRemake.UIPadding_31.Parent = MLRemake.PickerNew
+MLRemake.UIPadding_31.PaddingBottom = UDim.new(0, 5)
+MLRemake.UIPadding_31.PaddingLeft = UDim.new(0, 5)
+MLRemake.UIPadding_31.PaddingRight = UDim.new(0, 5)
+MLRemake.UIPadding_31.PaddingTop = UDim.new(0, 5)
+
+MLRemake.HueSaturation.Name = "HueSaturation"
+MLRemake.HueSaturation.Parent = MLRemake.PickerNew
+MLRemake.HueSaturation.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.HueSaturation.Size = UDim2.new(0.600000024, 0, 0, 100)
+MLRemake.HueSaturation.ZIndex = 3
+
+MLRemake.Hue_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 0, 0)), ColorSequenceKeypoint.new(0.16, Color3.fromRGB(255, 244, 0)), ColorSequenceKeypoint.new(0.28, Color3.fromRGB(81, 255, 0)), ColorSequenceKeypoint.new(0.50, Color3.fromRGB(0, 255, 255)), ColorSequenceKeypoint.new(0.66, Color3.fromRGB(0, 10, 255)), ColorSequenceKeypoint.new(0.75, Color3.fromRGB(127, 0, 255)), ColorSequenceKeypoint.new(0.85, Color3.fromRGB(255, 0, 229)), ColorSequenceKeypoint.new(0.90, Color3.fromRGB(255, 0, 153)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 0, 0))}
+MLRemake.Hue_2.Rotation = 180
+MLRemake.Hue_2.Name = "Hue"
+MLRemake.Hue_2.Parent = MLRemake.HueSaturation
+
+MLRemake.Bar_6.Name = "Bar"
+MLRemake.Bar_6.Parent = MLRemake.HueSaturation
+MLRemake.Bar_6.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Bar_6.Size = UDim2.new(1, 0, 1, 0)
+MLRemake.Bar_6.ZIndex = 3
+
+MLRemake.Saturation_2.Rotation = -90
+MLRemake.Saturation_2.Transparency = NumberSequence.new{NumberSequenceKeypoint.new(0.00, 0.00), NumberSequenceKeypoint.new(1.00, 1.00)}
+MLRemake.Saturation_2.Name = "Saturation"
+MLRemake.Saturation_2.Parent = MLRemake.Bar_6
+
+MLRemake.UICorner_62.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_62.Parent = MLRemake.Bar_6
+
+MLRemake.Indicator_11.Name = "Indicator"
+MLRemake.Indicator_11.Parent = MLRemake.Bar_6
+MLRemake.Indicator_11.AnchorPoint = Vector2.new(0.5, 0.5)
+MLRemake.Indicator_11.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Indicator_11.BackgroundTransparency = 1.000
+MLRemake.Indicator_11.BorderSizePixel = 0
+MLRemake.Indicator_11.Position = UDim2.new(1, 0, 1, 0)
+MLRemake.Indicator_11.Size = UDim2.new(0, 16, 0, 16)
+MLRemake.Indicator_11.ZIndex = 4
+
+MLRemake.X.Name = "X"
+MLRemake.X.Parent = MLRemake.Indicator_11
+MLRemake.X.AnchorPoint = Vector2.new(0, 0.5)
+MLRemake.X.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+MLRemake.X.BorderSizePixel = 0
+MLRemake.X.Position = UDim2.new(0, 0, 0.5, 0)
+MLRemake.X.Size = UDim2.new(1, 0, 0, 1)
+MLRemake.X.ZIndex = 4
+
+MLRemake.Y.Name = "Y"
+MLRemake.Y.Parent = MLRemake.Indicator_11
+MLRemake.Y.AnchorPoint = Vector2.new(0.5, 0)
+MLRemake.Y.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+MLRemake.Y.BorderSizePixel = 0
+MLRemake.Y.Position = UDim2.new(0.5, 0, 0, 0)
+MLRemake.Y.Size = UDim2.new(0, 1, 1, 0)
+MLRemake.Y.ZIndex = 4
+
+MLRemake.Slider_6.Name = "Slider"
+MLRemake.Slider_6.Parent = MLRemake.Bar_6
+MLRemake.Slider_6.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Slider_6.BackgroundTransparency = 1.000
+MLRemake.Slider_6.BorderSizePixel = 0
+MLRemake.Slider_6.Size = UDim2.new(1, 0, 1, 0)
+MLRemake.Slider_6.ZIndex = 4
+MLRemake.Slider_6.Font = Enum.Font.SourceSans
+MLRemake.Slider_6.Text = ""
+MLRemake.Slider_6.TextColor3 = Color3.fromRGB(0, 0, 0)
+MLRemake.Slider_6.TextSize = 14.000
+
+MLRemake.UICorner_63.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_63.Parent = MLRemake.HueSaturation
+
+MLRemake.Value_8.Name = "Value"
+MLRemake.Value_8.Parent = MLRemake.PickerNew
+MLRemake.Value_8.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Value_8.BackgroundTransparency = 1.000
+MLRemake.Value_8.BorderSizePixel = 0
+MLRemake.Value_8.Position = UDim2.new(0.600000024, 5, 0, 0)
+MLRemake.Value_8.Size = UDim2.new(0, 32, 0, 100)
+MLRemake.Value_8.ZIndex = 3
+
+MLRemake.Bar_7.Name = "Bar"
+MLRemake.Bar_7.Parent = MLRemake.Value_8
+MLRemake.Bar_7.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Bar_7.Size = UDim2.new(0.5, 0, 1, 0)
+MLRemake.Bar_7.ZIndex = 3
+
+MLRemake.UIGradient_5.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(0, 0, 0)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 255, 255))}
+MLRemake.UIGradient_5.Rotation = -90
+MLRemake.UIGradient_5.Parent = MLRemake.Bar_7
+
+MLRemake.UICorner_64.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_64.Parent = MLRemake.Bar_7
+
+MLRemake.Progress_6.Name = "Progress"
+MLRemake.Progress_6.Parent = MLRemake.Bar_7
+MLRemake.Progress_6.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Progress_6.Size = UDim2.new(0, 100, 0, 100)
+MLRemake.Progress_6.Visible = false
+
+MLRemake.Slider_7.Name = "Slider"
+MLRemake.Slider_7.Parent = MLRemake.Bar_7
+MLRemake.Slider_7.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Slider_7.BackgroundTransparency = 1.000
+MLRemake.Slider_7.BorderSizePixel = 0
+MLRemake.Slider_7.Size = UDim2.new(1, 0, 1, 0)
+MLRemake.Slider_7.ZIndex = 4
+MLRemake.Slider_7.Font = Enum.Font.SourceSans
+MLRemake.Slider_7.Text = ""
+MLRemake.Slider_7.TextColor3 = Color3.fromRGB(0, 0, 0)
+MLRemake.Slider_7.TextSize = 14.000
+
+MLRemake.Indicator_12.Name = "Indicator"
+MLRemake.Indicator_12.Parent = MLRemake.Bar_7
+MLRemake.Indicator_12.AnchorPoint = Vector2.new(0, 0.5)
+MLRemake.Indicator_12.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Indicator_12.BackgroundTransparency = 1.000
+MLRemake.Indicator_12.BorderSizePixel = 0
+MLRemake.Indicator_12.Position = UDim2.new(1, 0, 0, 0)
+MLRemake.Indicator_12.Size = UDim2.new(0, 16, 0, 16)
+MLRemake.Indicator_12.ZIndex = 3
+
+MLRemake.UIAspectRatioConstraint.Parent = MLRemake.Indicator_12
+
+MLRemake.Top.Name = "Top"
+MLRemake.Top.Parent = MLRemake.Indicator_12
+MLRemake.Top.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Top.BackgroundTransparency = 1.000
+MLRemake.Top.BorderSizePixel = 0
+MLRemake.Top.Position = UDim2.new(0.25, 0, 0.100000001, 0)
+MLRemake.Top.Rotation = 45.000
+MLRemake.Top.Size = UDim2.new(0, 2, 0.5, 0)
+MLRemake.Top.ZIndex = 3
+
+MLRemake.Bottom.Name = "Bottom"
+MLRemake.Bottom.Parent = MLRemake.Indicator_12
+MLRemake.Bottom.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Bottom.BackgroundTransparency = 1.000
+MLRemake.Bottom.BorderSizePixel = 0
+MLRemake.Bottom.Position = UDim2.new(0.25, 0, 0.400000006, 0)
+MLRemake.Bottom.Rotation = -45.000
+MLRemake.Bottom.Size = UDim2.new(0, 2, 0.5, 0)
+MLRemake.Bottom.ZIndex = 3
+
+MLRemake.Value_9.Name = "Value"
+MLRemake.Value_9.Parent = MLRemake.Value_8
+MLRemake.Value_9.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Value_9.Size = UDim2.new(0, 200, 0, 50)
+MLRemake.Value_9.Visible = false
+MLRemake.Value_9.Font = Enum.Font.SourceSans
+MLRemake.Value_9.TextColor3 = Color3.fromRGB(0, 0, 0)
+MLRemake.Value_9.TextSize = 14.000
+
+MLRemake.RGB_2.Name = "RGB"
+MLRemake.RGB_2.Parent = MLRemake.PickerNew
+MLRemake.RGB_2.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+MLRemake.RGB_2.Position = UDim2.new(0.699999988, -3, 0, 0)
+MLRemake.RGB_2.Size = UDim2.new(0.333000004, -8, 0, 30)
+MLRemake.RGB_2.ZIndex = 3
+MLRemake.RGB_2.ClearTextOnFocus = false
+MLRemake.RGB_2.Font = Enum.Font.Gotham
+MLRemake.RGB_2.PlaceholderText = "RGB"
+MLRemake.RGB_2.Text = ""
+MLRemake.RGB_2.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.RGB_2.TextSize = 12.000
+MLRemake.RGB_2.TextTruncate = Enum.TextTruncate.AtEnd
+
+MLRemake.UICorner_65.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_65.Parent = MLRemake.RGB_2
+
+MLRemake.HEX_2.Name = "HEX"
+MLRemake.HEX_2.Parent = MLRemake.PickerNew
+MLRemake.HEX_2.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+MLRemake.HEX_2.Position = UDim2.new(0.699999988, -3, 0, 35)
+MLRemake.HEX_2.Size = UDim2.new(0.333000004, -8, 0, 30)
+MLRemake.HEX_2.ZIndex = 3
+MLRemake.HEX_2.ClearTextOnFocus = false
+MLRemake.HEX_2.Font = Enum.Font.Gotham
+MLRemake.HEX_2.PlaceholderText = "HEX"
+MLRemake.HEX_2.Text = ""
+MLRemake.HEX_2.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.HEX_2.TextSize = 12.000
+MLRemake.HEX_2.TextTruncate = Enum.TextTruncate.AtEnd
+
+MLRemake.UICorner_66.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_66.Parent = MLRemake.HEX_2
+
+MLRemake.Rainbow_2.Name = "Rainbow"
+MLRemake.Rainbow_2.Parent = MLRemake.PickerNew
+MLRemake.Rainbow_2.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+MLRemake.Rainbow_2.Position = UDim2.new(0.699999988, -3, 0, 70)
+MLRemake.Rainbow_2.Size = UDim2.new(0.333000004, -8, 0, 30)
+MLRemake.Rainbow_2.ZIndex = 3
+MLRemake.Rainbow_2.AutoButtonColor = false
+MLRemake.Rainbow_2.Font = Enum.Font.Gotham
+MLRemake.Rainbow_2.Text = ""
+MLRemake.Rainbow_2.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Rainbow_2.TextSize = 12.000
+
+MLRemake.UICorner_67.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_67.Parent = MLRemake.Rainbow_2
+
+MLRemake.RainbowText_2.Name = "RainbowText"
+MLRemake.RainbowText_2.Parent = MLRemake.Rainbow_2
+MLRemake.RainbowText_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.RainbowText_2.BackgroundTransparency = 1.000
+MLRemake.RainbowText_2.BorderSizePixel = 0
+MLRemake.RainbowText_2.Size = UDim2.new(1, 0, 1, 0)
+MLRemake.RainbowText_2.ZIndex = 3
+MLRemake.RainbowText_2.Font = Enum.Font.Gotham
+MLRemake.RainbowText_2.Text = "Rainbow"
+MLRemake.RainbowText_2.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.RainbowText_2.TextSize = 12.000
+MLRemake.RainbowText_2.TextStrokeTransparency = 0.000
+
+MLRemake.UIGradient_6.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 0, 0)), ColorSequenceKeypoint.new(0.16, Color3.fromRGB(255, 244, 0)), ColorSequenceKeypoint.new(0.28, Color3.fromRGB(81, 255, 0)), ColorSequenceKeypoint.new(0.50, Color3.fromRGB(0, 255, 255)), ColorSequenceKeypoint.new(0.66, Color3.fromRGB(0, 10, 255)), ColorSequenceKeypoint.new(0.75, Color3.fromRGB(127, 0, 255)), ColorSequenceKeypoint.new(0.85, Color3.fromRGB(255, 0, 229)), ColorSequenceKeypoint.new(0.90, Color3.fromRGB(255, 0, 153)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 0, 0))}
+MLRemake.UIGradient_6.Offset = Vector2.new(-0.00999999978, 0.5)
+MLRemake.UIGradient_6.Rotation = 30
+MLRemake.UIGradient_6.Parent = MLRemake.RainbowText_2
+
 MLRemake.BackgroundDim.Name = "BackgroundDim"
 MLRemake.BackgroundDim.Parent = MLRemake.Main
 MLRemake.BackgroundDim.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
@@ -1987,38 +2361,38 @@ MLRemake.Banner.Size = UDim2.new(1, -20, 0, 100)
 MLRemake.Banner.Visible = false
 MLRemake.Banner.ZIndex = 6
 
-MLRemake.UICorner_59.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_59.Parent = MLRemake.Banner
+MLRemake.UICorner_68.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_68.Parent = MLRemake.Banner
 
-MLRemake.Label_12.Name = "Label"
-MLRemake.Label_12.Parent = MLRemake.Banner
-MLRemake.Label_12.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-MLRemake.Label_12.BorderSizePixel = 0
-MLRemake.Label_12.Size = UDim2.new(1, 0, 1, 0)
-MLRemake.Label_12.ZIndex = 6
-MLRemake.Label_12.Font = Enum.Font.Gotham
-MLRemake.Label_12.Text = "Banner"
-MLRemake.Label_12.TextColor3 = Color3.fromRGB(255, 255, 255)
-MLRemake.Label_12.TextSize = 12.000
-MLRemake.Label_12.TextTruncate = Enum.TextTruncate.AtEnd
-MLRemake.Label_12.TextWrapped = true
-MLRemake.Label_12.TextXAlignment = Enum.TextXAlignment.Left
-MLRemake.Label_12.TextYAlignment = Enum.TextYAlignment.Top
+MLRemake.Label_13.Name = "Label"
+MLRemake.Label_13.Parent = MLRemake.Banner
+MLRemake.Label_13.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+MLRemake.Label_13.BorderSizePixel = 0
+MLRemake.Label_13.Size = UDim2.new(1, 0, 1, 0)
+MLRemake.Label_13.ZIndex = 6
+MLRemake.Label_13.Font = Enum.Font.Gotham
+MLRemake.Label_13.Text = "Banner"
+MLRemake.Label_13.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Label_13.TextSize = 12.000
+MLRemake.Label_13.TextTruncate = Enum.TextTruncate.AtEnd
+MLRemake.Label_13.TextWrapped = true
+MLRemake.Label_13.TextXAlignment = Enum.TextXAlignment.Left
+MLRemake.Label_13.TextYAlignment = Enum.TextYAlignment.Top
 
-MLRemake.UIPadding_30.Parent = MLRemake.Label_12
-MLRemake.UIPadding_30.PaddingBottom = UDim.new(0, 5)
-MLRemake.UIPadding_30.PaddingLeft = UDim.new(0, 6)
-MLRemake.UIPadding_30.PaddingRight = UDim.new(0, 5)
-MLRemake.UIPadding_30.PaddingTop = UDim.new(0, 5)
+MLRemake.UIPadding_32.Parent = MLRemake.Label_13
+MLRemake.UIPadding_32.PaddingBottom = UDim.new(0, 5)
+MLRemake.UIPadding_32.PaddingLeft = UDim.new(0, 6)
+MLRemake.UIPadding_32.PaddingRight = UDim.new(0, 5)
+MLRemake.UIPadding_32.PaddingTop = UDim.new(0, 5)
 
-MLRemake.UICorner_60.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_60.Parent = MLRemake.Label_12
+MLRemake.UICorner_69.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_69.Parent = MLRemake.Label_13
 
-MLRemake.UIPadding_31.Parent = MLRemake.Banner
-MLRemake.UIPadding_31.PaddingBottom = UDim.new(0, 30)
-MLRemake.UIPadding_31.PaddingLeft = UDim.new(0, 5)
-MLRemake.UIPadding_31.PaddingRight = UDim.new(0, 5)
-MLRemake.UIPadding_31.PaddingTop = UDim.new(0, 5)
+MLRemake.UIPadding_33.Parent = MLRemake.Banner
+MLRemake.UIPadding_33.PaddingBottom = UDim.new(0, 30)
+MLRemake.UIPadding_33.PaddingLeft = UDim.new(0, 5)
+MLRemake.UIPadding_33.PaddingRight = UDim.new(0, 5)
+MLRemake.UIPadding_33.PaddingTop = UDim.new(0, 5)
 
 MLRemake.Buttons_2.Name = "Buttons"
 MLRemake.Buttons_2.Parent = MLRemake.Banner
@@ -2046,8 +2420,8 @@ MLRemake.Example_3.Text = "OK"
 MLRemake.Example_3.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Example_3.TextSize = 14.000
 
-MLRemake.UICorner_61.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_61.Parent = MLRemake.Example_3
+MLRemake.UICorner_70.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_70.Parent = MLRemake.Example_3
 
 MLRemake.UIListLayout_7.Parent = MLRemake.Buttons_2
 MLRemake.UIListLayout_7.FillDirection = Enum.FillDirection.Horizontal
@@ -2071,8 +2445,8 @@ MLRemake.Tabs.Position = UDim2.new(0, 10, 0, 10)
 MLRemake.Tabs.Size = UDim2.new(1, -20, 0, 25)
 MLRemake.Tabs.Visible = false
 
-MLRemake.UICorner_62.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_62.Parent = MLRemake.Tabs
+MLRemake.UICorner_71.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_71.Parent = MLRemake.Tabs
 
 MLRemake.Buttons_3.Name = "Buttons"
 MLRemake.Buttons_3.Parent = MLRemake.Tabs
@@ -2101,8 +2475,8 @@ MLRemake.Example_4.Text = "Tab"
 MLRemake.Example_4.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Example_4.TextSize = 14.000
 
-MLRemake.UICorner_63.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_63.Parent = MLRemake.Example_4
+MLRemake.UICorner_72.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_72.Parent = MLRemake.Example_4
 
 MLRemake.ObjectMenu.Name = "ObjectMenu"
 MLRemake.ObjectMenu.Parent = MLRemake.Main
@@ -2131,16 +2505,16 @@ MLRemake.Example_5.TextSize = 12.000
 MLRemake.Example_5.TextTruncate = Enum.TextTruncate.AtEnd
 MLRemake.Example_5.TextXAlignment = Enum.TextXAlignment.Left
 
-MLRemake.UIPadding_32.Parent = MLRemake.Example_5
-MLRemake.UIPadding_32.PaddingLeft = UDim.new(0, 10)
+MLRemake.UIPadding_34.Parent = MLRemake.Example_5
+MLRemake.UIPadding_34.PaddingLeft = UDim.new(0, 10)
 
-MLRemake.UICorner_64.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_64.Parent = MLRemake.ObjectMenu
+MLRemake.UICorner_73.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_73.Parent = MLRemake.ObjectMenu
 
 MLRemake.Focus.Name = "Focus"
 MLRemake.Focus.Parent = MLRemake.Topbar
 MLRemake.Focus.AnchorPoint = Vector2.new(0.5, 1)
-MLRemake.Focus.BackgroundColor3 = Color3.fromRGB(150, 150, 150)
+MLRemake.Focus.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Focus.BorderSizePixel = 0
 MLRemake.Focus.Position = UDim2.new(0.5, 0, 1, 0)
 MLRemake.Focus.Size = UDim2.new(0, 0, 0, 1)
@@ -2189,14 +2563,14 @@ MLRemake.Notif.Position = UDim2.new(1, -10, 1, -10)
 MLRemake.Notif.Size = UDim2.new(0, 200, 0, 100)
 MLRemake.Notif.ZIndex = 20
 
-MLRemake.UICorner_65.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_65.Parent = MLRemake.Notif
+MLRemake.UICorner_74.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_74.Parent = MLRemake.Notif
 
-MLRemake.UIPadding_33.Parent = MLRemake.Notif
-MLRemake.UIPadding_33.PaddingBottom = UDim.new(0, 8)
-MLRemake.UIPadding_33.PaddingLeft = UDim.new(0, 8)
-MLRemake.UIPadding_33.PaddingRight = UDim.new(0, 8)
-MLRemake.UIPadding_33.PaddingTop = UDim.new(0, 8)
+MLRemake.UIPadding_35.Parent = MLRemake.Notif
+MLRemake.UIPadding_35.PaddingBottom = UDim.new(0, 8)
+MLRemake.UIPadding_35.PaddingLeft = UDim.new(0, 8)
+MLRemake.UIPadding_35.PaddingRight = UDim.new(0, 8)
+MLRemake.UIPadding_35.PaddingTop = UDim.new(0, 8)
 
 MLRemake.Title_3.Name = "Title"
 MLRemake.Title_3.Parent = MLRemake.Notif
@@ -2213,20 +2587,20 @@ MLRemake.Title_3.TextTruncate = Enum.TextTruncate.AtEnd
 MLRemake.Title_3.TextXAlignment = Enum.TextXAlignment.Left
 MLRemake.Title_3.TextYAlignment = Enum.TextYAlignment.Top
 
-MLRemake.Label_13.Name = "Label"
-MLRemake.Label_13.Parent = MLRemake.Notif
-MLRemake.Label_13.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-MLRemake.Label_13.BackgroundTransparency = 1.000
-MLRemake.Label_13.BorderSizePixel = 0
-MLRemake.Label_13.Position = UDim2.new(0, 0, 0, 24)
-MLRemake.Label_13.Size = UDim2.new(1, 0, 1, -48)
-MLRemake.Label_13.ZIndex = 21
-MLRemake.Label_13.Font = Enum.Font.Gotham
-MLRemake.Label_13.Text = "Notification"
-MLRemake.Label_13.TextColor3 = Color3.fromRGB(255, 255, 255)
-MLRemake.Label_13.TextSize = 14.000
-MLRemake.Label_13.TextXAlignment = Enum.TextXAlignment.Left
-MLRemake.Label_13.TextYAlignment = Enum.TextYAlignment.Top
+MLRemake.Label_14.Name = "Label"
+MLRemake.Label_14.Parent = MLRemake.Notif
+MLRemake.Label_14.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Label_14.BackgroundTransparency = 1.000
+MLRemake.Label_14.BorderSizePixel = 0
+MLRemake.Label_14.Position = UDim2.new(0, 0, 0, 24)
+MLRemake.Label_14.Size = UDim2.new(1, 0, 1, -48)
+MLRemake.Label_14.ZIndex = 21
+MLRemake.Label_14.Font = Enum.Font.Gotham
+MLRemake.Label_14.Text = "Notification"
+MLRemake.Label_14.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Label_14.TextSize = 14.000
+MLRemake.Label_14.TextXAlignment = Enum.TextXAlignment.Left
+MLRemake.Label_14.TextYAlignment = Enum.TextYAlignment.Top
 
 MLRemake.Line_4.Name = "Line"
 MLRemake.Line_4.Parent = MLRemake.Notif
@@ -2255,21 +2629,21 @@ MLRemake.UIListLayout_11.FillDirection = Enum.FillDirection.Horizontal
 MLRemake.UIListLayout_11.HorizontalAlignment = Enum.HorizontalAlignment.Right
 MLRemake.UIListLayout_11.SortOrder = Enum.SortOrder.LayoutOrder
 
-MLRemake.Button_8.Name = "Button"
-MLRemake.Button_8.Parent = MLRemake.Buttons_4
-MLRemake.Button_8.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-MLRemake.Button_8.Size = UDim2.new(0, 40, 0, 20)
-MLRemake.Button_8.Visible = false
-MLRemake.Button_8.ZIndex = 21
-MLRemake.Button_8.Font = Enum.Font.GothamBold
-MLRemake.Button_8.Text = "OK"
-MLRemake.Button_8.TextColor3 = Color3.fromRGB(255, 255, 255)
-MLRemake.Button_8.TextSize = 14.000
-MLRemake.Button_8.TextTruncate = Enum.TextTruncate.AtEnd
-MLRemake.Button_8.TextWrapped = true
+MLRemake.Button_9.Name = "Button"
+MLRemake.Button_9.Parent = MLRemake.Buttons_4
+MLRemake.Button_9.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+MLRemake.Button_9.Size = UDim2.new(0, 40, 0, 20)
+MLRemake.Button_9.Visible = false
+MLRemake.Button_9.ZIndex = 21
+MLRemake.Button_9.Font = Enum.Font.GothamBold
+MLRemake.Button_9.Text = "OK"
+MLRemake.Button_9.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Button_9.TextSize = 14.000
+MLRemake.Button_9.TextTruncate = Enum.TextTruncate.AtEnd
+MLRemake.Button_9.TextWrapped = true
 
-MLRemake.UICorner_66.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_66.Parent = MLRemake.Button_8
+MLRemake.UICorner_75.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_75.Parent = MLRemake.Button_9
 
 MLRemake.UIStroke.Parent = MLRemake.Notif
 MLRemake.UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
@@ -2387,14 +2761,18 @@ do -- MLRemake.MLRemake.UI
 				Callback = nofunc,
 				Type = "Default",
 				ClearOnFocus = false,
-				Center = false
+				Center = false,
+				Hidden = false,
+				Font = Enum.Font.Gotham,
+				Size = 30,
 			},
 			Label = {
 				Text = "Label",
 				Event = bind,
 				Center = false,
 				Transparent = false,
-				Font = Enum.Font.Gotham
+				Font = Enum.Font.Gotham,
+				Size = 30
 			},
 			Slider = {
 				Text = "Slider",
@@ -2835,7 +3213,8 @@ do -- MLRemake.MLRemake.UI
 				local new = script.Parent:Clone()
 				
 				-- gui protection
-				local container = (gethui and gethui()) or (get_hidden_ui and get_hidden_ui()) or game.CoreGui
+				local gethui = gethui or get_hidden_ui or get_hidden_gui or hiddenUI or nil
+				local container = (gethui and gethui()) or game:GetService("CoreGui")
 				if getgenv then
 					if syn then syn.protect_gui(new) end
 					new.Parent = container
@@ -3205,6 +3584,7 @@ do -- MLRemake.MLRemake.UI
 						Label = newfunc("Label"),
 						Slider = newfunc("Slider"),
 						ColorPicker = newfunc("ColorPicker"),
+						ColorPickerNew = newfunc("ColorPickerNew"),
 						Keybind = newfunc("Keybind"),
 						ChipSet = newfunc("ChipSet"),
 						DataTable = newfunc("ChipSet"),
@@ -3302,7 +3682,7 @@ do -- MLRemake.MLRemake.UI
 					a.Destroyed = true
 				end
 				
-				return a
+				return a, id
 			end
 		end
 		
@@ -3387,7 +3767,7 @@ do -- MLRemake.MLRemake.UI
 					a.Destroyed = true
 				end
 		
-				return a
+				return a, id
 			end
 		end
 		
@@ -3508,7 +3888,7 @@ do -- MLRemake.MLRemake.UI
 					a.Destroyed = false
 				end
 		
-				return a
+				return a, id
 			end
 		end
 		
@@ -3519,7 +3899,7 @@ do -- MLRemake.MLRemake.UI
 				ApplyDefaultProps("TextBox", t)
 				
 				local type = t.Type:lower()
-				local hiddentext = type == "hidden" or type == "password"
+				local hiddentext = t.Hidden or type == "hidden" or type == "password"
 				
 				local new = ex.TextBox:Clone()
 				local hidden = new.Hidden
@@ -3528,16 +3908,32 @@ do -- MLRemake.MLRemake.UI
 				local selectionstart = -1
 				local hiddenfocused = false
 				local hiddencursor = 1
+				local xalignment = Enum.TextXAlignment[(t.Center and "Center" or "Left")]
+				local boxsize = UDim2.new(1, 0, 0, t.Size)
 				new.Name = "TextBox#"..id
 				new.Parent = p or ex
 				new.Visible = true
 				new.PlaceholderText = t.Text
 				new.ClearTextOnFocus = t.ClearOnFocus
-				new.TextXAlignment = Enum.TextXAlignment[(t.Center and "Center" or "Left")]
+				new.TextXAlignment = xalignment
+				new.Font = t.Font
+				new.Size = boxsize
 				hidden.ClearTextOnFocus = t.ClearOnFocus
+				hidden.TextXAlignment = xalignment
+				hidden.Font = t.Font
+				hidden.Size = boxsize
+				
+				local font = t.Font
+				if typeof(font) == "Font" then
+					new.FontFace = font
+					hidden.FontFace = font
+				else
+					new.Font = font
+					hidden.Font = font
+				end
 				
 				if hiddentext then
-					hidden.Font = Enum.Font.Code -- to make the text size match the • symbols
+					hidden.Font = Enum.Font.Code -- to make the actual text size match the • symbols
 					hidden.TextSize = 12
 				end
 				
@@ -3567,6 +3963,16 @@ do -- MLRemake.MLRemake.UI
 					else
 						box.Visible = false
 						box.Size = UDim2new(0, 1, 1, -12)
+					end
+					
+					local boundsy = hidden.TextBounds.Y
+					if boundsy > 30 then
+						local boxsize = UDim2.new(1, 0, 0, boundsy + 16)
+						new.Size = boxsize
+						hidden.Size = boxsize
+					else
+						new.Size = boxsize
+						hidden.Size = boxsize
 					end
 				end
 				
@@ -3648,7 +4054,7 @@ do -- MLRemake.MLRemake.UI
 					a.Destroyed = true
 				end
 		
-				return a
+				return a, id
 			end
 		end
 		
@@ -3729,7 +4135,7 @@ do -- MLRemake.MLRemake.UI
 					a.Destroyed = true
 				end
 		
-				return a
+				return a, id
 			end
 		end
 		
@@ -3824,6 +4230,184 @@ do -- MLRemake.MLRemake.UI
 		
 						lastvalue = value
 						lastpercent = percent
+						taskwait()
+					end
+					callback(s, lastvalue, lastpercent)
+				end)
+			end
+			function ui.SetVerticalSliderValue(s, value, t)
+				task.spawn(function()
+					repeat
+						taskwait()
+					until UI_LOADED
+					if not t then t = {} end
+					local bar = s.Bar
+					local indicator = bar.Indicator
+					local progress = bar.Progress
+					local min = math.max(t.Min or 0, 0)
+					local max = t.Max or 100
+					value = clamp(value, min, max)
+		
+					local percent = (value - min) / (max - min)
+					--local pos = UDim2new(0, clamp(bar.AbsoluteSize.X / percent, 0, bar.AbsoluteSize.X), 0.5, 0)
+					local pos = UDim2new(1, 0, 1 - percent, 0)
+					if t.Tween then
+						indicator:TweenPosition(pos, "Out", "Sine", SLIDER_SET_TWEEN_TIME, true)
+						progress:TweenSize(UDim2new(1, 0, percent, 0), "Out", "Sine", SLIDER_SET_TWEEN_TIME, true)
+					else
+						indicator.Position = pos
+						progress.Size = UDim2new(1, 0, percent, 0)
+					end
+		
+					ui.Tween(bar.Progress, {BackgroundColor3 = (percent == 1 and fromRGB(250, 250, 250)) or fromRGB(90, 90, 90)}, TweenInfonew(0.5, sine, out)) -- Tween bar progress color to white when at 100%
+		
+					local afv = ui.AddAffixes(value, t)
+					s.Value.Text = ui.AddAffixes(value, t, true)
+					if s:FindFirstChild("Input") then
+						s.Input.Text = value
+					end
+					--indicator.AnchorPoint = Vector2new(percent, 0.5)
+					if t.Callback then
+						t.Callback(afv)
+					end
+				end)
+			end
+			function ui.InitVerticalSlider(s, t, callback)
+				if not t then t = {} end
+				local bar = s.Bar
+				local slider = bar.Slider
+				local indicator = bar.Indicator
+				local min = math.max(t.Min or 0, 0)
+				local max = t.Max or 100
+				local dec = t.Decimals or 0
+				local lastvalue = nil
+				local lastpercent = nil
+		
+				local pre, suf = t.Prefix or "", t.Suffix or ""
+		
+				return slider.MouseButton1Down:Connect(function()
+					mousedown = true
+					while true do
+						if not mousedown then break end
+		
+						local pos = clamp(mouse.Y - bar.AbsolutePosition.Y, 0, bar.AbsoluteSize.Y)
+		
+						indicator.Position = UDim2new(
+							0,
+							pos,
+							0.5,
+							0
+						)
+						local value = Round(min + ((max - min) * (pos / bar.AbsoluteSize.Y)), dec)
+						local percent = (value - min) / (max - min)
+						--indicator.AnchorPoint = Vector2new(0.5, percent)
+						indicator.Position = UDim2.fromScale(1, percent)
+		
+						bar.Progress.Size = UDim2new(1, 0, percent, 0)
+						ui.Tween(bar.Progress, {BackgroundColor3 = (percent == 1 and fromRGB(250, 250, 250)) or fromRGB(90, 90, 90)}, TweenInfonew(0.5, sine, out)) -- Tween bar progress color to white when at 100%
+		
+						s.Value.Text = ui.AddAffixes(value, t, true)
+		
+						lastvalue = value
+						lastpercent = 1 - percent
+						taskwait()
+					end
+					callback(s, lastvalue, lastpercent)
+				end)
+			end
+			function ui.SetXYSliderValue(s, value, t)
+				task.spawn(function()
+					repeat
+						taskwait()
+					until UI_LOADED
+					if not t then t = {} end
+					local bar = s.Bar
+					local indicator = bar.Indicator
+					local min = math.max(t.Min or 0, 0)
+					
+					local xpercent
+					local ypercent
+					--local pos = UDim2new(0, clamp(bar.AbsoluteSize.X / percent, 0, bar.AbsoluteSize.X), 0.5, 0)
+					
+					do -- x
+						local max = t.MaxX
+						value.Y = clamp(value.Y, min, max)
+						local percent = (value.X - min) / (max - min)
+						xpercent = 1 - percent
+					end
+					do -- y
+						local max = t.MaxY
+						value.Y = clamp(value.Y, min, max)
+						local percent = (value.Y - min) / (max - min)
+						ypercent = 1 - percent
+					end
+					
+					local pos = UDim2new(xpercent, 0, ypercent, 0)
+					if t.Tween then
+						indicator:TweenPosition(pos, "Out", "Sine", SLIDER_SET_TWEEN_TIME, true)
+					else
+						indicator.Position = pos
+					end
+					
+					local afv = ui.AddAffixes(value, t)
+					--s.Value.Text = ui.AddAffixes(value, t, true)
+					if s:FindFirstChild("Input") then
+						s.Input.Text = value
+					end
+					if t.Callback then
+						t.Callback(afv)
+					end
+				end)
+			end
+			function ui.InitXYSlider(s, t, callback)
+				if not t then t = {} end
+				local bar = s.Bar
+				local slider = bar.Slider
+				local indicator = bar.Indicator
+				local min = math.max(t.Min or 0, 0)
+				local maxx = t.MaxX or 100
+				local maxy = t.MaxY
+				local dec = t.Decimals or 0
+				local lastvalue = nil
+				local lastpercent = nil
+		
+				local pre, suf = t.Prefix or "", t.Suffix or ""
+		
+				return slider.MouseButton1Down:Connect(function()
+					mousedown = true
+					while true do
+						if not mousedown then break end
+						
+						local xpos, xvalue, xpercent
+						local ypos, yvalue, ypercent
+						local abp = bar.AbsolutePosition
+						local abs = bar.AbsoluteSize
+		
+						do -- x
+							local pos = clamp(mouse.X - abp.X, 0, abs.X)
+							local value = Round(min + ((maxx - min) * (pos / abs.X)), dec)
+							local percent = (value - min) / (maxx - min)
+							xvalue = value
+							xpercent = percent
+						end
+						do -- y
+							local pos = clamp(mouse.Y - abp.Y, 0, abs.Y)
+							local value = Round(min + ((maxy - min) * (pos / abs.Y)), dec)
+							local percent = (value - min) / (maxy - min)
+							yvalue = value
+							ypercent = percent
+						end
+						
+						indicator.Position = UDim2.fromScale(xpercent, ypercent)
+		
+						lastvalue = {
+							X = xvalue,
+							Y = yvalue
+						}
+						lastpercent = {
+							X = 1 - xpercent,
+							Y = 1 - ypercent
+						}
 						taskwait()
 					end
 					callback(s, lastvalue, lastpercent)
@@ -3985,7 +4569,7 @@ do -- MLRemake.MLRemake.UI
 					a.Destroyed = true
 				end
 		
-				return a
+				return a, id
 			end
 		end
 		
@@ -4157,7 +4741,183 @@ do -- MLRemake.MLRemake.UI
 					a.Destroyed = true
 				end
 		
-				return a
+				return a, id
+			end
+		end
+		
+		do -- Color Picker New
+			function ui.SetPickerPreviewNew(s, color, tween, toggled)
+				s.Color.Text = format("%s, %s, %s", floor(color.R * 255), floor(color.G * 255), floor(color.B * 255))
+				s.Preview.BackgroundColor3 = color
+				if toggled then
+					local hue, sat, val = color:ToHSV()
+					s.PickerNew.Value.Bar.UIGradient.Color = CSnew{
+						CSKnew(0, Color3.new(0, 0, 0)),
+						CSKnew(1, fromHSV(hue, sat, 1))
+					}
+					ui.SetXYSliderValue(s.PickerNew.HueSaturation, {X = floor(hue * 360), Y = floor(sat * 100)}, {Tween = tween, MaxX = 360, MaxY = 100})
+					ui.SetVerticalSliderValue(s.PickerNew.Value, floor(val * 100), {Tween = tween})
+				end
+			end
+			function ui.ColorPickerNew(t, p, ex)
+				ID += 1
+				local id = ID
+				ApplyDefaultProps("ColorPicker", t)
+		
+				if t.Default ~= nil then
+					t.Def = t.Default
+				end
+		
+				local toggled = false
+				local color = t.Def
+				local hue, sat, val = color:ToHSV()
+		
+				local new = ex.ColorPickerNew:Clone()
+				local picker = new.PickerNew
+				new.Name = "ColorPicker#"..id
+				new.Parent = p or ex
+				new.Visible = true
+				new.Label.Text = t.Text
+				new.Color.Text = format("%s, %s, %s", floor(color.R * 255), floor(color.G * 255), floor(color.B * 255))
+				new.Preview.BackgroundColor3 = color
+		
+				new.PickerNew.HueSaturation.Bar.Indicator.Position = UDim2.fromScale(hue, sat)
+				ui.SetVerticalSliderValue(picker.Value, floor(val * 100))
+		
+				-- dropdown
+				new.Button.Activated:Connect(function()
+					toggled = not toggled
+					if toggled then
+						new.Fill.Visible = true
+						new:TweenSize(UDim2new(1, 0, 0, 135), "Out", "Sine", 0.15, true)
+						ui.Tween(new.PickerNew.Value.Bar.Indicator.Top, {BackgroundTransparency = 0})
+						ui.Tween(new.PickerNew.Value.Bar.Indicator.Bottom, {BackgroundTransparency = 0})
+					else
+						new.Fill.Visible = false
+						new:TweenSize(UDim2new(1, 0, 0, 30), "Out", "Sine", 0.15, true)
+						ui.Tween(new.PickerNew.Value.Bar.Indicator.Top, {BackgroundTransparency = 1})
+						ui.Tween(new.PickerNew.Value.Bar.Indicator.Bottom, {BackgroundTransparency = 1})
+					end
+					ui.UpdateCanvasSize(new.Parent)
+				end)
+		
+				-- HSV bars
+				ui.InitXYSlider(picker.HueSaturation, {MaxX = 360, MaxY = 100}, function(_, value, percent)
+					hue = percent.X
+					sat = percent.Y
+					picker.Value.Bar.UIGradient.Color = CSnew({
+						CSKnew(0, Color3.new(0, 0, 0)),
+						CSKnew(1, fromHSV(hue, sat, 1))
+					})
+					ui.SetPickerPreviewNew(new, fromHSV(hue, sat, val), false, toggled)
+					t.Callback(fromHSV(hue, sat, val))
+				end)
+				ui.InitVerticalSlider(picker.Value, {Max = 100}, function(_, _, percent)
+					val = percent
+					ui.SetPickerPreviewNew(new, fromHSV(hue, sat, val), false, toggled)
+					t.Callback(fromHSV(hue, sat, val))
+				end)
+		
+				-- custom section
+				local hex = picker.HEX
+				local rgb = picker.RGB
+				local rainbow = picker.Rainbow
+				hex.FocusLost:Connect(function()
+					local suc, color = pcall(Color3.fromHex, hex.Text)
+					if suc then
+						ui.SetPickerPreviewNew(new, color, true, true)
+						t.Callback(color)
+						hue, sat, val = color:ToHSV()
+					end
+				end)
+				rgb.FocusLost:Connect(function()
+					local _, amount = rgb.Text:gsub(",", ",")
+					if amount == 2 then
+						local color = rgb.Text:gsub(" ",""):split(",")
+						for i,v in next, color do
+							color[i] = clamp(tonumber(v), 0, 255)
+						end
+						color = fromRGB(color[1], color[2], color[3])
+						ui.SetPickerPreviewNew(new, color, true, true)
+						t.Callback(color)
+						hue, sat, val = color:ToHSV()
+					end
+				end)
+				local rgbenabled = t.Rainbow
+				rainbow.Activated:Connect(function()
+					rgbenabled = not rgbenabled
+				end)
+		
+				ui.Ripple(new.Button, new.RippleHolder)
+				ui.Ripple(picker.Rainbow)
+				ui.Focus(picker.HEX)
+				ui.Focus(picker.RGB)
+				ui.UpdateCanvasSize(p or ex)
+				t.Callback(color)
+		
+				if t.Menu ~= nil then
+					ui.InitMenu(t.Menu, new, {new.Color, new.Preview})
+				end
+		
+				task.spawn(function()
+					while true do
+						if new == nil or new.Parent == nil then break end
+						if rgbenabled then
+							local c = fromHSV(tick() % 5 / 5, 1, 1)
+							t.Callback(c)
+							ui.SetPickerPreviewNew(new, c, false, toggled)
+						end
+						taskwait()
+					end
+				end)
+		
+				local a = {Destroyed = false, Object = new}
+		
+				local function set(value)
+					if a.Destroyed then return end
+					if typeof(value) ~= "Color3" then return end
+					color = value
+					hue, sat, val = value:ToHSV()
+					ui.SetPickerPreviewNew(new, color, true)
+					t.Callback(value)
+				end
+				local function get()
+					if a.Destroyed then return end
+					return fromHSV(hue, sat, val)
+				end
+		
+				function a:Set(value)
+					set(value)
+				end
+				function a:Get()
+					return get()
+				end
+		
+				function a:SetText(text)
+					if a.Destroyed then return end
+					new.Label.Text = tostring(text)
+				end
+				function a:GetText()
+					if a.Destroyed then return end
+					return new.Label.Text
+				end
+				function a:GetId()
+					if a.Destroyed then return end
+					return id
+				end
+				function a:SetColor(value)
+					set(value)
+				end
+				function a:GetColor()
+					return get()
+				end
+				function a:Destroy()
+					if a.Destroyed then return end
+					new:Destroy()
+					a.Destroyed = true
+				end
+		
+				return a, id
 			end
 		end
 		
@@ -4260,7 +5020,7 @@ do -- MLRemake.MLRemake.UI
 					a.Destroyed = true
 				end
 		
-				return a
+				return a, id
 			end
 		end
 		
@@ -4423,7 +5183,7 @@ do -- MLRemake.MLRemake.UI
 					a.Destroyed = true
 				end
 		
-				return a
+				return a, id
 			end
 		end
 		
@@ -4550,7 +5310,7 @@ do -- MLRemake.MLRemake.UI
 					a.Destroyed = true
 				end
 		
-				return a
+				return a, id
 			end
 		end
 		
@@ -4652,7 +5412,7 @@ do -- MLRemake.MLRemake.UI
 					a.Destroyed = true
 				end
 		
-				return a
+				return a, id
 			end
 		end
 		
