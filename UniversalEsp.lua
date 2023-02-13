@@ -269,10 +269,11 @@ if (GameId == gids.pf) or (GameId == gids.pft) or (GameId == gids.pfu) then
 		local a = Instance.new("Message", game.CoreGui)
 		a.Text = "-- Universal Esp Notice --\n\nA script has been copied to your clipboard.\nPlease put this script in your exploit's autoexec folder and rejoin the game.\n(this script is required to bypass the new update)\n\nbypass was created by Spoorloos"
 		return
+	else
+		local _cache = rawget(debug.getupvalue(require, 1), "_cache")
+		local ReplicationInterface = rawget(rawget(_cache, "ReplicationInterface"), "module")
+		getEntry = rawget(ReplicationInterface, "getEntry")
 	end
-	local _cache = rawget(debug.getupvalue(require, 1), "_cache")
-	local ReplicationInterface = rawget(rawget(_cache, "ReplicationInterface"), "module")
-	getEntry = rawget(ReplicationInterface, "getEntry")
 elseif GameId == gids.bb then
 	for _,v in next, getgc(true) do
 		if typeof(v) == "table" and rawget(v, "InitProjectile") and rawget(v, "TS") then
@@ -423,33 +424,22 @@ end
 
 do -- compatibility
 	if getEntry then -- phantom forces
-		local playercache = {}
-		local function GetPlayerObject(plr)
-			local cached = playercache[plr]
-			if cached then
-				return cached
-			end
-
-			local obj = getEntry(plr)
-			playercache[plr] = obj
-			return obj
-		end
-
+		local cache = {}
 		GetChar = function(plr)
-			local obj = GetPlayerObject(plr)
+			local obj = getEntry(plr)
 			if obj ~= nil then
-				local thirdPersonObject = obj._thirdPersonObject
-				if thirdPersonObject then
-					return thirdPersonObject:getCharacterHash().head.Parent
+				local char = obj.Character
+				if char and char.Parent ~= nil then
+					return char
 				end
 			end
 			return nil
 		end
 		IsAlive = GetChar
 		GetHealth = function(plr)
-			local obj = GetPlayerObject(plr)
+			local obj = getEntry(plr)
 			if obj ~= nil then
-				return {mathfloor(obj._healthstate.health0), 100}
+				return {mathfloor(obj.Health), 100}
 			end
 			return nil
 		end
@@ -859,6 +849,7 @@ function NewPartObject(objs, type, part, options) -- create data object for part
 	t.AncestryChanged = part.AncestryChanged:Connect(function(_, parent)
 		if parent == nil then
 			t:Remove()
+			return
 		end
 		t:SetPart(parent:FindFirstChild(part.Name))
 	end)
@@ -962,8 +953,8 @@ function UpdateObjects(self) -- update esp objects for players and npcs
 	local tlx, tly, tlz, trx, try, blx, bly, brx, bry, z
 	local head, ltracerto
 	local team, teamcolor
-	local char, health, maxhealth, mag, overlapping, render
-	local isalive = plr and IsAlive(plr)
+	local health, maxhealth, mag, overlapping, render
+	local char = plr and GetChar(plr)
 
 	local objs = self.Objects
 	local box = objs.Box.Object
@@ -974,9 +965,9 @@ function UpdateObjects(self) -- update esp objects for players and npcs
 	local dot = objs.HeadDot.Object
 	local ltracer = objs.LookTracer.Object
 
-	if VISIBLE and isalive then
+	if VISIBLE and char then
 		local hp = GetHealth(plr)
-		char, health, maxhealth = GetChar(plr), hp[1], hp[2]
+		health, maxhealth = hp[1], hp[2]
 		tasksync()
 		cf, size = char:GetBoundingBox()
 		taskdesync()
@@ -1601,6 +1592,7 @@ function NewPlayer(plr)
 end
 
 function NewLabel(part, options)
+	tasksync()
 	local o = {
 		Text = options.Text or part.Name,
 		Transparency = options.Transparency or 1,
@@ -1633,12 +1625,15 @@ function NewLabel(part, options)
 		end
 	end
 
+	taskdesync()
+
 	PlayerObjects[part] = t
 	UpdateParallel(t)
 
 	return LabelObj
 end
 function NewCham(part, options)
+	tasksync()
 	local o = {
 		Transparency = options.Transparency or 1,
 		Color = options.Color or white,
@@ -1664,6 +1659,8 @@ function NewCham(part, options)
 			v:Remove()
 		end
 	end
+
+	taskdesync()
 
 	PlayerObjects[part] = t
 	UpdateParallel(t)
@@ -1734,11 +1731,13 @@ end
 function esp.Label(part,options)
 	assert(typeof(part) == "Instance", ("Universal Esp: bad argument to #1 'Label' (Instance expected, got %s)"):format(typeof(part)))
 	assert(table.find(supportedparts, part.ClassName),("Universal Esp: bad argument to #1 'Label' (Part or Model expected, got %s)"):format(part.ClassName))
+	tasksync()
 	return NewLabel(part, options or {})
 end
 function esp.Cham(part,options)
 	assert(typeof(part) == "Instance",("Universal Esp: bad argument to #1 'Cham' (Instance expected, got %s)"):format(typeof(part)))
 	assert(table.find(supportedparts, part.ClassName),("Universal Esp: bad argument to #1 'Cham' (Part or Model expected, got %s)"):format(part.ClassName))
+	tasksync()
 	return NewCham(part, options or {})
 end
 function esp:GetObjects(a)
