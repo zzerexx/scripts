@@ -5,7 +5,7 @@ my cool scripts
   
 # Universal Esp  
 Updated January 1, 2022  
-v1.7.1  
+v1.7.2  
 - Box Esp  
 - Tracers  
 - Name Esp  
@@ -34,7 +34,7 @@ Supports `SetFunction` and `ResetFunction` for compatibility!
 loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalEspPerformance.lua", "UniversalEspPerformance"))()
 ```  
   
-## Update v1.7.1  
+## Update v1.7.2  
 - Made a few synchronization changes to prevent errors on Synapse
 
 UI Changes
