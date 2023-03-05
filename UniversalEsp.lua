@@ -1,12 +1,12 @@
 --[[
-v1.7.1 Changes
+v1.7.2 Changes
 - Made a few synchronization changes to prevent errors on Synapse
 
 UI Changes
 - No UI changes
 ]]
 
-local VERSION = "v1.7.1"
+local VERSION = "v1.7.2"
 
 if not EspSettings then
 	getgenv().EspSettings = {
@@ -205,8 +205,6 @@ local next = next
 local tick = tick
 local typeof = typeof
 local taskspawn = task.spawn
-local taskdesync = task.desynchronize
-local tasksync = task.synchronize
 local taskwait = task.wait
 local profbegin = debug and debug.profilebegin or function() end
 local profend = debug and debug.profileend or function() end
@@ -575,7 +573,6 @@ function ApplyZIndex(obj, name, ontop)
 	end
 end
 function SetProp(obj, prop, value, outline)
-	tasksync()
 	for i,v in next, obj do
 		if (OUTLINES and outline and find(i, "Outline")) or (not outline and OUTLINES) then
 			v[prop] = value
@@ -774,11 +771,9 @@ local RemoveFunction = {
 	end
 }
 function NewObject(type) -- create the actual drawing objects
-	tasksync()
 	local obj = Object[type]()
 	SetProp(obj, "Visible", false)
 	ApplyZIndex(obj, type)
-	taskdesync()
 	return obj
 end
 function NewCharacterObject(objs, type, plr) -- create data object for players and npcs
@@ -832,7 +827,6 @@ function PartSetProp(self, prop, value) -- SetProp function for labels and chams
 end
 function NewPartObject(objs, type, part, options) -- create data object for parts and models
 	ID += 1
-	tasksync()
 
 	local t = {
 		Object = objs,
@@ -853,7 +847,6 @@ function NewPartObject(objs, type, part, options) -- create data object for part
 		end
 		t:SetPart(parent:FindFirstChild(part.Name))
 	end)
-	taskdesync()
 
 	OBJECTS[ID] = t
 
@@ -946,8 +939,6 @@ end
 UpdateVariables()
 local conn2 = RunService.Heartbeat:Connect(UpdateVariables)
 function UpdateObjects(self) -- update esp objects for players and npcs
-	taskdesync()
-
 	local plr, isnpc = self.Player, self.NPC
 	local cf, size, mid, inViewport, tl, tr, bl, br
 	local tlx, tly, tlz, trx, try, blx, bly, brx, bry, z
@@ -968,9 +959,7 @@ function UpdateObjects(self) -- update esp objects for players and npcs
 	if VISIBLE and char then
 		local hp = GetHealth(plr)
 		health, maxhealth = hp[1], hp[2]
-		tasksync()
 		cf, size = char:GetBoundingBox()
-		taskdesync()
 		team, teamcolor = GetTeam(plr), GetTeamColor(plr)
 		mag = (ccf - cf.Position).Magnitude
 		render = (ffa or (not teamcheck or (not ffa and teamcheck and team ~= myteam))) and mag <= maxdist
@@ -1420,8 +1409,6 @@ function UpdateObjects(self) -- update esp objects for players and npcs
 	end
 end
 function UpdatePartObjects(self) -- update esp objects for parts and models
-	taskdesync()
-
 	local part = self.Part
 	local type = self.Type
 	local obj = self.Objects
@@ -1435,9 +1422,7 @@ function UpdatePartObjects(self) -- update esp objects for parts and models
 		if find(class, "Part") or find(class, "Operation") then
 			cf, size = part.CFrame, part.Size / 2
 		elseif class == "Model" then
-			tasksync()
 			cf, size = part:GetBoundingBox()
-			taskdesync()
 			size /= 2
 		end
 		local x, y, z = size.X, size.Y, size.Z
@@ -1518,10 +1503,8 @@ function UpdatePartObjects(self) -- update esp objects for parts and models
 	end
 end
 function UpdateParallel(self) -- begin the loop that calls the update function
-	taskdesync()
 	taskspawn(function()
 		while true do
-			taskdesync()
 			local clock = osclock()
 			if refreshrate > 0 and (clock - self.LastUpdate) < refreshrate then
 				taskwait()
@@ -1592,7 +1575,6 @@ function NewPlayer(plr)
 end
 
 function NewLabel(part, options)
-	tasksync()
 	local o = {
 		Text = options.Text or part.Name,
 		Transparency = options.Transparency or 1,
@@ -1625,15 +1607,12 @@ function NewLabel(part, options)
 		end
 	end
 
-	taskdesync()
-
 	PlayerObjects[part] = t
 	UpdateParallel(t)
 
 	return LabelObj
 end
 function NewCham(part, options)
-	tasksync()
 	local o = {
 		Transparency = options.Transparency or 1,
 		Color = options.Color or white,
@@ -1660,8 +1639,6 @@ function NewCham(part, options)
 		end
 	end
 
-	taskdesync()
-
 	PlayerObjects[part] = t
 	UpdateParallel(t)
 
@@ -1681,7 +1658,6 @@ for _,v in next, players:GetPlayers() do
 		NewPlayer(v)
 	end
 end
-tasksync()
 local conn4 = players.PlayerAdded:Connect(NewPlayer)
 
 local esp = {Version = VERSION}
@@ -1731,13 +1707,11 @@ end
 function esp.Label(part,options)
 	assert(typeof(part) == "Instance", ("Universal Esp: bad argument to #1 'Label' (Instance expected, got %s)"):format(typeof(part)))
 	assert(table.find(supportedparts, part.ClassName),("Universal Esp: bad argument to #1 'Label' (Part or Model expected, got %s)"):format(part.ClassName))
-	tasksync()
 	return NewLabel(part, options or {})
 end
 function esp.Cham(part,options)
 	assert(typeof(part) == "Instance",("Universal Esp: bad argument to #1 'Cham' (Instance expected, got %s)"):format(typeof(part)))
 	assert(table.find(supportedparts, part.ClassName),("Universal Esp: bad argument to #1 'Cham' (Part or Model expected, got %s)"):format(part.ClassName))
-	tasksync()
 	return NewCham(part, options or {})
 end
 function esp:GetObjects(a)
