@@ -313,7 +313,9 @@ local MLRemake = {
 local library
 
 if syn then
-	syn.protect_gui(MLRemake.MLRemake)
+	if syn.protect_gui then
+		syn.protect_gui(MLRemake.MLRemake)	
+	end
 end
 
 MLRemake.MLRemake.Name = "MLRemake"
