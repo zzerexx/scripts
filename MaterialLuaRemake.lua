@@ -1,6 +1,3 @@
-if getgenv and getgenv().MLRemake ~= nil then
-	return MLRemake
-end
 local MLRemake = {
 	MLRemake = Instance.new("ScreenGui"),
 	Topbar = Instance.new("Frame"),
@@ -312,10 +309,7 @@ local MLRemake = {
 }
 local library
 
-if syn then
-	syn.protect_gui(MLRemake.MLRemake)
-end
-
+print("Loadin")
 MLRemake.MLRemake.Name = "MLRemake"
 MLRemake.MLRemake.Parent = (gethui and gethui()) or (get_hidden_ui and get_hidden_ui()) or game.CoreGui
 MLRemake.MLRemake.IgnoreGuiInset = true
@@ -2725,7 +2719,9 @@ do -- MLRemake.MLRemake.UI
 				Style = 1,
 				SizeX = 400,
 				SizeY = 505,
-				NavigatorSize = 200
+				NavigatorSize = 200,
+				SaveConfig = true,
+				ConfigFolder = "Test"
 			},
 			Banner = {
 				Text = "Banner",
@@ -2868,6 +2864,7 @@ do -- MLRemake.MLRemake.UI
 		
 		local ID = 0
 		local ui = {}
+        ui.Flags = {}
 		
 		uis.InputEnded:Connect(function(i,gp)
 			if i.UserInputType.Name == "MouseButton1" then
@@ -3128,7 +3125,8 @@ do -- MLRemake.MLRemake.UI
 				new.Parent = p or main
 			end
 		end
-		
+		local SaveConfig = false
+		local ConfigName = "Test"
 		do -- UI Core
 			function ui.UpdateCanvasSize(page)
 				task.spawn(function()
@@ -3211,12 +3209,13 @@ do -- MLRemake.MLRemake.UI
 				ApplyDefaultProps("Load", t)
 				
 				local new = script.Parent:Clone()
+				SaveConfig = t.SaveConfig or false
+				ConfigName = t.ConfigName or "Test"
 				
 				-- gui protection
 				local gethui = gethui or get_hidden_ui or get_hidden_gui or hiddenUI or nil
 				local container = (gethui and gethui()) or game:GetService("CoreGui")
 				if getgenv then
-					if syn then syn.protect_gui(new) end
 					new.Parent = container
 					if OldInstance ~= nil then
 						OldInstance:Destroy()
@@ -3604,7 +3603,7 @@ do -- MLRemake.MLRemake.UI
 						topbar.Visible = vis
 					else
 						topbar.Visible = not topbar.Visible
-					end
+						end
 				end
 				function UI.Banner(t)
 					return ui.Banner(t, main, STYLE, NAV_SIZE)
@@ -3613,6 +3612,11 @@ do -- MLRemake.MLRemake.UI
 					
 				end
 				function UI:Destroy()
+					for i,v in pairs(ui.Flags) do
+						if v.Type == "Toggle" then
+							v.Set(false)
+						end
+					end
 					if getgenv then
 						getgenv().MLRemake = nil
 					end
@@ -3624,6 +3628,63 @@ do -- MLRemake.MLRemake.UI
 				UI.PageOpened = PageOpened.Event
 				
 				return UI
+			end
+		end
+
+		do
+			function ui.SaveConfig()
+				if isfile(string.format("%s.json",ConfigName)) then
+					local Config = game:GetService("HttpService"):JSONDecode(readfile(string.format("%s.json",ConfigName)))
+					local Data = {}
+					for i,v in pairs(ui.Flags) do
+						if v.Type == "Toggle" then
+							Data[i] = v.Value
+						end
+					end
+					-- table.foreach(Sliders,function(i,v)
+					-- 	Data[i] = v.Value
+					-- end)
+					-- table.foreach(Textboxes,function(i,v)
+					-- 	Data[i] = v:GetText()
+					-- end)
+					writefile(string.format("%s.json",ConfigName), game:GetService("HttpService"):JSONEncode(Data))
+				else
+					writefile(string.format("%s.json",ConfigName), game:GetService("HttpService"):JSONEncode({}))
+					local Config = game:GetService("HttpService"):JSONDecode(readfile(string.format("%s.json",ConfigName)))
+					local Data = {}
+					for i,v in pairs(ui.Flags) do
+						if v.Type == "Toggle" then
+							Data[i] = v.Value
+						end
+					end
+					-- table.foreach(Toggles,function(i,v)
+					-- 	Data[i] = v:GetState()
+					-- end)
+					-- table.foreach(Sliders,function(i,v)
+					-- 	Data[i] = v.Value
+					-- end)
+					-- table.foreach(Textboxes,function(i,v)
+					-- 	Data[i] = v:GetText()
+					-- end)
+					table.foreach(Data,function(x,y)
+						warn(x,y)
+					end)
+					writefile(string.format("%s.json",ConfigName), game:GetService("HttpService"):JSONEncode(Data))
+				end
+			end
+		end
+
+		do
+			function ui.LoadConfig()
+				
+				if isfile(string.format("%s.json",ConfigName)) then
+					local Config = game:GetService("HttpService"):JSONDecode(readfile(string.format("%s.json",ConfigName)))
+					for i,v in pairs(Config) do
+						if typeof(v) == "boolean" then
+							ui.Flags[i].Set(v)
+						end
+					end
+				end
 			end
 		end
 		
@@ -3688,12 +3749,15 @@ do -- MLRemake.MLRemake.UI
 		
 		do -- Toggle
 			function ui.Toggle(t, p, ex)
+				print("Created Toggle")
+
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("Toggle", t)
 		
 				local toggled = t.Enabled
-		
+
+
 				local new = ex.Toggle:Clone()
 				local toggle = new.Toggle
 				new.Name = "Toggle#"..id
@@ -3701,8 +3765,28 @@ do -- MLRemake.MLRemake.UI
 				new.Visible = true
 				new.Text = t.Text
 				toggle.Indicator.Position = (t.Enabled and UDim2new(0.5, 0, 0.5, 0)) or UDim2new(0, 0, 0.5, 0)
+				if t.Save == true then
+					ui.Flags[tostring(t.Flag)] = {
+						Type = "Toggle",
+						Value = toggled,
+						Set = function(xxx)
+							ui.Flags[t.Flag].Value = xxx
+							if typeof(xxx) ~= "boolean" then return end
+							toggled = xxx
+							if toggled then
+								toggle.Indicator:TweenPosition(ToggleOn, "Out", "Sine", 0.15, true)
+								ui.Tween(toggle.Indicator, {BackgroundColor3 = Color3.fromRGB(150, 150, 150)})
+							else
+								toggle.Indicator:TweenPosition(ToggleOff, "Out", "Sine", 0.15, true)
+								ui.Tween(toggle.Indicator, {BackgroundColor3 = Color3.fromRGB(90, 90, 90)})
+							end
+							t.Callback(xxx)
+						end
+					}
+				end
 				new.Activated:Connect(function()
 					toggled = not toggled
+					ui.Flags[t.Flag].Value = toggled
 					t.Callback(toggled)
 					if toggled then
 						toggle.Indicator:TweenPosition(ToggleOn, "Out", "Sine", 0.15, true)
@@ -3722,8 +3806,8 @@ do -- MLRemake.MLRemake.UI
 				end
 				
 				local a = {Destroyed = false, Object = new}
-				
 				local function set(value)
+					ui.Flags[t.Flag].Value = value
 					if a.Destroyed then return end
 					if typeof(value) ~= "boolean" then return end
 					toggled = value
@@ -3740,8 +3824,10 @@ do -- MLRemake.MLRemake.UI
 					if a.Destroyed then return end
 					return toggled
 				end
-				
 				set(toggled)
+				
+
+
 				
 				function a:SetText(text)
 					if a.Destroyed then return end
