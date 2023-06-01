@@ -221,12 +221,12 @@ local MLRemake = {
 	UIPadding_29 = Instance.new("UIPadding"),
 	UICorner_57 = Instance.new("UICorner"),
 	Label_11 = Instance.new("TextLabel"),
+	Menu_13 = Instance.new("ImageButton"),
+	Value_7 = Instance.new("TextLabel"),
 	Bar_5 = Instance.new("Frame"),
 	Progress_5 = Instance.new("Frame"),
 	UICorner_58 = Instance.new("UICorner"),
 	Indicator_10 = Instance.new("Frame"),
-	Menu_13 = Instance.new("ImageButton"),
-	Value_7 = Instance.new("TextLabel"),
 	ColorPickerNew = Instance.new("Frame"),
 	UIPadding_30 = Instance.new("UIPadding"),
 	UICorner_59 = Instance.new("UICorner"),
@@ -281,6 +281,7 @@ local MLRemake = {
 	Example_3 = Instance.new("TextButton"),
 	UICorner_70 = Instance.new("UICorner"),
 	UIListLayout_7 = Instance.new("UIListLayout"),
+	UIStroke = Instance.new("UIStroke"),
 	BackgroundDim2 = Instance.new("Frame"),
 	Tabs = Instance.new("Frame"),
 	UICorner_71 = Instance.new("UICorner"),
@@ -297,22 +298,33 @@ local MLRemake = {
 	FillTopbar = Instance.new("Frame"),
 	FillMain = Instance.new("Frame"),
 	Notifications = Instance.new("Frame"),
-	UIListLayout_10 = Instance.new("UIListLayout"),
-	Notif = Instance.new("Frame"),
+	NotifCanvasGroup = Instance.new("CanvasGroup"),
 	UICorner_74 = Instance.new("UICorner"),
-	UIPadding_35 = Instance.new("UIPadding"),
 	Title_3 = Instance.new("TextLabel"),
 	Label_14 = Instance.new("TextLabel"),
 	Line_4 = Instance.new("Frame"),
 	Buttons_4 = Instance.new("ScrollingFrame"),
-	UIListLayout_11 = Instance.new("UIListLayout"),
+	UIListLayout_10 = Instance.new("UIListLayout"),
 	Button_9 = Instance.new("TextButton"),
 	UICorner_75 = Instance.new("UICorner"),
-	UIStroke = Instance.new("UIStroke"),
+	UIStroke_2 = Instance.new("UIStroke"),
+	UIPadding_35 = Instance.new("UIPadding"),
+	Notif = Instance.new("Frame"),
+	UICorner_76 = Instance.new("UICorner"),
+	UIPadding_36 = Instance.new("UIPadding"),
+	Title_4 = Instance.new("TextLabel"),
+	Label_15 = Instance.new("TextLabel"),
+	Line_5 = Instance.new("Frame"),
+	Progress_7 = Instance.new("Frame"),
+	Buttons_5 = Instance.new("ScrollingFrame"),
+	UIListLayout_11 = Instance.new("UIListLayout"),
+	Button_10 = Instance.new("TextButton"),
+	UICorner_77 = Instance.new("UICorner"),
+	UIStroke_3 = Instance.new("UIStroke"),
 }
 local library
 
-if syn then
+if syn and syn.protect_gui then
 	syn.protect_gui(MLRemake.MLRemake)
 end
 
@@ -358,8 +370,9 @@ MLRemake.SubTitle.Size = UDim2.new(0, 275, 0, 30)
 MLRemake.SubTitle.ZIndex = 6
 MLRemake.SubTitle.Font = Enum.Font.Gotham
 MLRemake.SubTitle.Text = "Remake Version"
-MLRemake.SubTitle.TextColor3 = Color3.fromRGB(150, 150, 150)
+MLRemake.SubTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.SubTitle.TextSize = 14.000
+MLRemake.SubTitle.TextTransparency = 0.700
 MLRemake.SubTitle.TextXAlignment = Enum.TextXAlignment.Left
 MLRemake.SubTitle.TextYAlignment = Enum.TextYAlignment.Bottom
 
@@ -529,7 +542,7 @@ MLRemake.Line_2.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
 MLRemake.Line_2.BorderSizePixel = 0
 MLRemake.Line_2.Position = UDim2.new(1, 0, 0, 0)
 MLRemake.Line_2.Size = UDim2.new(0, 1, 1, 0)
-MLRemake.Line_2.ZIndex = 7
+MLRemake.Line_2.ZIndex = 9
 
 MLRemake.Title_2.Name = "Title"
 MLRemake.Title_2.Parent = MLRemake.Navigator
@@ -565,8 +578,9 @@ MLRemake.SubTitle_2.Size = UDim2.new(1, -50, 0, 20)
 MLRemake.SubTitle_2.ZIndex = 8
 MLRemake.SubTitle_2.Font = Enum.Font.Gotham
 MLRemake.SubTitle_2.Text = "Remake Version"
-MLRemake.SubTitle_2.TextColor3 = Color3.fromRGB(150, 150, 150)
+MLRemake.SubTitle_2.TextColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.SubTitle_2.TextSize = 14.000
+MLRemake.SubTitle_2.TextTransparency = 0.700
 MLRemake.SubTitle_2.TextTruncate = Enum.TextTruncate.AtEnd
 MLRemake.SubTitle_2.TextXAlignment = Enum.TextXAlignment.Left
 MLRemake.SubTitle_2.TextYAlignment = Enum.TextYAlignment.Top
@@ -620,11 +634,11 @@ MLRemake.UIPadding_5.PaddingRight = UDim.new(0, 10)
 
 MLRemake.Menu_2.Name = "Menu"
 MLRemake.Menu_2.Parent = MLRemake.Button
-MLRemake.Menu_2.AnchorPoint = Vector2.new(1, 0)
+MLRemake.Menu_2.AnchorPoint = Vector2.new(1, 0.5)
 MLRemake.Menu_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Menu_2.BackgroundTransparency = 1.000
 MLRemake.Menu_2.BorderSizePixel = 0
-MLRemake.Menu_2.Position = UDim2.new(1, 0, 0, 5)
+MLRemake.Menu_2.Position = UDim2.new(1, 0, 0.5, 0)
 MLRemake.Menu_2.Size = UDim2.new(0, 20, 0, 20)
 MLRemake.Menu_2.Visible = false
 MLRemake.Menu_2.ZIndex = 3
@@ -680,11 +694,11 @@ MLRemake.UICorner_11.Parent = MLRemake.Indicator
 
 MLRemake.Menu_3.Name = "Menu"
 MLRemake.Menu_3.Parent = MLRemake.Toggle
-MLRemake.Menu_3.AnchorPoint = Vector2.new(1, 0)
+MLRemake.Menu_3.AnchorPoint = Vector2.new(1, 0.5)
 MLRemake.Menu_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Menu_3.BackgroundTransparency = 1.000
 MLRemake.Menu_3.BorderSizePixel = 0
-MLRemake.Menu_3.Position = UDim2.new(1, 0, 0, 5)
+MLRemake.Menu_3.Position = UDim2.new(1, 0, 0.5, 0)
 MLRemake.Menu_3.Size = UDim2.new(0, 20, 0, 20)
 MLRemake.Menu_3.Visible = false
 MLRemake.Menu_3.ZIndex = 3
@@ -866,11 +880,11 @@ MLRemake.Hidden.TextXAlignment = Enum.TextXAlignment.Left
 
 MLRemake.Menu_5.Name = "Menu"
 MLRemake.Menu_5.Parent = MLRemake.TextBox
-MLRemake.Menu_5.AnchorPoint = Vector2.new(1, 0)
+MLRemake.Menu_5.AnchorPoint = Vector2.new(1, 0.5)
 MLRemake.Menu_5.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Menu_5.BackgroundTransparency = 1.000
 MLRemake.Menu_5.BorderSizePixel = 0
-MLRemake.Menu_5.Position = UDim2.new(1, 0, 0, 5)
+MLRemake.Menu_5.Position = UDim2.new(1, 0, 0.5, 0)
 MLRemake.Menu_5.Size = UDim2.new(0, 20, 0, 20)
 MLRemake.Menu_5.Visible = false
 MLRemake.Menu_5.ZIndex = 3
@@ -879,7 +893,7 @@ MLRemake.Menu_5.Image = "http://www.roblox.com/asset/?id=9147554930"
 MLRemake.Cursor.Name = "Cursor"
 MLRemake.Cursor.Parent = MLRemake.TextBox
 MLRemake.Cursor.AnchorPoint = Vector2.new(1, 0.5)
-MLRemake.Cursor.BackgroundColor3 = Color3.fromRGB(150, 150, 150)
+MLRemake.Cursor.BackgroundColor3 = Color3.fromRGB(180, 180, 180)
 MLRemake.Cursor.BorderSizePixel = 0
 MLRemake.Cursor.Position = UDim2.new(0, 0, 0.5, 0)
 MLRemake.Cursor.Size = UDim2.new(0, 1, 1, -12)
@@ -917,11 +931,11 @@ MLRemake.UICorner_17.Parent = MLRemake.Label_2
 
 MLRemake.Menu_6.Name = "Menu"
 MLRemake.Menu_6.Parent = MLRemake.Label_2
-MLRemake.Menu_6.AnchorPoint = Vector2.new(1, 0)
+MLRemake.Menu_6.AnchorPoint = Vector2.new(1, 0.5)
 MLRemake.Menu_6.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Menu_6.BackgroundTransparency = 1.000
 MLRemake.Menu_6.BorderSizePixel = 0
-MLRemake.Menu_6.Position = UDim2.new(1, 0, 0, 5)
+MLRemake.Menu_6.Position = UDim2.new(1, 0, 0.5, 0)
 MLRemake.Menu_6.Size = UDim2.new(0, 20, 0, 20)
 MLRemake.Menu_6.Visible = false
 MLRemake.Menu_6.ZIndex = 3
@@ -1017,6 +1031,7 @@ MLRemake.Indicator_4.Name = "Indicator"
 MLRemake.Indicator_4.Parent = MLRemake.Toggle_3
 MLRemake.Indicator_4.AnchorPoint = Vector2.new(0, 0.5)
 MLRemake.Indicator_4.BackgroundColor3 = Color3.fromRGB(90, 90, 90)
+MLRemake.Indicator_4.BorderColor3 = Color3.fromRGB(27, 42, 53)
 MLRemake.Indicator_4.Position = UDim2.new(0, 0, 0.5, 0)
 MLRemake.Indicator_4.Size = UDim2.new(0, 16, 0, 16)
 MLRemake.Indicator_4.ZIndex = 2
@@ -1586,11 +1601,11 @@ MLRemake.Bind_old.TextXAlignment = Enum.TextXAlignment.Right
 
 MLRemake.Menu_9.Name = "Menu"
 MLRemake.Menu_9.Parent = MLRemake.Keybind
-MLRemake.Menu_9.AnchorPoint = Vector2.new(1, 0)
+MLRemake.Menu_9.AnchorPoint = Vector2.new(1, 0.5)
 MLRemake.Menu_9.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Menu_9.BackgroundTransparency = 1.000
 MLRemake.Menu_9.BorderSizePixel = 0
-MLRemake.Menu_9.Position = UDim2.new(1, 0, 0, 5)
+MLRemake.Menu_9.Position = UDim2.new(1, 0, 0.5, 0)
 MLRemake.Menu_9.Size = UDim2.new(0, 20, 0, 20)
 MLRemake.Menu_9.Visible = false
 MLRemake.Menu_9.ZIndex = 3
@@ -1958,6 +1973,33 @@ MLRemake.Label_11.TextSize = 14.000
 MLRemake.Label_11.TextTruncate = Enum.TextTruncate.AtEnd
 MLRemake.Label_11.TextXAlignment = Enum.TextXAlignment.Left
 
+MLRemake.Menu_13.Name = "Menu"
+MLRemake.Menu_13.Parent = MLRemake.ProgressBar
+MLRemake.Menu_13.AnchorPoint = Vector2.new(1, 0)
+MLRemake.Menu_13.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Menu_13.BackgroundTransparency = 1.000
+MLRemake.Menu_13.BorderSizePixel = 0
+MLRemake.Menu_13.Position = UDim2.new(1, 0, 0, 5)
+MLRemake.Menu_13.Size = UDim2.new(0, 20, 0, 20)
+MLRemake.Menu_13.Visible = false
+MLRemake.Menu_13.ZIndex = 3
+MLRemake.Menu_13.Image = "http://www.roblox.com/asset/?id=9147554930"
+
+MLRemake.Value_7.Name = "Value"
+MLRemake.Value_7.Parent = MLRemake.ProgressBar
+MLRemake.Value_7.AnchorPoint = Vector2.new(1, 0)
+MLRemake.Value_7.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Value_7.BackgroundTransparency = 1.000
+MLRemake.Value_7.BorderSizePixel = 0
+MLRemake.Value_7.Position = UDim2.new(1, 0, 0, 0)
+MLRemake.Value_7.Size = UDim2.new(0, 70, 0, 30)
+MLRemake.Value_7.ZIndex = 2
+MLRemake.Value_7.Font = Enum.Font.Gotham
+MLRemake.Value_7.Text = "0"
+MLRemake.Value_7.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Value_7.TextSize = 14.000
+MLRemake.Value_7.TextXAlignment = Enum.TextXAlignment.Right
+
 MLRemake.Bar_5.Name = "Bar"
 MLRemake.Bar_5.Parent = MLRemake.ProgressBar
 MLRemake.Bar_5.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
@@ -1985,33 +2027,6 @@ MLRemake.Indicator_10.Position = UDim2.new(0, 0, 0.5, 0)
 MLRemake.Indicator_10.Size = UDim2.new(0, 6, 0, 16)
 MLRemake.Indicator_10.Visible = false
 MLRemake.Indicator_10.ZIndex = 2
-
-MLRemake.Menu_13.Name = "Menu"
-MLRemake.Menu_13.Parent = MLRemake.ProgressBar
-MLRemake.Menu_13.AnchorPoint = Vector2.new(1, 0)
-MLRemake.Menu_13.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-MLRemake.Menu_13.BackgroundTransparency = 1.000
-MLRemake.Menu_13.BorderSizePixel = 0
-MLRemake.Menu_13.Position = UDim2.new(1, 0, 0, 5)
-MLRemake.Menu_13.Size = UDim2.new(0, 20, 0, 20)
-MLRemake.Menu_13.Visible = false
-MLRemake.Menu_13.ZIndex = 3
-MLRemake.Menu_13.Image = "http://www.roblox.com/asset/?id=9147554930"
-
-MLRemake.Value_7.Name = "Value"
-MLRemake.Value_7.Parent = MLRemake.ProgressBar
-MLRemake.Value_7.AnchorPoint = Vector2.new(1, 0)
-MLRemake.Value_7.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-MLRemake.Value_7.BackgroundTransparency = 1.000
-MLRemake.Value_7.BorderSizePixel = 0
-MLRemake.Value_7.Position = UDim2.new(1, 0, 0, 0)
-MLRemake.Value_7.Size = UDim2.new(0, 70, 0, 30)
-MLRemake.Value_7.ZIndex = 2
-MLRemake.Value_7.Font = Enum.Font.Gotham
-MLRemake.Value_7.Text = "0"
-MLRemake.Value_7.TextColor3 = Color3.fromRGB(255, 255, 255)
-MLRemake.Value_7.TextSize = 14.000
-MLRemake.Value_7.TextXAlignment = Enum.TextXAlignment.Right
 
 MLRemake.ColorPickerNew.Name = "ColorPickerNew"
 MLRemake.ColorPickerNew.Parent = MLRemake.Example_2
@@ -2367,6 +2382,7 @@ MLRemake.UICorner_68.Parent = MLRemake.Banner
 MLRemake.Label_13.Name = "Label"
 MLRemake.Label_13.Parent = MLRemake.Banner
 MLRemake.Label_13.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+MLRemake.Label_13.BackgroundTransparency = 1.000
 MLRemake.Label_13.BorderSizePixel = 0
 MLRemake.Label_13.Size = UDim2.new(1, 0, 1, 0)
 MLRemake.Label_13.ZIndex = 6
@@ -2428,6 +2444,11 @@ MLRemake.UIListLayout_7.FillDirection = Enum.FillDirection.Horizontal
 MLRemake.UIListLayout_7.HorizontalAlignment = Enum.HorizontalAlignment.Right
 MLRemake.UIListLayout_7.SortOrder = Enum.SortOrder.LayoutOrder
 MLRemake.UIListLayout_7.Padding = UDim.new(0, 5)
+
+MLRemake.UIStroke.Parent = MLRemake.Banner
+MLRemake.UIStroke.Color = Color3.fromRGB(30, 30, 30)
+MLRemake.UIStroke.Thickness = 2
+MLRemake.UIStroke.Transparency = 0.500
 
 MLRemake.BackgroundDim2.Name = "BackgroundDim2"
 MLRemake.BackgroundDim2.Parent = MLRemake.Main
@@ -2546,34 +2567,21 @@ MLRemake.Notifications.BackgroundTransparency = 1.000
 MLRemake.Notifications.BorderSizePixel = 0
 MLRemake.Notifications.Position = UDim2.new(1, -10, 1, -10)
 MLRemake.Notifications.Size = UDim2.new(0, 200, 1, -20)
-MLRemake.Notifications.Visible = false
 MLRemake.Notifications.ZIndex = 20
 
-MLRemake.UIListLayout_10.Parent = MLRemake.Notifications
-MLRemake.UIListLayout_10.SortOrder = Enum.SortOrder.LayoutOrder
-MLRemake.UIListLayout_10.VerticalAlignment = Enum.VerticalAlignment.Bottom
-MLRemake.UIListLayout_10.Padding = UDim.new(0, 10)
-
-MLRemake.Notif.Name = "Notif"
-MLRemake.Notif.Parent = MLRemake.Notifications
-MLRemake.Notif.AnchorPoint = Vector2.new(1, 1)
-MLRemake.Notif.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-MLRemake.Notif.BorderSizePixel = 0
-MLRemake.Notif.Position = UDim2.new(1, -10, 1, -10)
-MLRemake.Notif.Size = UDim2.new(0, 200, 0, 100)
-MLRemake.Notif.ZIndex = 20
+MLRemake.NotifCanvasGroup.Name = "NotifCanvasGroup"
+MLRemake.NotifCanvasGroup.Parent = MLRemake.Notifications
+MLRemake.NotifCanvasGroup.AnchorPoint = Vector2.new(1, 1)
+MLRemake.NotifCanvasGroup.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+MLRemake.NotifCanvasGroup.Size = UDim2.new(0, 200, 0, 100)
+MLRemake.NotifCanvasGroup.Visible = false
+MLRemake.NotifCanvasGroup.ZIndex = 20
 
 MLRemake.UICorner_74.CornerRadius = UDim.new(0, 4)
-MLRemake.UICorner_74.Parent = MLRemake.Notif
-
-MLRemake.UIPadding_35.Parent = MLRemake.Notif
-MLRemake.UIPadding_35.PaddingBottom = UDim.new(0, 8)
-MLRemake.UIPadding_35.PaddingLeft = UDim.new(0, 8)
-MLRemake.UIPadding_35.PaddingRight = UDim.new(0, 8)
-MLRemake.UIPadding_35.PaddingTop = UDim.new(0, 8)
+MLRemake.UICorner_74.Parent = MLRemake.NotifCanvasGroup
 
 MLRemake.Title_3.Name = "Title"
-MLRemake.Title_3.Parent = MLRemake.Notif
+MLRemake.Title_3.Parent = MLRemake.NotifCanvasGroup
 MLRemake.Title_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Title_3.BackgroundTransparency = 1.000
 MLRemake.Title_3.BorderSizePixel = 0
@@ -2588,7 +2596,7 @@ MLRemake.Title_3.TextXAlignment = Enum.TextXAlignment.Left
 MLRemake.Title_3.TextYAlignment = Enum.TextYAlignment.Top
 
 MLRemake.Label_14.Name = "Label"
-MLRemake.Label_14.Parent = MLRemake.Notif
+MLRemake.Label_14.Parent = MLRemake.NotifCanvasGroup
 MLRemake.Label_14.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 MLRemake.Label_14.BackgroundTransparency = 1.000
 MLRemake.Label_14.BorderSizePixel = 0
@@ -2603,7 +2611,7 @@ MLRemake.Label_14.TextXAlignment = Enum.TextXAlignment.Left
 MLRemake.Label_14.TextYAlignment = Enum.TextYAlignment.Top
 
 MLRemake.Line_4.Name = "Line"
-MLRemake.Line_4.Parent = MLRemake.Notif
+MLRemake.Line_4.Parent = MLRemake.NotifCanvasGroup
 MLRemake.Line_4.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
 MLRemake.Line_4.BorderSizePixel = 0
 MLRemake.Line_4.Position = UDim2.new(0, 0, 0, 20)
@@ -2611,7 +2619,7 @@ MLRemake.Line_4.Size = UDim2.new(1, 0, 0, 1)
 MLRemake.Line_4.ZIndex = 21
 
 MLRemake.Buttons_4.Name = "Buttons"
-MLRemake.Buttons_4.Parent = MLRemake.Notif
+MLRemake.Buttons_4.Parent = MLRemake.NotifCanvasGroup
 MLRemake.Buttons_4.Active = true
 MLRemake.Buttons_4.AnchorPoint = Vector2.new(0, 1)
 MLRemake.Buttons_4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -2624,10 +2632,10 @@ MLRemake.Buttons_4.CanvasSize = UDim2.new(0, 0, 0, 0)
 MLRemake.Buttons_4.ScrollingDirection = Enum.ScrollingDirection.X
 MLRemake.Buttons_4.ScrollBarThickness = 0
 
-MLRemake.UIListLayout_11.Parent = MLRemake.Buttons_4
-MLRemake.UIListLayout_11.FillDirection = Enum.FillDirection.Horizontal
-MLRemake.UIListLayout_11.HorizontalAlignment = Enum.HorizontalAlignment.Right
-MLRemake.UIListLayout_11.SortOrder = Enum.SortOrder.LayoutOrder
+MLRemake.UIListLayout_10.Parent = MLRemake.Buttons_4
+MLRemake.UIListLayout_10.FillDirection = Enum.FillDirection.Horizontal
+MLRemake.UIListLayout_10.HorizontalAlignment = Enum.HorizontalAlignment.Right
+MLRemake.UIListLayout_10.SortOrder = Enum.SortOrder.LayoutOrder
 
 MLRemake.Button_9.Name = "Button"
 MLRemake.Button_9.Parent = MLRemake.Buttons_4
@@ -2645,9 +2653,126 @@ MLRemake.Button_9.TextWrapped = true
 MLRemake.UICorner_75.CornerRadius = UDim.new(0, 4)
 MLRemake.UICorner_75.Parent = MLRemake.Button_9
 
-MLRemake.UIStroke.Parent = MLRemake.Notif
-MLRemake.UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-MLRemake.UIStroke.Color = Color3.fromRGB(150, 150, 150)
+MLRemake.UIStroke_2.Parent = MLRemake.NotifCanvasGroup
+MLRemake.UIStroke_2.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+MLRemake.UIStroke_2.Color = Color3.fromRGB(150, 150, 150)
+
+MLRemake.UIPadding_35.Parent = MLRemake.NotifCanvasGroup
+MLRemake.UIPadding_35.PaddingBottom = UDim.new(0, 8)
+MLRemake.UIPadding_35.PaddingLeft = UDim.new(0, 8)
+MLRemake.UIPadding_35.PaddingRight = UDim.new(0, 8)
+MLRemake.UIPadding_35.PaddingTop = UDim.new(0, 8)
+
+MLRemake.Notif.Name = "Notif"
+MLRemake.Notif.Parent = MLRemake.Notifications
+MLRemake.Notif.AnchorPoint = Vector2.new(1, 1)
+MLRemake.Notif.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+MLRemake.Notif.BorderSizePixel = 0
+MLRemake.Notif.Position = UDim2.new(1, -10, 1, -10)
+MLRemake.Notif.Size = UDim2.new(0, 200, 0, 100)
+MLRemake.Notif.Visible = false
+MLRemake.Notif.ZIndex = 20
+
+MLRemake.UICorner_76.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_76.Parent = MLRemake.Notif
+
+MLRemake.UIPadding_36.Parent = MLRemake.Notif
+MLRemake.UIPadding_36.PaddingBottom = UDim.new(0, 8)
+MLRemake.UIPadding_36.PaddingLeft = UDim.new(0, 8)
+MLRemake.UIPadding_36.PaddingRight = UDim.new(0, 8)
+MLRemake.UIPadding_36.PaddingTop = UDim.new(0, 8)
+
+MLRemake.Title_4.Name = "Title"
+MLRemake.Title_4.Parent = MLRemake.Notif
+MLRemake.Title_4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Title_4.BackgroundTransparency = 1.000
+MLRemake.Title_4.BorderSizePixel = 0
+MLRemake.Title_4.Size = UDim2.new(1, 0, 0, 16)
+MLRemake.Title_4.ZIndex = 21
+MLRemake.Title_4.Font = Enum.Font.GothamBold
+MLRemake.Title_4.Text = "MATERIAL LUA REMAKE"
+MLRemake.Title_4.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Title_4.TextSize = 12.000
+MLRemake.Title_4.TextTruncate = Enum.TextTruncate.AtEnd
+MLRemake.Title_4.TextXAlignment = Enum.TextXAlignment.Left
+MLRemake.Title_4.TextYAlignment = Enum.TextYAlignment.Top
+
+MLRemake.Label_15.Name = "Label"
+MLRemake.Label_15.Parent = MLRemake.Notif
+MLRemake.Label_15.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Label_15.BackgroundTransparency = 1.000
+MLRemake.Label_15.BorderSizePixel = 0
+MLRemake.Label_15.Position = UDim2.new(0, 0, 0, 18)
+MLRemake.Label_15.Size = UDim2.new(1, 0, 1, -46)
+MLRemake.Label_15.ZIndex = 21
+MLRemake.Label_15.Font = Enum.Font.Gotham
+MLRemake.Label_15.Text = "Notification"
+MLRemake.Label_15.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Label_15.TextSize = 12.000
+MLRemake.Label_15.TextTruncate = Enum.TextTruncate.AtEnd
+MLRemake.Label_15.TextWrapped = true
+MLRemake.Label_15.TextXAlignment = Enum.TextXAlignment.Left
+MLRemake.Label_15.TextYAlignment = Enum.TextYAlignment.Top
+
+MLRemake.Line_5.Name = "Line"
+MLRemake.Line_5.Parent = MLRemake.Notif
+MLRemake.Line_5.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Line_5.BackgroundTransparency = 0.800
+MLRemake.Line_5.BorderSizePixel = 0
+MLRemake.Line_5.Position = UDim2.new(0, 0, 0, 14)
+MLRemake.Line_5.Size = UDim2.new(1, 0, 0, 1)
+MLRemake.Line_5.ZIndex = 21
+
+MLRemake.Progress_7.Name = "Progress"
+MLRemake.Progress_7.Parent = MLRemake.Line_5
+MLRemake.Progress_7.AnchorPoint = Vector2.new(0, 0.5)
+MLRemake.Progress_7.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Progress_7.BackgroundTransparency = 0.300
+MLRemake.Progress_7.BorderSizePixel = 0
+MLRemake.Progress_7.Position = UDim2.new(0, 0, 0.5, 0)
+MLRemake.Progress_7.Size = UDim2.new(0.5, 0, 0, 1)
+MLRemake.Progress_7.ZIndex = 21
+
+MLRemake.Buttons_5.Name = "Buttons"
+MLRemake.Buttons_5.Parent = MLRemake.Notif
+MLRemake.Buttons_5.Active = true
+MLRemake.Buttons_5.AnchorPoint = Vector2.new(0, 1)
+MLRemake.Buttons_5.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Buttons_5.BackgroundTransparency = 1.000
+MLRemake.Buttons_5.BorderSizePixel = 0
+MLRemake.Buttons_5.Position = UDim2.new(0, 0, 1, 0)
+MLRemake.Buttons_5.Size = UDim2.new(1, 0, 0, 20)
+MLRemake.Buttons_5.ZIndex = 21
+MLRemake.Buttons_5.CanvasSize = UDim2.new(0, 0, 0, 0)
+MLRemake.Buttons_5.ScrollingDirection = Enum.ScrollingDirection.X
+MLRemake.Buttons_5.ScrollBarThickness = 0
+
+MLRemake.UIListLayout_11.Parent = MLRemake.Buttons_5
+MLRemake.UIListLayout_11.FillDirection = Enum.FillDirection.Horizontal
+MLRemake.UIListLayout_11.HorizontalAlignment = Enum.HorizontalAlignment.Right
+MLRemake.UIListLayout_11.SortOrder = Enum.SortOrder.LayoutOrder
+MLRemake.UIListLayout_11.Padding = UDim.new(0, 5)
+
+MLRemake.Button_10.Name = "Button"
+MLRemake.Button_10.Parent = MLRemake.Buttons_5
+MLRemake.Button_10.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+MLRemake.Button_10.Size = UDim2.new(0, 40, 0, 20)
+MLRemake.Button_10.Visible = false
+MLRemake.Button_10.ZIndex = 21
+MLRemake.Button_10.AutoButtonColor = false
+MLRemake.Button_10.Font = Enum.Font.GothamBold
+MLRemake.Button_10.Text = "OK"
+MLRemake.Button_10.TextColor3 = Color3.fromRGB(255, 255, 255)
+MLRemake.Button_10.TextSize = 14.000
+
+MLRemake.UICorner_77.CornerRadius = UDim.new(0, 4)
+MLRemake.UICorner_77.Parent = MLRemake.Button_10
+
+MLRemake.UIStroke_3.Parent = MLRemake.Notif
+MLRemake.UIStroke_3.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+MLRemake.UIStroke_3.Color = Color3.fromRGB(150, 150, 150)
+MLRemake.UIStroke_3.Thickness = 2
+MLRemake.UIStroke_3.Transparency = 0.350
 
 -- Module Scripts:
 
@@ -2721,11 +2846,15 @@ do -- MLRemake.MLRemake.UI
 				Title = "Material Lua Remake",
 				SubTitle = "",
 				Icon = nil,
-				ShowInNavigator = false,
-				Style = 1,
+				ShowInNavigator = true,
+				Style = 3,
 				SizeX = 400,
 				SizeY = 505,
-				NavigatorSize = 200
+				NavigatorSize = 200,
+				Theme = "Dark",
+				ThemeOverrides = {},
+				--SaveConfig = false,
+				--ConfigFolder = "Material Lua Remake"
 			},
 			Banner = {
 				Text = "Banner",
@@ -2734,7 +2863,7 @@ do -- MLRemake.MLRemake.UI
 				Font = Enum.Font.Gotham
 			},
 			Notify = {
-				Title = "Material Lua Remake",
+				Title = "MATERIAL LUA REMAKE",
 				Text = "Notification",
 				Duration = 3,
 				Callback = nofunc,
@@ -2910,9 +3039,9 @@ do -- MLRemake.MLRemake.UI
 			end
 			
 			local FOCUS_DURATION = 0.225
-			function ui.Focus(a, p)
+			function ui.Focus(a, p, topbar)
 				a.Focused:Connect(function()
-					local new = focus:Clone()
+					local new = topbar.Focus:Clone()
 					new.Visible = true
 					new.Parent = p or a
 					
@@ -2993,7 +3122,7 @@ do -- MLRemake.MLRemake.UI
 				taskdelay(0.1, function()
 					a:TweenPosition(UDim2new(0.5, 0, 1, -10), "Out", "Sine", 0.35)
 					ui.Tween(a, {BackgroundTransparency = 0}, BANNER_TWEENINFO)
-					ui.Tween(a.Label, {BackgroundTransparency = 0, TextTransparency = 0}, BANNER_TWEENINFO)
+					--ui.Tween(a.Label, {BackgroundTransparency = 0, TextTransparency = 0}, BANNER_TWEENINFO)
 				end)
 			end
 			local function hide(a)
@@ -3031,7 +3160,7 @@ do -- MLRemake.MLRemake.UI
 					ui.Dim2(false, LAST_UI)
 				end
 				
-				local new = banner:Clone()
+				local new = p.Banner:Clone()
 				new.Name = "Banner"
 				new.Label.Text = t.Text
 				new.Label.RichText = true
@@ -3069,6 +3198,7 @@ do -- MLRemake.MLRemake.UI
 		
 					ui.Ripple(new2)
 				end
+				new.Buttons.CanvasSize = UDim2new(0, new.Buttons.UIListLayout.AbsoluteContentSize.X, 0, 0)
 		
 				if style == 4 then
 					new.AnchorPoint = Vector2new(0, 1)
@@ -3077,7 +3207,7 @@ do -- MLRemake.MLRemake.UI
 					new.Position = UDim2new(0.5, 0, 1, 0)
 				end
 				new.BackgroundTransparency = BANNER_TRANSPARENCY
-				new.Label.BackgroundTransparency = BANNER_TRANSPARENCY
+				--new.Label.BackgroundTransparency = BANNER_TRANSPARENCY
 				new.Label.TextTransparency = BANNER_TRANSPARENCY
 				new.Label.Size = UDim2new(1, 0, 10, 0)
 				local bound = new.Label.TextBounds.Y
@@ -3091,48 +3221,95 @@ do -- MLRemake.MLRemake.UI
 						new:TweenPosition(UDim2new(0.5, 0, 1, -10), "Out", "Sine", 0.35)
 					end
 					ui.Tween(new, {BackgroundTransparency = 0}, BANNER_TWEENINFO)
-					ui.Tween(new.Label, {BackgroundTransparency = 0, TextTransparency = 0}, BANNER_TWEENINFO)
+					--ui.Tween(new.Label, {BackgroundTransparency = 0, TextTransparency = 0}, BANNER_TWEENINFO)
+					ui.Tween(new.Label, {TextTransparency = 0}, BANNER_TWEENINFO)
 				end)
 				new.Visible = true
 			end
 		end
 		
-		do -- Notify incomplete
+		do -- Notify
 			local NOTIF_TWEENINFO = TweenInfonew(0.35, sine, out)
+			local NOTIF_SPEED = 0.35
 			local NOTIF_VISIBLE = false
 			local NOTIFS = {}
-			local NOTIF_COUNT = 0
+			local PADDING = 10
 			
-			local function show(a)
-				if NOTIF_COUNT > 0 then
-					for _,v in next, NOTIFS do
-						v:TweenPosition(UDim2new())
+			function ui.StackNotifications() -- Makes sure notifications always stay stacked on top of each other
+				if #NOTIFS > -1 then
+					for i,v in next, NOTIFS do
+						local y = v.AbsoluteSize.Y
+						for i2 = i, #NOTIFS, 1 do
+							y -= NOTIFS[i2].AbsoluteSize.Y + PADDING
+						end
+						v:TweenPosition(UDim2new(1, -PADDING, 1, y), out, sine, NOTIF_SPEED, true)
 					end
-				else
-					
 				end
 			end
-			local function hide(a)
-				
-			end
-			function ui.Notify(t, p)
+			function ui.Notify(t, p, _, _, tt)
 				if typeof(t) == "string" then
 					t = {Text = t}
 				end
-				ApplyDefaultProps("Banner", t)
-		
-				local new = notification:Clone()
+				ApplyDefaultProps("Notify", t)
+				
+				local INTERACTED = false
+				local new = p.Notif:Clone()
+				new.Visible = false
 				new.Name = "Notification"
 				new.Title.Text = t.Title
 				new.Label.Text = t.Text
 				new.Parent = p or main
+				
+				if not new.Label.TextFits then -- resize to fit more text
+					new.Label.Size = UDim2new(1, 0, 10, 0)
+					local size = GetTextSize(new.Label, t.Text)
+					if size.Y > 38 then
+						new.Size = UDim2new(0, 200, 0, 100 + size.Y - 38)
+					end
+				end
+				
+				for _,v in next, t.Options do
+					local newb = new.Buttons.Button:Clone()
+					newb.Parent = new.Buttons
+					newb.Visible = true
+					newb.Text = v
+					newb.AutoButtonColor = false
+					newb.Size = UDim2new(0, newb.TextBounds.X + 20, 0, 20)
+					newb.Activated:Connect(function()
+						INTERACTED = true
+						taskwait()
+						t.Callback(v)
+					end)
+				end
+				new.Buttons.CanvasSize = UDim2new(0, new.Buttons.UIListLayout.AbsoluteContentSize.X, 0, 0)
+				
+				task.spawn(function()
+					table.insert(NOTIFS, new)
+					ui.StackNotifications()
+					new.Position = UDim2new(1, 220, 1, new.AbsoluteSize.Y)
+					new.Visible = true
+					new:TweenPosition(UDim2new(1, -PADDING, 1, -PADDING), out, sine, NOTIF_SPEED, true)
+					
+					local timer = tick()
+					new.Line.Progress.Size = UDim2new(0, 0, 0, 1)
+					new.Line.Progress:TweenSize(UDim2new(1, 0, 0, 1), out, "Linear", t.Duration)
+					repeat
+						taskwait()
+					until (tick() - timer) >= t.Duration or INTERACTED
+					table.remove(NOTIFS, table.find(NOTIFS, new))
+					ui.StackNotifications()
+					ui.Tween(new.Line.Progress, {BackgroundTransparency = 1}, TweenInfonew(0.15, sine, out))
+					new:TweenPosition(UDim2new(1, 220, 1, new.Position.Y.Offset), out, sine, NOTIF_SPEED, true)
+					taskwait(NOTIF_SPEED)
+					new:Destroy()
+				end)
 			end
 		end
 		
 		do -- UI Core
 			function ui.UpdateCanvasSize(page)
 				task.spawn(function()
-					for _ = 1,30 do -- repeat to update while tweening
+					for _ = 1,45 do -- repeat to update while tweening
 						page.CanvasSize = UDim2new(0, 0, 0, page.UIListLayout.AbsoluteContentSize.Y)
 						taskwait(0.01)
 					end
@@ -3216,7 +3393,9 @@ do -- MLRemake.MLRemake.UI
 				local gethui = gethui or get_hidden_ui or get_hidden_gui or hiddenUI or nil
 				local container = (gethui and gethui()) or game:GetService("CoreGui")
 				if getgenv then
-					if syn then syn.protect_gui(new) end
+					if syn and syn.protect_gui then
+						syn.protect_gui(new)
+					end
 					new.Parent = container
 					if OldInstance ~= nil then
 						OldInstance:Destroy()
@@ -3227,7 +3406,7 @@ do -- MLRemake.MLRemake.UI
 				end
 				
 				local hookmetamethod = hookmetamethod or (hookfunction and getrawmetatable and newcclosure and function(obj, method, f)
-					return hookfunction(getrawmetatable(obj)[method], newcclosure(f))
+					return hookfunction(getrawmetatable(obj)[method], newcclosure(f)) -- makeshift hookmetamethod
 				end) or nil
 				if hookmetamethod then
 					local old;old = hookmetamethod(game, "__namecall", function(...)
@@ -3262,71 +3441,515 @@ do -- MLRemake.MLRemake.UI
 				local dim1 = main.BackgroundDim
 				local dim2 = main.BackgroundDim2
 				local banner = main.Banner
-				local notification = topbar.Parent.Notifications.Notif
+				local notifications = topbar.Parent.Notifications
 				
-				local Theme = {
-					MainFrame = main,
+				do-- Themes
+					local Themes = {
+						dark = {
+							MainFrame = fromRGB(60, 60, 60),
 		
-					Minimise = minimize,
-					MinimiseAccent = nil,
-					Maximise = nil,
-					MaximiseAccent = nil,
+							Minimise = fromRGB(250, 170, 75), -- color when the ui is closed
+							Maximise = fromRGB(150, 250, 170), -- color when the ui is opened
 		
-					NavBar = {{navigator, "BackgroundColor3"}},
-					NavBarAccent = nil,
-					NavBarInvert = nil,
+							NavBar = fromRGB(55, 55, 55),
+							NavBarAccent = fromRGB(75, 75, 75), -- dividers / tab color (styles 1 + 2)
+							NavBarDim = fromRGB(0, 0, 0), -- background dim color
+							NavBarText = fromRGB(255, 255, 255), -- text
 		
-					TitleBar = topbar,
-					TitleBarAccent = {{topbar.Title, "BackgroundColor3"}},
+							TitleBar = fromRGB(50, 50, 50),
+							TitleBarText = fromRGB(255, 255, 255), -- text
 		
-					Overlay = nil,
+							Overlay = fromRGB(60, 60, 60), -- the overlay that you see when the ui is loading
+							Focus = fromRGB(255, 255, 255), -- the line under textboxes when u select them
 		
-					Banner = main.Banner,
-					BannerAccent = {main.BackgroundDim2, main.Banner.Label},
+							Banner = fromRGB(70, 70, 70),
+							BannerAccent = fromRGB(30, 30, 30), -- outline
+							BannerAccent2 = fromRGB(60, 60, 60), -- buttons
+							BannerDim = fromRGB(0, 0, 0), -- background dim color
+							BannerText = fromRGB(255, 255, 255), -- text
+							
+							Notify = fromRGB(70, 70, 70),
+							NotifyAccent = fromRGB(60, 60, 60), -- buttons
+							NotifyAccent2 = fromRGB(255, 255, 255), -- progress indicator
+							NotifyText = fromRGB(255, 255, 255), -- text
 		
-					Content = nil,
+							Button = fromRGB(50, 50, 50),
+							ButtonText = fromRGB(255, 255, 255), -- text
+							ButtonMenu = fromRGB(255, 255, 255), -- menu button
 		
-					Button = ex.Button,
-					ButtonAccent = nil,
+							Toggle = fromRGB(50, 50, 50),
+							ToggleAccent = fromRGB(150, 150, 150), -- actual indicator
+							ToggleAccent2 = fromRGB(70, 70, 70), -- indicator background
+							ToggleText = fromRGB(255, 255, 255), -- text
+							ToggleMenu = fromRGB(255, 255, 255), -- menu button
 		
-					ChipSet = Color3.fromRGB(219, 68, 103),
-					ChipSetAccent = Color3.fromRGB(255,255,255),
+							Dropdown = fromRGB(50, 50, 50),
+							DropdownAccent = fromRGB(70, 70, 70), -- options
+							DropdownBackdrop = fromRGB(55, 55, 55), -- backdrop
+							DropdownText = fromRGB(255, 255, 255), -- text
+							DropdownMenu = fromRGB(255, 255, 255), -- menu button
 		
-					DataTable = Color3.fromRGB(219, 68, 103),
-					DataTableAccent = Color3.fromRGB(255,255,255),
+							TextBox = fromRGB(50, 50, 50),
+							TextBoxAccent = fromRGB(180, 180, 180), -- cursor
+							TextBoxText = fromRGB(255, 255, 255), -- text
+							TextBoxText2 = fromRGB(178, 178, 178), -- placeholder text
+							TextBoxMenu = fromRGB(255, 255, 255), -- menu button
 		
-					Slider = Color3.fromRGB(255,255,255),
-					SliderAccent = Color3.fromRGB(219, 68, 103),
+							Label = fromRGB(50, 50, 50),
+							LabelText = fromRGB(255, 255, 255),
+							LabelMenu = fromRGB(255, 255, 255), -- menu button
 		
-					Toggle = Color3.fromRGB(219, 68, 103),
-					ToggleAccent = Color3.fromRGB(255,255,255),
+							Slider = fromRGB(50, 50, 50),
+							SliderAccent = fromRGB(90, 90, 90), -- slider indicator
+							SliderAccent2 = fromRGB(70, 70, 70), -- bar and value field
+							SliderAccent3 = fromRGB(150, 150, 150), -- toggle indicator
+							SliderAccent4 = fromRGB(70, 70, 70), -- toggle background
+							SliderText = fromRGB(255, 255, 255), -- text
+							SliderText2 = fromRGB(255, 255, 255), -- value field text
+							SliderText3 = fromRGB(178, 178, 178), -- value field placeholder text
+							SliderMenu = fromRGB(255, 255, 255), -- menu button
 		
-					Dropdown = Color3.fromRGB(255,255,255),
-					DropdownAccent = Color3.fromRGB(219, 68, 103),
+							ColorPicker = fromRGB(50, 50, 50),
+							ColorPickerAccent = fromRGB(70, 70, 70), -- hex, rgb, rainbow new
+							ColorPickerAccent2 = fromRGB(90, 90, 90), -- hue, saturation, value labels old
+							ColorPickerAccent3 = fromRGB(255, 255, 255), -- value indicator (arrow) new
+							ColorPickerBackdrop = fromRGB(55, 55, 55), -- backdrop
+							ColorPickerText = fromRGB(255, 255, 255), -- text
+							ColorPickerText2 = fromRGB(178, 178, 178), -- placeholder text
+							ColorPickerMenu = fromRGB(255, 255, 255), -- menu button
 		
-					ColorPicker = Color3.fromRGB(255,255,255),
-					ColorPickerAccent = Color3.fromRGB(219, 68, 103),
+							Keybind = fromRGB(50, 50, 50),
+							KeybindAccent = fromRGB(150, 150, 150), -- bind darker
+							KeybindAccent2 = fromRGB(230, 230, 230), -- bind lighter
+							KeybindText = fromRGB(255, 255, 255), -- text
+							KeybindText2 = fromRGB(0, 0, 0), -- bind text
+							KeybindMenu = fromRGB(255, 255, 255), -- menu button
 		
-					TextField = Color3.fromRGB(175,175,175),
-					TextFieldAccent = Color3.fromRGB(255,255,255)
-				}
-				
-				local function ColorOverride(t) -- not finished
-					for _,info in next, t do
-						if info ~= nil then
-							for i,v in next, info do
-								-- a
-							end
+							ChipSet = fromRGB(50, 50, 50),
+							ChipSetAccent = fromRGB(70, 70, 70),
+							ChipSetBackdrop = fromRGB(55, 55, 55), -- backdrop
+							ChipSetCheck = fromRGB(255, 255, 255), -- check boxes
+							ChipSetText = fromRGB(255, 255, 255), -- text
+							ChipSetMenu = fromRGB(255, 255, 255), -- menu button
+							
+							Table = fromRGB(50, 50, 50),
+							TableAccent = fromRGB(70, 70, 70), -- options
+							TableAccent2 = fromRGB(100, 100, 100), -- dividers
+							TableBackdrop = fromRGB(55, 55, 55), -- backdrop
+							TableText = fromRGB(255, 255, 255), -- text
+							TableMenu = fromRGB(255, 255, 255), -- menu button
+							
+							ProgressBar = fromRGB(50, 50, 50),
+							ProgressBarAccent = fromRGB(255, 255, 255), -- progress indicator
+							ProgressBarAccent2 = fromRGB(90, 90, 90), -- bar
+							ProgressBarText = fromRGB(255, 255, 255), -- text
+							ProgressBarMenu = fromRGB(255, 255, 255), -- menu button
+						},
+						light = { -- this theme is actually so atrocious
+							MainFrame = fromRGB(255, 255, 255),
+		
+							Minimise = fromRGB(250, 170, 75), -- color when the ui is closed
+							Maximise = fromRGB(150, 250, 170), -- color when the ui is opened
+		
+							NavBar = fromRGB(255, 255, 255),
+							NavBarAccent = fromRGB(150, 150, 150), -- dividers / tab color (styles 1 + 2)
+							NavBarDim = fromRGB(0, 0, 0), -- background dim color
+							NavBarText = fromRGB(124, 37, 255), -- text
+		
+							TitleBar = fromRGB(124, 37, 255),
+							TitleBarText = fromRGB(255, 255, 255), -- text
+		
+							Overlay = fromRGB(255, 255, 255), -- the overlay that you see when the ui is loading
+							Focus = fromRGB(124, 37, 255), -- the line under textboxes when u select them
+		
+							Banner = fromRGB(198, 151, 255),
+							BannerAccent = fromRGB(124, 37, 255), -- outline
+							BannerAccent2 = fromRGB(124, 37, 255), -- buttons
+							BannerDim = fromRGB(0, 0, 0), -- background dim color
+							BannerText = fromRGB(255, 255, 255), -- text
+		
+							Notify = fromRGB(198, 151, 255),
+							NotifyAccent = fromRGB(124, 37, 255), -- buttons
+							NotifyAccent2 = fromRGB(124, 37, 255), -- progress indicator
+							NotifyText = fromRGB(255, 255, 255), -- text
+		
+							Button = fromRGB(124, 37, 255),
+							ButtonText = fromRGB(255, 255, 255), -- text
+							ButtonMenu = fromRGB(255, 255, 255), -- menu button
+		
+							Toggle = fromRGB(124, 37, 255),
+							ToggleAccent = fromRGB(255, 255, 255), -- actual indicator
+							ToggleAccent2 = fromRGB(211, 172, 255), -- indicator background
+							ToggleText = fromRGB(255, 255, 255), -- text
+							ToggleMenu = fromRGB(255, 255, 255), -- menu button
+		
+							Dropdown = fromRGB(124, 37, 255),
+							DropdownAccent = fromRGB(211, 172, 255), -- options
+							DropdownBackdrop = fromRGB(198, 151, 255), -- backdrop
+							DropdownText = fromRGB(255, 255, 255), -- text
+							DropdownMenu = fromRGB(255, 255, 255), -- menu button
+		
+							TextBox = fromRGB(211, 172, 255),
+							TextBoxAccent = fromRGB(124, 37, 255), -- cursor
+							TextBoxText = fromRGB(255, 255, 255), -- text
+							TextBoxText2 = fromRGB(186, 129, 255), -- placeholder text
+							TextBoxMenu = fromRGB(255, 255, 255), -- menu button
+		
+							Label = fromRGB(124, 37, 255),
+							LabelText = fromRGB(124, 37, 255),
+							LabelMenu = fromRGB(255, 255, 255), -- menu button
+		
+							Slider = fromRGB(124, 37, 255),
+							SliderAccent = fromRGB(255, 255, 255), -- slider indicator
+							SliderAccent2 = fromRGB(211, 172, 255), -- bar and value field
+							SliderAccent3 = fromRGB(255, 255, 255), -- toggle indicator
+							SliderAccent4 = fromRGB(211, 172, 255), -- toggle background
+							SliderText = fromRGB(255, 255, 255), -- text
+							SliderText2 = fromRGB(255, 255, 255), -- value field text
+							SliderText3 = fromRGB(178, 178, 178), -- value field placeholder text
+							SliderMenu = fromRGB(255, 255, 255), -- menu button
+		
+							ColorPicker = fromRGB(124, 37, 255),
+							ColorPickerAccent = fromRGB(211, 172, 255), -- hex, rgb, rainbow
+							ColorPickerAccent2 = fromRGB(220, 190, 255), -- hue, saturation, value labels old
+							ColorPickerAccent3 = fromRGB(124, 37, 255), -- value indicator (arrow) new
+							ColorPickerBackdrop = fromRGB(198, 151, 255), -- backdrop
+							ColorPickerText = fromRGB(255, 255, 255), -- text
+							ColorPickerText2 = fromRGB(185, 123, 255), -- placeholder text
+							ColorPickerMenu = fromRGB(255, 255, 255), -- menu button
+		
+							Keybind = fromRGB(124, 37, 255),
+							KeybindAccent = fromRGB(198, 151, 255), -- bind darker
+							KeybindAccent2 = fromRGB(211, 172, 255), -- bind lighter
+							KeybindText = fromRGB(255, 255, 255), -- text
+							KeybindText2 = fromRGB(255, 255, 255), -- bind text
+							KeybindMenu = fromRGB(255, 255, 255), -- menu button
+		
+							ChipSet = fromRGB(124, 37, 255),
+							ChipSetAccent = fromRGB(211, 172, 255), -- options
+							ChipSetBackdrop = fromRGB(198, 151, 255), -- backdrop
+							ChipSetCheck = fromRGB(255, 255, 255), -- check boxes
+							ChipSetText = fromRGB(255, 255, 255), -- text
+							ChipSetMenu = fromRGB(255, 255, 255), -- menu button
+							
+							Table = fromRGB(124, 37, 255),
+							TableAccent = fromRGB(211, 172, 255), -- options
+							TableAccent2 = fromRGB(185, 123, 255), -- dividers
+							TableBackdrop = fromRGB(198, 151, 255), -- backdrop
+							TableText = fromRGB(255, 255, 255), -- text
+							TableMenu = fromRGB(255, 255, 255), -- menu button
+		
+							ProgressBar = fromRGB(124, 37, 255),
+							ProgressBarAccent = fromRGB(255, 255, 255), -- progress indicator
+							ProgressBarAccent2 = fromRGB(211, 172, 255), -- bar
+							ProgressBarText = fromRGB(255, 255, 255), -- text
+							ProgressBarMenu = fromRGB(255, 255, 255), -- menu button
+						},
+						mocha = {
+							MainFrame = fromRGB(230, 230, 230),
+		
+							Minimise = fromRGB(189, 183, 177), -- color when the ui is closed
+							Maximise = fromRGB(219, 210, 202), -- color when the ui is opened
+		
+							NavBar = fromRGB(255, 255, 255),
+							NavBarAccent = fromRGB(176, 148, 125), -- dividers / tab color (styles 1 + 2)
+							NavBarDim = fromRGB(176, 148, 125), -- background dim color
+							NavBarText = fromRGB(176, 148, 125), -- text
+		
+							TitleBar = fromRGB(176, 148, 125),
+							TitleBarText = fromRGB(255, 255, 255), -- text
+		
+							Overlay = fromRGB(230, 230, 230), -- the overlay that you see when the ui is loading
+							Focus = fromRGB(176, 148, 125), -- the line under textboxes when u select them
+		
+							Banner = fromRGB(230, 230, 230),
+							BannerAccent = fromRGB(176, 148, 125), -- outline
+							BannerAccent2 = fromRGB(222, 210, 200), -- buttons
+							BannerDim = fromRGB(176, 148, 125), -- background dim color
+							BannerText = fromRGB(176, 148, 125), -- text
+		
+							Notify = fromRGB(230, 230, 230),
+							NotifyAccent = fromRGB(222, 210, 200), -- buttons
+							NotifyAccent2 = fromRGB(176, 148, 125), -- progress indicator
+							NotifyText = fromRGB(176, 148, 125), -- text
+		
+							Button = fromRGB(176, 148, 125),
+							ButtonText = fromRGB(230, 230, 230), -- text
+							ButtonMenu = fromRGB(230, 230, 230), -- menu button
+		
+							Toggle = fromRGB(176, 148, 125),
+							ToggleAccent = fromRGB(222, 210, 200), -- actual indicator
+							ToggleAccent2 = fromRGB(189, 183, 177), -- indicator background
+							ToggleText = fromRGB(230, 230, 230), -- text
+							ToggleMenu = fromRGB(230, 230, 230), -- menu button
+		
+							Dropdown = fromRGB(176, 148, 125),
+							DropdownAccent = fromRGB(176, 148, 125), -- options
+							DropdownBackdrop = fromRGB(222, 210, 200), -- backdrop
+							DropdownText = fromRGB(230, 230, 230), -- text
+							DropdownMenu = fromRGB(230, 230, 230), -- menu button
+		
+							TextBox = fromRGB(222, 210, 200),
+							TextBoxAccent = fromRGB(180, 180, 180), -- cursor
+							TextBoxText = fromRGB(176, 148, 125), -- text
+							TextBoxText2 = fromRGB(176, 148, 125), -- placeholder text
+							TextBoxMenu = fromRGB(176, 148, 125), -- menu button
+		
+							Label = fromRGB(176, 148, 125),
+							LabelText = fromRGB(230, 230, 230),
+							LabelMenu = fromRGB(230, 230, 230), -- menu button
+		
+							Slider = fromRGB(176, 148, 125),
+							SliderAccent = fromRGB(222, 210, 200), -- slider indicator
+							SliderAccent2 = fromRGB(189, 183, 177), -- bar and value field
+							SliderAccent3 = fromRGB(222, 210, 200), -- toggle indicator
+							SliderAccent4 = fromRGB(189, 183, 177), -- toggle background
+							SliderText = fromRGB(230, 230, 230), -- text
+							SliderText2 = fromRGB(176, 148, 125), -- value field text
+							SliderText3 = fromRGB(176, 148, 125), -- value field placeholder text
+							SliderMenu = fromRGB(230, 230, 230), -- menu button
+		
+							ColorPicker = fromRGB(176, 148, 125),
+							ColorPickerAccent = fromRGB(176, 148, 125), -- hex, rgb, rainbow new
+							ColorPickerAccent2 = fromRGB(189, 183, 177), -- hue, saturation, value labels old
+							ColorPickerAccent3 = fromRGB(176, 148, 125), -- value indicator (arrow) new
+							ColorPickerBackdrop = fromRGB(222, 210, 200), -- backdrop
+							ColorPickerText = fromRGB(230, 230, 230), -- text
+							ColorPickerText2 = fromRGB(230, 230, 230), -- placeholder text
+							ColorPickerMenu = fromRGB(230, 230, 230), -- menu button
+		
+							Keybind = fromRGB(176, 148, 125),
+							KeybindAccent = fromRGB(189, 183, 177), -- bind darker
+							KeybindAccent2 = fromRGB(222, 210, 200), -- bind lighter
+							KeybindText = fromRGB(230, 230, 230), -- text
+							KeybindText2 = fromRGB(176, 148, 125), -- bind text
+							KeybindMenu = fromRGB(230, 230, 230), -- menu button
+		
+							ChipSet = fromRGB(176, 148, 125),
+							ChipSetAccent = fromRGB(176, 148, 125),
+							ChipSetBackdrop = fromRGB(222, 210, 200), -- backdrop
+							ChipSetCheck = fromRGB(222, 210, 200), -- check boxes
+							ChipSetText = fromRGB(230, 230, 230), -- text
+							ChipSetMenu = fromRGB(230, 230, 230), -- menu button
+		
+							Table = fromRGB(176, 148, 125),
+							TableAccent = fromRGB(176, 148, 125), -- options
+							TableAccent2 = fromRGB(222, 210, 200), -- dividers
+							TableBackdrop = fromRGB(222, 210, 200), -- backdrop
+							TableText = fromRGB(230, 230, 230), -- text
+							TableMenu = fromRGB(230, 230, 230), -- menu button
+		
+							ProgressBar = fromRGB(176, 148, 125),
+							ProgressBarAccent = fromRGB(222, 210, 200), -- progress indicator
+							ProgressBarAccent2 = fromRGB(189, 183, 177), -- bar
+							ProgressBarText = fromRGB(230, 230, 230), -- text
+							ProgressBarMenu = fromRGB(230, 230, 230), -- menu button
+						},
+						--aqua = {},
+						--jester = {}
+					}
+					
+					local theme = Themes[t.Theme:lower()] or Themes.dark
+					local tt = table.clone(theme)-- create a copy of the theme so that we can apply overrides without applying them up the original theme table
+					for i,v in next, t.ThemeOverrides do
+						if tt[i] ~= nil then
+							tt[i] = v
 						end
 					end
+					t.ThemeData = tt
+					
+					main.BackgroundColor3 = tt.MainFrame
+					topbar.FillMain.BackgroundColor3 = tt.MainFrame
+					topbar.Minimize.BackgroundColor3 = tt.Maximise
+					
+					-- STYLE 1 + 2
+					pagetabs.Example.BackgroundColor3 = tt.NavBarAccent
+					pagetabs.Example.TextColor3 = tt.NavBarText
+					if t.Style == 2 then
+						pagetabs.Example.BackgroundTransparency = 0.5
+					end
+					
+					-- STYLE 3 + 4
+					navigator.BackgroundColor3 = tt.NavBar
+					navigator.Fill.BackgroundColor3 = tt.NavBar
+					navigator.Line.BackgroundColor3 = tt.NavBarAccent
+					navigator.Buttons.Example.Line.BackgroundColor3 = tt.NavBarAccent
+					dim1.BackgroundColor3 = tt.NavBarDim
+					navigator.Title.TextColor3 = tt.NavBarText
+					navigator.SubTitle.TextColor3 = tt.NavBarText
+					navigator.Buttons.Example.TextColor3 = tt.NavBarText
+					
+					topbar.BackgroundColor3 = tt.TitleBar
+					topbar.FillTopbar.BackgroundColor3 = tt.TitleBar
+					topbar.Title.TextColor3 = tt.TitleBarText
+					topbar.SubTitle.TextColor3 = tt.TitleBarText
+					topbar.Overlay.BackgroundColor3 = tt.Overlay
+					topbar.Focus.BackgroundColor3 = tt.Focus
+					
+					banner.BackgroundColor3 = tt.Banner
+					banner.Label.BackgroundColor3 = tt.BannerAccent
+					banner.UIStroke.Color = tt.BannerAccent
+					banner.Buttons.Example.BackgroundColor3 = tt.BannerAccent2
+					dim2.BackgroundColor3 = tt.BannerDim
+					banner.Label.TextColor3 = tt.BannerText
+					banner.Buttons.Example.TextColor3 = tt.BannerText
+					
+					local notif = topbar.Parent.Notifications.Notif
+					notif.BackgroundColor3 = tt.Notify
+					notif.Buttons.Button.BackgroundColor3 = tt.NotifyAccent
+					notif.Line.BackgroundColor3 = tt.NotifyAccent2
+					notif.Line.Progress.BackgroundColor3 = tt.NotifyAccent2
+					notif.UIStroke.Color = tt.NotifyAccent2
+					notif.Title.TextColor3 = tt.NotifyText
+					notif.Label.TextColor3 = tt.NotifyText
+					notif.Buttons.Button.TextColor3 = tt.NotifyText
+					
+					local button = ex.Button
+					button.BackgroundColor3 = tt.Button
+					button.TextColor3 = tt.ButtonText
+					button.Menu.ImageColor3 = tt.ButtonMenu
+					
+					local toggle = ex.Toggle
+					toggle.BackgroundColor3 = tt.Toggle
+					toggle.Toggle.Indicator.BackgroundColor3 = tt.ToggleAccent
+					toggle.Toggle.BackgroundColor3 = tt.ToggleAccent2
+					toggle.TextColor3 = tt.ToggleText
+					toggle.Menu.ImageColor3 = tt.ToggleMenu
+					
+					local dropdown = ex.Dropdown
+					dropdown.BackgroundColor3 = tt.Dropdown
+					dropdown.Dropdown.Option.BackgroundColor3 = tt.DropdownAccent
+					dropdown.Dropdown.BackgroundColor3 = tt.DropdownBackdrop
+					dropdown.Fill.BackgroundColor3 = tt.DropdownBackdrop
+					dropdown.Label.TextColor3 = tt.DropdownText
+					dropdown.Option.TextColor3 = tt.DropdownText
+					dropdown.Dropdown.Option.TextColor3 = tt.DropdownText
+					dropdown.Indicator.BackgroundColor3 = tt.Minimise
+					dropdown.Menu.ImageColor3 = tt.DropdownMenu
+					
+					local textbox = ex.TextBox
+					textbox.BackgroundColor3 = tt.TextBox
+					textbox.Cursor.BackgroundColor3 = tt.TextBoxAccent
+					textbox.SelectionBox.BackgroundColor3 = tt.TextBoxAccent
+					textbox.TextColor3 = tt.TextBoxText
+					textbox.Hidden.TextColor3 = tt.TextBoxText
+					textbox.PlaceholderColor3 = tt.TextBoxText2
+					textbox.Menu.ImageColor3 = tt.TextBoxMenu
+					
+					local label = ex.Label
+					label.BackgroundColor3 = tt.Label
+					label.TextColor3 = tt.LabelText
+					label.Menu.ImageColor3 = tt.LabelMenu
+					
+					local slider = ex.Slider
+					slider.BackgroundColor3 = tt.Slider
+					slider.Bar.Indicator.BackgroundColor3 = tt.SliderAccent
+					slider.Bar.Progress.BackgroundColor3 = tt.SliderAccent
+					slider.Bar.BackgroundColor3 = tt.SliderAccent2
+					slider.Input.BackgroundColor3 = tt.SliderAccent2
+					slider.Toggle.Indicator.BackgroundColor3 = tt.SliderAccent3
+					slider.Toggle.BackgroundColor3 = tt.SliderAccent4
+					slider.Label.TextColor3 = tt.SliderText
+					slider.Value.TextColor3 = tt.SliderText
+					slider.Input.TextColor3 = tt.SliderText2
+					slider.Input.PlaceholderColor3 = tt.SliderText3
+					slider.Menu.ImageColor3 = tt.SliderMenu
+					
+					local colorpicker = ex.ColorPicker
+					local picker = colorpicker.Picker
+					local custom = picker.Custom
+					colorpicker.BackgroundColor3 = tt.ColorPicker
+					picker.Hue.Label.BackgroundColor3 = tt.ColorPickerAccent2
+					picker.Saturation.Label.BackgroundColor3 = tt.ColorPickerAccent2
+					picker.Value.Label.BackgroundColor3 = tt.ColorPickerAccent2
+					picker.Hue.Value.BackgroundColor3 = tt.ColorPickerAccent2
+					picker.Saturation.Value.BackgroundColor3 = tt.ColorPickerAccent2
+					picker.Value.Value.BackgroundColor3 = tt.ColorPickerAccent2
+					custom.HEX.BackgroundColor3 = tt.ColorPickerAccent
+					custom.RGB.BackgroundColor3 = tt.ColorPickerAccent
+					custom.Rainbow.BackgroundColor3 = tt.ColorPickerAccent
+					picker.Hue.Bar.Indicator.BackgroundColor3 = tt.ColorPickerAccent
+					picker.Saturation.Bar.Indicator.BackgroundColor3 = tt.ColorPickerAccent
+					picker.Value.Bar.Indicator.BackgroundColor3 = tt.ColorPickerAccent
+					picker.BackgroundColor3 = tt.ColorPickerBackdrop
+					colorpicker.Fill.BackgroundColor3 = tt.ColorPickerBackdrop
+					colorpicker.Label.TextColor3 = tt.ColorPickerText
+					colorpicker.Color.TextColor3 = tt.ColorPickerText
+					custom.HEX.TextColor3 = tt.ColorPickerText
+					custom.RGB.TextColor3 = tt.ColorPickerText
+					custom.HEX.PlaceholderColor3 = tt.ColorPickerText2
+					custom.RGB.PlaceholderColor3 = tt.ColorPickerText2
+					colorpicker.Menu.ImageColor3 = tt.ColorPickerMenu
+					
+					local colorpickernew = ex.ColorPickerNew
+					local pickernew = colorpickernew.PickerNew
+					colorpickernew.BackgroundColor3 = tt.ColorPicker
+					pickernew.HEX.BackgroundColor3 = tt.ColorPickerAccent
+					pickernew.RGB.BackgroundColor3 = tt.ColorPickerAccent
+					pickernew.Rainbow.BackgroundColor3 = tt.ColorPickerAccent
+					pickernew.Value.Bar.Indicator.Bottom.BackgroundColor3 = tt.ColorPickerAccent3
+					pickernew.Value.Bar.Indicator.Top.BackgroundColor3 = tt.ColorPickerAccent3
+					pickernew.BackgroundColor3 = tt.ColorPickerBackdrop
+					colorpickernew.Fill.BackgroundColor3 = tt.ColorPickerBackdrop
+					colorpickernew.Label.TextColor3 = tt.ColorPickerText
+					colorpickernew.Color.TextColor3 = tt.ColorPickerText
+					pickernew.HEX.TextColor3 = tt.ColorPickerText
+					pickernew.RGB.TextColor3 = tt.ColorPickerText
+					pickernew.HEX.PlaceholderColor3 = tt.ColorPickerText2
+					pickernew.RGB.PlaceholderColor3 = tt.ColorPickerText2
+					colorpickernew.Menu.ImageColor3 = tt.ColorPickerMenu
+					
+					local keybind = ex.Keybind
+					keybind.BackgroundColor3 = tt.Keybind
+					keybind.Bind.BackgroundColor3 = tt.KeybindAccent
+					keybind.Bind.Label.BackgroundColor3 = tt.KeybindAccent2
+					keybind.TextColor3 = tt.KeybindText
+					keybind.Bind.Label.TextColor3 = tt.KeybindText2
+					keybind.Menu.ImageColor3 = tt.KeybindMenu
+					
+					local chipset = ex.ChipSet
+					local dropdown = chipset.Dropdown
+					chipset.BackgroundColor3 = tt.ChipSet
+					dropdown.Option.Button.BackgroundColor3 = tt.ChipSetAccent
+					dropdown.Option.Enabled.BackgroundColor3 = tt.ChipSetAccent
+					dropdown.BackgroundColor3 = tt.ChipSetBackdrop
+					chipset.Fill.BackgroundColor3 = tt.ChipSetBackdrop
+					dropdown.Option.Enabled.ImageColor3 = tt.ChipSetCheck
+					chipset.Label.TextColor3 = tt.ChipSetText
+					dropdown.Option.Button.TextColor3 = tt.ChipSetText
+					chipset.Indicator.BackgroundColor3 = tt.Minimise
+					chipset.Menu.ImageColor3 = tt.ChipSetMenu
+					dropdown.Option.Menu.ImageColor3 = tt.ChipSetMenu
+					
+					local table = ex.Table
+					local dropdown = table.Dropdown
+					table.BackgroundColor3 = tt.Table
+					dropdown.Info.BackgroundColor3 = tt.TableAccent
+					dropdown.Info.Line.BackgroundColor3 = tt.TableAccent2
+					dropdown.BackgroundColor3 = tt.TableBackdrop
+					table.Fill.BackgroundColor3 = tt.TableBackdrop
+					table.Label.TextColor3 = tt.TableText
+					dropdown.Info.Key.TextColor3 = tt.TableText
+					dropdown.Info.Value.TextColor3 = tt.TableText
+					table.Indicator.BackgroundColor3 = tt.Minimise
+					table.Menu.ImageColor3 = tt.TableMenu
+					
+					local progressbar = ex.ProgressBar
+					progressbar.BackgroundColor3 = tt.ProgressBar
+					progressbar.Bar.Progress.BackgroundColor3 = tt.ProgressBarAccent
+					progressbar.Bar.BackgroundColor3 = tt.ProgressBarAccent2
+					progressbar.Label.TextColor3 = tt.ProgressBarText
+					progressbar.Value.TextColor3 = tt.ProgressBarText
+					progressbar.Menu.ImageColor3 = tt.ProgressBarMenu
 				end
 				
 				local UI_SIZE_X = clamp(t.SizeX, 275, inf)
 				local UI_SIZE_Y = t.SizeY
 				local FIRST_PAGE = true
 				local FIRST_PAGE_OBJ = nil
-				local MIN_BTN_COLOR = fromRGB(250, 170, 75)
-				local MAX_BTN_COLOR = fromRGB(150, 250, 170)
+				local THEME_DATA = t.ThemeData
+				local MIN_BTN_COLOR = THEME_DATA.Minimise or fromRGB(250, 170, 75)
+				local MAX_BTN_COLOR = THEME_DATA.Maximise or fromRGB(150, 250, 170)
 				local STYLE = clamp(t.Style, 1, 4)
 				local NAV_SIZE = clamp(t.NavigatorSize, 0, UI_SIZE_X)
 				
@@ -3344,7 +3967,7 @@ do -- MLRemake.MLRemake.UI
 				taskdelay(2, function()
 					topbar.SubTitle.Position = UDim2new(0, topbar.Title.TextBounds.X + 4 +( (t.Style == 3 and 24) or 0), 0, 0)
 					topbar.SubTitle.Visible = not t.ShowInNavigator
-					ui.Tween(topbar.SubTitle, {TextTransparency = 0}, TweenInfonew(0.75, sine, out))
+					ui.Tween(topbar.SubTitle, {TextTransparency = 0.7}, TweenInfonew(0.75, sine, out))
 				end)
 				
 				navigator.Size = UDim2new(0, NAV_SIZE, 1, 0)
@@ -3385,7 +4008,7 @@ do -- MLRemake.MLRemake.UI
 					menubtn.Visible = false
 					topbar.Title.Position = UDim2new(0, 0, 0, 0)
 					if STYLE == 2 then
-						pagetabs.Example.BackgroundColor3 = fromRGB(90, 90, 90)
+						--pagetabs.Example.BackgroundColor3 = fromRGB(90, 90, 90)
 					end
 				elseif STYLE == 3 then
 					menubtn.Visible = true
@@ -3436,7 +4059,7 @@ do -- MLRemake.MLRemake.UI
 				minimize.Activated:Connect(function()
 					Minimized = not Minimized
 					if Minimized then
-						ui.Tween(minimize, {BackgroundColor3 = fromRGB(250, 170, 75)})
+						ui.Tween(minimize, {BackgroundColor3 = MIN_BTN_COLOR})
 						main:TweenSize(UDim2new(0, UI_SIZE_X, 0, 0), "Out", "Sine", 0.2, true)
 						taskwait(0.15)
 						if Minimized then
@@ -3444,7 +4067,7 @@ do -- MLRemake.MLRemake.UI
 							fillmain.Visible = false
 						end
 					else
-						ui.Tween(minimize, {BackgroundColor3 = fromRGB(150, 250, 170)})
+						ui.Tween(minimize, {BackgroundColor3 = MAX_BTN_COLOR})
 						main:TweenSize(UDim2new(0, UI_SIZE_X, 0, UI_SIZE_Y), "Out", "Sine", 0.2, true)
 						filltop.Visible = true
 						fillmain.Visible = true
@@ -3467,6 +4090,7 @@ do -- MLRemake.MLRemake.UI
 				local PAGE_INDEX = 0
 				local OPEN_PAGE_INFO = TweenInfonew(0.2, sine, out)
 				local OPEN_COUNT = {}
+				local UIDATA = {}
 				function UI.OpenPage(t)
 					if not string.match(t, "^PAGE_") then
 						t = "PAGE_"..t
@@ -3483,8 +4107,9 @@ do -- MLRemake.MLRemake.UI
 					end
 					for _,v in next, pagebtns:GetChildren() do
 						if v:IsA("TextButton") then
-							ui.Tween(v.Line, {BackgroundColor3 = (v.Name == t and fromRGB(120, 120, 120)) or fromRGB(75, 75, 75)}, OPEN_PAGE_INFO)
-							ui.Tween(v, {TextTransparency = (v.Name == t and 0) or 0.4}, OPEN_PAGE_INFO)
+							ui.Tween(v.Line, {BackgroundTransparency = (v.Name == t and 0) or 0.8}, OPEN_PAGE_INFO)
+							--ui.Tween(v.Line, {BackgroundColor3 = (v.Name == t and fromRGB(120, 120, 120)) or fromRGB(75, 75, 75)}, OPEN_PAGE_INFO)
+							ui.Tween(v, {TextTransparency = (v.Name == t and 0) or 0.5}, OPEN_PAGE_INFO)
 						end
 					end
 					PageOpened:Fire(t:split("_")[2], OPEN_COUNT[t])
@@ -3501,6 +4126,7 @@ do -- MLRemake.MLRemake.UI
 					else
 						title = t
 					end
+					UIDATA[title] = {}
 					
 					local discriminator = ""
 					if pages:FindFirstChild("PAGE_"..title) then
@@ -3556,12 +4182,17 @@ do -- MLRemake.MLRemake.UI
 					newpage.Parent = pages
 					newpage.Visible = FIRST_PAGE
 					newpage.Name = "PAGE_"..title..discriminator
+					newpage:SetAttribute("Title", title)
 					
 					if FIRST_PAGE then
 						FIRST_PAGE = false
 						FIRST_PAGE_OBJ = newpage
 						newnav.TextTransparency = 0
-						newnav.Line.BackgroundColor3 = fromRGB(120, 120, 120)
+						newnav.Line.BackgroundTransparency = 0
+						--newnav.Line.BackgroundColor3 = fromRGB(120, 120, 120)
+					else
+						newnav.TextTransparency = 0.5
+						newnav.Line.BackgroundTransparency = 0.8
 					end
 					
 					for _,v in next, newpage:GetChildren() do
@@ -3572,7 +4203,12 @@ do -- MLRemake.MLRemake.UI
 					
 					local function newfunc(name)
 						return function(t)
-							return ui[name](t, newpage, ex)
+							local a = ui[name](t, newpage, ex, topbar, THEME_DATA)
+							UIDATA[title][t.Text] = {
+								type = name,
+								value = nil
+							}
+							return a
 						end
 					end
 					local funcs = {
@@ -3610,7 +4246,7 @@ do -- MLRemake.MLRemake.UI
 					return ui.Banner(t, main, STYLE, NAV_SIZE)
 				end
 				function UI.Notify(t)
-					
+					return ui.Notify(t, notifications)
 				end
 				function UI:Destroy()
 					if getgenv then
@@ -3706,10 +4342,12 @@ do -- MLRemake.MLRemake.UI
 					t.Callback(toggled)
 					if toggled then
 						toggle.Indicator:TweenPosition(ToggleOn, "Out", "Sine", 0.15, true)
-						ui.Tween(toggle.Indicator, {BackgroundColor3 = Color3.fromRGB(150, 150, 150)})
+						--ui.Tween(toggle.Indicator, {BackgroundColor3 = fromRGB(150, 150, 150)})
+						ui.Tween(toggle.Indicator, {BackgroundTransparency = 0})
 					else
 						toggle.Indicator:TweenPosition(ToggleOff, "Out", "Sine", 0.15, true)
-						ui.Tween(toggle.Indicator, {BackgroundColor3 = Color3.fromRGB(90, 90, 90)})
+						--ui.Tween(toggle.Indicator, {BackgroundColor3 = Color3.fromRGB(90, 90, 90)})
+						ui.Tween(toggle.Indicator, {BackgroundTransparency = 0.5})
 					end
 				end)
 				
@@ -3729,10 +4367,12 @@ do -- MLRemake.MLRemake.UI
 					toggled = value
 					if toggled then
 						toggle.Indicator:TweenPosition(ToggleOn, "Out", "Sine", 0.15, true)
-						ui.Tween(toggle.Indicator, {BackgroundColor3 = Color3.fromRGB(150, 150, 150)})
+						--ui.Tween(toggle.Indicator, {BackgroundColor3 = Color3.fromRGB(150, 150, 150)})
+						ui.Tween(toggle.Indicator, {BackgroundTransparency = 0})
 					else
 						toggle.Indicator:TweenPosition(ToggleOff, "Out", "Sine", 0.15, true)
-						ui.Tween(toggle.Indicator, {BackgroundColor3 = Color3.fromRGB(90, 90, 90)})
+						--ui.Tween(toggle.Indicator, {BackgroundColor3 = Color3.fromRGB(90, 90, 90)})
+						ui.Tween(toggle.Indicator, {BackgroundTransparency = 0.5})
 					end
 					t.Callback(value)
 				end
@@ -3772,7 +4412,7 @@ do -- MLRemake.MLRemake.UI
 		end
 		
 		do -- Dropdown
-			function ui.Dropdown(t, p, ex)
+			function ui.Dropdown(t, p, ex, _, tt)
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("Dropdown", t)
@@ -3781,6 +4421,9 @@ do -- MLRemake.MLRemake.UI
 				local options = t.Options
 				local amount = #options
 				local selected = t.Def
+				local tweenspeed = 0.05 * amount
+				local min = tt.Minimise
+				local max = tt.Maximise
 				
 				local new = ex.Dropdown:Clone()
 				local dropdown = new.Dropdown
@@ -3814,7 +4457,7 @@ do -- MLRemake.MLRemake.UI
 						end
 					end
 					if toggled then
-						new:TweenSize(UDim2new(1, 0, 0, 30 + 5 + (35 * amount)), "Out", "Sine", 0.15, true)
+						new:TweenSize(UDim2new(1, 0, 0, 30 + 5 + (35 * amount)), "Out", "Sine", tweenspeed, true)
 						ui.UpdateCanvasSize(new.Parent)
 					end
 				end
@@ -3825,12 +4468,12 @@ do -- MLRemake.MLRemake.UI
 					toggled = not toggled
 					if toggled then
 						new.Fill.Visible = true
-						new:TweenSize(UDim2new(1, 0, 0, 30 + 5 + (35 * amount)), "Out", "Sine", 0.15, true)
-						ui.Tween(new.Indicator, {BackgroundColor3 = fromRGB(150, 250, 170)})
+						new:TweenSize(UDim2new(1, 0, 0, 30 + 5 + (35 * amount)), "Out", "Sine", tweenspeed, true)
+						ui.Tween(new.Indicator, {BackgroundColor3 = max})
 					else
 						new.Fill.Visible = false
-						new:TweenSize(UDim2new(1, 0, 0, 30), "Out", "Sine", 0.15, true)
-						ui.Tween(new.Indicator, {BackgroundColor3 = fromRGB(250, 170, 75)})
+						new:TweenSize(UDim2new(1, 0, 0, 30), "Out", "Sine", tweenspeed, true)
+						ui.Tween(new.Indicator, {BackgroundColor3 = min})
 					end
 					ui.UpdateCanvasSize(new.Parent)
 				end)
@@ -3850,6 +4493,7 @@ do -- MLRemake.MLRemake.UI
 					if typeof(value) ~= "table" then return end
 					options = value
 					amount = #value
+					tweenspeed = clamp(0.05 * amount, 0.05, 0.4)
 					refresh()
 				end
 				local function get()
@@ -3893,10 +4537,11 @@ do -- MLRemake.MLRemake.UI
 		end
 		
 		do -- Text Box / Text Field
-			function ui.TextBox(t, p, ex)
+			function ui.TextBox(t, p, ex, topbar)
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("TextBox", t)
+				t.Size = math.max(t.Size, 30)
 				
 				local type = t.Type:lower()
 				local hiddentext = t.Hidden or type == "hidden" or type == "password"
@@ -4013,7 +4658,7 @@ do -- MLRemake.MLRemake.UI
 					box.Visible = false
 				end)
 				
-				ui.Focus(hidden, new)
+				ui.Focus(hidden, new, topbar)
 				ui.UpdateCanvasSize(p or ex)
 				
 				if t.Menu ~= nil then
@@ -4154,7 +4799,7 @@ do -- MLRemake.MLRemake.UI
 			local SLIDER_TWEEN_TIME = 0.05
 			local SLIDER_SET_TWEEN_TIME = 0.4
 			
-			function ui.SetSliderValue(s, value, t)
+			function ui.SetSliderValue(s, value, t) -- changes the slider position to the value
 				task.spawn(function()
 					repeat
 						taskwait()
@@ -4178,7 +4823,8 @@ do -- MLRemake.MLRemake.UI
 						progress.Size = UDim2new(percent, 0, 1, 0)
 					end
 					
-					ui.Tween(bar.Progress, {BackgroundColor3 = (percent == 1 and fromRGB(250, 250, 250)) or fromRGB(90, 90, 90)}, TweenInfonew(0.5, sine, out)) -- Tween bar progress color to white when at 100%
+					--ui.Tween(bar.Progress, {BackgroundColor3 = (percent == 1 and fromRGB(250, 250, 250)) or fromRGB(90, 90, 90)}, TweenInfonew(0.5, sine, out)) -- Tween bar progress color to white when at 100%
+					--ui.Tween(bar.Progress, {BackgroundTransparency = (percent == 1 and 0) or 0.9}, TweenInfonew(0.5, sine, out))
 					
 					local afv = ui.AddAffixes(value, t)
 					s.Value.Text = ui.AddAffixes(value, t, true)
@@ -4191,7 +4837,7 @@ do -- MLRemake.MLRemake.UI
 					end
 				end)
 			end
-			function ui.InitSlider(s, t, callback)
+			function ui.InitSlider(s, t, callback) -- creates the connection that controls the actual sliding
 				if not t then t = {} end
 				local bar = s.Bar
 				local slider = bar.Slider
@@ -4224,7 +4870,7 @@ do -- MLRemake.MLRemake.UI
 						indicator.AnchorPoint = Vector2new(percent, 0.5)
 						
 						bar.Progress.Size = UDim2new(percent, 0, 1, 0)
-						ui.Tween(bar.Progress, {BackgroundColor3 = (percent == 1 and fromRGB(250, 250, 250)) or fromRGB(90, 90, 90)}, TweenInfonew(0.5, sine, out)) -- Tween bar progress color to white when at 100%
+						--ui.Tween(bar.Progress, {BackgroundColor3 = (percent == 1 and fromRGB(250, 250, 250)) or fromRGB(90, 90, 90)}, TweenInfonew(0.5, sine, out)) -- Tween bar progress color to white when at 100%
 						
 						s.Value.Text = ui.AddAffixes(value, t, true)
 		
@@ -4235,7 +4881,7 @@ do -- MLRemake.MLRemake.UI
 					callback(s, lastvalue, lastpercent)
 				end)
 			end
-			function ui.SetVerticalSliderValue(s, value, t)
+			function ui.SetVerticalSliderValue(s, value, t) -- changes the slider position to the value
 				task.spawn(function()
 					repeat
 						taskwait()
@@ -4272,7 +4918,7 @@ do -- MLRemake.MLRemake.UI
 					end
 				end)
 			end
-			function ui.InitVerticalSlider(s, t, callback)
+			function ui.InitVerticalSlider(s, t, callback) -- creates the connection that controls the actual sliding
 				if not t then t = {} end
 				local bar = s.Bar
 				local slider = bar.Slider
@@ -4315,7 +4961,7 @@ do -- MLRemake.MLRemake.UI
 					callback(s, lastvalue, lastpercent)
 				end)
 			end
-			function ui.SetXYSliderValue(s, value, t)
+			function ui.SetXYSliderValue(s, value, t) -- changes the slider position to the value
 				task.spawn(function()
 					repeat
 						taskwait()
@@ -4359,7 +5005,7 @@ do -- MLRemake.MLRemake.UI
 					end
 				end)
 			end
-			function ui.InitXYSlider(s, t, callback)
+			function ui.InitXYSlider(s, t, callback) -- creates the connection that controls the actual sliding
 				if not t then t = {} end
 				local bar = s.Bar
 				local slider = bar.Slider
@@ -4413,7 +5059,7 @@ do -- MLRemake.MLRemake.UI
 					callback(s, lastvalue, lastpercent)
 				end)
 			end
-			function ui.Slider(t, p, ex)
+			function ui.Slider(t, p, ex) -- creates the slider element
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("Slider", t)
@@ -4457,15 +5103,18 @@ do -- MLRemake.MLRemake.UI
 					if t.Enabled then
 						indicator.Position = UDim2new(0.5, 0, 0.5, 0)
 					end
+					toggle.Indicator.BackgroundTransparency = toggled and 0 or 0.5
 					toggle.Button.Activated:Connect(function()
 						toggled = not toggled
 						t.ToggleCallback(toggled)
 						if toggled then
 							indicator:TweenPosition(ToggleOn, "Out", "Sine", 0.15, true)
-							ui.Tween(toggle.Indicator, {BackgroundColor3 = Color3.fromRGB(150, 150, 150)})
+							--ui.Tween(toggle.Indicator, {BackgroundColor3 = Color3.fromRGB(150, 150, 150)})
+							ui.Tween(toggle.Indicator, {BackgroundTransparency = 0})
 						else
 							indicator:TweenPosition(ToggleOff, "Out", "Sine", 0.15, true)
-							ui.Tween(toggle.Indicator, {BackgroundColor3 = Color3.fromRGB(90, 90, 90)})
+							--ui.Tween(toggle.Indicator, {BackgroundColor3 = Color3.fromRGB(90, 90, 90)})
+							ui.Tween(toggle.Indicator, {BackgroundTransparency = 0.5})
 						end
 					end)
 				end
@@ -4588,7 +5237,7 @@ do -- MLRemake.MLRemake.UI
 					ui.SetSliderValue(s.Picker.Value, floor(val * 100), {Tween = tween})
 				end
 			end
-			function ui.ColorPicker(t, p, ex)
+			function ui.ColorPicker(t, p, ex, topbar)
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("ColorPicker", t)
@@ -4674,8 +5323,8 @@ do -- MLRemake.MLRemake.UI
 				
 				ui.Ripple(new.Button, new.RippleHolder)
 				ui.Ripple(picker.Custom.Rainbow)
-				ui.Focus(picker.Custom.HEX)
-				ui.Focus(picker.Custom.RGB)
+				ui.Focus(picker.Custom.HEX, nil, topbar)
+				ui.Focus(picker.Custom.RGB, nil, topbar)
 				ui.UpdateCanvasSize(p or ex)
 				t.Callback(color)
 				
@@ -4759,7 +5408,7 @@ do -- MLRemake.MLRemake.UI
 					ui.SetVerticalSliderValue(s.PickerNew.Value, floor(val * 100), {Tween = tween})
 				end
 			end
-			function ui.ColorPickerNew(t, p, ex)
+			function ui.ColorPickerNew(t, p, ex, topbar)
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("ColorPicker", t)
@@ -4800,7 +5449,7 @@ do -- MLRemake.MLRemake.UI
 					end
 					ui.UpdateCanvasSize(new.Parent)
 				end)
-		
+
 				-- HSV bars
 				ui.InitXYSlider(picker.HueSaturation, {MaxX = 360, MaxY = 100}, function(_, value, percent)
 					hue = percent.X
@@ -4817,7 +5466,7 @@ do -- MLRemake.MLRemake.UI
 					ui.SetPickerPreviewNew(new, fromHSV(hue, sat, val), false, toggled)
 					t.Callback(fromHSV(hue, sat, val))
 				end)
-		
+
 				-- custom section
 				local hex = picker.HEX
 				local rgb = picker.RGB
@@ -4847,32 +5496,34 @@ do -- MLRemake.MLRemake.UI
 				rainbow.Activated:Connect(function()
 					rgbenabled = not rgbenabled
 				end)
-		
+
 				ui.Ripple(new.Button, new.RippleHolder)
 				ui.Ripple(picker.Rainbow)
-				ui.Focus(picker.HEX)
-				ui.Focus(picker.RGB)
+				ui.Focus(picker.HEX, nil, topbar)
+				ui.Focus(picker.RGB, nil, topbar)
 				ui.UpdateCanvasSize(p or ex)
 				t.Callback(color)
-		
+
 				if t.Menu ~= nil then
 					ui.InitMenu(t.Menu, new, {new.Color, new.Preview})
 				end
-		
+
 				task.spawn(function()
 					while true do
 						if new == nil or new.Parent == nil then break end
 						if rgbenabled then
 							local c = fromHSV(tick() % 5 / 5, 1, 1)
 							t.Callback(c)
-							ui.SetPickerPreviewNew(new, c, false, toggled)
+							if toggled then
+								ui.SetPickerPreviewNew(new, c, false, toggled)
+							end
 						end
 						taskwait()
 					end
 				end)
-		
+
 				local a = {Destroyed = false, Object = new}
-		
+
 				local function set(value)
 					if a.Destroyed then return end
 					if typeof(value) ~= "Color3" then return end
@@ -4885,14 +5536,14 @@ do -- MLRemake.MLRemake.UI
 					if a.Destroyed then return end
 					return fromHSV(hue, sat, val)
 				end
-		
+
 				function a:Set(value)
 					set(value)
 				end
 				function a:Get()
 					return get()
 				end
-		
+
 				function a:SetText(text)
 					if a.Destroyed then return end
 					new.Label.Text = tostring(text)
@@ -4916,11 +5567,11 @@ do -- MLRemake.MLRemake.UI
 					new:Destroy()
 					a.Destroyed = true
 				end
-		
+
 				return a, id
 			end
 		end
-		
+
 		do -- Keybind
 			local ignore = {
 				"None",
@@ -4935,22 +5586,22 @@ do -- MLRemake.MLRemake.UI
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("Keybind", t)
-				
+
 				local listening = false
 				local keybind = t.Def
-		
+
 				local new = ex.Keybind:Clone()
 				new.Name = "Keybind#"..id
 				new.Parent = p or ex
 				new.Visible = true
 				new.Text = t.Text
 				ui.SetBindLabel(new, keybind)
-				
+
 				new.Activated:Connect(function()
 					if not listening then
 						listening = true
 						ui.SetBindLabel(new, ". . .")
-						
+
 						local conn;conn = uis.InputBegan:Connect(function(i)
 							local keyboard = i.UserInputType.Name == "Keyboard"
 							local mouse = i.UserInputType.Name:find("Mouse")
@@ -4965,17 +5616,17 @@ do -- MLRemake.MLRemake.UI
 						end)
 					end
 				end)
-				
+
 				ui.Ripple(new)
 				ui.UpdateCanvasSize(p or ex)
 				t.Callback(t.Def)
-				
+
 				if t.Menu ~= nil then
 					ui.InitMenu(t.Menu, new, {new.Bind})
 				end
-				
+
 				local a = {Destroyed = false, Object = new}
-				
+
 				local function set(value)
 					if a.Destroyed then return end
 					if typeof(value) ~= "EnumItem" and typeof(value) ~= "string" then return end
@@ -4988,14 +5639,14 @@ do -- MLRemake.MLRemake.UI
 					if a.Destroyed then return end
 					return keybind
 				end
-				
+
 				function a:Set(value)
 					set(value)
 				end
 				function a:Get()
 					return get()
 				end
-		
+
 				function a:SetText(text)
 					if a.Destroyed then return end
 					new.Text = tostring(text)
@@ -5019,35 +5670,39 @@ do -- MLRemake.MLRemake.UI
 					new:Destroy()
 					a.Destroyed = true
 				end
-		
+
 				return a, id
 			end
 		end
-		
+
 		do -- Chip Set / Data Table
-			function ui.ChipSet(t, p, ex)
+			function ui.ChipSet(t, p, ex, _, tt)
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("ChipSet", t)
-		
+
 				local toggled = false
 				local amount = 0
 				local data = t.Options
-				
+				local tweenspeed = 0.05 * amount
+				local min = tt.Minimise
+				local max = tt.Maximise
+
 				for i,v in next, t.Options do
 					amount += 1
 				end
 				table.sort(t.Options, function(a,b)
 					return a < b
 				end)
-		
+				tweenspeed = 0.05 * amount
+
 				local new = ex.ChipSet:Clone()
 				local dropdown = new.Dropdown
 				new.Name = "ChipSet#"..id
 				new.Parent = p or ex
 				new.Visible = true
 				new.Label.Text = t.Text
-				
+
 				local function refresh()
 					for _,v in next, dropdown:GetChildren() do
 						if v:IsA("Frame") and v.Name ~= "Option" then
@@ -5086,37 +5741,37 @@ do -- MLRemake.MLRemake.UI
 							end
 							new2.Enabled.Activated:Connect(activated)
 							new2.Button.Activated:Connect(activated)
-		
+
 							ui.Ripple(new2.Enabled, new2.Button)
 							ui.Ripple(new2.Button)
-							
+
 							if menu then
 								ui.InitMenu(v.Menu, new2, {})
 							end
 						end
 					end
 					if toggled then
-						new:TweenSize(UDim2new(1, 0, 0, 30 + 5 + (35 * amount)), "Out", "Sine", 0.15, true)
+						new:TweenSize(UDim2new(1, 0, 0, 30 + 5 + (35 * amount)), "Out", "Sine", tweenspeed, true)
 						ui.UpdateCanvasSize(new.Parent)
 					end
 				end
 				refresh()
-		
+
 				local list = dropdown.UIListLayout
 				new.Button.Activated:Connect(function()
 					toggled = not toggled
 					if toggled then
 						new.Fill.Visible = true
-						new:TweenSize(UDim2new(1, 0, 0, 30 + 5 + (35 * amount)), "Out", "Sine", 0.15, true)
-						ui.Tween(new.Indicator, {BackgroundColor3 = fromRGB(150, 250, 170)})
+						new:TweenSize(UDim2new(1, 0, 0, 30 + 5 + (35 * amount)), "Out", "Sine", tweenspeed, true)
+						ui.Tween(new.Indicator, {BackgroundColor3 = max})
 					else
 						new.Fill.Visible = false
-						new:TweenSize(UDim2new(1, 0, 0, 30), "Out", "Sine", 0.15, true)
-						ui.Tween(new.Indicator, {BackgroundColor3 = fromRGB(250, 170, 75)})
+						new:TweenSize(UDim2new(1, 0, 0, 30), "Out", "Sine", tweenspeed, true)
+						ui.Tween(new.Indicator, {BackgroundColor3 = min})
 					end
 					ui.UpdateCanvasSize(new.Parent)
 				end)
-				
+
 				ui.UpdateCanvasSize(p or ex)
 				ui.Ripple(new.Button, new.RippleHolder)
 				local aa = data
@@ -5126,13 +5781,13 @@ do -- MLRemake.MLRemake.UI
 					end
 				end
 				t.Callback(aa)
-				
+
 				if t.Menu ~= nil then
 					ui.InitMenu(t.Menu, new, {new.Indicator})
 				end
-				
+
 				local a = {Destroyed = false, Object = new}
-				
+
 				local function set(value)
 					if a.Destroyed then return end
 					if typeof(value) ~= "table" then return end
@@ -5144,6 +5799,7 @@ do -- MLRemake.MLRemake.UI
 					for i,v in next, value do
 						amount += 1
 					end
+					tweenspeed = clamp(0.05 * amount, 0.05, 0.4)
 					t.Callback(value)
 					refresh()
 				end
@@ -5151,14 +5807,14 @@ do -- MLRemake.MLRemake.UI
 					if a.Destroyed then return end
 					return data
 				end
-				
+
 				function a:Set(value)
 					set(value)
 				end
 				function a:Get()
 					return get()
 				end
-		
+
 				function a:SetText(text)
 					if a.Destroyed then return end
 					new.Label.Text = tostring(text)
@@ -5182,28 +5838,32 @@ do -- MLRemake.MLRemake.UI
 					new:Destroy()
 					a.Destroyed = true
 				end
-		
+
 				return a, id
 			end
 		end
-		
+
 		do -- Table
-			function ui.Table(t, p, ex)
+			function ui.Table(t, p, ex, _, tt)
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("Table", t)
-		
+
 				local toggled = false
 				local data = t.Data
 				local amount = 0
-				
+				local tweenspeed = 0.05 * amount
+				local min = tt.Minimise
+				local max = tt.Maximise
+
 				for _,_ in next, data do
 					amount += 1
 				end
 				table.sort(data, function(a,b)
 					return a < b
 				end)
-		
+				tweenspeed = 0.05 * amount
+
 				local new = ex.Table:Clone()
 				local dropdown = new.Dropdown
 				new.Name = "Table#"..id
@@ -5213,7 +5873,7 @@ do -- MLRemake.MLRemake.UI
 				dropdown.Info.Visible = t.ShowInfo
 				dropdown.Info.Key.Text = t.Key
 				dropdown.Info.Value.Text = t.Value
-		
+
 				local function refresh()
 					for _,v in next, dropdown:GetChildren() do
 						if v:IsA("Frame") and v.Name ~= "Info" then
@@ -5231,36 +5891,36 @@ do -- MLRemake.MLRemake.UI
 						end
 					end
 					if toggled then
-						new:TweenSize(UDim2new(1, 0, 0, 30 + 5 + (35 * (amount + (t.ShowInfo and 1 or 0)))), "Out", "Sine", 0.15, true)
+						new:TweenSize(UDim2new(1, 0, 0, 30 + 5 + (35 * (amount + (t.ShowInfo and 1 or 0)))), "Out", "Sine", tweenspeed, true)
 						ui.UpdateCanvasSize(new.Parent)
 					end
 				end
 				refresh()
-		
+
 				local list = dropdown.UIListLayout
 				new.Button.Activated:Connect(function()
 					toggled = not toggled
 					if toggled then
 						new.Fill.Visible = true
-						new:TweenSize(UDim2new(1, 0, 0, 30 + 5 + (35 * (amount + (t.ShowInfo and 1 or 0)))), "Out", "Sine", 0.15, true)
-						ui.Tween(new.Indicator, {BackgroundColor3 = fromRGB(150, 250, 170)})
+						new:TweenSize(UDim2new(1, 0, 0, 30 + 5 + (35 * (amount + (t.ShowInfo and 1 or 0)))), "Out", "Sine", tweenspeed, true)
+						ui.Tween(new.Indicator, {BackgroundColor3 = max})
 					else
 						new.Fill.Visible = false
-						new:TweenSize(UDim2new(1, 0, 0, 30), "Out", "Sine", 0.15, true)
-						ui.Tween(new.Indicator, {BackgroundColor3 = fromRGB(250, 170, 75)})
+						new:TweenSize(UDim2new(1, 0, 0, 30), "Out", "Sine", tweenspeed, true)
+						ui.Tween(new.Indicator, {BackgroundColor3 = min})
 					end
 					ui.UpdateCanvasSize(new.Parent)
 				end)
-		
+
 				ui.Ripple(new.Button, new.RippleHolder)
 				ui.UpdateCanvasSize(p or ex)
-		
+
 				if t.Menu ~= nil then
 					ui.InitMenu(t.Menu, new, {new.Option, new.Indicator})
 				end
-		
+
 				local a = {Destroyed = false, Object = new}
-				
+
 				local function set(value)
 					if a.Destroyed then return end
 					if typeof(value) ~= "table" then return end
@@ -5272,20 +5932,21 @@ do -- MLRemake.MLRemake.UI
 					for _,_ in next, value do
 						amount += 1
 					end
+					tweenspeed = clamp(0.05 * amount, 0.05, 0.4)
 					refresh()
 				end
 				local function get()
 					if a.Destroyed then return end
 					return data
 				end
-				
+
 				function a:Set(value)
 					set(value)
 				end
 				function a:Get()
 					return get()
 				end
-		
+
 				function a:SetText(text)
 					if a.Destroyed then return end
 					new.Label.Text = tostring(text)
@@ -5309,21 +5970,21 @@ do -- MLRemake.MLRemake.UI
 					new:Destroy()
 					a.Destroyed = true
 				end
-		
+
 				return a, id
 			end
 		end
-		
+
 		do -- Progress Bar
 			function ui.ProgressBar(t, p, ex)
 				ID += 1
 				local id = ID
 				ApplyDefaultProps("ProgressBar", t)
-		
+
 				local def, min, max = t.Def, t.Min, t.Max
 				local lastvalue = t.Def
 				local pre, suf = t.Prefix, t.Suffix
-		
+
 				local new = ex.ProgressBar:Clone()
 				local bar = new.Bar 
 				local slider = bar.Indicator
@@ -5332,27 +5993,28 @@ do -- MLRemake.MLRemake.UI
 				new.Parent = p or ex
 				new.Visible = true
 				new.Label.Text = t.Text
-				
+
 				local function SetValue(value)
 					if bar == nil or bar.Parent == nil then return end
 					local percent = (value - min) / (max - min)
 					bar.Progress:TweenSize(UDim2new(percent, 0, 1, 0), "Out", "Sine", 0.4, true)
 					val.Text = ui.AddAffixes((t.Percent and Round(percent * 100, 2)) or value, t, true)
 					lastvalue = value
-					
-					ui.Tween(bar.Progress, {BackgroundColor3 = (percent == 1 and fromRGB(250, 250, 250)) or fromRGB(90, 90, 90)}, TweenInfonew(0.5, sine, out))
+
+					--ui.Tween(bar.Progress, {BackgroundColor3 = (percent == 1 and fromRGB(250, 250, 250)) or fromRGB(90, 90, 90)}, TweenInfonew(0.5, sine, out))
+					--ui.Tween(bar.Progress, {BackgroundTransparency = (percent == 1 and 0) or 0.9}, TweenInfonew(0.5, sine, out))
 				end
 				t.Event.Event:Connect(SetValue)
-				
+
 				SetValue(def)
 				ui.UpdateCanvasSize(p or ex)
-		
+
 				if t.Menu ~= nil then
 					ui.InitMenu(t.Menu, new, (t.Toggle and {val}) or {val})
 				end
-				
+
 				local a = {Destroyed = false, Object = new}
-				
+
 				local function set(value)
 					if a.Destroyed then return end
 					if typeof(value) ~= "number" then return end
@@ -5362,14 +6024,14 @@ do -- MLRemake.MLRemake.UI
 					if a.Destroyed then return end
 					return lastvalue
 				end
-				
+
 				function a:Set(value)
 					set(value)
 				end
 				function a:Get()
 					return get()
 				end
-		
+
 				function a:SetText(text)
 					if a.Destroyed then return end
 					new.Label.Text = tostring(text)
@@ -5411,11 +6073,11 @@ do -- MLRemake.MLRemake.UI
 					new:Destroy()
 					a.Destroyed = true
 				end
-		
+
 				return a, id
 			end
 		end
-		
+
 		return ui
 	end
 	fake_module_scripts[script] = module_script
