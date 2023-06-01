@@ -1,9 +1,9 @@
 # Material Lua Remake  
 A UI library inspired by [Material Lua](https://github.com/Kinlei/MaterialLua).  
-This library has pretty much the exact same usage as Material Lua, but with a different look and a bit more utilities to work with.  
+This library has pretty much the exact same usage as Material Lua, but with a different look and more stuff to work with.  
 *this is not meant to resemble a Material-style*  
 
-*Last Updated: May 7, 2022*  
+*Last Updated: June 1, 2023*  
 
 # This ui library is not completely finished yet, however it is usable.  
 
@@ -15,7 +15,7 @@ This library has pretty much the exact same usage as Material Lua, but with a di
 - [Material.Load](#materialload)
   - [UI.new](#uinew)
   - [UI.Banner](#uibanner)
-  - [UI.Notify (WIP)](#uinotify)
+  - [UI.Notify](#uinotify)
   - [UI.Toggle](#uitoggle)
   - [UI.OpenPage](#uiopenpage)
   - [UI.PageOpened](#uipageopened)
@@ -26,17 +26,19 @@ This library has pretty much the exact same usage as Material Lua, but with a di
   - [Page.TextBox / TextField](#pagetextbox)
   - [Page.Label](#pagelabel)
   - [Page.Slider](#pageslider)
-  - [Page.Color Picker](#pagecolorpicker)
+  - [Page.ColorPicker / ColorPickerNew](#pagecolorpicker)
   - [Page.Keybind](#pagekeybind)
   - [Page.ChipSet / DataTable](#pagechipset)
   - [Page.Table](#pagetable)
   - [Page.ProgressBar](#pageprogressbar)
+- [Themes and Customization](#themes-and-customization)
 
 ## Loadstring  
 ```lua
-local Material = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/MaterialLuaRemake.lua"))()
+local Material = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/MaterialLuaRemake.lua"), "MaterialLuaRemake.lua")()
 ```
-You can replace the Material Lua loadstring with this loadstring to use Remake without making **ANY** changes!
+Material Lua Remake is 100% backwards compatible! (with the exception of Themes).  
+This means you can replace the Material Lua loadstring and it will still work!
 
 ---
 
@@ -64,9 +66,15 @@ Note: Remake does not support Themes or ColorOverrides yet.
 ```lua
 local UI = Material.Load({
     Title = "cool script",
+    SubTitle = "discord.gg/coolscript",
+    Icon = "images/icon.png",
+    ShowInNavigator = true,
     Style = 3,
     SizeX = 400,
-    SizeY = 490
+    SizeY = 505,
+    NavigatorSize = 200,
+    Theme = "Dark",
+    ThemeOverrides = {}
 })
 ```
 
@@ -74,21 +82,30 @@ local UI = Material.Load({
 |Name|Type|Default|Description|
 |:---|:---|:------|:----------|
 |Title|String|Material Lua Remake|The title of the UI|
-|SubTitle|String|nil|The sub title shown next to/below the title|
-|Icon|String, Number|nil|The icon shown on the left of the title.<br />This will only be visible while ShowInNavigator is enabled<br />Recommended Image Size: 40x40|
-|ShowInNavigator|Boolean|false|If enabled, the title, subtitle, and icon will be visible in the navigator|
-|Style|Number|1|The UI style|
+|SubTitle|String|nil|The sub title shown next to/below the title (depends on `ShowInNavigator`)|
+|Icon|String, Number|nil|The icon shown on the left of the title.<br />This will only be visible while `ShowInNavigator` is enabled<br />Recommended Image Size: 40x40|
+|ShowInNavigator|Boolean|false|If enabled, the title, subtitle, and icon will be visible in the navigator<br />`Style` must be either 3 or 4.|
+|Style|Number|3|The UI style (1, 2, 3, or 4)|
 |SizeX|Number|400|The width of the UI|
 |SizeY|Number|505|The height of the UI|
-|NavigatorSize|Number|200|The size of the Navigator|
+|NavigatorSize|Number|200|The size of the Navigator<br />`Style` must be either 3 or 4.|
+|Theme|String|Dark|The theme of the UI (Dark, Light, or Mocha)|
+|ThemeOverrides|Table|{}|Custom overrides to change the color of specific elements|
 
 ### UI Styles  
 |Style|Description|
 |:----|:----------|
 |1|The UI will display Tabs for each page|
 |2|The UI will display Tabs for each page which have a lighter gray color|
-|3|A 'Menu' button will be visible in the topbar on the left-hand side.<br />Clicking this will toggle the 'Navigator' which shows a vertical list of all pages.<br />This style can be used to show small Icons beside every button.|
+|3|A 'Menu' button will be visible in the topbar on the left-hand side.<br />Clicking this will toggle the 'Navigator' which shows a vertical list of all pages.<br />This style can be used to show small icons beside every button.|
 |4|The 'Navigator' will always be visible and will be attached to the left side of the UI contents.<br />The 'Navigator' cannot be toggle-able with this style.<br />Note that this will increase the size of the UI on the X axis based on the size of the 'Navigator'.|
+
+### Themes
+|Theme|Description|
+|:----|:----------|
+|Dark|The default theme. A theme on the darker side with a variety of dark and light shades of gray|
+|Light|A theme on the brighter side with a combination of rich and light shades of purple.<br />Inspired by the Light theme from Material Lua.|
+|Mocha|A theme on the brighter side with a variety of brown and tan colors.<br />Inspired by the Mocha theme from Material Lua.|
 
 ---
 
@@ -152,11 +169,11 @@ local UI = UI.Banner({ -- You can use a table for more utility
 |Text|String|nil|The text shown in the Banner|
 |Callback|Function|nil|The Banner's callback<br />This is called when clicking one<br />of the buttons on the Banner|
 |Options|Table|{"OK"}|The buttons on the Banner|
+|Font|EnumItem|Enum.Font.Gotham|The font that is displayed on the Banner|
 
 ---
 
 ## UI.Notify  
-### Notifications have not been finished and will not work when attempted to use.  
 ```js
 <void> UI.Notify(<table> Options)
 <void> UI.Notify(<string> Text)
@@ -168,8 +185,14 @@ If you provide a string instead of a table, it will use that as the text.
 ```lua
 UI.Notify({
     Title = "Alert",
-    Text = "An error occurred!",
-    Duration = 3
+    Text = "something happened",
+    Duration = 5,
+    Callback = function(value)
+        if value == "OK" then
+            -- do something
+        end
+    end,
+    Options = {"OK", "CANCEL"}
 })
 ```
 
@@ -177,7 +200,7 @@ UI.Notify({
 |Name|Type|Default|Description|
 |:---|:---|:------|:----------|
 |Title|String|Material Lua Remake|The Notification's title|
-|Text|String|Notification|The text shown in the Notification|
+|Text|String|Notification|The main body of text shown in the Notification|
 |Duration|Number|3|How long the Notification will be displayed|
 |Callback|Function|nil|The Notification's callback<br />This is called when clicking one<br />of the buttons on the Notification|
 |Options|Table|{"OK"}|The buttons on the Notification|
@@ -261,6 +284,7 @@ local Button = Page.Button({
 |:---|:---|:------|:----------|
 |Text|String|Button|The text shown on the Button|
 |Callback|Function|nil|The Button's callback|
+|Center|Boolean|false|If enabled, the text on the button will be centered|
   
 ### Methods  
 |Method|Description|
@@ -373,12 +397,15 @@ local TextBox = Page.TextBox({
 |Type|String|Default|The Text Box's type.|
 |ClearOnFocus|Boolean|false|Determines if the Text Box clears on focus|
 |Center|Boolean|false|Determines if the Text Box's text is centered|
+|Hidden|Boolean|false|Same behavior as setting `Type` to `Password`|
+|Font|EnumItem|Enum.Font.Gotham|The font that is displayed on the TextBox|
+|Size|Number|30|The height of the TextBox|
 
 ### Text Box Types
 |Types|Description|
 |:----|:----------|
-|Default|The Text Box's contents will be visible|
-|Password|The Text Box's contents will be hidden|
+|Default|The TextBox's contents will be visible|
+|Password|The TextBox's contents will be hidden|
 
 ### Methods  
 |Method|Description|
@@ -420,6 +447,7 @@ end)
 |Center|Boolean|false|Determines if the Label's text is centered|
 |Transparent|Boolean|false|Determines if the Label's background is transparent|
 |Font|EnumItem|Enum.Font.Gotham|The font shown on the Label|
+|Size|Number|30|The height of the Label|
   
 ### Methods  
 |Method|Description|
@@ -465,7 +493,7 @@ local Slider = Page.Slider({
 |Toggle|Boolean|false|If enabled, a Toggle will be shown on the Slider|
 |Enabled|Boolean|false|Determines if the Toggle is enabled by default or not.<br />Toggle must be enabled for this to work|
 |ToggleCallback|Function|nil|The Toggle's callback|
-|Filled|Boolean|false|If enabled, the indicator will be hidden and the style of the Slider will be similar to the Progress Bar|
+|Filled|Boolean|false|If enabled, the indicator will be hidden and the style of the Slider will be similar to the ProgressBar|
   
 ### Methods  
 |Method|Description|
@@ -484,8 +512,10 @@ local Slider = Page.Slider({
 ## Page.ColorPicker  
 ```js
 <ColorPicker> Page.ColorPicker(<table> Options)
+<ColorPickerNew> Page.ColorPickerNew(<table> Options)
 ```
-Creates a new `ColorPicker` with `Options`.  
+Creates a new `ColorPicker` or `ColorPickerNew` with `Options`.  
+`ColorPickerNew` is the new color picker that has similar functionality to the one in Roblox Studio.  
 
 ### Example  
 ```lua
@@ -498,16 +528,26 @@ local ColorPicker = Page.ColorPicker({
     Default = Color3.fromRGB(0, 170, 255), -- 'Default' is still available for compatibility.
     Rainbow = false,
 })
+
+local ColorPickerNew = Page.ColorPickerNew({
+    Text = "New Color Picker",
+    Callback = function(value)
+        print(value)
+    end,
+    Def = Color3.fromRGB(0, 170, 255),
+    Default = Color3.fromRGB(0, 170, 255), -- 'Default' is still available for compatibility.
+    Rainbow = false
+})
 ```
 
 ### Options  
 |Name|Type|Default|Description|
 |:---|:---|:------|:----------|
 |Text|String|Color Picker|The text shown on the Color Picker|
-|Callback|Function|nil|The Color Picker's callback|
-|Def|Color3|1, 1, 1|The Color Picker's default color|
-|Default|Color3|1, 1, 1|Same as Def|
-|Rainbow|Boolean|false|Determines if Rainbow mode is enabled by default or not|
+|Callback|Function|nil|The ColorPicker's callback|
+|Def|Color3|1, 1, 1|The ColorPicker's default color|
+|Default|Color3|1, 1, 1|Same as `Def`|
+|Rainbow|Boolean|false|Determines if `Rainbow` mode is enabled by default or not<br />This mode can cause lag since it calls `Callback` every frame|
   
 ### Methods  
 |Method|Description|
@@ -688,3 +728,153 @@ local Slider = Page.ProgressBar({
 |number GetMin()|Returns the Progress Bar's minimum value|
 |number GetMax()|Returns the Progress Bar's maximum value|
 |void Destroy()|Destroys the Progress Bar|
+
+---
+
+# Themes and Customization
+
+|Override|Element|Description|
+|:-------|:------|:----------|
+|MainFrame|Main|The base/background of the UI|
+|Minimise|Topbar|This is the color of the min/max button when the UI is closed|
+|Maximise|Topbar|This is the color of the min/max button when the UI is opened|
+|NavBar|Navigator|The base/background of the Navigator|
+|NavBarAccent|Navigator|This is the color of the tabs (styles 1 and 2). If you use style 2, the color will be slightly lighter.<br />This color is also used for the dividers between each page button and the line on the edge of the Navigator (styles 3 and 4)|
+|NavBarDim|Navigator|This is the color of the background dim. The color will be very light due to the transparency, so be sure to choose a decently vibrant color|
+|NavBarText|Navigator|The color of the text on the page buttons in the Navigator|
+|TitleBar|Topbar|The color of the very top of the UI where the Title is displayed|
+|TitleBarText|Topbar|The color of the Title text|
+|Overlay|Main|This is the overlay that you see when the UI is loading|
+|Focus|Text Boxes|This is the line that appears when you focus on a text box|
+|Banner|Banner|The base/background of the Banner|
+|BannerAccent|Banner|The outline of the Banner. This color will be slightly lighter|
+|BannerAccent2|Banner|The color of the buttons|
+|BannerDim|Banner|This This is the color of the background dim. The color will be very light due to the transparency, so be sure to choose a decently vibrant color|
+|BannerText|Banner|The color of the text in the Banner|
+|Notify|Notification|The base/background of the Notification|
+|NotifyAccent|Notification|The color of the buttons|
+|NotifyAccent2|Notification|The color of the duration indicator between the Title and Text|
+|NotifyText|Notification|The color of the text|
+|Button|Button|The base color of the Button|
+|ButtonText|Button|The color of the text on the Button|
+|ButtonMenu|Button|The color of the menu button on the Button|
+|Toggle|Toggle|The base color of the Toggle|
+|ToggleAccent|Toggle|The color of the indicator (smaller square that moves). This color will be a tiny bit lighter when the toggle is disabled|
+|ToggleAccent2|Toggle|The color of the base of the indicator (larger rectangle that 'holds' the square)|
+|ToggleText|Toggle|The color of the text on the Toggle|
+|ToggleMenu|Toggle|The color of the menu button on the Toggle|
+|Dropdown|Dropdown|The base color of the Dropdown|
+|DropdownAccent|Dropdown|The color of the Options|
+|DropdownBackdrop|Dropdown|The base color of the Dropdown when expanded (behind the Options)|
+|DropdownText|Dropdown|The color of the text on the Dropdown|
+|DropdownMenu|Dropdown|The color of the menu button on the Dropdown|
+|TextBox|TextBox|The base color of the TextBox|
+|TextBoxAccent|TextBox|The color of the Cursor|
+|TextBoxText|TextBox|The color of the text on the TextBox|
+|TextBoxText2|TextBox|The color of the placeholder text on the TextBox|
+|TextBoxMenu|TextBox|The color of the menu button on the TextBox|
+|Label|Label|The base color of the Label|
+|LabelText|Label|The color of the text on the Label|
+|LabelMenu|Label|The color of the menu button on the Label|
+|Slider|Slider|The base color of the Slider|
+|SliderAccent|Slider|The color of the slider indicator|
+|SliderAccent2|Slider|The color of the slider bar and the value text box|
+|SliderAccent3|Slider|The color of the toggle indicator (smaller square that moves). This color will be a tiny bit lighter when the toggle is disabled|
+|SliderAccent4|Slider|The color of the base of the toggle indicator (larger rectangle that 'holds' the square)|
+|SliderText|Slider|The color of the text on the Slider|
+|SliderText2|Slider|The color of the text in the value text box|
+|SliderText3|Slider|The color of the placeholder text in the value text box|
+|SliderMenu|Slider|The color of the menu button on the Slider|
+|ColorPicker|ColorPicker|The base color of the ColorPicker|
+|ColorPickerAccent|ColorPicker|The color of the HEX, RGB, and Rainbow text boxes (NEW COLOR PICKER)|
+|ColorPickerAccent2|ColorPicker|The color of the H, S, and V labels (OLD COLOR PICKER)|
+|ColorPickerAccent3|ColorPicker|The color of the value/brightness indicator (arrow) (NEW COLOR PICKER)|
+|ColorPickerBackdrop|ColorPicker|The base of the ColorPicker when expanded|
+|ColorPickerText|ColorPicker|The color of the text on the ColorPicker|
+|ColorPickerText2|ColorPicker|The color of the placeholder text in the HEX and RGB text boxes|
+|ColorPickerMenu|ColorPicker|The color of the menu button on the ColorPicker|
+|Keybind|Keybind|The base color of the Keybind|
+|KeybindAccent|Keybind|The color of the Bind (darker part)|
+|KeybindAccent2|Keybind|The color of the Bind (lighter part)|
+|KeybindText|Keybind|The color of the text on the Keybind|
+|KeybindText2|Keybind|The color of the text on the Bind|
+|KeybindMenu|Keybind|The color of the menu button on the Keybind|
+|ChipSet|ChipSet|The base color of the ChipSet|
+|ChipSetAccent|ChipSet|The color of the Options|
+|ChipSetBackdrop|ChipSet|The base color of the ChipSet when expanded (behind the Options)|
+|ChipSetCheck|ChipSet|The color of the check boxes|
+|ChipSetText|ChipSet|The color of the text on the ChipSet|
+|ChipSetMenu|ChipSet|The color of the menu button on the ChipSet|
+|Table|Table|The base color of the Table|
+|TableAccent|Table|The color of the Data|
+|TableAccent2|Table|The color of the dividers (line) between the Key and Value. This color will be slightly lighter.|
+|TableBackdrop|Table|The base color of the Table when expanded (behind the Data)|
+|TableCheck|Table|The color of the check boxes|
+|TableText|Table|The color of the text on the Table|
+|TableMenu|Table|The color of the menu button on the Table|
+|ProgressBar|ProgressBar|The base color of the ProgressBar|
+|ProgressBarAccent|ProgressBar|The color of the progress indicator|
+|ProgressBarAccent2|ProgressBar|The color of the bar|
+|ProgressBarText|ProgressBar|The color of the text on the ProgressBar|
+|ProgressBarMenu|ProgressBar|The color of the menu button on the ProgressBar|
+
+### Example: Changing the color of Sliders
+```lua
+local Material = loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/MaterialLuaRemake.lua"), "MaterialLuaRemake.lua")()
+local UI = Material.Load({
+    Title = "Example Script",
+    SubTitle = "Slider Overrides",
+    SizeX = 400,
+    SizeY = 105,
+    Theme = "Dark",
+    ThemeOverrides = {
+        Slider = Color3.fromRGB(176, 148, 125),
+        SliderAccent = Color3.fromRGB(222, 210, 200),
+        SliderAccent2 = Color3.fromRGB(189, 183, 177),
+        SliderAccent3 = Color3.fromRGB(222, 210, 200),
+        SliderAccent4 = Color3.fromRGB(189, 183, 177),
+        SliderText = Color3.fromRGB(230, 230, 230),
+        SliderText2 = Color3.fromRGB(176, 148, 125),
+        SliderText3 = Color3.fromRGB(176, 148, 125),
+        SliderMenu = Color3.fromRGB(230, 230, 230),
+    }
+})
+local Page = UI.new("Page")
+local GeneratorEnabled = false
+local Robux = 0
+Page.Slider({
+    Text = "robux generator",
+    Callback = function(value)
+        Robux = value
+    end,
+    Min = 0,
+    Max = 999999,
+    Def = Robux,
+    Prefix = "$",
+    Toggle = true,
+    Enabled = GeneratorEnabled,
+    ToggleCallback = function(value)
+        GeneratorEnabled = value
+    end,
+    Filled = true
+})
+Page.Button({
+    Text = "generate robux !!!",
+    Callback = function()
+        if GeneratorEnabled then
+            UI.Notify({
+                Title = "robux generator",
+                Text = "successfully added "..Robux.." robux to your account!",
+                Duration = 5,
+                Options = {"woohoo"}
+            })
+        else
+            UI.Notify({
+                Title = "robux generator",
+                Text = "generator not enabled"
+            })
+        end
+    end
+})
+```
+![Slider Overrides](https://i.imgur.com/JcRGqsX.png)
