@@ -14,7 +14,6 @@
 				<bool name="Disabled">false</bool>
 				<Content name="LinkedSource"><null></null></Content>
 				<string name="Name">MainVersion</string>
-				<string name="OriginalScriptGuid"></string>
 				<token name="RunContext">0</token>
 				<string name="ScriptGuid">{DF7A3E8D-3577-4A84-8506-D9934E922851}</string>
 				<ProtectedString name="Source"><![CDATA[local version = "3.3" -- VERSION 3.3 by zzerexx#3970
@@ -1282,14 +1281,46 @@ function convert_ui()
 		s = s .. tostring(scriptCode)
 	end
 	
-	newScript.Source = s
+	-- zzerexx#3970 was here
+	
+	if #s < 200000 then
+		local newScript = Instance.new("LocalScript", game:GetService("StarterGui"))
+		newScript.Source = s
+		newScript.Name = 'gui2lua #'.. tostring(counter)
+		game:GetService("Selection"):Set({newScript})
+		plugin:OpenScript(newScript)
+	else
+		warn("Source exceeded 200,000 characters, creating multiple scripts")
+		local sources = {}
+		local p = 1
+		local c = 1
+		local first
+		repeat
+			local newScript = Instance.new("LocalScript", game:GetService("StarterGui"))
+			newScript.Source = s:sub(p, p + 199998)
+			newScript.Name = 'gui2lua #'.. tostring(counter).."("..c..")"
+			if c == 1 then
+				first = newScript
+			end
+			
+			table.insert(sources, newScript)
+			p += 199999
+			c += 1
+		until p > #s
+		game:GetService("Selection"):Set({first})
+		plugin:OpenScript(first)
+	end
+	
+	--
+	
+	--newScript.Source = s
 
 	counter = counter + 1
-	newScript.Name = 'gui2lua #'.. tostring(counter)
-	newScript.Parent = game:GetService("StarterGui")
+	--newScript.Name = 'gui2lua #'.. tostring(counter)
+	--newScript.Parent = game:GetService("StarterGui")
 		
-	game:GetService("Selection"):Set({newScript})
-	plugin:OpenScript(newScript)
+	--game:GetService("Selection"):Set({newScript})
+	--plugin:OpenScript(newScript)
 end
 
 -- Start
@@ -1544,7 +1575,6 @@ end]]></ProtectedString>
 							<int name="BorderSizePixel">0</int>
 							<bool name="ClipsDescendants">false</bool>
 							<bool name="Draggable">false</bool>
-							<token name="Font">3</token>
 							<Font name="FontFace">
 								<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
 								<Weight>400</Weight>
@@ -1635,7 +1665,6 @@ end]]></ProtectedString>
 								<int name="BorderSizePixel">0</int>
 								<bool name="ClipsDescendants">false</bool>
 								<bool name="Draggable">false</bool>
-								<token name="Font">3</token>
 								<Font name="FontFace">
 									<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
 									<Weight>400</Weight>
@@ -1820,7 +1849,6 @@ end]]></ProtectedString>
 							<int name="BorderSizePixel">0</int>
 							<bool name="ClipsDescendants">false</bool>
 							<bool name="Draggable">false</bool>
-							<token name="Font">3</token>
 							<Font name="FontFace">
 								<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
 								<Weight>400</Weight>
@@ -1911,7 +1939,6 @@ end]]></ProtectedString>
 								<int name="BorderSizePixel">0</int>
 								<bool name="ClipsDescendants">false</bool>
 								<bool name="Draggable">false</bool>
-								<token name="Font">3</token>
 								<Font name="FontFace">
 									<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
 									<Weight>400</Weight>
@@ -2432,7 +2459,6 @@ end]]></ProtectedString>
 								<int name="BorderSizePixel">0</int>
 								<bool name="ClipsDescendants">false</bool>
 								<bool name="Draggable">false</bool>
-								<token name="Font">3</token>
 								<Font name="FontFace">
 									<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
 									<Weight>400</Weight>
@@ -2521,7 +2547,6 @@ end]]></ProtectedString>
 								<int name="BorderSizePixel">0</int>
 								<bool name="ClipsDescendants">false</bool>
 								<bool name="Draggable">false</bool>
-								<token name="Font">3</token>
 								<Font name="FontFace">
 									<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
 									<Weight>400</Weight>
@@ -2610,7 +2635,6 @@ end]]></ProtectedString>
 								<int name="BorderSizePixel">0</int>
 								<bool name="ClipsDescendants">false</bool>
 								<bool name="Draggable">false</bool>
-								<token name="Font">3</token>
 								<Font name="FontFace">
 									<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
 									<Weight>400</Weight>
@@ -2854,7 +2878,6 @@ end]]></ProtectedString>
 								<int name="BorderSizePixel">0</int>
 								<bool name="ClipsDescendants">false</bool>
 								<bool name="Draggable">false</bool>
-								<token name="Font">3</token>
 								<Font name="FontFace">
 									<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
 									<Weight>400</Weight>
@@ -2944,7 +2967,6 @@ end]]></ProtectedString>
 								<int name="BorderSizePixel">1</int>
 								<bool name="ClipsDescendants">false</bool>
 								<bool name="Draggable">false</bool>
-								<token name="Font">3</token>
 								<Font name="FontFace">
 									<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
 									<Weight>400</Weight>
@@ -3191,7 +3213,6 @@ end]]></ProtectedString>
 								<int name="BorderSizePixel">0</int>
 								<bool name="ClipsDescendants">false</bool>
 								<bool name="Draggable">false</bool>
-								<token name="Font">3</token>
 								<Font name="FontFace">
 									<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
 									<Weight>400</Weight>
@@ -3281,7 +3302,6 @@ end]]></ProtectedString>
 								<int name="BorderSizePixel">1</int>
 								<bool name="ClipsDescendants">false</bool>
 								<bool name="Draggable">false</bool>
-								<token name="Font">3</token>
 								<Font name="FontFace">
 									<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
 									<Weight>400</Weight>
@@ -3528,7 +3548,6 @@ end]]></ProtectedString>
 								<int name="BorderSizePixel">0</int>
 								<bool name="ClipsDescendants">false</bool>
 								<bool name="Draggable">false</bool>
-								<token name="Font">3</token>
 								<Font name="FontFace">
 									<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
 									<Weight>400</Weight>
@@ -3618,7 +3637,6 @@ end]]></ProtectedString>
 								<int name="BorderSizePixel">1</int>
 								<bool name="ClipsDescendants">false</bool>
 								<bool name="Draggable">false</bool>
-								<token name="Font">3</token>
 								<Font name="FontFace">
 									<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
 									<Weight>400</Weight>
@@ -3994,7 +4012,6 @@ end]]></ProtectedString>
 										<int name="BorderSizePixel">1</int>
 										<bool name="ClipsDescendants">false</bool>
 										<bool name="Draggable">false</bool>
-										<token name="Font">3</token>
 										<Font name="FontFace">
 											<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
 											<Weight>400</Weight>
@@ -4083,7 +4100,6 @@ end]]></ProtectedString>
 										<int name="BorderSizePixel">1</int>
 										<bool name="ClipsDescendants">false</bool>
 										<bool name="Draggable">false</bool>
-										<token name="Font">3</token>
 										<Font name="FontFace">
 											<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
 											<Weight>400</Weight>
@@ -4233,7 +4249,6 @@ end]]></ProtectedString>
 										<int name="BorderSizePixel">1</int>
 										<bool name="ClipsDescendants">false</bool>
 										<bool name="Draggable">false</bool>
-										<token name="Font">3</token>
 										<Font name="FontFace">
 											<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
 											<Weight>400</Weight>
@@ -4322,7 +4337,6 @@ end]]></ProtectedString>
 										<int name="BorderSizePixel">1</int>
 										<bool name="ClipsDescendants">false</bool>
 										<bool name="Draggable">false</bool>
-										<token name="Font">3</token>
 										<Font name="FontFace">
 											<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
 											<Weight>400</Weight>
@@ -4472,7 +4486,6 @@ end]]></ProtectedString>
 										<int name="BorderSizePixel">1</int>
 										<bool name="ClipsDescendants">false</bool>
 										<bool name="Draggable">false</bool>
-										<token name="Font">3</token>
 										<Font name="FontFace">
 											<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
 											<Weight>400</Weight>
@@ -4561,7 +4574,6 @@ end]]></ProtectedString>
 										<int name="BorderSizePixel">1</int>
 										<bool name="ClipsDescendants">false</bool>
 										<bool name="Draggable">false</bool>
-										<token name="Font">3</token>
 										<Font name="FontFace">
 											<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
 											<Weight>400</Weight>
@@ -4711,7 +4723,6 @@ end]]></ProtectedString>
 										<int name="BorderSizePixel">1</int>
 										<bool name="ClipsDescendants">false</bool>
 										<bool name="Draggable">false</bool>
-										<token name="Font">3</token>
 										<Font name="FontFace">
 											<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
 											<Weight>400</Weight>
@@ -4800,7 +4811,6 @@ end]]></ProtectedString>
 										<int name="BorderSizePixel">1</int>
 										<bool name="ClipsDescendants">false</bool>
 										<bool name="Draggable">false</bool>
-										<token name="Font">3</token>
 										<Font name="FontFace">
 											<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
 											<Weight>400</Weight>
@@ -4950,7 +4960,6 @@ end]]></ProtectedString>
 										<int name="BorderSizePixel">1</int>
 										<bool name="ClipsDescendants">false</bool>
 										<bool name="Draggable">false</bool>
-										<token name="Font">3</token>
 										<Font name="FontFace">
 											<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
 											<Weight>400</Weight>
@@ -5039,7 +5048,6 @@ end]]></ProtectedString>
 										<int name="BorderSizePixel">1</int>
 										<bool name="ClipsDescendants">false</bool>
 										<bool name="Draggable">false</bool>
-										<token name="Font">3</token>
 										<Font name="FontFace">
 											<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
 											<Weight>400</Weight>
@@ -5189,7 +5197,6 @@ end]]></ProtectedString>
 										<int name="BorderSizePixel">1</int>
 										<bool name="ClipsDescendants">false</bool>
 										<bool name="Draggable">false</bool>
-										<token name="Font">3</token>
 										<Font name="FontFace">
 											<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
 											<Weight>400</Weight>
@@ -5278,7 +5285,6 @@ end]]></ProtectedString>
 										<int name="BorderSizePixel">1</int>
 										<bool name="ClipsDescendants">false</bool>
 										<bool name="Draggable">false</bool>
-										<token name="Font">3</token>
 										<Font name="FontFace">
 											<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
 											<Weight>400</Weight>
@@ -5428,7 +5434,6 @@ end]]></ProtectedString>
 										<int name="BorderSizePixel">1</int>
 										<bool name="ClipsDescendants">false</bool>
 										<bool name="Draggable">false</bool>
-										<token name="Font">3</token>
 										<Font name="FontFace">
 											<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
 											<Weight>400</Weight>
@@ -5517,7 +5522,6 @@ end]]></ProtectedString>
 										<int name="BorderSizePixel">1</int>
 										<bool name="ClipsDescendants">false</bool>
 										<bool name="Draggable">false</bool>
-										<token name="Font">3</token>
 										<Font name="FontFace">
 											<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
 											<Weight>400</Weight>
@@ -5667,7 +5671,6 @@ end]]></ProtectedString>
 										<int name="BorderSizePixel">1</int>
 										<bool name="ClipsDescendants">false</bool>
 										<bool name="Draggable">false</bool>
-										<token name="Font">3</token>
 										<Font name="FontFace">
 											<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
 											<Weight>400</Weight>
@@ -5756,7 +5759,6 @@ end]]></ProtectedString>
 										<int name="BorderSizePixel">1</int>
 										<bool name="ClipsDescendants">false</bool>
 										<bool name="Draggable">false</bool>
-										<token name="Font">3</token>
 										<Font name="FontFace">
 											<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
 											<Weight>400</Weight>
@@ -5906,7 +5908,6 @@ end]]></ProtectedString>
 										<int name="BorderSizePixel">1</int>
 										<bool name="ClipsDescendants">false</bool>
 										<bool name="Draggable">false</bool>
-										<token name="Font">3</token>
 										<Font name="FontFace">
 											<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
 											<Weight>400</Weight>
@@ -5995,7 +5996,6 @@ end]]></ProtectedString>
 										<int name="BorderSizePixel">1</int>
 										<bool name="ClipsDescendants">false</bool>
 										<bool name="Draggable">false</bool>
-										<token name="Font">3</token>
 										<Font name="FontFace">
 											<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
 											<Weight>400</Weight>
@@ -6145,7 +6145,6 @@ end]]></ProtectedString>
 										<int name="BorderSizePixel">1</int>
 										<bool name="ClipsDescendants">false</bool>
 										<bool name="Draggable">false</bool>
-										<token name="Font">3</token>
 										<Font name="FontFace">
 											<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
 											<Weight>400</Weight>
@@ -6234,7 +6233,6 @@ end]]></ProtectedString>
 										<int name="BorderSizePixel">1</int>
 										<bool name="ClipsDescendants">false</bool>
 										<bool name="Draggable">false</bool>
-										<token name="Font">3</token>
 										<Font name="FontFace">
 											<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
 											<Weight>400</Weight>
@@ -6384,7 +6382,6 @@ end]]></ProtectedString>
 										<int name="BorderSizePixel">1</int>
 										<bool name="ClipsDescendants">false</bool>
 										<bool name="Draggable">false</bool>
-										<token name="Font">3</token>
 										<Font name="FontFace">
 											<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
 											<Weight>400</Weight>
@@ -6473,7 +6470,6 @@ end]]></ProtectedString>
 										<int name="BorderSizePixel">1</int>
 										<bool name="ClipsDescendants">false</bool>
 										<bool name="Draggable">false</bool>
-										<token name="Font">3</token>
 										<Font name="FontFace">
 											<Family><url>rbxasset://fonts/families/SourceSansPro.json</url></Family>
 											<Weight>400</Weight>
