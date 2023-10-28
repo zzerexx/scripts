@@ -1,3 +1,5 @@
+# oct 27, 2023: roblox exploiting is dead
+
 # Scripts  
 my cool scripts  
   
