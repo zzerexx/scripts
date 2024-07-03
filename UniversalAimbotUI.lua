@@ -1140,4 +1140,10 @@ newconn(game:GetService("UserInputService").InputBegan, function(i, gp)
 	end
 end)
 
+UI.Notify({
+	Title = "Thank you for using Universal Aimbot.",
+	Text = "Don't expect this script to fully work as it's no longer being maintained.\n- zzerexx",
+	Duration = 10
+})
+
 getgenv().UAIM_LOADING = false
