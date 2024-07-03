@@ -2779,5 +2779,11 @@ newconn(workspace.DescendantAdded, function(obj)
 	end
 end)
 
+UI.Notify({
+	Title = "Thank you for using Universal Esp.",
+	Text = "Don't expect this script to fully work as it's no longer being maintained.\n- zzerexx",
+	Duration = 10
+})
+
 loaded = true
 getgenv().UESP_LOADING = false
